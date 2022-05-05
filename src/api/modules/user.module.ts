@@ -1,0 +1,15 @@
+import axios from 'axios'
+import { UserModel } from '../model/user.model'
+
+class UserModule {
+  async fetchCurrentUser() {
+    const response = await axios.get<UserModel>('/users/profile')
+    return response.data
+  }
+
+  async loginUser(accessToken: string) {
+    return axios.post<{ jwt: string }>(`/auth/login`, { accessToken })
+  }
+}
+
+export const userModule = new UserModule()
