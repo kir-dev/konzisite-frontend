@@ -4,8 +4,8 @@ import { mode, StyleFunctionProps } from '@chakra-ui/theme-tools'
 // See more: https://chakra-ui.com/docs/theming/customize-theme
 const customTheme = extendTheme({
   fonts: {
-    heading: 'Comic Sans MS',
-    body: 'Comic Sans MS'
+    heading: 'Ubuntu',
+    body: 'Ubuntu'
   },
   styles: {
     global: (props: StyleFunctionProps) => ({

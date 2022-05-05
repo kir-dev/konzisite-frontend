@@ -41,8 +41,8 @@ export const RemarkEditor: FC<Props> = ({ textAreaHeight = '22rem', previewHeigh
   return (
     <Tabs variant="enclosed">
       <TabList>
-        <Tab>Edit</Tab>
-        <Tab>Preview</Tab>
+        <Tab>Szerkesztés</Tab>
+        <Tab>Előnézet</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
@@ -50,17 +50,17 @@ export const RemarkEditor: FC<Props> = ({ textAreaHeight = '22rem', previewHeigh
             <FormLabel htmlFor={formDetails.id}>
               {`${formDetails.promptText} `}
               <KLink to="https://www.markdownguide.org/cheat-sheet/" isExternal>
-                See guide here.
+                Markdown útmutató itt.
               </KLink>
             </FormLabel>
             <Textarea
               id={formDetails.id}
-              placeholder="Enter your markdown formatted text here..."
+              placeholder="Add meg a markdown formátumú szöveged itt..."
               height={textAreaHeight}
               defaultValue={defaultValue}
               {...register(formDetails.id, {
-                minLength: formDetails.minChar ? { value: formDetails.minChar, message: 'Text cannot be blank!' } : undefined,
-                maxLength: { value: formDetails.maxChar, message: 'Text entered is too long!' }
+                minLength: formDetails.minChar ? { value: formDetails.minChar, message: 'Szöveg nem lehet üres!' } : undefined,
+                maxLength: { value: formDetails.maxChar, message: 'Szöveg túl hosszú!' }
               })}
               isInvalid={errors[formDetails.id]}
             />

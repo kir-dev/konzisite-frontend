@@ -1,8 +1,8 @@
-import { useToast } from '@chakra-ui/react'
 import Cookies from 'js-cookie'
 import { createContext, FC, useState } from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import { API_HOST } from '../../../util/environment'
 import { queryClient } from '../../../util/query-client'
 import { UserModel } from '../../model/user.model'
 import { userModule } from '../../modules/user.module'
@@ -13,11 +13,10 @@ export type AuthContextType = {
   loggedInUser: UserModel | undefined
   loggedInUserLoading: boolean
   loggedInUserError: unknown
-  onLoginSuccess: (response: any) => void // todo: fix any to concrete type
-  onLoginFailure: (response: any) => void // todo: fix any to concrete type
+  onLoginSuccess: (jwt: string) => void
+  onLoginStarted: () => void
   onLogout: () => void
   refetchUser: () => Promise<void>
-  loginLoading: boolean
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -26,53 +25,24 @@ export const AuthContext = createContext<AuthContextType>({
   loggedInUserLoading: false,
   loggedInUserError: undefined,
   onLoginSuccess: () => {},
-  onLoginFailure: () => {},
+  onLoginStarted: () => {},
   onLogout: () => {},
-  refetchUser: async () => {},
-  loginLoading: false
+  refetchUser: async () => {}
 })
 
 export const AuthProvider: FC = ({ children }) => {
-  const toast = useToast()
   const navigate = useNavigate()
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(typeof Cookies.get(CookieKeys.KONZI_JWT_TOKEN) !== 'undefined')
+  const { isLoading, data: user, error } = useQuery('currentUser', userModule.fetchCurrentUser, { enabled: isLoggedIn })
 
-  const queryOptions = { enabled: isLoggedIn }
-  const { isLoading, data: user, error } = useQuery('currentUser', userModule.fetchCurrentUser, queryOptions)
-  const mutation = useMutation(userModule.loginUser, {
-    onSuccess: ({ data }) => {
-      const { jwt } = data
-      Cookies.set(CookieKeys.KONZI_JWT_TOKEN, jwt, { expires: 2 })
-      setIsLoggedIn(true)
-      queryClient.invalidateQueries('currentUser')
-      navigate('/profile')
-    },
-    onError: (error) => {
-      const err = error as any
-      console.log('[DEBUG] Error at loginUser', err.toJSON())
-      toast({
-        title: 'Error occured when logging in new user',
-        description: `${err.response.status} ${err.response.data.message} Try again later.`,
-        status: 'error',
-        isClosable: true
-      })
-    }
-  })
-
-  const onLoginSuccess = (data: any) => {
-    const { accessToken } = data
-    mutation.mutate(accessToken)
+  const onLoginSuccess = (jwt: string) => {
+    Cookies.set(CookieKeys.KONZI_JWT_TOKEN, jwt, { expires: 2 })
+    setIsLoggedIn(true)
+    queryClient.invalidateQueries('currentUser')
   }
 
-  const onLoginFailure = (data: any) => {
-    console.log('[DEBUG] Error at onLoginFailure', JSON.stringify(data, null, 2))
-    toast({
-      title: 'Authentication error',
-      description: 'There was an error while authenticating you at Google!',
-      status: 'error',
-      duration: 5000,
-      isClosable: true
-    })
+  const onLoginStarted = () => {
+    window.location.href = `${API_HOST}/auth/login`
   }
 
   const onLogout = () => {
@@ -94,10 +64,9 @@ export const AuthProvider: FC = ({ children }) => {
         loggedInUser: user,
         loggedInUserError: error,
         onLoginSuccess,
-        onLoginFailure,
+        onLoginStarted,
         onLogout,
-        refetchUser,
-        loginLoading: mutation.isLoading
+        refetchUser
       }}
     >
       {children}

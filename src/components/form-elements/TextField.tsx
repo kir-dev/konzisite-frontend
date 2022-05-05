@@ -35,9 +35,9 @@ export const TextField: FC<Props> = ({
         id={fieldName}
         type="text"
         {...register(fieldName, {
-          required: required ? 'Required field' : false,
-          maxLength: maxLength ? { value: maxLength, message: `Too long, maximum length is ${maxLength} characters` } : undefined,
-          minLength: minLength ? { value: minLength, message: `Too short, minimum length is ${minLength} characters` } : undefined,
+          required: required ? 'Kötelező mező' : false,
+          maxLength: maxLength ? { value: maxLength, message: `Túl hosszú, maximum hossz: ${maxLength} karakter` } : undefined,
+          minLength: minLength ? { value: minLength, message: `Túl rövid, minimum hossz: ${minLength} karakter` } : undefined,
           pattern,
           setValueAs
         })}

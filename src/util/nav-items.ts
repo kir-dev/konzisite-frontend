@@ -24,14 +24,14 @@ export class NavItem implements INavItem {
 
 const ProfileItem = new NavItem({
   icon: FaUserCircle,
-  label: 'Profile',
+  label: 'Profil',
   path: '/profile'
 })
 ProfileItem.shouldBeShown = (isLoggedIn: boolean) => isLoggedIn
 
 const LoginItem = new NavItem({
   icon: FaSignInAlt,
-  label: 'Log in',
+  label: 'Belépés',
   path: '/login'
 })
 LoginItem.shouldBeShown = (isLoggedIn: boolean) => !isLoggedIn
@@ -39,12 +39,12 @@ LoginItem.shouldBeShown = (isLoggedIn: boolean) => !isLoggedIn
 export const NAV_ITEMS: INavItem[] = [
   new NavItem({
     icon: FaHome,
-    label: 'Home',
+    label: 'Kezdőlap',
     path: '/'
   }),
   new NavItem({
     icon: FaCompass,
-    label: 'Explore',
+    label: 'Felfedezés',
     path: '/explore'
   }),
   ProfileItem,

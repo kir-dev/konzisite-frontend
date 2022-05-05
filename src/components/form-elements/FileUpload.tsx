@@ -27,7 +27,7 @@ type Props = {
 export const FileUpload: FC<Props> = ({
   fieldName,
   fieldTitle,
-  uploadButtonText = 'Upload',
+  uploadButtonText = 'Feltöltés',
   helper,
   accept = 'image/*',
   multiple = false,
@@ -43,22 +43,22 @@ export const FileUpload: FC<Props> = ({
 
   const validateFiles = (value: FileList | undefined) => {
     if (!value) {
-      return 'At least one file is required for upload!'
+      return 'Legalább egy kép feltöltése szükséges!'
     }
     if (required && value.length < 1) {
-      return 'At least one file is required for upload!'
+      return 'Legalább egy kép feltöltése szükséges!'
     }
     if (!multiple && value.length > 1) {
-      return 'Only one file is allowed for upload!'
+      return 'Csak egy kép feltöltése lehetséges!'
     }
     for (const file of Array.from(value)) {
       const fsMb = file.size / (1024 * 1024)
       const MAX_FILE_SIZE_IN_MB = 10
-      if (fsMb > MAX_FILE_SIZE_IN_MB) return 'File size cannot exceed 10 MB!'
+      if (fsMb > MAX_FILE_SIZE_IN_MB) return 'A fájl mérete nem haladhatja meg a 10 MB-ot!'
     }
     return true
   }
-  const registerProps = { ...register(fieldName, { required: 'Required field', validate: validateFiles }) }
+  const registerProps = { ...register(fieldName, { required: 'Kötelező mező', validate: validateFiles }) }
   const onUploadPressed = () => inputRef.current?.click()
   const onRemovePressed = () => setValue(fieldName, undefined)
 
@@ -80,8 +80,8 @@ export const FileUpload: FC<Props> = ({
         <InputLeftAddon as={Button} leftIcon={<FaFileImage />} onClick={onUploadPressed}>
           {uploadButtonText}
         </InputLeftAddon>
-        <Input value={watch(fieldName)?.item(0)?.name || 'No file chosen'} readOnly />
-        <InputRightAddon as={IconButton} aria-label="Remove chosen file" icon={<FaTimes />} onClick={onRemovePressed} />
+        <Input value={watch(fieldName)?.item(0)?.name || 'Nincs fájl kiválasztva'} readOnly />
+        <InputRightAddon as={IconButton} aria-label="Választott fájl visszavonása" icon={<FaTimes />} onClick={onRemovePressed} />
       </InputGroup>
       {errors?.[fieldName] ? (
         <FormErrorMessage>{errors[fieldName].message}</FormErrorMessage>

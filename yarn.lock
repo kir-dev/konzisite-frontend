@@ -2654,10 +2654,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/inter@npm:4.5.10":
-  version: 4.5.10
-  resolution: "@fontsource/inter@npm:4.5.10"
-  checksum: c947c5184f9ce7959fcccd716d0dde8156b5ed9c14b4ba27ee181fb2b05a136a49d99ed00c382551b64ecae010320ef7c062b1944b70260280ca0fcde93bd4f2
+"@fontsource/ubuntu@npm:4.5.9":
+  version: 4.5.9
+  resolution: "@fontsource/ubuntu@npm:4.5.9"
+  checksum: 59b391bedeca1e7cf4aaf1fac038d98c19ab194422f804401e59b91ce3866f6da1d572a43ddc95124e7abfb93f39af7c9262e828f5f40af7e25409bf8085a8f6
   languageName: node
   linkType: hard
 
@@ -9304,7 +9304,7 @@ __metadata:
     "@chakra-ui/theme-tools": 1.3.6
     "@emotion/react": 11.9.0
     "@emotion/styled": 11.8.1
-    "@fontsource/inter": 4.5.10
+    "@fontsource/ubuntu": 4.5.9
     "@types/jest": 27.5.0
     "@types/js-cookie": 3.0.2
     "@types/node": 17.0.31
