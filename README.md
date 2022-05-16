@@ -1,6 +1,12 @@
 This project was bootstrapped with
 [Create React App](https://github.com/facebook/create-react-app).
 
+## Preparation
+
+First, start the backend server by following [this guide](https://github.com/kir-dev/konzisite-api#readme).
+
+Then copy the contents of `.env.example` to a new file named `.env`.
+
 ## Available Scripts
 
 In the project directory, you can run:
