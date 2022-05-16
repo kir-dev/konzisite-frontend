@@ -11,6 +11,10 @@ Then copy the contents of `.env.example` to a new file named `.env`.
 
 In the project directory, you can run:
 
+### `yarn install`
+
+Installs the dependecies of the app.
+
 ### `yarn start`
 
 Runs the app in the development mode.<br /> Open
