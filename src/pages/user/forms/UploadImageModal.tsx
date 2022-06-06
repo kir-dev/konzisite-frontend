@@ -70,11 +70,11 @@ export const UploadImageModal: FC<Props> = ({ isOpen, onClose }) => {
               <FileUpload required fieldName="files" helper={<>Válassz képet feltöltésre!</>} />
             </ModalBody>
             <ModalFooter>
-              <Button variant="outline" colorScheme="theme" mr={3} onClick={onCancelPressed} type="button">
+              <Button variant="outline" colorScheme="brand" mr={3} onClick={onCancelPressed} type="button">
                 Mégse
               </Button>
               <Spacer />
-              <Button rightIcon={<FaUpload />} colorScheme="theme" disabled={!isValid} isLoading={mutation.isLoading} type="submit">
+              <Button rightIcon={<FaUpload />} colorScheme="brand" disabled={!isValid} isLoading={mutation.isLoading} type="submit">
                 Küldés
               </Button>
             </ModalFooter>

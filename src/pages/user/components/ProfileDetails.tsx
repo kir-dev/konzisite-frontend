@@ -43,7 +43,7 @@ export const ProfileDetails = ({ user: { firstName, lastName, email }, profileOp
         {profileOptions && (
           <Flex flex={1} justifyContent="end">
             <Menu>
-              <MenuButton as={Button} colorScheme="theme" rightIcon={<FaChevronDown />}>
+              <MenuButton as={Button} colorScheme="brand" rightIcon={<FaChevronDown />}>
                 Actions
               </MenuButton>
               <MenuList>

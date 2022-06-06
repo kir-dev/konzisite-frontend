@@ -13,7 +13,7 @@ export const LoginPage = () => {
       <Text fontSize="xl" fontWeight={700}>
         Jelentkezz be AuthSCH-n keresztül
       </Text>
-      <Button leftIcon={<FaHome />} colorScheme="themeHelper" onClick={onLoginStarted}>
+      <Button leftIcon={<FaHome />} colorScheme="brand" onClick={onLoginStarted}>
         AuthSCH bejelentkezés
       </Button>
     </VStack>

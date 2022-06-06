@@ -1,7 +1,4 @@
-import '@fontsource/ubuntu/300.css'
-import '@fontsource/ubuntu/400.css'
-import '@fontsource/ubuntu/500.css'
-import '@fontsource/ubuntu/700.css'
+import '@fontsource/aclonica/400.css'
 import { Route, Routes } from 'react-router-dom'
 import { RLayout } from './components/commons/KLayout'
 import './global.css'
