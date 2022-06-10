@@ -11,7 +11,7 @@ export const Navbar: FC = () => {
   const onNavigate = () => onToggle()
 
   return (
-    <Box mx="auto" maxW="6xl" w="full" fontFamily="heading">
+    <Box mx="auto" maxW="6xl" w="full" color={useColorModeValue('brand.700', 'white')}>
       <Flex h={{ base: '4rem', md: '6rem' }} w="full" px={4} py={2} align="center" justifyContent={'space-between'}>
         <Flex display={{ base: 'flex', md: 'none' }}>
           <IconButton
@@ -19,16 +19,9 @@ export const Navbar: FC = () => {
             icon={isOpen ? <FaTimes size="1.5rem" /> : <FaBars size="1.5rem" />}
             variant="ghost"
             aria-label="Open navigation"
-            color={useColorModeValue('brand.700', 'white')}
           />
         </Flex>
-        <Heading
-          fontFamily={`'Aclonica', sans-serif`}
-          color={useColorModeValue('brand.700', 'white')}
-          as={Link}
-          to="/"
-          _hover={{ textDecoration: 'none' }}
-        >
+        <Heading fontFamily="title" as={Link} to="/" _hover={{ textDecoration: 'none' }}>
           konzisite
         </Heading>
         <Flex display={{ base: 'none', md: 'flex' }} flex={1} justifyContent="flex-end">

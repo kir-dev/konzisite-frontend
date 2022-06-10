@@ -3,6 +3,9 @@ import { mode, StyleFunctionProps } from '@chakra-ui/theme-tools'
 
 // See more: https://chakra-ui.com/docs/theming/customize-theme
 const customTheme = extendTheme({
+  fonts: {
+    title: `'Aclonica', sans-serif`
+  },
   styles: {
     global: (props: StyleFunctionProps) => ({
       body: {
