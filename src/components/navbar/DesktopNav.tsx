@@ -1,4 +1,4 @@
-import { Button, Stack, useColorModeValue } from '@chakra-ui/react'
+import { Button, Stack } from '@chakra-ui/react'
 import { FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
@@ -24,7 +24,7 @@ const DesktopNav: FC = () => {
           px={2}
           py={4}
           variant="ghost"
-          color={useColorModeValue('brand.700', 'white')}
+          colorScheme="brand"
         >
           {item.label}
         </Button>

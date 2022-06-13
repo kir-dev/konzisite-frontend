@@ -44,8 +44,13 @@ export const NAV_ITEMS: INavItem[] = [
   }),
   new NavItem({
     icon: FaCompass,
-    label: 'Felfedezés',
-    path: '/explore'
+    label: 'Konzultációk',
+    path: '/consultations'
+  }),
+  new NavItem({
+    icon: FaCompass,
+    label: 'Csoportok',
+    path: '/groups'
   }),
   ProfileItem,
   LoginItem
