@@ -1,4 +1,4 @@
-import { HStack, Stack, Text } from '@chakra-ui/react'
+import { HStack, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
@@ -20,8 +20,9 @@ const MobileNav: FC<Props> = ({ onNavigate }) => {
     <Stack display={{ md: 'none' }} fontWeight={700} fontSize="xl" ml={6} mb={6}>
       {navItems.map((item) => (
         <HStack key={item.label} as={Link} to={item.path} onClick={onNavigate}>
-          <item.icon />
-          <Text textAlign="center">{item.label}</Text>
+          <Text textAlign="center" color={useColorModeValue('brand.700', 'white')}>
+            {item.label}
+          </Text>
         </HStack>
       ))}
     </Stack>

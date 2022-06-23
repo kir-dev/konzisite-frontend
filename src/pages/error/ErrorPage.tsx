@@ -43,7 +43,7 @@ export const ErrorPage = ({ title, messages, backPath }: ErrorPageState) => {
         </VStack>
       </AlertDescription>
       <Button
-        colorScheme="theme"
+        colorScheme="brand"
         mt={6}
         leftIcon={<FaChevronLeft />}
         onClick={() => {

@@ -7,7 +7,7 @@ type Props = {
 
 export const CookieConsentPopup: FC<Props> = ({ onClick }) => (
   <Box maxWidth="80rem" mx="auto" p={2}>
-    <Alert display={{ base: 'block', md: 'flex' }} colorScheme="themeHelper" variant="solid" borderRadius={6} width="full">
+    <Alert display={{ base: 'block', md: 'flex' }} colorScheme="brand" variant="solid" borderRadius={6} width="full">
       <Flex flex={1}>
         <AlertIcon alignSelf="flex-start" />
         <Box>

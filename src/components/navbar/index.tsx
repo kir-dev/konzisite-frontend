@@ -1,6 +1,7 @@
-import { Box, Collapse, Flex, HStack, IconButton, useBreakpointValue, useDisclosure } from '@chakra-ui/react'
+import { Box, Collapse, Flex, Heading, HStack, IconButton, useColorModeValue, useDisclosure } from '@chakra-ui/react'
 import { FC } from 'react'
 import { FaBars, FaTimes } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 import { ColorModeSwitcher } from './ColorModeSwitcher'
 import DesktopNav from './DesktopNav'
 import MobileNav from './MobileNav'
@@ -10,30 +11,32 @@ export const Navbar: FC = () => {
   const onNavigate = () => onToggle()
 
   return (
-    <Box mx="auto" maxW="6xl" w="full" fontFamily="heading">
-      <Flex h={{ base: '4rem', md: '6rem' }} w="full" px={4} py={2} align="center">
-        <Flex display={{ base: 'flex', md: 'none' }}>
-          <IconButton
-            onClick={onToggle}
-            icon={isOpen ? <FaTimes size="1.5rem" /> : <FaBars size="1.5rem" />}
-            variant="ghost"
-            aria-label="Open navigation"
-          />
+    <Flex justifyContent="center" w="full" style={{ boxShadow: useColorModeValue('0 0.25rem 0.6rem #0B4E8E', '0 0.25rem 0.6rem #000') }}>
+      <Box mx="auto" maxW="6xl" w="full" color={useColorModeValue('brand.700', 'white')}>
+        <Flex h="4rem" w="full" px={4} py={2} align="center" justifyContent={'space-between'}>
+          <Flex display={{ base: 'flex', md: 'none' }}>
+            <IconButton
+              onClick={onToggle}
+              icon={isOpen ? <FaTimes size="1.5rem" /> : <FaBars size="1.5rem" />}
+              variant="ghost"
+              aria-label="Open navigation"
+            />
+          </Flex>
+          <Heading fontFamily="title" as={Link} to="/" _hover={{ textDecoration: 'none' }}>
+            Konzisite
+          </Heading>
+          <Flex display={{ base: 'none', md: 'flex' }} flex={1} justifyContent="center">
+            <DesktopNav />
+          </Flex>
+          <HStack ml={{ base: 0, md: 6 }}>
+            <ColorModeSwitcher />
+          </HStack>
         </Flex>
-        <Flex flex={{ base: 1, md: 0 }} justifyContent="center" pl={{ base: 10, md: 0 }}>
-          <Box style={{ height: useBreakpointValue({ base: '1.75rem', sm: '2.5rem', md: '3rem' }) }} bgColor="blue.500" />
-        </Flex>
-        <Flex display={{ base: 'none', md: 'flex' }} flex={1} justifyContent="flex-end">
-          <DesktopNav />
-        </Flex>
-        <HStack ml={{ base: 0, md: 6 }}>
-          <ColorModeSwitcher />
-        </HStack>
-      </Flex>
 
-      <Collapse in={isOpen} animateOpacity>
-        <MobileNav onNavigate={onNavigate} />
-      </Collapse>
-    </Box>
+        <Collapse in={isOpen} animateOpacity>
+          <MobileNav onNavigate={onNavigate} />
+        </Collapse>
+      </Box>
+    </Flex>
   )
 }

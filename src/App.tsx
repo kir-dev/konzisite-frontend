@@ -1,11 +1,9 @@
-import '@fontsource/ubuntu/300.css'
-import '@fontsource/ubuntu/400.css'
-import '@fontsource/ubuntu/500.css'
-import '@fontsource/ubuntu/700.css'
+import '@fontsource/aclonica/400.css'
 import { Route, Routes } from 'react-router-dom'
 import { RLayout } from './components/commons/KLayout'
 import './global.css'
 import { AuthorizedPage } from './pages/authorized/AuthorizedPage'
+import { ConsultationPage } from './pages/consultations/ConsultationsPage'
 import { ErrorPage } from './pages/error/ErrorPage'
 import { IndexPage } from './pages/index/IndexPage'
 import { LoginPage } from './pages/login/LoginPage'
@@ -25,6 +23,7 @@ export const App = () => {
               <Route index element={<UserPage />} />
             </Route>
           </Route>
+          <Route path="consultations" element={<ConsultationPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="authorized" element={<AuthorizedPage />} />
           <Route path="logout" element={<LogoutPage />} />

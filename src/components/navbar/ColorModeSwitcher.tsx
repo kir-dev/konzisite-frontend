@@ -18,6 +18,7 @@ export const ColorModeSwitcher: FC<ColorModeSwitcherProps> = (props) => {
       onClick={toggleColorMode}
       icon={<SwitchIcon />}
       aria-label={`Switch to ${text} mode`}
+      color={useColorModeValue('brand.700', 'white')}
       {...props}
     />
   )
