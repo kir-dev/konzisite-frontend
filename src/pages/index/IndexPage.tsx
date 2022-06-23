@@ -3,7 +3,6 @@ import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 
 export const IndexPage = () => {
   const { isLoggedIn, loggedInUser } = useAuthContext()
-
   return (
     <Stack w="200px">
       Hello there {loggedInUser?.firstName}
