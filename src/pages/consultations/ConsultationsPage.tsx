@@ -1,5 +1,6 @@
-import { Heading, HStack, Text } from '@chakra-ui/react'
+import { Button, Heading, HStack, Text } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ConsultationModel } from '../../api/model/consultation.model'
 
 const konziTomb: ConsultationModel[] = [
@@ -55,6 +56,9 @@ export const ConsultationPage = () => {
 
   return (
     <>
+      <Button as={Link} to="/consultations/new" colorScheme="brand">
+        Új konzultáció
+      </Button>
       {konziTomb.map((c) => (
         <HStack>
           <Heading>{c.descMarkdown}</Heading>
