@@ -13,7 +13,6 @@ import {
   useColorModeValue,
   VStack
 } from '@chakra-ui/react'
-import React from 'react'
 import { FaAt, FaChevronDown, FaRegFileImage, FaSignOutAlt } from 'react-icons/fa'
 import { UserModel } from '../../../api/model/user.model'
 
