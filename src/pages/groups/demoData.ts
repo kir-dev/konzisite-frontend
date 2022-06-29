@@ -10,7 +10,9 @@ export const testGroups: GroupModel[] = [
       authSchId: 'abc',
       firstName: 'Elek',
       lastName: 'Teszt',
-      email: 'elek@example.com'
+      email: 'elek@example.com',
+      ownedConsultations: [],
+      ratings: []
     },
     members: [
       {
@@ -20,7 +22,9 @@ export const testGroups: GroupModel[] = [
         lastName: 'Teszt',
         email: 'elek@example.com',
         joinedAt: new Date('2021-01-01'),
-        role: GroupRoles.MEMBER
+        role: GroupRoles.MEMBER,
+        ownedConsultations: [],
+        ratings: []
       }
     ],
     createdAt: new Date('2021-01-01'),
@@ -34,7 +38,9 @@ export const testGroups: GroupModel[] = [
       authSchId: '123abc',
       firstName: 'Pista',
       lastName: 'Kis',
-      email: 'pistike@gmail.com'
+      email: 'pistike@gmail.com',
+      ownedConsultations: [],
+      ratings: []
     },
     members: [
       {
@@ -44,7 +50,9 @@ export const testGroups: GroupModel[] = [
         lastName: 'Teszt',
         email: 'elek@example.com',
         joinedAt: new Date('2022-01-01'),
-        role: GroupRoles.MEMBER
+        role: GroupRoles.MEMBER,
+        ownedConsultations: [],
+        ratings: []
       },
       {
         id: 2,
@@ -53,7 +61,9 @@ export const testGroups: GroupModel[] = [
         lastName: 'Kis',
         email: 'pistike@gmail.com',
         joinedAt: new Date('2021-05-29'),
-        role: GroupRoles.ADMIN
+        role: GroupRoles.ADMIN,
+        ownedConsultations: [],
+        ratings: []
       },
       {
         id: 7,
@@ -62,7 +72,9 @@ export const testGroups: GroupModel[] = [
         lastName: 'Gipsz',
         email: 'info@gipszjakab.io',
         joinedAt: new Date('2021-05-29'),
-        role: GroupRoles.ADMIN
+        role: GroupRoles.ADMIN,
+        ownedConsultations: [],
+        ratings: []
       }
     ],
     createdAt: new Date('2021-05-29'),
@@ -76,7 +88,9 @@ export const testGroups: GroupModel[] = [
       authSchId: 'asdf',
       firstName: 'Jakab',
       lastName: 'Gipsz',
-      email: 'info@gipszjakab.io'
+      email: 'info@gipszjakab.io',
+      ownedConsultations: [],
+      ratings: []
     },
     members: [
       {
@@ -86,7 +100,9 @@ export const testGroups: GroupModel[] = [
         lastName: 'Teszt',
         email: 'elek@example.com',
         joinedAt: new Date('2022-05-17'),
-        role: GroupRoles.PENDING
+        role: GroupRoles.PENDING,
+        ownedConsultations: [],
+        ratings: []
       },
       {
         id: 2,
@@ -95,7 +111,9 @@ export const testGroups: GroupModel[] = [
         lastName: 'Kis',
         email: 'pistike@gmail.com',
         joinedAt: new Date('2022-05-29'),
-        role: GroupRoles.MEMBER
+        role: GroupRoles.MEMBER,
+        ownedConsultations: [],
+        ratings: []
       },
       {
         id: 7,
@@ -104,7 +122,9 @@ export const testGroups: GroupModel[] = [
         lastName: 'Gipsz',
         email: 'info@gipszjakab.io',
         joinedAt: new Date('2022-05-15'),
-        role: GroupRoles.ADMIN
+        role: GroupRoles.ADMIN,
+        ownedConsultations: [],
+        ratings: []
       },
       {
         id: 8,
@@ -113,7 +133,9 @@ export const testGroups: GroupModel[] = [
         lastName: 'Antal',
         email: 'info@gipszjakab.io',
         joinedAt: new Date('2022-05-15'),
-        role: GroupRoles.ADMIN
+        role: GroupRoles.ADMIN,
+        ownedConsultations: [],
+        ratings: []
       }
     ],
     createdAt: new Date('2022-05-15'),
@@ -126,5 +148,7 @@ export const currentUser: UserModel = {
   authSchId: 'asdf',
   firstName: 'Jakab',
   lastName: 'Gipsz',
-  email: 'info@gipszjakab.io'
+  email: 'info@gipszjakab.io',
+  ownedConsultations: [],
+  ratings: []
 }
