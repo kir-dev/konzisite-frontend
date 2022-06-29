@@ -24,7 +24,9 @@ const mockProfile: UserModel = {
         authSchId: 'abc',
         firstName: 'Elek',
         lastName: 'Teszt',
-        email: 'abc@cba.com'
+        email: 'abc@cba.com',
+        ratings: [],
+        ownedConsultations: []
       }
     },
     {
@@ -38,7 +40,9 @@ const mockProfile: UserModel = {
         authSchId: 'abc',
         firstName: 'Elek',
         lastName: 'Teszt',
-        email: 'abc@cba.com'
+        email: 'abc@cba.com',
+        ratings: [],
+        ownedConsultations: []
       }
     }
   ],
