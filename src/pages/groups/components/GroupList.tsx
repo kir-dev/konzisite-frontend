@@ -1,17 +1,17 @@
 import { Avatar, Box, Button, Heading, HStack, Skeleton, SkeletonCircle, Stack, Text, VStack } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { GroupModel } from '../../../api/model/group.model'
+import { currentUser } from '../demoData'
 
 type Props = {
   title: string
   groups: GroupModel[]
   showOwner?: boolean
   showJoinButton?: boolean
-  currentUserId?: number
   loading?: boolean
 }
 
-export const GroupList = ({ groups, showOwner = true, showJoinButton = false, title, currentUserId, loading = false }: Props) => {
+export const GroupList = ({ groups, showOwner = true, showJoinButton = false, title, loading = false }: Props) => {
   const joinGroup = (group: GroupModel) => {
     return () => {
       alert(`join group ${group.id}`)
@@ -28,9 +28,9 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
             <Stack direction={['column', 'row']}>
               <HStack flexGrow={1} p={4}>
                 <SkeletonCircle size="48px" />
-                <VStack flexGrow={1}>
-                  <Skeleton height="20px" width="100%" />
-                  <Skeleton height="20px" width="100%" />
+                <VStack flexGrow={1} alignItems="flex-start">
+                  <Skeleton height="20px" width="50%" />
+                  <Skeleton height="20px" width="20%" />
                 </VStack>
               </HStack>
             </Stack>
@@ -39,9 +39,9 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
             <Stack direction={['column', 'row']}>
               <HStack flexGrow={1} p={4}>
                 <SkeletonCircle size="48px" />
-                <VStack flexGrow={1}>
-                  <Skeleton height="20px" width="100%" />
-                  <Skeleton height="20px" width="100%" />
+                <VStack flexGrow={1} alignItems="flex-start">
+                  <Skeleton height="20px" width="60%" />
+                  <Skeleton height="20px" width="90%" />
                 </VStack>
               </HStack>
             </Stack>
@@ -66,7 +66,7 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
                       <Heading size="md">{g.name}</Heading>
                       {showOwner && (
                         <Heading size="md" textAlign="right">
-                          Tulajdonos: {g.owner.id == currentUserId ? 'Te' : `${g.owner.lastName} ${g.owner.firstName}`}
+                          Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : `${g.owner.lastName} ${g.owner.firstName}`}
                         </Heading>
                       )}
                     </HStack>
@@ -78,7 +78,7 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
                 </HStack>
                 {showJoinButton && (
                   <VStack p={2} justifyContent="center">
-                    {g.members.some((m) => m.id === currentUserId) ? (
+                    {g.members.some((m) => m.id === currentUser.id) ? (
                       <>
                         <Button colorScheme="brand" disabled={true} width="100%">
                           Csatlakozás

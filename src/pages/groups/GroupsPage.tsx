@@ -32,8 +32,8 @@ export const GroupsPage = () => {
         Új csoport létrehozása
       </Button>
       <GroupList groups={ownedGroups} title="Saját csoportok" showOwner={false} loading={loading} />
-      <GroupList groups={joinedGroups} title="Saját csoportok 2.0?" showOwner={true} currentUserId={currentUser.id} loading={loading} />
-      <GroupList groups={groups} title="∀ csoport" currentUserId={currentUser.id} showJoinButton={true} loading={loading} />
+      <GroupList groups={joinedGroups} title="Saját csoportok 2.0?" showOwner={true} loading={loading} />
+      <GroupList groups={groups} title="∀ csoport" showJoinButton={true} loading={loading} />
     </>
   )
 }

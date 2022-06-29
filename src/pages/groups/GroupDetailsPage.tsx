@@ -25,7 +25,7 @@ import { UserModel } from '../../api/model/user.model'
 import { ErrorPage } from '../error/ErrorPage'
 import { currentUser, testGroups } from './demoData'
 
-export const GroupDetails = () => {
+export const GroupDetailsPage = () => {
   const [loading, setLoading] = useState(true)
   const groupId = parseInt(useParams<{ groupId: string }>().groupId ?? '-1')
   const [group, setGroup] = useState<GroupModel>()
@@ -93,20 +93,20 @@ export const GroupDetails = () => {
   if (loading)
     return (
       <>
-        <VStack mb={3}>
-          <Skeleton height="40px" width="100%" />
-          <Skeleton height="25px" width="100%" />
-          <Skeleton height="25px" width="100%" />
-          <Skeleton height="25px" width="100%" />
+        <VStack mb={3} alignItems="flex-start">
+          <Skeleton height="44px" width="50%" mb={3} alignSelf="center" />
+          <Skeleton height="36px" width="60%" />
+          <Skeleton height="36px" width="90%" />
+          <Skeleton height="36px" width="40%" />
         </VStack>
         <VStack alignItems="stretch">
           <Box shadow="md" borderRadius={8} borderWidth={1}>
             <Stack direction={['column', 'row']}>
               <HStack flexGrow={1} p={4}>
                 <SkeletonCircle size="48px" />
-                <VStack flexGrow={1}>
-                  <Skeleton height="20px" width="100%" />
-                  <Skeleton height="20px" width="100%" />
+                <VStack flexGrow={1} alignItems="flex-start">
+                  <Skeleton height="20px" width="60%" />
+                  <Skeleton height="20px" width="80%" />
                 </VStack>
               </HStack>
             </Stack>
@@ -115,9 +115,9 @@ export const GroupDetails = () => {
             <Stack direction={['column', 'row']}>
               <HStack flexGrow={1} p={4}>
                 <SkeletonCircle size="48px" />
-                <VStack flexGrow={1}>
-                  <Skeleton height="20px" width="100%" />
-                  <Skeleton height="20px" width="100%" />
+                <VStack flexGrow={1} alignItems="flex-start">
+                  <Skeleton height="20px" width="40%" />
+                  <Skeleton height="20px" width="50%" />
                 </VStack>
               </HStack>
             </Stack>
@@ -126,8 +126,8 @@ export const GroupDetails = () => {
             <Stack direction={['column', 'row']}>
               <HStack flexGrow={1} p={4}>
                 <SkeletonCircle size="48px" />
-                <VStack flexGrow={1}>
-                  <Skeleton height="20px" width="100%" />
+                <VStack flexGrow={1} alignItems="flex-start">
+                  <Skeleton height="20px" width="90%" />
                   <Skeleton height="20px" width="100%" />
                 </VStack>
               </HStack>
@@ -143,7 +143,9 @@ export const GroupDetails = () => {
           <ErrorPage title="Nincs ilyen cspoort" messages={['A csoport amit keresel már nem létezik, vagy nem is létezett']} />
         ) : (
           <>
-            <Heading textAlign="center">{group.name}</Heading>
+            <Heading textAlign="center" mb={3}>
+              {group.name}
+            </Heading>
             <Stack direction={['column', 'row']} justifyContent="space-between" mb={3}>
               <VStack alignItems="flex-start" spacing={3}>
                 <Heading size="lg">Létrehozva: {group.createdAt.toLocaleDateString()}</Heading>
@@ -184,21 +186,19 @@ export const GroupDetails = () => {
                       <HStack flexGrow={1} as={Link} to={`/users/${u.id}`} p={4}>
                         <Avatar size="md" name={`${u.lastName} ${u.firstName}`} src={''} />
                         <VStack flexGrow={1}>
-                          <HStack justifyContent="space-between" width="100%">
-                            <Heading size="md">
-                              {u.lastName} {u.firstName}
-                              {u.id === group.owner.id && (
-                                <Badge colorScheme="brand" ml={1}>
-                                  Tulajdonos
-                                </Badge>
-                              )}
-                              {u.id === currentUser.id && (
-                                <Badge colorScheme="brand" ml={1}>
-                                  Te
-                                </Badge>
-                              )}
-                            </Heading>
-                          </HStack>
+                          <Heading size="md" width="100%">
+                            {u.lastName} {u.firstName}
+                            {u.id === group.owner.id && (
+                              <Badge colorScheme="brand" ml={1}>
+                                Tulajdonos
+                              </Badge>
+                            )}
+                            {u.id === currentUser.id && (
+                              <Badge colorScheme="brand" ml={1}>
+                                Te
+                              </Badge>
+                            )}
+                          </Heading>
                           <HStack justifyContent="space-between" width="100%">
                             <Text>{u.role}</Text>
                             <Text textAlign="right">Csatlakozás: {u.joinedAt.toLocaleDateString()}</Text>

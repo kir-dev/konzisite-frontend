@@ -9,7 +9,7 @@ type Props = {
   newGroup?: boolean
 }
 
-export const EditGroup = ({ newGroup = false }: Props) => {
+export const EditGroupPage = ({ newGroup = false }: Props) => {
   const [loading, setLoading] = useState(!newGroup)
   const [name, setName] = useState('')
   const [group, setGroup] = useState<GroupModel | undefined>(undefined)
@@ -37,10 +37,10 @@ export const EditGroup = ({ newGroup = false }: Props) => {
   if (loading)
     return (
       <>
-        <VStack>
-          <Skeleton height="40px" width="50%" mb={3} />
-          <Skeleton height="25px" width="80px" alignSelf="flex-start" />
-          <Skeleton height="40px" width="100%" />
+        <VStack alignItems="flex-start">
+          <Skeleton height="40px" width="50%" mb={3} alignSelf="center" />
+          <Skeleton height="25px" width="80px" />
+          <Skeleton height="40px" width="50%" />
           <Skeleton height="40px" width="100%" />
         </VStack>
       </>
