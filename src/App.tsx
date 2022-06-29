@@ -5,6 +5,8 @@ import './global.css'
 import { AuthorizedPage } from './pages/authorized/AuthorizedPage'
 import { ConsultationPage } from './pages/consultations/ConsultationsPage'
 import { ErrorPage } from './pages/error/ErrorPage'
+import { GroupDetails } from './pages/groups/GroupDetails'
+import { GroupsPage } from './pages/groups/GroupsPage'
 import { IndexPage } from './pages/index/IndexPage'
 import { LoginPage } from './pages/login/LoginPage'
 import { LogoutPage } from './pages/logout/LogoutPage'
@@ -24,6 +26,11 @@ export const App = () => {
             </Route>
           </Route>
           <Route path="consultations" element={<ConsultationPage />} />
+          <Route path="groups">
+            <Route path=":groupId" element={<GroupDetails />} />
+            <Route path="new" element={<ErrorPage />} />
+            <Route index element={<GroupsPage />} />
+          </Route>
           <Route path="login" element={<LoginPage />} />
           <Route path="authorized" element={<AuthorizedPage />} />
           <Route path="logout" element={<LogoutPage />} />
