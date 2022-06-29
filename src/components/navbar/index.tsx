@@ -11,8 +11,8 @@ export const Navbar: FC = () => {
   const onNavigate = () => onToggle()
 
   return (
-    <Flex justifyContent="center" w="full" style={{ boxShadow: useColorModeValue('0 0.25rem 0.6rem #0B4E8E', '0 0.25rem 0.6rem #000') }}>
-      <Box mx="auto" maxW="6xl" w="full" color={useColorModeValue('brand.700', 'white')}>
+    <Flex justifyContent="center" w="full" style={{ boxShadow: useColorModeValue('0 0.25rem 0.6rem #062a4c', '0 0.25rem 0.6rem #000') }}>
+      <Box mx="auto" maxW="6xl" w="full" color={useColorModeValue('brand.500', 'white')}>
         <Flex h="4rem" w="full" px={4} py={2} align="center" justifyContent={'space-between'}>
           <Flex display={{ base: 'flex', md: 'none' }}>
             <IconButton
