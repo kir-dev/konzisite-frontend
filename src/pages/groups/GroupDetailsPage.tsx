@@ -52,6 +52,10 @@ export const GroupDetailsPage = () => {
     }
   }, [group])
 
+  const deleteGroup = () => {
+    alert(`delete group ${group?.id}`)
+  }
+
   const joinGroup = () => {
     alert(`join group ${group?.id}`)
   }
@@ -151,23 +155,30 @@ export const GroupDetailsPage = () => {
                 <Heading size="lg">Létrehozva: {group.createdAt.toLocaleDateString()}</Heading>
                 <Heading size="lg">Szerepkör: {group.members.find((m) => m.id == currentUser.id)?.role}</Heading>
               </VStack>
-              {isOwner ? (
-                <Button as={Link} to={`/groups/${group.id}/edit`} colorScheme="brand">
-                  Szerkesztés
-                </Button>
-              ) : isAdmin || isMember ? (
-                <Button colorScheme="red" onClick={leaveGroup}>
-                  Kilépés
-                </Button>
-              ) : isPending ? (
-                <Button colorScheme="brand" onClick={leaveGroup}>
-                  Kérelem visszavonása
-                </Button>
-              ) : (
-                <Button colorScheme="brand" onClick={joinGroup}>
-                  Csatlakozás
-                </Button>
-              )}
+              <VStack alignItems="stretch">
+                {isOwner ? (
+                  <>
+                    <Button as={Link} to={`/groups/${group.id}/edit`} colorScheme="brand">
+                      Szerkesztés
+                    </Button>
+                    <Button colorScheme="red" onClick={deleteGroup}>
+                      Törlés
+                    </Button>
+                  </>
+                ) : isAdmin || isMember ? (
+                  <Button colorScheme="red" onClick={leaveGroup}>
+                    Kilépés
+                  </Button>
+                ) : isPending ? (
+                  <Button colorScheme="brand" onClick={leaveGroup}>
+                    Kérelem visszavonása
+                  </Button>
+                ) : (
+                  <Button colorScheme="brand" onClick={joinGroup}>
+                    Csatlakozás
+                  </Button>
+                )}
+              </VStack>
             </Stack>
             <Stack direction={['column', 'row']} justifyContent="space-between" mb={3}>
               <Heading size="lg" mb={2}>
