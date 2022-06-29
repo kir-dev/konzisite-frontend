@@ -6,7 +6,7 @@ export interface UserModel {
   firstName: string
   lastName: string
   email: string
-  ownedConsultations?: ConsultationModel[]
+  ownedConsultations: ConsultationModel[]
   // memberships: ids
-  ratings?: RatingModel[]
+  ratings: RatingModel[]
 }
