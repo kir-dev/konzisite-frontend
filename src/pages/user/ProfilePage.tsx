@@ -25,7 +25,7 @@ const mockProfile: UserModel = {
         firstName: 'Elek',
         lastName: 'Teszt',
         email: 'abc@cba.com',
-        ratings: [],
+        presentations: [],
         ownedConsultations: []
       }
     },
@@ -41,18 +41,22 @@ const mockProfile: UserModel = {
         firstName: 'Elek',
         lastName: 'Teszt',
         email: 'abc@cba.com',
-        ratings: [],
+        presentations: [],
         ownedConsultations: []
       }
     }
   ],
-  ratings: [
-    {
+  presentations: [
+    ratings: [{
       id: 1,
       value: 5,
       text: 'Yeaaah, eleg jo volt',
-      participationId: 1,
-      presentationId: 1
+      participation:  {
+
+      },
+      presentation: {
+
+      }
     },
     {
       id: 2,
@@ -67,7 +71,7 @@ const mockProfile: UserModel = {
       text: 'Eleg uncsi volt ://',
       participationId: 1,
       presentationId: 1
-    }
+    }]
   ]
 }
 
@@ -112,7 +116,7 @@ export const ProfilePage = () => {
             )}
 
             {mockProfile.ratings?.map((r) => (
-              <HStack>
+              <HStack key={r.id}>
                 <Text>Random user: </Text>
                 <Text>{r.value}, </Text>
                 <Text>{r.text}</Text>
@@ -120,7 +124,7 @@ export const ProfilePage = () => {
             ))}
             <Heading>Owned Consultations: </Heading>
             {mockProfile.ownedConsultations?.map((c) => (
-              <HStack>
+              <HStack key={c.id}>
                 <Text>{c.descMarkdown}</Text>
                 <Text>
                   {c.startDate.toDateString()}-{c.endDate.toDateString()}

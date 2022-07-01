@@ -66,7 +66,7 @@ export const ConsultationPage = () => {
         Új konzultáció
       </Button>
       {konziTomb.map((c) => (
-        <HStack>
+        <HStack key={c.id}>
           <Heading>{c.descMarkdown}</Heading>
           <Text>
             {c.startDate.toDateString()}-{c.endDate.toDateString()}
