@@ -2,8 +2,10 @@ import { Button, Heading, HStack, Text } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ConsultationModel } from '../../api/model/consultation.model'
+import { Major, SubjectModel } from '../../api/model/subject.model'
+import { UserModel } from '../../api/model/user.model'
 
-const konziTomb: ConsultationModel[] = [
+/*const konziTomb: ConsultationModel[] = [
   {
     id: 1,
     location: '1317 tanuló',
@@ -52,10 +54,37 @@ const konziTomb: ConsultationModel[] = [
       ownedConsultations: []
     }
   }
+]*/
+
+type ConsultationPreview = ConsultationModel & { subject: SubjectModel; presenters: UserModel[] }
+
+const konzik: ConsultationPreview[] = [
+  {
+    id: 1,
+    location: 'e',
+    startDate: new Date(),
+    endDate: new Date(),
+    descMarkdown: 'very nice',
+    subject: {
+      id: 2,
+      code: 'VIAU34564',
+      name: 'bsz',
+      majors: [Major.CE_BSC]
+    },
+    presenters: [
+      {
+        id: 1,
+        authSchId: 'abc',
+        firstName: 'Elek',
+        lastName: 'Teszt',
+        email: 'abc@cba.com'
+      }
+    ]
+  }
 ]
 
-export const ConsultationPage = () => {
-  const [consultaions, setConsultations] = useState<ConsultationModel[]>([])
+export const ConsultationsPage = () => {
+  const [consultaions, setConsultations] = useState<ConsultationPreview[]>([])
   useEffect(() => {
     //setConsultations(axios.get<ConsultaionModel[]>("/consultaions"))
   }, [])
@@ -65,15 +94,17 @@ export const ConsultationPage = () => {
       <Button as={Link} to="/consultations/new" colorScheme="brand">
         Új konzultáció
       </Button>
-      {konziTomb.map((c) => (
+      {konzik.map((c) => (
         <HStack key={c.id}>
           <Heading>{c.descMarkdown}</Heading>
           <Text>
             {c.startDate.toDateString()}-{c.endDate.toDateString()}
           </Text>
-          <Text>
-            {c.owner.lastName} {c.owner.firstName}
-          </Text>
+          {c.presenters.map((u) => (
+            <Text key={u.id}>
+              {u.lastName} {u.firstName}
+            </Text>
+          ))}
         </HStack>
       ))}
     </>

@@ -3,7 +3,8 @@ import { Route, Routes } from 'react-router-dom'
 import { RLayout } from './components/commons/KLayout'
 import './global.css'
 import { AuthorizedPage } from './pages/authorized/AuthorizedPage'
-import { ConsultationPage } from './pages/consultations/ConsultationsPage'
+import { ConsultationDetailsPage } from './pages/consultations/ConsultationDetailsPage'
+import { ConsultationsPage } from './pages/consultations/ConsultationsPage'
 import { ErrorPage } from './pages/error/ErrorPage'
 import { EditGroupPage } from './pages/groups/EditGroupPage'
 import { GroupDetailsPage } from './pages/groups/GroupDetailsPage'
@@ -26,7 +27,10 @@ export const App = () => {
               <Route index element={<UserPage />} />
             </Route>
           </Route>
-          <Route path="consultations" element={<ConsultationPage />} />
+          <Route path="consultations">
+            <Route path=":id" element={<ConsultationDetailsPage />} />
+            <Route index element={<ConsultationsPage />} />
+          </Route>
           <Route path="groups">
             <Route path=":groupId">
               <Route path="edit" element={<EditGroupPage />} />

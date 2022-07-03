@@ -1,6 +1,3 @@
-import { ConsultationModel } from './consultation.model'
-import { ConsultationRequestModel } from './consultationrequest.model'
-
 export enum Major {
   CE_BSC,
   EE_BSC,
@@ -16,6 +13,4 @@ export interface SubjectModel {
   code: String
   name: String
   majors: Major[]
-  consultations: ConsultationModel[]
-  requests: ConsultationRequestModel[]
 }
