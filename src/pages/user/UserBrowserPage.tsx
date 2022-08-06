@@ -1,6 +1,7 @@
 import { ChevronDownIcon, CloseIcon, SearchIcon } from '@chakra-ui/icons'
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Flex,
@@ -23,6 +24,17 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { UserModel } from '../../api/model/user.model'
 
+const currentUser: UserPreview = {
+  id: 1,
+  authSchId: 'abc2',
+  firstName: 'János',
+  lastName: 'Kovács',
+  email: 'elek@example.com',
+  presentations: 0,
+  avarageRating: 0,
+  attendances: 7
+}
+
 type UserPreview = UserModel & {
   presentations: number
   avarageRating: number
@@ -40,16 +52,7 @@ const MockUsers: UserPreview[] = [
     avarageRating: 4.5,
     attendances: 0
   },
-  {
-    id: 1,
-    authSchId: 'abc2',
-    firstName: 'János',
-    lastName: 'Kovács',
-    email: 'elek@example.com',
-    presentations: 0,
-    avarageRating: 0,
-    attendances: 7
-  },
+  currentUser,
   {
     id: 2,
     authSchId: 'abc',
@@ -148,6 +151,11 @@ export const UserBrowserPage = () => {
                     <Heading ml={5} size="md">
                       {fullName(user)}
                     </Heading>
+                    {user.id === currentUser.id && (
+                      <Badge colorScheme="brand" ml={2}>
+                        Te
+                      </Badge>
+                    )}
                   </Flex>
                 </Td>
 
