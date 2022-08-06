@@ -1,8 +1,8 @@
-import { GroupModel, GroupRoles } from '../../api/model/group.model'
+import { GroupModel } from '../../api/model/group.model'
 import { UserModel } from '../../api/model/user.model'
 
 export const testGroups: GroupModel[] = [
-  {
+  /*{
     id: 1,
     name: 'Legjobb csoport',
     owner: {
@@ -140,7 +140,7 @@ export const testGroups: GroupModel[] = [
     ],
     createdAt: new Date('2022-05-15'),
     consultations: []
-  }
+  }*/
 ]
 
 export const currentUser: UserModel = {
@@ -148,7 +148,7 @@ export const currentUser: UserModel = {
   authSchId: 'asdf',
   firstName: 'Jakab',
   lastName: 'Gipsz',
-  email: 'info@gipszjakab.io',
-  ownedConsultations: [],
-  ratings: []
+  email: 'info@gipszjakab.io'
+  //ownedConsultations: [],
+  //ratings: []
 }

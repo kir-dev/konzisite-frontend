@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { GroupModel } from '../../api/model/group.model'
 import { GroupList } from './components/GroupList'
-import { currentUser, testGroups } from './demoData'
+import { testGroups } from './demoData'
 
 export const GroupsPage = () => {
   const [groups, setGroups] = useState<GroupModel[]>([])
@@ -19,8 +19,8 @@ export const GroupsPage = () => {
   }, [])
 
   useEffect(() => {
-    setOwnedGroups(groups.filter((g) => g.owner.id === currentUser.id))
-    setJoinedGroups(groups.filter((g) => g.members.some((m) => m.id === currentUser.id)))
+    /*setOwnedGroups(groups.filter((g) => g.owner.id === currentUser.id))
+    setJoinedGroups(groups.filter((g) => g.members.some((m) => m.id === currentUser.id)))*/
   }, [groups])
 
   return (
