@@ -13,6 +13,7 @@ import { IndexPage } from './pages/index/IndexPage'
 import { LoginPage } from './pages/login/LoginPage'
 import { LogoutPage } from './pages/logout/LogoutPage'
 import { ProfilePage } from './pages/user/ProfilePage'
+import { UserBrowserPage } from './pages/user/UserBrowserPage'
 import { UserPage } from './pages/user/UserPage'
 
 export const App = () => {
@@ -26,6 +27,7 @@ export const App = () => {
             <Route path=":userId">
               <Route index element={<UserPage />} />
             </Route>
+            <Route index element={<UserBrowserPage />} />
           </Route>
           <Route path="consultations">
             <Route path=":id" element={<ConsultationDetailsPage />} />

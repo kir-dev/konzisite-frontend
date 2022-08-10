@@ -1,29 +1,10 @@
-import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Checkbox,
-  Flex,
-  Heading,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Skeleton,
-  SkeletonCircle,
-  Stack,
-  Text,
-  VStack
-} from '@chakra-ui/react'
+import { Box, Button, Checkbox, Heading, HStack, Skeleton, SkeletonCircle, Stack, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { FaChevronDown, FaUserCheck, FaUserGraduate, FaUserInjured, FaUserSlash, FaUserTimes } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
-import { GroupModel, GroupRoles } from '../../api/model/group.model'
+import { GroupModel } from '../../api/model/group.model'
 import { UserModel } from '../../api/model/user.model'
 import { ErrorPage } from '../error/ErrorPage'
-import { currentUser, testGroups } from './demoData'
+import { testGroups } from './demoData'
 
 export const GroupDetailsPage = () => {
   const [loading, setLoading] = useState(true)
@@ -44,11 +25,11 @@ export const GroupDetailsPage = () => {
 
   useEffect(() => {
     if (group) {
-      const groupMember = group.members.find((m) => m.id === currentUser.id)
+      /*const groupMember = group.members.find((m) => m.id === currentUser.id)
       setIsAdmin(groupMember?.role === GroupRoles.ADMIN)
       setIsOwner(group.owner.id === currentUser.id)
       setIsMember(groupMember?.role === GroupRoles.MEMBER)
-      setIsPending(groupMember?.role === GroupRoles.PENDING)
+      setIsPending(groupMember?.role === GroupRoles.PENDING)*/
     }
   }, [group])
 
@@ -153,7 +134,7 @@ export const GroupDetailsPage = () => {
             <Stack direction={['column', 'row']} justifyContent="space-between" mb={3}>
               <VStack alignItems="flex-start" spacing={3}>
                 <Heading size="lg">Létrehozva: {group.createdAt.toLocaleDateString()}</Heading>
-                <Heading size="lg">Szerepkör: {group.members.find((m) => m.id == currentUser.id)?.role}</Heading>
+                {/* {<Heading size="lg">Szerepkör: {group.members.find((m) => m.id == currentUser.id)?.role}</Heading>} */}
               </VStack>
               <VStack alignItems="stretch">
                 {isOwner ? (
@@ -182,14 +163,14 @@ export const GroupDetailsPage = () => {
             </Stack>
             <Stack direction={['column', 'row']} justifyContent="space-between" mb={3}>
               <Heading size="lg" mb={2}>
-                Tagok ({group.members.length})
+                {/* {Tagok ({group.members.length})} */}
               </Heading>
               <Checkbox size="lg" isChecked={displayOnlyPending} onChange={(e) => setDisplayOnlyPending(e.target.checked)}>
                 Csak függőben lévő
               </Checkbox>
             </Stack>
             <VStack alignItems="stretch">
-              {group.members
+              {/* {group.members
                 .filter((u) => u.role === GroupRoles.PENDING || !displayOnlyPending)
                 .map((u) => (
                   <Box key={u.id} shadow="md" borderRadius={8} borderWidth={1}>
@@ -255,7 +236,7 @@ export const GroupDetailsPage = () => {
                       )}
                     </Stack>
                   </Box>
-                ))}
+                ))} */}
             </VStack>
           </>
         )}

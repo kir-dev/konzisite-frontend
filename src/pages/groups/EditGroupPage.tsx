@@ -1,9 +1,8 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Skeleton, VStack } from '@chakra-ui/react'
+import { Skeleton, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { GroupModel } from '../../api/model/group.model'
-import { ErrorPage } from '../error/ErrorPage'
-import { currentUser, testGroups } from './demoData'
+import { testGroups } from './demoData'
 
 type Props = {
   newGroup?: boolean
@@ -48,7 +47,7 @@ export const EditGroupPage = ({ newGroup = false }: Props) => {
   else
     return (
       <>
-        {(group === undefined || group.owner.id !== currentUser.id) && !newGroup ? (
+        {/* {(group === undefined || group.owner.id !== currentUser.id) && !newGroup ? (
           group === undefined ? (
             <ErrorPage title="Nincs ilyen cspoort" messages={['A csoport amit keresel már nem létezik, vagy nem is létezett']} />
           ) : (
@@ -68,7 +67,7 @@ export const EditGroupPage = ({ newGroup = false }: Props) => {
               {newGroup ? 'Létrehozás' : 'Mentés'}
             </Button>
           </>
-        )}
+        )} */}
       </>
     )
 }

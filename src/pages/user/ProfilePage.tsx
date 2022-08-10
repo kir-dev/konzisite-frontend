@@ -1,11 +1,7 @@
-import { Heading, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react'
+import { useDisclosure } from '@chakra-ui/react'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
-import { UserModel } from '../../api/model/user.model'
-import { ProfileDetails } from './components/ProfileDetails'
-import { ProfileDetailsLoading } from './components/ProfileDetailsLoading'
-import { UploadImageModal } from './forms/UploadImageModal'
-
+/*
 const mockProfile: UserModel = {
   id: 1,
   authSchId: '123',
@@ -74,7 +70,7 @@ const mockProfile: UserModel = {
     }]
   ]
 }
-
+*/
 export const ProfilePage = () => {
   const { isLoggedIn, loggedInUser, loggedInUserError, loggedInUserLoading, onLogout } = useAuthContext()
   const { isOpen: isOpenProfileImageModal, onOpen: onChangeProfileImagePressed, onClose: onCloseProfileImageModal } = useDisclosure()
@@ -96,7 +92,7 @@ export const ProfilePage = () => {
       />
     )
   }
-
+  /*
   return (
     <>
       {loggedInUserLoading ? (
@@ -138,5 +134,6 @@ export const ProfilePage = () => {
         </>
       )}
     </>
-  )
+  )*/
+  return null
 }

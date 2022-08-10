@@ -1,7 +1,6 @@
-import { Avatar, Box, Button, Heading, HStack, Skeleton, SkeletonCircle, Stack, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Box, Heading, HStack, Skeleton, SkeletonCircle, Stack, Text, VStack } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { GroupModel } from '../../../api/model/group.model'
-import { currentUser } from '../demoData'
 
 type Props = {
   title: string
@@ -66,19 +65,19 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
                       <Heading size="md">{g.name}</Heading>
                       {showOwner && (
                         <Heading size="md" textAlign="right">
-                          Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : `${g.owner.lastName} ${g.owner.firstName}`}
+                          {/* Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : `${g.owner.lastName} ${g.owner.firstName}`} */}
                         </Heading>
                       )}
                     </HStack>
                     <HStack justifyContent="space-between" width="100%">
-                      <Text>{g.members.length} tag</Text>
+                      {/* <Text>{g.members.length} tag</Text> */}
                       <Text textAlign="right">Létrehozva: {g.createdAt.toLocaleDateString()}</Text>
                     </HStack>
                   </VStack>
                 </HStack>
                 {showJoinButton && (
                   <VStack p={2} justifyContent="center">
-                    {g.members.some((m) => m.id === currentUser.id) ? (
+                    {/* {g.members.some((m) => m.id === currentUser.id) ? (
                       <>
                         <Button colorScheme="brand" disabled={true} width="100%">
                           Csatlakozás
@@ -89,7 +88,7 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
                       <Button colorScheme="brand" onClick={joinGroup(g)} width="100%">
                         Csatlakozás
                       </Button>
-                    )}
+                    )} */}
                   </VStack>
                 )}
               </Stack>
