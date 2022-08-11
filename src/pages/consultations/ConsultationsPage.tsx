@@ -5,57 +5,6 @@ import { ConsultationModel } from '../../api/model/consultation.model'
 import { Major, SubjectModel } from '../../api/model/subject.model'
 import { UserModel } from '../../api/model/user.model'
 
-/*const konziTomb: ConsultationModel[] = [
-  {
-    id: 1,
-    location: '1317 tanuló',
-    startDate: new Date(),
-    endDate: new Date(),
-    descMarkdown: 'nagyon érdekes konzi',
-    owner: {
-      id: 1,
-      authSchId: 'abc',
-      firstName: 'Elek',
-      lastName: 'Teszt',
-      email: 'abc@cba.com',
-      ratings: [],
-      ownedConsultations: []
-    }
-  },
-  {
-    id: 2,
-    location: '517 tanuló',
-    startDate: new Date(),
-    endDate: new Date(),
-    descMarkdown: 'nagyon érdekes konzi2',
-    owner: {
-      id: 1,
-      authSchId: 'abc',
-      firstName: 'Elek',
-      lastName: 'Teszt',
-      email: 'abc@cba.com',
-      ratings: [],
-      ownedConsultations: []
-    }
-  },
-  {
-    id: 3,
-    location: 'IB028',
-    startDate: new Date(),
-    endDate: new Date(),
-    descMarkdown: 'nagyon érdekes konzi3',
-    owner: {
-      id: 1,
-      authSchId: 'abc',
-      firstName: 'Elek',
-      lastName: 'Teszt',
-      email: 'abc@cba.com',
-      ratings: [],
-      ownedConsultations: []
-    }
-  }
-]*/
-
 type ConsultationPreview = ConsultationModel & { subject: SubjectModel; presenters: UserModel[] }
 
 const konzik: ConsultationPreview[] = [
@@ -84,9 +33,9 @@ const konzik: ConsultationPreview[] = [
 ]
 
 export const ConsultationsPage = () => {
-  const [consultaions, setConsultations] = useState<ConsultationPreview[]>([])
+  const [consultaions, setConsultations] = useState<ConsultationPreview[]>(konzik)
   useEffect(() => {
-    //setConsultations(axios.get<ConsultaionModel[]>("/consultaions"))
+    //setConsultations(axios.get<ConsultationPreview[]>("/consultaions"))
   }, [])
 
   return (
@@ -94,7 +43,7 @@ export const ConsultationsPage = () => {
       <Button as={Link} to="/consultations/new" colorScheme="brand">
         Új konzultáció
       </Button>
-      {konzik.map((c) => (
+      {consultaions.map((c) => (
         <HStack key={c.id}>
           <Heading>{c.descMarkdown}</Heading>
           <Text>

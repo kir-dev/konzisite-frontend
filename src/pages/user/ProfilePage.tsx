@@ -1,29 +1,75 @@
-import { useDisclosure } from '@chakra-ui/react'
+import { Heading, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
-/*
-const mockProfile: UserModel = {
+import { ConsultationModel } from '../../api/model/consultation.model'
+import { ConsultationRequestModel } from '../../api/model/consultationrequest.model'
+import { RatingModel } from '../../api/model/rating.model'
+import { Major, SubjectModel } from '../../api/model/subject.model'
+import { UserModel } from '../../api/model/user.model'
+import { ConsultationListItem } from './components/ConsultationListItem'
+import { ProfileDetails } from './components/ProfileDetails'
+import { ProfileDetailsLoading } from './components/ProfileDetailsLoading'
+import { UploadImageModal } from './forms/UploadImageModal'
+
+type UserDetails = UserModel & {
+  presentations: (ConsultationModel & {
+    subject: SubjectModel
+    ratings: (RatingModel & { rater: UserModel })[]
+  })[]
+  participations: (ConsultationModel & {
+    subject: SubjectModel
+  })[]
+  consultaionRequests: (ConsultationRequestModel & {
+    subject: SubjectModel
+  })[]
+  avarageRating: number
+}
+
+const mockProfile: UserDetails = {
   id: 1,
   authSchId: '123',
   firstName: 'John',
   lastName: 'Appleseed',
   email: 'example@gmail.com',
-  ownedConsultations: [
+  presentations: [
     {
       id: 1,
       location: '1317 tanuló',
       startDate: new Date(),
       endDate: new Date(),
       descMarkdown: 'nagyon érdekes konzi',
-      owner: {
-        id: 1,
-        authSchId: 'abc',
-        firstName: 'Elek',
-        lastName: 'Teszt',
-        email: 'abc@cba.com',
-        presentations: [],
-        ownedConsultations: []
-      }
+      subject: {
+        id: 2,
+        code: 'VIAU34564',
+        name: 'bsz',
+        majors: [Major.CE_BSC]
+      },
+      ratings: [
+        {
+          id: 1,
+          value: 5,
+          text: 'Yeaaah, eleg jo volt',
+          rater: {
+            id: 1,
+            authSchId: 'abc',
+            firstName: 'Elek',
+            lastName: 'Teszt',
+            email: 'abc@cba.com'
+          }
+        },
+        {
+          id: 2,
+          value: 5,
+          text: 'Yeaaah, eleg jo volt szerintem is',
+          rater: {
+            id: 2,
+            authSchId: 'abc',
+            firstName: 'Elek2',
+            lastName: 'Teszt',
+            email: 'abc@cba.com'
+          }
+        }
+      ]
     },
     {
       id: 2,
@@ -31,52 +77,53 @@ const mockProfile: UserModel = {
       startDate: new Date(),
       endDate: new Date(),
       descMarkdown: 'kicsit érdekes konzi',
-      owner: {
-        id: 1,
-        authSchId: 'abc',
-        firstName: 'Elek',
-        lastName: 'Teszt',
-        email: 'abc@cba.com',
-        presentations: [],
-        ownedConsultations: []
+      subject: {
+        id: 2,
+        code: 'VIAU34564',
+        name: 'grafika',
+        majors: [Major.CE_BSC]
+      },
+      ratings: [
+        {
+          id: 3,
+          value: 3,
+          text: 'Eleg uncsi volt ://',
+          rater: {
+            id: 3,
+            authSchId: 'abc',
+            firstName: 'Elek3',
+            lastName: 'Teszt',
+            email: 'abc@cba.com'
+          }
+        }
+      ]
+    }
+  ],
+  participations: [
+    {
+      id: 4,
+      location: '1317 tanuló',
+      startDate: new Date(),
+      endDate: new Date(),
+      descMarkdown: 'másik nagyon érdekes konzi',
+      subject: {
+        id: 2,
+        code: 'VIAU34564',
+        name: 'adatb',
+        majors: [Major.CE_BSC]
       }
     }
   ],
-  presentations: [
-    ratings: [{
-      id: 1,
-      value: 5,
-      text: 'Yeaaah, eleg jo volt',
-      participation:  {
-
-      },
-      presentation: {
-
-      }
-    },
-    {
-      id: 2,
-      value: 5,
-      text: 'Yeaaah, eleg jo volt szerintem is',
-      participationId: 1,
-      presentationId: 1
-    },
-    {
-      id: 3,
-      value: 3,
-      text: 'Eleg uncsi volt ://',
-      participationId: 1,
-      presentationId: 1
-    }]
-  ]
+  consultaionRequests: [],
+  avarageRating: 4.2
 }
-*/
+
 export const ProfilePage = () => {
   const { isLoggedIn, loggedInUser, loggedInUserError, loggedInUserLoading, onLogout } = useAuthContext()
   const { isOpen: isOpenProfileImageModal, onOpen: onChangeProfileImagePressed, onClose: onCloseProfileImageModal } = useDisclosure()
 
   if (!isLoggedIn) {
-    return <Navigate replace to="/error" state={{ title: 'You are not logged in yet!', messages: [] }} />
+    return <Navigate replace to="/error" state={{ title: 'Nem vagy bejelentkezve!', messages: [] }} />
   }
 
   if (loggedInUserError) {
@@ -86,13 +133,13 @@ export const ProfilePage = () => {
         replace
         to="/error"
         state={{
-          title: 'You are not logged in yet!',
+          title: 'Nem vagy bejelentkezve!',
           messages: [err?.response.data.message || err.message]
         }}
       />
     )
   }
-  /*
+
   return (
     <>
       {loggedInUserLoading ? (
@@ -105,35 +152,28 @@ export const ProfilePage = () => {
           <UploadImageModal isOpen={isOpenProfileImageModal} onClose={onCloseProfileImageModal} />
 
           <VStack>
-            {mockProfile.ratings && (
-              <Heading>
-                Overall Rating: {(mockProfile.ratings?.reduce((a, b) => a + b.value, 0) / mockProfile.ratings?.length).toFixed(2)}
-              </Heading>
-            )}
+            <Heading>Átlagos értékelés: {mockProfile.avarageRating}</Heading>
 
-            {mockProfile.ratings?.map((r) => (
-              <HStack key={r.id}>
-                <Text>Random user: </Text>
-                <Text>{r.value}, </Text>
-                <Text>{r.text}</Text>
-              </HStack>
+            {mockProfile.presentations.map((p) =>
+              p.ratings?.map((r) => (
+                <HStack key={r.id}>
+                  <Text>{r.rater.lastName + ' ' + r.rater.firstName} </Text>
+                  <Text>{r.value}, </Text>
+                  <Text>{r.text}</Text>
+                </HStack>
+              ))
+            )}
+            <Heading>Tartott konzultációk</Heading>
+            {mockProfile.presentations?.map((c) => (
+              <ConsultationListItem c={c} />
             ))}
-            <Heading>Owned Consultations: </Heading>
-            {mockProfile.ownedConsultations?.map((c) => (
-              <HStack key={c.id}>
-                <Text>{c.descMarkdown}</Text>
-                <Text>
-                  {c.startDate.toDateString()}-{c.endDate.toDateString()}
-                </Text>
-                <Text>
-                  {c.owner.lastName} {c.owner.firstName}
-                </Text>
-              </HStack>
+            <Heading>Konzik, amin részt vett</Heading>
+            {mockProfile.participations?.map((c) => (
+              <ConsultationListItem c={c} />
             ))}
           </VStack>
         </>
       )}
     </>
-  )*/
-  return null
+  )
 }
