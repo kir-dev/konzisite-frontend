@@ -47,9 +47,7 @@ export const App = () => {
           <Route path="error" element={<ErrorPage />} />
           <Route
             path="*"
-            element={
-              <ErrorPage title="Page not found" messages={['Oops, it looks like you want to visit a page that is not found anymore!']} />
-            }
+            element={<ErrorPage title="Az oldal nem található" messages={['Hupsz, olyan oldalra kerültél, ami nem létezik!']} />}
           />
         </Route>
       </Routes>
