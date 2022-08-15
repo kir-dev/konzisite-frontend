@@ -1,8 +1,10 @@
-import { Skeleton, VStack } from '@chakra-ui/react'
+import { Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Skeleton, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { GroupModel } from '../../api/model/group.model'
-import { testGroups } from './demoData'
+import { GroupRoles } from '../../api/model/group.model'
+import { ErrorPage } from '../error/ErrorPage'
+import { testGroupsDetails } from './demoData'
+import { GroupDetails } from './types/groupDetails'
 
 type Props = {
   newGroup?: boolean
@@ -11,14 +13,14 @@ type Props = {
 export const EditGroupPage = ({ newGroup = false }: Props) => {
   const [loading, setLoading] = useState(!newGroup)
   const [name, setName] = useState('')
-  const [group, setGroup] = useState<GroupModel | undefined>(undefined)
+  const [group, setGroup] = useState<GroupDetails | undefined>(undefined)
   const groupId = parseInt(useParams<{ groupId: string }>().groupId ?? '-1')
 
   const error = name == ''
 
   useEffect(() => {
     setTimeout(() => {
-      const g = testGroups.find((g) => g.id === groupId)
+      const g = testGroupsDetails.find((g) => g.id === groupId)
       setGroup(g)
       setName(g?.name ?? '')
       setLoading(false)
@@ -47,11 +49,11 @@ export const EditGroupPage = ({ newGroup = false }: Props) => {
   else
     return (
       <>
-        {/* {(group === undefined || group.owner.id !== currentUser.id) && !newGroup ? (
+        {(group === undefined || group.role !== GroupRoles.OWNER) && !newGroup ? (
           group === undefined ? (
             <ErrorPage title="Nincs ilyen cspoort" messages={['A csoport amit keresel már nem létezik, vagy nem is létezett']} />
           ) : (
-            <ErrorPage title="Nincs jogod" messages={['A csoportot csak a tulajdonosa szerkeszthezi']} />
+            <ErrorPage title="Nincs jogod" messages={['A csoportot csak a tulajdonosa szerkesztheti']} />
           )
         ) : (
           <>
@@ -67,7 +69,7 @@ export const EditGroupPage = ({ newGroup = false }: Props) => {
               {newGroup ? 'Létrehozás' : 'Mentés'}
             </Button>
           </>
-        )} */}
+        )}
       </>
     )
 }

@@ -7,5 +7,7 @@ export interface GroupModel {
 export enum GroupRoles {
   PENDING = 'Függőben',
   MEMBER = 'Tag',
-  ADMIN = 'Admin'
+  ADMIN = 'Admin',
+  OWNER = 'Tulajdonos',
+  NONE = 'Nincs'
 }

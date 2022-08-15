@@ -1,10 +1,12 @@
-import { Avatar, Box, Heading, HStack, Skeleton, SkeletonCircle, Stack, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Box, Button, Heading, HStack, Skeleton, SkeletonCircle, Stack, Text, VStack } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
-import { GroupModel } from '../../../api/model/group.model'
+import { GroupModel, GroupRoles } from '../../../api/model/group.model'
+import { currentUser } from '../demoData'
+import { GroupPreview } from '../types/groupPreview'
 
 type Props = {
   title: string
-  groups: GroupModel[]
+  groups: GroupPreview[]
   showOwner?: boolean
   showJoinButton?: boolean
   loading?: boolean
@@ -16,6 +18,13 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
       alert(`join group ${group.id}`)
     }
   }
+
+  const leaveGroup = (group: GroupModel) => {
+    return () => {
+      alert(`leave group ${group.id}`)
+    }
+  }
+
   if (loading)
     return (
       <>
@@ -65,30 +74,28 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
                       <Heading size="md">{g.name}</Heading>
                       {showOwner && (
                         <Heading size="md" textAlign="right">
-                          {/* Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : `${g.owner.lastName} ${g.owner.firstName}`} */}
+                          Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : `${g.owner.lastName} ${g.owner.firstName}`}
                         </Heading>
                       )}
                     </HStack>
                     <HStack justifyContent="space-between" width="100%">
-                      {/* <Text>{g.members.length} tag</Text> */}
+                      <Text>{g.memberCount} tag</Text>
                       <Text textAlign="right">Létrehozva: {g.createdAt.toLocaleDateString()}</Text>
                     </HStack>
                   </VStack>
                 </HStack>
-                {showJoinButton && (
+                {showJoinButton && (g.role == GroupRoles.PENDING || g.role == GroupRoles.NONE) && (
                   <VStack p={2} justifyContent="center">
-                    {/* {g.members.some((m) => m.id === currentUser.id) ? (
-                      <>
-                        <Button colorScheme="brand" disabled={true} width="100%">
-                          Csatlakozás
-                        </Button>
-                        <Text>Már csatlakoztál</Text>
-                      </>
-                    ) : (
+                    {g.role == GroupRoles.PENDING && (
+                      <Button colorScheme="red" onClick={leaveGroup(g)} width="100%">
+                        Kérelem visszavonása
+                      </Button>
+                    )}
+                    {g.role == GroupRoles.NONE && (
                       <Button colorScheme="brand" onClick={joinGroup(g)} width="100%">
                         Csatlakozás
                       </Button>
-                    )} */}
+                    )}
                   </VStack>
                 )}
               </Stack>
