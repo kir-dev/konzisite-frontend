@@ -49,7 +49,7 @@ export const EditGroupPage = ({ newGroup = false }: Props) => {
   else
     return (
       <>
-        {(group === undefined || group.role !== GroupRoles.OWNER) && !newGroup ? (
+        {(group === undefined || group.currentUserRole !== GroupRoles.OWNER) && !newGroup ? (
           group === undefined ? (
             <ErrorPage title="Nincs ilyen cspoort" messages={['A csoport amit keresel már nem létezik, vagy nem is létezett']} />
           ) : (

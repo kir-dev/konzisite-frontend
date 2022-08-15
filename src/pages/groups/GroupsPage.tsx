@@ -19,7 +19,7 @@ export const GroupsPage = () => {
   }, [])
 
   useEffect(() => {
-    setJoinedGroups(groups.filter((g) => g.role != GroupRoles.NONE))
+    setJoinedGroups(groups.filter((g) => g.currentUserRole != GroupRoles.NONE))
   }, [groups])
 
   return (

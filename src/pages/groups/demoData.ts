@@ -25,7 +25,7 @@ export const testGroupsDetails: GroupDetails[] = [
         role: GroupRoles.MEMBER
       }
     ],
-    role: GroupRoles.NONE,
+    currentUserRole: GroupRoles.NONE,
     createdAt: new Date('2021-01-01')
   },
   {
@@ -67,7 +67,7 @@ export const testGroupsDetails: GroupDetails[] = [
         role: GroupRoles.ADMIN
       }
     ],
-    role: GroupRoles.ADMIN,
+    currentUserRole: GroupRoles.ADMIN,
     createdAt: new Date('2021-05-29')
   },
   {
@@ -118,7 +118,7 @@ export const testGroupsDetails: GroupDetails[] = [
         role: GroupRoles.ADMIN
       }
     ],
-    role: GroupRoles.OWNER,
+    currentUserRole: GroupRoles.OWNER,
     createdAt: new Date('2022-05-15')
   },
   {
@@ -169,7 +169,7 @@ export const testGroupsDetails: GroupDetails[] = [
         role: GroupRoles.ADMIN
       }
     ],
-    role: GroupRoles.PENDING,
+    currentUserRole: GroupRoles.PENDING,
     createdAt: new Date('2022-08-15')
   }
 ]
@@ -186,7 +186,7 @@ export const testGroupsPreview: GroupPreview[] = [
       email: 'elek@example.com'
     },
     memberCount: 1,
-    role: GroupRoles.NONE,
+    currentUserRole: GroupRoles.NONE,
     createdAt: new Date('2021-01-01')
   },
   {
@@ -200,7 +200,7 @@ export const testGroupsPreview: GroupPreview[] = [
       email: 'pistike@gmail.com'
     },
     memberCount: 3,
-    role: GroupRoles.ADMIN,
+    currentUserRole: GroupRoles.ADMIN,
     createdAt: new Date('2021-05-29')
   },
   {
@@ -214,7 +214,7 @@ export const testGroupsPreview: GroupPreview[] = [
       email: 'info@gipszjakab.io'
     },
     memberCount: 4,
-    role: GroupRoles.OWNER,
+    currentUserRole: GroupRoles.OWNER,
     createdAt: new Date('2022-05-15')
   },
   {
@@ -228,7 +228,7 @@ export const testGroupsPreview: GroupPreview[] = [
       email: 'elek@example.com'
     },
     memberCount: 4,
-    role: GroupRoles.PENDING,
+    currentUserRole: GroupRoles.PENDING,
     createdAt: new Date('2022-08-15')
   }
 ]

@@ -84,14 +84,14 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
                     </HStack>
                   </VStack>
                 </HStack>
-                {showJoinButton && (g.role == GroupRoles.PENDING || g.role == GroupRoles.NONE) && (
+                {showJoinButton && (g.currentUserRole == GroupRoles.PENDING || g.currentUserRole == GroupRoles.NONE) && (
                   <VStack p={2} justifyContent="center">
-                    {g.role == GroupRoles.PENDING && (
+                    {g.currentUserRole == GroupRoles.PENDING && (
                       <Button colorScheme="red" onClick={leaveGroup(g)} width="100%">
                         Kérelem visszavonása
                       </Button>
                     )}
-                    {g.role == GroupRoles.NONE && (
+                    {g.currentUserRole == GroupRoles.NONE && (
                       <Button colorScheme="brand" onClick={joinGroup(g)} width="100%">
                         Csatlakozás
                       </Button>

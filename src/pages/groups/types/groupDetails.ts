@@ -7,5 +7,5 @@ export type GroupDetails = GroupModel & {
     role: GroupRoles
   })[]
   owner: UserModel
-  role: GroupRoles
+  currentUserRole: GroupRoles
 }

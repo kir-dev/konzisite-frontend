@@ -23,6 +23,7 @@ import { Link, useParams } from 'react-router-dom'
 import { GroupRoles } from '../../api/model/group.model'
 import { UserModel } from '../../api/model/user.model'
 import { ErrorPage } from '../error/ErrorPage'
+import { GroupOptionsButton } from './components/GroupOptionsButton'
 import { currentUser, testGroupsDetails } from './demoData'
 import { GroupDetails } from './types/groupDetails'
 
@@ -38,18 +39,6 @@ export const GroupDetailsPage = () => {
       setLoading(false)
     }, 1000)
   }, [])
-
-  const deleteGroup = () => {
-    alert(`delete group ${group?.id}`)
-  }
-
-  const joinGroup = () => {
-    alert(`join group ${group?.id}`)
-  }
-
-  const leaveGroup = () => {
-    alert(`leave group ${group?.id}`)
-  }
 
   const acceptUser = (user: UserModel) => {
     return () => {
@@ -78,41 +67,6 @@ export const GroupDetailsPage = () => {
   const removeUser = (user: UserModel) => {
     return () => {
       alert(`remove user ${user.id} in group ${group?.id}`)
-    }
-  }
-
-  const groupOptions = (group: GroupDetails) => {
-    switch (group.role) {
-      case GroupRoles.OWNER:
-        return (
-          <>
-            <Button as={Link} to={`/groups/${group.id}/edit`} colorScheme="brand">
-              Szerkesztés
-            </Button>
-            <Button colorScheme="red" onClick={deleteGroup}>
-              Törlés
-            </Button>
-          </>
-        )
-      case GroupRoles.ADMIN:
-      case GroupRoles.MEMBER:
-        return (
-          <Button colorScheme="red" onClick={leaveGroup}>
-            Kilépés
-          </Button>
-        )
-      case GroupRoles.PENDING:
-        return (
-          <Button colorScheme="brand" onClick={leaveGroup}>
-            Kérelem visszavonása
-          </Button>
-        )
-      default:
-        return (
-          <Button colorScheme="brand" onClick={joinGroup}>
-            Csatlakozás
-          </Button>
-        )
     }
   }
 
@@ -175,9 +129,11 @@ export const GroupDetailsPage = () => {
             <Stack direction={['column', 'row']} justifyContent="space-between" mb={3}>
               <VStack alignItems="flex-start" spacing={3}>
                 <Heading size="lg">Létrehozva: {group.createdAt.toLocaleDateString()}</Heading>
-                {<Heading size="lg">Szerepkör: {group.role}</Heading>}
+                {<Heading size="lg">Szerepkör: {group.currentUserRole}</Heading>}
               </VStack>
-              <VStack alignItems="stretch">{groupOptions(group)}</VStack>
+              <VStack alignItems="stretch">
+                <GroupOptionsButton group={group} />
+              </VStack>
             </Stack>
             <Stack direction={['column', 'row']} justifyContent="space-between" mb={3}>
               <Heading size="lg" mb={2}>
@@ -215,7 +171,7 @@ export const GroupDetailsPage = () => {
                           </HStack>
                         </VStack>
                       </HStack>
-                      {(group.role == GroupRoles.ADMIN || group.role == GroupRoles.OWNER) &&
+                      {(group.currentUserRole == GroupRoles.ADMIN || group.currentUserRole == GroupRoles.OWNER) &&
                         u.id !== group.owner.id &&
                         u.id !== currentUser.id && (
                           <Flex alignItems="center" p={2}>
@@ -235,14 +191,14 @@ export const GroupDetailsPage = () => {
                                   </>
                                 ) : (
                                   <>
-                                    {group.role == GroupRoles.OWNER &&
+                                    {group.currentUserRole == GroupRoles.OWNER &&
                                       (u.role === GroupRoles.ADMIN ? (
                                         <MenuItem color="red" icon={<FaUserInjured />} onClick={demoteUser(u)}>
-                                          Demote
+                                          Lefokozás
                                         </MenuItem>
                                       ) : (
                                         <MenuItem color="green" icon={<FaUserGraduate />} onClick={promoteUser(u)}>
-                                          Promote
+                                          Előléptetés
                                         </MenuItem>
                                       ))}
                                     <MenuItem color="red" icon={<FaUserSlash />} onClick={removeUser(u)}>
