@@ -1,26 +1,25 @@
 import { Button, Heading } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { GroupModel } from '../../api/model/group.model'
+import { GroupRoles } from '../../api/model/group.model'
 import { GroupList } from './components/GroupList'
-import { testGroups } from './demoData'
+import { testGroupsPreview } from './demoData'
+import { GroupPreview } from './types/groupPreview'
 
 export const GroupsPage = () => {
-  const [groups, setGroups] = useState<GroupModel[]>([])
-  const [ownedGroups, setOwnedGroups] = useState<GroupModel[]>([])
-  const [joinedGroups, setJoinedGroups] = useState<GroupModel[]>([])
+  const [groups, setGroups] = useState<GroupPreview[]>([])
+  const [joinedGroups, setJoinedGroups] = useState<GroupPreview[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setTimeout(() => {
-      setGroups(testGroups)
+      setGroups(testGroupsPreview)
       setLoading(false)
     }, 1000)
   }, [])
 
   useEffect(() => {
-    /*setOwnedGroups(groups.filter((g) => g.owner.id === currentUser.id))
-    setJoinedGroups(groups.filter((g) => g.members.some((m) => m.id === currentUser.id)))*/
+    setJoinedGroups(groups.filter((g) => g.currentUserRole != GroupRoles.NONE))
   }, [groups])
 
   return (
@@ -31,9 +30,8 @@ export const GroupsPage = () => {
       <Button as={Link} to="/groups/new" colorScheme="brand">
         Új csoport létrehozása
       </Button>
-      <GroupList groups={ownedGroups} title="Saját csoportok" showOwner={false} loading={loading} />
-      <GroupList groups={joinedGroups} title="Saját csoportok 2.0?" showOwner={true} loading={loading} />
-      <GroupList groups={groups} title="∀ csoport" showJoinButton={true} loading={loading} />
+      <GroupList groups={joinedGroups} title="Saját csoportok" showOwner={true} loading={loading} />
+      <GroupList groups={groups} title="Minden csoport" showJoinButton={true} loading={loading} />
     </>
   )
 }
