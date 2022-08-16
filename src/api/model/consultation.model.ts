@@ -3,5 +3,6 @@ export interface ConsultationModel {
   location: String
   startDate: Date
   endDate: Date
+  title: string
   descMarkdown: String
 }

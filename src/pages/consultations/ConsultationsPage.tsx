@@ -1,39 +1,10 @@
 import { Button, Heading, HStack, Text } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ConsultationModel } from '../../api/model/consultation.model'
-import { Major, SubjectModel } from '../../api/model/subject.model'
-import { UserModel } from '../../api/model/user.model'
-
-type ConsultationPreview = ConsultationModel & { subject: SubjectModel; presenters: UserModel[] }
-
-const konzik: ConsultationPreview[] = [
-  {
-    id: 1,
-    location: 'e',
-    startDate: new Date(),
-    endDate: new Date(),
-    descMarkdown: 'very nice',
-    subject: {
-      id: 2,
-      code: 'VIAU34564',
-      name: 'bsz',
-      majors: [Major.CE_BSC]
-    },
-    presenters: [
-      {
-        id: 1,
-        authSchId: 'abc',
-        firstName: 'Elek',
-        lastName: 'Teszt',
-        email: 'abc@cba.com'
-      }
-    ]
-  }
-]
+import { ConsultationPreview } from './types/consultationPreview'
 
 export const ConsultationsPage = () => {
-  const [consultaions, setConsultations] = useState<ConsultationPreview[]>(konzik)
+  const [consultaions, setConsultations] = useState<ConsultationPreview[]>([])
   useEffect(() => {
     //setConsultations(axios.get<ConsultationPreview[]>("/consultaions"))
   }, [])
@@ -49,7 +20,7 @@ export const ConsultationsPage = () => {
           <Text>
             {c.startDate.toDateString()}-{c.endDate.toDateString()}
           </Text>
-          {c.presenters.map((u) => (
+          {c.presentations.map((u) => (
             <Text key={u.id}>
               {u.lastName} {u.firstName}
             </Text>
