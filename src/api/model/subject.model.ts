@@ -10,7 +10,7 @@ export enum Major {
 
 export interface SubjectModel {
   id: number
-  code: String
-  name: String
+  code: string
+  name: string
   majors: Major[]
 }
