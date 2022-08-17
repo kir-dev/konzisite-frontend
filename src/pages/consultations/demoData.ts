@@ -109,11 +109,8 @@ export const testConsultationDetails: ConsultationDetails[] = [
     startDate: new Date('2021-11-12T16:00:00Z'),
     endDate: new Date('2021-11-12T18:00:00Z'),
     title: 'Prog 1 2. ZH felkészítés',
-    descMarkdown: `# Konzi anyaga
-    - anyag átnézése
-    - gyakorlati példák vizsgálata
-    - kérdések
-    Egyéb infók [itt](https://example.com/).`,
+    descMarkdown:
+      '## Konzi anyaga\n- anyag átnézése\n- gyakorlati példák vizsgálata\n- kérdések\n\nEgyéb infók [itt](https://example.com/).',
     subject: {
       id: 2,
       code: 'VIEEAA00',
@@ -175,11 +172,8 @@ export const testConsultationDetails: ConsultationDetails[] = [
     startDate: new Date('2022-02-12T16:00:00Z'),
     endDate: new Date('2022-02-12T18:00:00Z'),
     title: 'Prog 2 előadás összeofglaló',
-    descMarkdown: `# Konzi anyaga
-    - anyag átnézése
-    - gyakorlati példák vizsgálata
-    - kérdések
-    Egyéb infók [itt](https://wow.iit.bme.hu/~szebi/).`,
+    descMarkdown:
+      '## Konzi anyaga\n- anyag átnézése\n- gyakorlati példák vizsgálata\n- kérdések\n\nEgyéb infók [itt](https://example.com/).',
     subject: {
       id: 6,
       code: 'VIIIA114',

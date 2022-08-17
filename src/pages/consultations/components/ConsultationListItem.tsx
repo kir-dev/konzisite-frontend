@@ -16,7 +16,8 @@ export const ConsultationListItem = ({ consultation }: Props) => {
             <HStack justifyContent="space-between" width="100%">
               <Heading size="md">{consultation.title}</Heading>
               <Heading size="md" textAlign="right">
-                {consultation.startDate.toLocaleString()} - {consultation.endDate.toLocaleTimeString()}
+                {consultation.startDate.toLocaleString('hu-HU', { timeStyle: 'short', dateStyle: 'short' })} -{' '}
+                {consultation.endDate.toLocaleTimeString('hu-HU', { timeStyle: 'short' })}
               </Heading>
             </HStack>
             <HStack justifyContent="space-between" width="100%">

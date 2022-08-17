@@ -30,7 +30,7 @@ export const App = () => {
             <Route index element={<UserBrowserPage />} />
           </Route>
           <Route path="consultations">
-            <Route path=":id" element={<ConsultationDetailsPage />} />
+            <Route path=":consultationId" element={<ConsultationDetailsPage />} />
             <Route index element={<ConsultationsPage />} />
           </Route>
           <Route path="groups">
