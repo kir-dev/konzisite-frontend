@@ -14,7 +14,7 @@ export const ConsultationListItem = ({ consultation }: Props) => {
           <Avatar size="md" name={consultation.subject.name.toString()} src={''} />
           <VStack flexGrow={1}>
             <HStack justifyContent="space-between" width="100%">
-              <Heading size="md">{consultation.title}</Heading>
+              <Heading size="md">{consultation.name}</Heading>
               <Heading size="md" textAlign="right">
                 {consultation.startDate.toLocaleString('hu-HU', { timeStyle: 'short', dateStyle: 'short' })} -{' '}
                 {consultation.endDate.toLocaleTimeString('hu-HU', { timeStyle: 'short' })}

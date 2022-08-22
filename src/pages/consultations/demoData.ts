@@ -9,7 +9,7 @@ export const testConsultationPreview: ConsultationPreview[] = [
     location: '814',
     startDate: new Date('2021-11-12T16:00:00Z'),
     endDate: new Date('2021-11-12T18:00:00Z'),
-    title: 'Prog 1 2. ZH felkészítés',
+    name: 'Prog 1 2. ZH felkészítés',
     descMarkdown: `# Konzi anyaga
     - anyag átnézése
     - gyakorlati példák vizsgálata
@@ -37,7 +37,7 @@ export const testConsultationPreview: ConsultationPreview[] = [
     location: '1317',
     startDate: new Date('2022-02-12T16:00:00Z'),
     endDate: new Date('2022-02-12T18:00:00Z'),
-    title: 'Prog 2 előadás összeofglaló',
+    name: 'Prog 2 előadás összeofglaló',
     descMarkdown: `# Konzi anyaga
     - anyag átnézése
     - gyakorlati példák vizsgálata
@@ -73,7 +73,7 @@ export const testConsultationPreview: ConsultationPreview[] = [
     location: '817',
     startDate: new Date('2022-02-12T16:00:00Z'),
     endDate: new Date('2022-02-12T18:00:00Z'),
-    title: 'Digit vizsgára készülés',
+    name: 'Digit vizsgára készülés',
     descMarkdown: ``,
     subject: {
       id: 3,
@@ -108,7 +108,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
     location: '814',
     startDate: new Date('2021-11-12T16:00:00Z'),
     endDate: new Date('2021-11-12T18:00:00Z'),
-    title: 'Prog 1 2. ZH felkészítés',
+    name: 'Prog 1 2. ZH felkészítés',
     descMarkdown:
       '## Konzi anyaga\n- anyag átnézése\n- gyakorlati példák vizsgálata\n- kérdések\n\nEgyéb infók [itt](https://example.com/).',
     subject: {
@@ -171,7 +171,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
     location: '1317',
     startDate: new Date('2022-02-12T16:00:00Z'),
     endDate: new Date('2022-02-12T18:00:00Z'),
-    title: 'Prog 2 előadás összeofglaló',
+    name: 'Prog 2 előadás összeofglaló',
     descMarkdown:
       '## Konzi anyaga\n- anyag átnézése\n- gyakorlati példák vizsgálata\n- kérdések\n\nEgyéb infók [itt](https://example.com/).',
     subject: {
@@ -239,7 +239,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
     location: '817',
     startDate: new Date('2022-02-12T16:00:00Z'),
     endDate: new Date('2022-02-12T18:00:00Z'),
-    title: 'Digit vizsgára készülés',
+    name: 'Digit vizsgára készülés',
     descMarkdown: ``,
     subject: {
       id: 3,

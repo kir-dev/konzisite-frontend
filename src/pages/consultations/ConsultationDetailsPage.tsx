@@ -35,7 +35,7 @@ export const ConsultationDetailsPage = () => {
       ) : (
         <>
           <Heading textAlign="center" mb={3}>
-            {consultation.title}
+            {consultation.name}
           </Heading>
           <Heading size="md" as={Link} to={`/subjects/${consultation.subject.id}`} textAlign="center" mb={3}>
             {consultation.subject.name} ({consultation.subject.code})
