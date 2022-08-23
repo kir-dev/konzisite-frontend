@@ -1,6 +1,6 @@
-import { Major } from '../../api/model/subject.model'
+import { Major, SubjectModel } from '../../api/model/subject.model'
 import { UserModel } from '../../api/model/user.model'
-import { ConsultationDetails } from './types/consultationDetails'
+import { ConsultationDetails, Presentation } from './types/consultationDetails'
 import { ConsultationPreview } from './types/consultationPreview'
 
 export const testConsultationPreview: ConsultationPreview[] = [
@@ -284,3 +284,51 @@ export const currentUser: UserModel = {
   lastName: 'Gipsz',
   email: 'info@gipszjakab.io'
 }
+
+export const testSubjects: SubjectModel[] = [
+  {
+    id: 2,
+    code: 'VIEEAA00',
+    name: 'A programozás alapjai 1',
+    majors: [Major.CE_BSC]
+  },
+  {
+    id: 6,
+    code: 'VIIIA114',
+    name: 'A programozás alapjai 2',
+    majors: [Major.CE_BSC]
+  },
+  {
+    id: 3,
+    code: 'VIMIAA02',
+    name: 'Digitális technika',
+    majors: [Major.CE_BSC]
+  }
+]
+
+export const testPresenters: Presentation[] = [
+  {
+    id: 1,
+    authSchId: 'abc',
+    firstName: 'Elek',
+    lastName: 'Teszt',
+    email: 'abc@cba.com',
+    averageRating: 4.6
+  },
+  {
+    id: 2,
+    authSchId: 'ddd',
+    firstName: 'Jakab',
+    lastName: 'Gipsz',
+    email: 'hello@gmail.com',
+    averageRating: 4.2
+  },
+  {
+    id: 3,
+    authSchId: 'lll',
+    firstName: 'Pista',
+    lastName: 'Kis',
+    email: 'abc@cba.com',
+    averageRating: 5
+  }
+]

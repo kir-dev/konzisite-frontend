@@ -4,10 +4,12 @@ import { GroupModel } from '../../../api/model/group.model'
 import { SubjectModel } from '../../../api/model/subject.model'
 import { UserModel } from '../../../api/model/user.model'
 
+export type Presentation = UserModel & {
+  averageRating: number
+}
+
 export type ConsultationDetails = ConsultationModel & {
-  presentations: (UserModel & {
-    averageRating: number
-  })[]
+  presentations: Presentation[]
   participants: UserModel[]
   owner: UserModel
   targetGroups: GroupModel[]
