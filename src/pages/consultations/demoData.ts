@@ -124,7 +124,8 @@ export const testConsultationDetails: ConsultationDetails[] = [
         firstName: 'Elek',
         lastName: 'Teszt',
         email: 'abc@cba.com',
-        averageRating: 4.6
+        averageRating: 4.6,
+        ratedByCurrentUser: false
       }
     ],
     owner: {
@@ -187,7 +188,8 @@ export const testConsultationDetails: ConsultationDetails[] = [
         firstName: 'Elek',
         lastName: 'Teszt',
         email: 'abc@cba.com',
-        averageRating: 4.6
+        averageRating: 4.6,
+        ratedByCurrentUser: false
       },
       {
         id: 2,
@@ -195,7 +197,8 @@ export const testConsultationDetails: ConsultationDetails[] = [
         firstName: 'Jakab',
         lastName: 'Gipsz',
         email: 'hello@gmail.com',
-        averageRating: 4.2
+        averageRating: 4.2,
+        ratedByCurrentUser: false
       }
     ],
     owner: {
@@ -254,7 +257,13 @@ export const testConsultationDetails: ConsultationDetails[] = [
         firstName: 'Pista',
         lastName: 'Kis',
         email: 'abc@cba.com',
-        averageRating: 5
+        averageRating: 5,
+        ratedByCurrentUser: true,
+        rating: {
+          id: 1,
+          value: 5,
+          text: 'Mindent érthetően magyarázott el'
+        }
       },
       {
         id: 2,
@@ -262,7 +271,13 @@ export const testConsultationDetails: ConsultationDetails[] = [
         firstName: 'Jakab',
         lastName: 'Gipsz',
         email: 'hello@gmail.com',
-        averageRating: 4.2
+        averageRating: 4.2,
+        ratedByCurrentUser: true,
+        rating: {
+          id: 2,
+          value: 4,
+          text: 'Jó volt, de nem mindent értettem meg teljesen'
+        }
       }
     ],
     owner: {

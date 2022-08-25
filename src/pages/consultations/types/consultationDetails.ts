@@ -1,6 +1,7 @@
 import { ConsultationModel } from '../../../api/model/consultation.model'
 import { ConsultationRequestModel } from '../../../api/model/consultationrequest.model'
 import { GroupModel } from '../../../api/model/group.model'
+import { RatingModel } from '../../../api/model/rating.model'
 import { SubjectModel } from '../../../api/model/subject.model'
 import { UserModel } from '../../../api/model/user.model'
 
@@ -9,7 +10,10 @@ export type Presentation = UserModel & {
 }
 
 export type ConsultationDetails = ConsultationModel & {
-  presentations: Presentation[]
+  presentations: (Presentation & {
+    ratedByCurrentUser: boolean
+    rating?: RatingModel
+  })[]
   participants: UserModel[]
   owner: UserModel
   targetGroups: GroupModel[]

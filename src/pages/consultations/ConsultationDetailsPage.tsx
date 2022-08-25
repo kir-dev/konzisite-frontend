@@ -72,7 +72,7 @@ export const ConsultationDetailsPage = () => {
           <Heading size="lg" mb={2}>
             Konzitartók ({consultation.presentations.length})
           </Heading>
-          <UserList presentations={consultation.presentations} />
+          <UserList presentations={consultation.presentations} showRatingButton={consultation.endDate.getTime() < new Date().getTime()} />
           <TargetGroupList groups={consultation.targetGroups} />
           <Heading size="lg" mt={2} mb={2}>
             Résztvevők ({consultation.participants.length})
