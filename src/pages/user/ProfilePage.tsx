@@ -37,6 +37,7 @@ const mockProfile: UserDetails = {
       location: '1317 tanuló',
       startDate: new Date(),
       endDate: new Date(),
+      name: 'konzi',
       descMarkdown: 'nagyon érdekes konzi',
       subject: {
         id: 2,
@@ -76,6 +77,7 @@ const mockProfile: UserDetails = {
       location: '1317 tanuló',
       startDate: new Date(),
       endDate: new Date(),
+      name: 'még egy konzi',
       descMarkdown: 'kicsit érdekes konzi',
       subject: {
         id: 2,
@@ -105,6 +107,7 @@ const mockProfile: UserDetails = {
       location: '1317 tanuló',
       startDate: new Date(),
       endDate: new Date(),
+      name: 'ez nem is érdekes',
       descMarkdown: 'másik nagyon érdekes konzi',
       subject: {
         id: 2,

@@ -1,7 +1,8 @@
 export interface ConsultationModel {
   id: number
-  location: String
+  location: string
   startDate: Date
   endDate: Date
-  descMarkdown: String
+  name: string
+  descMarkdown: string
 }
