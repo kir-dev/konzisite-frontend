@@ -11,7 +11,6 @@ export type Presentation = UserModel & {
 
 export type ConsultationDetails = ConsultationModel & {
   presentations: (Presentation & {
-    ratedByCurrentUser: boolean
     rating?: RatingModel
   })[]
   participants: UserModel[]

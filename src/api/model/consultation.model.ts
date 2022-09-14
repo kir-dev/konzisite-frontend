@@ -5,4 +5,6 @@ export interface ConsultationModel {
   endDate: Date
   name: string
   descMarkdown: string
+  createdAt?: Date
+  updatedAt?: Date
 }

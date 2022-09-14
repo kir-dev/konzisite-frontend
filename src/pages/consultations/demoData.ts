@@ -124,8 +124,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
         firstName: 'Elek',
         lastName: 'Teszt',
         email: 'abc@cba.com',
-        averageRating: 4.6,
-        ratedByCurrentUser: false
+        averageRating: 4.6
       }
     ],
     owner: {
@@ -188,8 +187,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
         firstName: 'Elek',
         lastName: 'Teszt',
         email: 'abc@cba.com',
-        averageRating: 4.6,
-        ratedByCurrentUser: false
+        averageRating: 4.6
       },
       {
         id: 2,
@@ -197,8 +195,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
         firstName: 'Jakab',
         lastName: 'Gipsz',
         email: 'hello@gmail.com',
-        averageRating: 4.2,
-        ratedByCurrentUser: false
+        averageRating: 4.2
       }
     ],
     owner: {
@@ -258,7 +255,6 @@ export const testConsultationDetails: ConsultationDetails[] = [
         lastName: 'Kis',
         email: 'abc@cba.com',
         averageRating: 5,
-        ratedByCurrentUser: true,
         rating: {
           id: 1,
           value: 5,
@@ -272,7 +268,6 @@ export const testConsultationDetails: ConsultationDetails[] = [
         lastName: 'Gipsz',
         email: 'hello@gmail.com',
         averageRating: 4.2,
-        ratedByCurrentUser: true,
         rating: {
           id: 2,
           value: 4,
