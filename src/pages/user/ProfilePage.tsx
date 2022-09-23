@@ -1,29 +1,12 @@
 import { Heading, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
-import { ConsultationModel } from '../../api/model/consultation.model'
-import { ConsultationRequestModel } from '../../api/model/consultationrequest.model'
-import { RatingModel } from '../../api/model/rating.model'
-import { Major, SubjectModel } from '../../api/model/subject.model'
-import { UserModel } from '../../api/model/user.model'
+import { Major } from '../../api/model/subject.model'
 import { ConsultationListItem } from './components/ConsultationListItem'
 import { ProfileDetails } from './components/ProfileDetails'
 import { ProfileDetailsLoading } from './components/ProfileDetailsLoading'
 import { UploadImageModal } from './forms/UploadImageModal'
-
-type UserDetails = UserModel & {
-  presentations: (ConsultationModel & {
-    subject: SubjectModel
-    ratings: (RatingModel & { rater: UserModel })[]
-  })[]
-  participations: (ConsultationModel & {
-    subject: SubjectModel
-  })[]
-  consultaionRequests: (ConsultationRequestModel & {
-    subject: SubjectModel
-  })[]
-  avarageRating: number
-}
+import { UserDetails } from './types/UserDetails'
 
 const mockProfile: UserDetails = {
   id: 1,

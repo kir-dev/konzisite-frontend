@@ -22,7 +22,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { UserModel } from '../../api/model/user.model'
+import { UserPreview } from './types/UserPreview'
 
 const currentUser: UserPreview = {
   id: 1,
@@ -33,12 +33,6 @@ const currentUser: UserPreview = {
   presentations: 0,
   avarageRating: 0,
   attendances: 7
-}
-
-type UserPreview = UserModel & {
-  presentations: number
-  avarageRating: number
-  attendances: number
 }
 
 const MockUsers: UserPreview[] = [
