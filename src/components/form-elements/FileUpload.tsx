@@ -84,7 +84,7 @@ export const FileUpload: FC<Props> = ({
         <InputRightAddon as={IconButton} aria-label="Választott fájl visszavonása" icon={<FaTimes />} onClick={onRemovePressed} />
       </InputGroup>
       {errors?.[fieldName] ? (
-        <FormErrorMessage>{errors[fieldName].message}</FormErrorMessage>
+        <FormErrorMessage>{errors[fieldName]?.message?.toString()}</FormErrorMessage>
       ) : (
         helper && <FormHelperText>{helper}</FormHelperText>
       )}

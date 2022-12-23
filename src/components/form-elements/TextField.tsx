@@ -44,7 +44,7 @@ export const TextField: FC<Props> = ({
         defaultValue={defaultValue}
       />
       {errors?.[fieldName] ? (
-        <FormErrorMessage>{errors[fieldName].message}</FormErrorMessage>
+        <FormErrorMessage>{errors[fieldName]?.message?.toString()}</FormErrorMessage>
       ) : (
         helper && <FormHelperText>{helper}</FormHelperText>
       )}

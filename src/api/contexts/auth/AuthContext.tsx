@@ -4,6 +4,7 @@ import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { API_HOST } from '../../../util/environment'
 import { queryClient } from '../../../util/query-client'
+import { HasChildren } from '../../../util/react-types.util'
 import { UserModel } from '../../model/user.model'
 import { userModule } from '../../modules/user.module'
 import { CookieKeys } from '../CookieKeys'
@@ -30,7 +31,7 @@ export const AuthContext = createContext<AuthContextType>({
   refetchUser: async () => {}
 })
 
-export const AuthProvider: FC = ({ children }) => {
+export const AuthProvider: FC<HasChildren> = ({ children }) => {
   const navigate = useNavigate()
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(typeof Cookies.get(CookieKeys.KONZI_JWT_TOKEN) !== 'undefined')
   const { isLoading, data: user, error } = useQuery('currentUser', userModule.fetchCurrentUser, { enabled: isLoggedIn })
