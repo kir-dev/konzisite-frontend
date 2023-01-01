@@ -1,6 +1,6 @@
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react'
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { BrowserRouter } from 'react-router-dom'
@@ -12,7 +12,9 @@ import { initAxios, queryClient } from './util/query-client'
 
 initAxios()
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root')!)
+
+root.render(
   <React.StrictMode>
     <ColorModeScript />
     <ChakraProvider theme={customTheme}>
@@ -27,6 +29,5 @@ ReactDOM.render(
         </QueryClientProvider>
       </CookieConsentProvider>
     </ChakraProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 )
