@@ -5,9 +5,9 @@
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^2.0.14",
-    "@chakra-ui/react": "2.4.4",
-    "@chakra-ui/system": "2.3.5",
-    "@chakra-ui/theme-tools": "2.0.14",
+    "@chakra-ui/react": "2.4.6",
+    "@chakra-ui/system": "2.3.7",
+    "@chakra-ui/theme-tools": "2.0.16",
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
     "@fontsource/aclonica": "^4.5.9",
