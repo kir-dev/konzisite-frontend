@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosHeaders } from 'axios'
 import Cookies from 'js-cookie'
 import { QueryClient } from 'react-query'
 import { CookieKeys } from '../api/contexts/CookieKeys'
@@ -9,7 +9,7 @@ export const initAxios = () => {
   axios.interceptors.request.use((config) => {
     const token = Cookies.get(CookieKeys.KONZI_JWT_TOKEN)
     if (token && config.headers) {
-      config.headers['Authorization'] = `Bearer ${token}`
+      ;(config.headers as AxiosHeaders).set('Authorization', `Bearer ${token}`)
     }
 
     return config
