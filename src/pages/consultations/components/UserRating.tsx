@@ -54,9 +54,7 @@ export const UserRating = ({ user }: Props) => {
       <Modal isOpen={open} onClose={() => setOpen(false)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            {user.lastName} {user.firstName} értékelése
-          </ModalHeader>
+          <ModalHeader>{user.fullName} értékelése</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <VStack>

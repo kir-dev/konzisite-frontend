@@ -150,10 +150,10 @@ export const GroupDetailsPage = () => {
                   <Box key={u.id} shadow="md" borderRadius={8} borderWidth={1}>
                     <Stack direction={['column', 'row']}>
                       <HStack flexGrow={1} as={Link} to={`/users/${u.id}`} p={4}>
-                        <Avatar size="md" name={`${u.lastName} ${u.firstName}`} src={''} />
+                        <Avatar size="md" name={u.fullName} src={''} />
                         <VStack flexGrow={1}>
                           <Heading size="md" width="100%">
-                            {u.lastName} {u.firstName}
+                            {u.fullName}
                             {u.id === group.owner.id && (
                               <Badge colorScheme="brand" ml={1}>
                                 Tulajdonos

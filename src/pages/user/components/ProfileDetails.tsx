@@ -24,7 +24,7 @@ type Props = {
   }
 }
 
-export const ProfileDetails = ({ user: { firstName, lastName, email }, profileOptions }: Props) => {
+export const ProfileDetails = ({ user: { fullName, email }, profileOptions }: Props) => {
   const dangerColor = useColorModeValue('red.600', 'red.400')
   const { onChangeProfileImagePressed, onLogoutPressed } = profileOptions || {}
 
@@ -32,10 +32,10 @@ export const ProfileDetails = ({ user: { firstName, lastName, email }, profileOp
     <Box>
       <HStack flexWrap="wrap" justifyContent="space-between" alignItems="center" mb={5}>
         <HStack flexWrap="wrap" spacing={4}>
-          <Avatar size={useBreakpointValue({ base: 'lg', md: 'xl' })} name={`${lastName} ${firstName}`} src={''} />
+          <Avatar size={useBreakpointValue({ base: 'lg', md: 'xl' })} name={fullName} src={''} />
           <HStack>
             <Box fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={700} wordBreak="break-all">
-              {lastName} {firstName}
+              {fullName}
             </Box>
           </HStack>
         </HStack>

@@ -27,7 +27,7 @@ export const ConsultationListItem = ({ consultation }: Props) => {
               <Text textAlign="right">
                 {consultation.presentations.length <= 3
                   ? `Konzitartó${consultation.presentations.length > 1 ? 'k' : ''}:
-                  ${consultation.presentations.map((p) => `${p.lastName} ${p.firstName}`).join(', ')}`
+                  ${consultation.presentations.map((p) => p.fullName).join(', ')}`
                   : `${consultation.presentations.length} konzitartó`}
               </Text>
             </HStack>

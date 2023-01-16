@@ -24,10 +24,10 @@ export const UserList = ({ presentations, showRating = true, showRatingButton = 
           <Box key={p.id} shadow="md" borderRadius={8} borderWidth={1}>
             <Stack direction={['column', 'row']} width="100%">
               <HStack flexGrow={1} as={Link} to={`/users/${p.id}`} p={4}>
-                <Avatar size="md" name={`${p.lastName} ${p.firstName}`} src={''} />
+                <Avatar size="md" name={p.fullName} src={''} />
                 <VStack flexGrow={1}>
                   <Heading size="md" width="100%">
-                    {p.lastName} {p.firstName}
+                    {p.fullName}
                     {p.id === currentUser.id && (
                       <Badge colorScheme="brand" ml={1}>
                         Te

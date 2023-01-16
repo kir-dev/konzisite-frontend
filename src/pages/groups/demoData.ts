@@ -11,7 +11,7 @@ export const testGroupsDetails: GroupDetails[] = [
       id: 4,
       authSchId: 'abc',
       firstName: 'Elek',
-      lastName: 'Teszt',
+      fullName: 'Teszt Elek',
       email: 'elek@example.com'
     },
     members: [
@@ -19,7 +19,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 4,
         authSchId: 'abc',
         firstName: 'Elek',
-        lastName: 'Teszt',
+        fullName: 'Teszt Elek',
         email: 'elek@example.com',
         joinedAt: new Date('2021-01-01'),
         role: GroupRoles.MEMBER
@@ -35,7 +35,7 @@ export const testGroupsDetails: GroupDetails[] = [
       id: 2,
       authSchId: '123abc',
       firstName: 'Pista',
-      lastName: 'Kis',
+      fullName: 'Kis Pista',
       email: 'pistike@gmail.com'
     },
     members: [
@@ -43,7 +43,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 4,
         authSchId: 'abc',
         firstName: 'Elek',
-        lastName: 'Teszt',
+        fullName: 'Teszt Elek',
         email: 'elek@example.com',
         joinedAt: new Date('2022-01-01'),
         role: GroupRoles.MEMBER
@@ -52,7 +52,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 2,
         authSchId: '123abc',
         firstName: 'Pista',
-        lastName: 'Kis',
+        fullName: 'Kis Pista',
         email: 'pistike@gmail.com',
         joinedAt: new Date('2021-05-29'),
         role: GroupRoles.ADMIN
@@ -61,7 +61,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 7,
         authSchId: 'asdf',
         firstName: 'Jakab',
-        lastName: 'Gipsz',
+        fullName: 'Gipsz Jakab',
         email: 'info@gipszjakab.io',
         joinedAt: new Date('2021-05-29'),
         role: GroupRoles.ADMIN
@@ -77,7 +77,7 @@ export const testGroupsDetails: GroupDetails[] = [
       id: 7,
       authSchId: 'asdf',
       firstName: 'Jakab',
-      lastName: 'Gipsz',
+      fullName: 'Gipsz Jakab',
       email: 'info@gipszjakab.io'
     },
     members: [
@@ -85,7 +85,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 4,
         authSchId: 'abc',
         firstName: 'Elek',
-        lastName: 'Teszt',
+        fullName: 'Teszt Elek',
         email: 'elek@example.com',
         joinedAt: new Date('2022-05-17'),
         role: GroupRoles.PENDING
@@ -94,7 +94,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 2,
         authSchId: '123abc',
         firstName: 'Pista',
-        lastName: 'Kis',
+        fullName: 'Kis Pista',
         email: 'pistike@gmail.com',
         joinedAt: new Date('2022-05-29'),
         role: GroupRoles.MEMBER
@@ -103,7 +103,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 7,
         authSchId: 'asdf',
         firstName: 'Jakab',
-        lastName: 'Gipsz',
+        fullName: 'Gipsz Jakab',
         email: 'info@gipszjakab.io',
         joinedAt: new Date('2022-05-15'),
         role: GroupRoles.OWNER
@@ -112,7 +112,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 8,
         authSchId: 'aaaa',
         firstName: 'János',
-        lastName: 'Antal',
+        fullName: 'Antal János',
         email: 'info@gipszjakab.io',
         joinedAt: new Date('2022-05-15'),
         role: GroupRoles.ADMIN
@@ -128,7 +128,7 @@ export const testGroupsDetails: GroupDetails[] = [
       id: 4,
       authSchId: 'abc',
       firstName: 'Elek',
-      lastName: 'Teszt',
+      fullName: 'Teszt Elek',
       email: 'elek@example.com'
     },
     members: [
@@ -136,7 +136,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 4,
         authSchId: 'abc',
         firstName: 'Elek',
-        lastName: 'Teszt',
+        fullName: 'Teszt Elek',
         email: 'elek@example.com',
         joinedAt: new Date('2022-05-17'),
         role: GroupRoles.OWNER
@@ -145,7 +145,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 2,
         authSchId: '123abc',
         firstName: 'Pista',
-        lastName: 'Kis',
+        fullName: 'Kis Pista',
         email: 'pistike@gmail.com',
         joinedAt: new Date('2022-05-29'),
         role: GroupRoles.MEMBER
@@ -154,7 +154,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 7,
         authSchId: 'asdf',
         firstName: 'Jakab',
-        lastName: 'Gipsz',
+        fullName: 'Gipsz Jakab',
         email: 'info@gipszjakab.io',
         joinedAt: new Date('2022-05-15'),
         role: GroupRoles.PENDING
@@ -163,7 +163,7 @@ export const testGroupsDetails: GroupDetails[] = [
         id: 8,
         authSchId: 'aaaa',
         firstName: 'János',
-        lastName: 'Antal',
+        fullName: 'Antal János',
         email: 'info@gipszjakab.io',
         joinedAt: new Date('2022-05-15'),
         role: GroupRoles.ADMIN
@@ -182,7 +182,7 @@ export const testGroupsPreview: GroupPreview[] = [
       id: 4,
       authSchId: 'abc',
       firstName: 'Elek',
-      lastName: 'Teszt',
+      fullName: 'Teszt Elek',
       email: 'elek@example.com'
     },
     memberCount: 1,
@@ -196,7 +196,7 @@ export const testGroupsPreview: GroupPreview[] = [
       id: 2,
       authSchId: '123abc',
       firstName: 'Pista',
-      lastName: 'Kis',
+      fullName: 'Kis Pista',
       email: 'pistike@gmail.com'
     },
     memberCount: 3,
@@ -210,7 +210,7 @@ export const testGroupsPreview: GroupPreview[] = [
       id: 7,
       authSchId: 'asdf',
       firstName: 'Jakab',
-      lastName: 'Gipsz',
+      fullName: 'Gipsz Jakab',
       email: 'info@gipszjakab.io'
     },
     memberCount: 4,
@@ -224,7 +224,7 @@ export const testGroupsPreview: GroupPreview[] = [
       id: 4,
       authSchId: 'abc',
       firstName: 'Elek',
-      lastName: 'Teszt',
+      fullName: 'Teszt Elek',
       email: 'elek@example.com'
     },
     memberCount: 4,
@@ -237,7 +237,7 @@ export const currentUser: UserModel = {
   id: 7,
   authSchId: 'asdf',
   firstName: 'Jakab',
-  lastName: 'Gipsz',
+  fullName: 'Gipsz Jakab',
   email: 'info@gipszjakab.io'
   //ownedConsultations: [],
   //ratings: []

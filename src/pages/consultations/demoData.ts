@@ -26,7 +26,7 @@ export const testConsultationPreview: ConsultationPreview[] = [
         id: 1,
         authSchId: 'abc',
         firstName: 'Elek',
-        lastName: 'Teszt',
+        fullName: 'Teszt Elek',
         email: 'abc@cba.com',
         averageRating: 4.6
       }
@@ -54,7 +54,7 @@ export const testConsultationPreview: ConsultationPreview[] = [
         id: 1,
         authSchId: 'abc',
         firstName: 'Elek',
-        lastName: 'Teszt',
+        fullName: 'Teszt Elek',
         email: 'abc@cba.com',
         averageRating: 4.6
       },
@@ -62,7 +62,7 @@ export const testConsultationPreview: ConsultationPreview[] = [
         id: 2,
         authSchId: 'ddd',
         firstName: 'Jakab',
-        lastName: 'Gipsz',
+        fullName: 'Gipsz Jakab',
         email: 'hello@gmail.com',
         averageRating: 4.2
       }
@@ -86,7 +86,7 @@ export const testConsultationPreview: ConsultationPreview[] = [
         id: 6,
         authSchId: 'lll',
         firstName: 'Pista',
-        lastName: 'Kis',
+        fullName: 'Kis Pista',
         email: 'abc@cba.com',
         averageRating: 5
       },
@@ -94,7 +94,7 @@ export const testConsultationPreview: ConsultationPreview[] = [
         id: 2,
         authSchId: 'ddd',
         firstName: 'Jakab',
-        lastName: 'Gipsz',
+        fullName: 'Gipsz Jakab',
         email: 'hello@gmail.com',
         averageRating: 4.2
       }
@@ -122,7 +122,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
         id: 1,
         authSchId: 'abc',
         firstName: 'Elek',
-        lastName: 'Teszt',
+        fullName: 'Teszt Elek',
         email: 'abc@cba.com',
         averageRating: 4.6
       }
@@ -131,7 +131,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
       id: 1,
       authSchId: 'abc',
       firstName: 'Elek',
-      lastName: 'Teszt',
+      fullName: 'Teszt Elek',
       email: 'abc@cba.com'
     },
     participants: [
@@ -139,28 +139,28 @@ export const testConsultationDetails: ConsultationDetails[] = [
         id: 4,
         authSchId: 'abc',
         firstName: 'Elek',
-        lastName: 'Teszt',
+        fullName: 'Teszt Elek',
         email: 'elek@example.com'
       },
       {
         id: 2,
         authSchId: '123abc',
         firstName: 'Pista',
-        lastName: 'Kis',
+        fullName: 'Kis Pista',
         email: 'pistike@gmail.com'
       },
       {
         id: 7,
         authSchId: 'asdf',
         firstName: 'Jakab',
-        lastName: 'Gipsz',
+        fullName: 'Gipsz Jakab',
         email: 'info@gipszjakab.io'
       },
       {
         id: 8,
         authSchId: 'aaaa',
         firstName: 'János',
-        lastName: 'Antal',
+        fullName: 'Antal János',
         email: 'info@gipszjakab.io'
       }
     ],
@@ -185,7 +185,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
         id: 1,
         authSchId: 'abc',
         firstName: 'Elek',
-        lastName: 'Teszt',
+        fullName: 'Teszt Elek',
         email: 'abc@cba.com',
         averageRating: 4.6
       },
@@ -193,7 +193,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
         id: 2,
         authSchId: 'ddd',
         firstName: 'Jakab',
-        lastName: 'Gipsz',
+        fullName: 'Gipsz Jakab',
         email: 'hello@gmail.com',
         averageRating: 4.2
       }
@@ -202,7 +202,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
       id: 7,
       authSchId: 'asdf',
       firstName: 'Jakab',
-      lastName: 'Gipsz',
+      fullName: 'Gipsz Jakab',
       email: 'info@gipszjakab.io'
     },
     participants: [
@@ -210,14 +210,14 @@ export const testConsultationDetails: ConsultationDetails[] = [
         id: 2,
         authSchId: '123abc',
         firstName: 'Pista',
-        lastName: 'Kis',
+        fullName: 'Kis Pista',
         email: 'pistike@gmail.com'
       },
       {
         id: 7,
         authSchId: 'asdf',
         firstName: 'Jakab',
-        lastName: 'Gipsz',
+        fullName: 'Gipsz Jakab',
         email: 'info@gipszjakab.io'
       }
     ],
@@ -252,7 +252,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
         id: 6,
         authSchId: 'lll',
         firstName: 'Pista',
-        lastName: 'Kis',
+        fullName: 'Kis Pista',
         email: 'abc@cba.com',
         averageRating: 5,
         rating: {
@@ -265,7 +265,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
         id: 2,
         authSchId: 'ddd',
         firstName: 'Jakab',
-        lastName: 'Gipsz',
+        fullName: 'Gipsz Jakab',
         email: 'hello@gmail.com',
         averageRating: 4.2,
         rating: {
@@ -279,7 +279,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
       id: 6,
       authSchId: 'lll',
       firstName: 'Pista',
-      lastName: 'Kis',
+      fullName: 'Kis Pista',
       email: 'abc@cba.com'
     },
     participants: [],
@@ -291,7 +291,7 @@ export const currentUser: UserModel = {
   id: 7,
   authSchId: 'asdf',
   firstName: 'Jakab',
-  lastName: 'Gipsz',
+  fullName: 'Gipsz Jakab',
   email: 'info@gipszjakab.io'
 }
 
@@ -321,7 +321,7 @@ export const testPresenters: Presentation[] = [
     id: 1,
     authSchId: 'abc',
     firstName: 'Elek',
-    lastName: 'Teszt',
+    fullName: 'Teszt Elek',
     email: 'abc@cba.com',
     averageRating: 4.6
   },
@@ -329,7 +329,7 @@ export const testPresenters: Presentation[] = [
     id: 2,
     authSchId: 'ddd',
     firstName: 'Jakab',
-    lastName: 'Gipsz',
+    fullName: 'Gipsz Jakab',
     email: 'hello@gmail.com',
     averageRating: 4.2
   },
@@ -337,7 +337,7 @@ export const testPresenters: Presentation[] = [
     id: 3,
     authSchId: 'lll',
     firstName: 'Pista',
-    lastName: 'Kis',
+    fullName: 'Kis Pista',
     email: 'abc@cba.com',
     averageRating: 5
   }
