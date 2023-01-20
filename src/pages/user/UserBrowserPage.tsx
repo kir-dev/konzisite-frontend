@@ -28,7 +28,7 @@ const currentUser: UserPreview = {
   id: 1,
   authSchId: 'abc2',
   firstName: 'János',
-  lastName: 'Kovács',
+  fullName: 'Kovács János',
   email: 'elek@example.com',
   presentations: 0,
   avarageRating: 0,
@@ -40,7 +40,7 @@ const MockUsers: UserPreview[] = [
     id: 4,
     authSchId: 'abc',
     firstName: 'Elek',
-    lastName: 'Teszt',
+    fullName: 'Teszt Elek',
     email: 'elek@example.com',
     presentations: 3,
     avarageRating: 4.5,
@@ -51,7 +51,7 @@ const MockUsers: UserPreview[] = [
     id: 2,
     authSchId: 'abc',
     firstName: 'Péter',
-    lastName: 'Sándor',
+    fullName: 'Sándor Péter',
     email: 'elek@example.com',
     presentations: 1,
     avarageRating: 2.1,
@@ -66,10 +66,6 @@ enum COLUMNS {
   ATTENDANCES = 'attendances'
 }
 
-const fullName = (user: UserPreview) => {
-  return user.lastName + ' ' + user.firstName
-}
-
 export const UserBrowserPage = () => {
   const [userList, setUserList] = useState<UserPreview[]>(MockUsers)
   const [sortBy, setSortBy] = useState<COLUMNS>(COLUMNS.NAME)
@@ -78,9 +74,9 @@ export const UserBrowserPage = () => {
   const navigate = useNavigate()
   const hoverBg = useColorModeValue('brand.50', 'brand.700')
 
-  const filteredList = (search ? userList.filter((user) => fullName(user).toLowerCase().includes(search.toLowerCase())) : userList).sort(
+  const filteredList = (search ? userList.filter((user) => user.fullName.toLowerCase().includes(search.toLowerCase())) : userList).sort(
     (user1, user2) => {
-      if (sortBy == COLUMNS.NAME) return fullName(user1).localeCompare(fullName(user2))
+      if (sortBy == COLUMNS.NAME) return user1.fullName.localeCompare(user2.fullName)
       return user2[sortBy] - user1[sortBy]
     }
   )
@@ -141,9 +137,9 @@ export const UserBrowserPage = () => {
               <Tr key={user.id} onClick={() => navigate(`/users/${user.id}`)} _hover={{ bg: hoverBg }} cursor="pointer">
                 <Td>
                   <Flex align="center">
-                    <Avatar size="md" name={fullName(user)} src={''} />
+                    <Avatar size="md" name={user.fullName} src={''} />
                     <Heading ml={5} size="md">
-                      {fullName(user)}
+                      {user.fullName}
                     </Heading>
                     {user.id === currentUser.id && (
                       <Badge colorScheme="brand" ml={2}>

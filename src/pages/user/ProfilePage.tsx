@@ -12,7 +12,7 @@ const mockProfile: UserDetails = {
   id: 1,
   authSchId: '123',
   firstName: 'John',
-  lastName: 'Appleseed',
+  fullName: 'Appleseed John',
   email: 'example@gmail.com',
   presentations: [
     {
@@ -37,7 +37,7 @@ const mockProfile: UserDetails = {
             id: 1,
             authSchId: 'abc',
             firstName: 'Elek',
-            lastName: 'Teszt',
+            fullName: 'Teszt Elek',
             email: 'abc@cba.com'
           }
         },
@@ -49,7 +49,7 @@ const mockProfile: UserDetails = {
             id: 2,
             authSchId: 'abc',
             firstName: 'Elek2',
-            lastName: 'Teszt',
+            fullName: 'Teszt Elek2',
             email: 'abc@cba.com'
           }
         }
@@ -77,7 +77,7 @@ const mockProfile: UserDetails = {
             id: 3,
             authSchId: 'abc',
             firstName: 'Elek3',
-            lastName: 'Teszt',
+            fullName: 'Teszt Elek3',
             email: 'abc@cba.com'
           }
         }
@@ -143,7 +143,7 @@ export const ProfilePage = () => {
             {mockProfile.presentations.map((p) =>
               p.ratings?.map((r) => (
                 <HStack key={r.id}>
-                  <Text>{r.rater.lastName + ' ' + r.rater.firstName} </Text>
+                  <Text>{r.rater.fullName} </Text>
                   <Text>{r.value}, </Text>
                   <Text>{r.text}</Text>
                 </HStack>

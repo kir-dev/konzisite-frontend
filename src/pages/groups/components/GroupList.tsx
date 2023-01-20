@@ -74,7 +74,7 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
                       <Heading size="md">{g.name}</Heading>
                       {showOwner && (
                         <Heading size="md" textAlign="right">
-                          Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : `${g.owner.lastName} ${g.owner.firstName}`}
+                          Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : g.owner.fullName}
                         </Heading>
                       )}
                     </HStack>

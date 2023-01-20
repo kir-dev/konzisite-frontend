@@ -55,7 +55,7 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
 
   useEffect(() => {
     const filtered = presenterList.filter(
-      (p) => `${p.lastName} ${p.firstName}`.toLowerCase().includes(search.toLowerCase()) && !presentations.some((pres) => pres.id === p.id)
+      (p) => p.fullName.toLowerCase().includes(search.toLowerCase()) && !presentations.some((pres) => pres.id === p.id)
     )
     setFilteredCount(filtered.length)
 
@@ -63,9 +63,7 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
   }, [search, presenterList, resultLimit])
 
   const addPresenter = (presenter: Presentation) => {
-    setPresentations(
-      [...presentations, presenter].sort((a, b) => `${a.lastName} ${a.firstName}`.localeCompare(`${b.lastName} ${b.firstName}`))
-    )
+    setPresentations([...presentations, presenter].sort((a, b) => a.fullName.localeCompare(b.fullName)))
   }
 
   const removePresenter = (presenter: Presentation) => {
@@ -79,10 +77,10 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
         {presentations.map((p) => (
           <Box borderRadius={6} borderWidth={1} mb={2} key={p.id}>
             <HStack flexGrow={1} p={4}>
-              <Avatar size="md" name={`${p.lastName} ${p.firstName}`} src={''} />
+              <Avatar size="md" name={p.fullName} src={''} />
               <VStack flexGrow={1}>
                 <Heading size="md" width="100%">
-                  {p.lastName} {p.firstName}
+                  {p.fullName}
                   {p.id === currentUser.id && (
                     <Badge colorScheme="brand" ml={1}>
                       Te
@@ -147,10 +145,10 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
                     }}
                   >
                     <HStack flexGrow={1} p={4}>
-                      <Avatar size="md" name={`${p.lastName} ${p.firstName}`} src={''} />
+                      <Avatar size="md" name={p.fullName} src={''} />
                       <VStack flexGrow={1}>
                         <Heading size="md" width="100%">
-                          {p.lastName} {p.firstName}
+                          {p.fullName}
                           {p.id === currentUser.id && (
                             <Badge colorScheme="brand" ml={1}>
                               Te
