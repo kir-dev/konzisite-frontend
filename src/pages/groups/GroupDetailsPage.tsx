@@ -128,7 +128,7 @@ export const GroupDetailsPage = () => {
             </Heading>
             <Stack direction={['column', 'row']} justifyContent="space-between" mb={3}>
               <VStack alignItems="flex-start" spacing={3}>
-                <Heading size="lg">Létrehozva: {group.createdAt.toLocaleDateString()}</Heading>
+                <Heading size="lg">Létrehozva: {new Date(group.createdAt).toLocaleDateString('hu-HU')}</Heading>
                 {<Heading size="lg">Szerepkör: {group.currentUserRole}</Heading>}
               </VStack>
               <VStack alignItems="stretch">

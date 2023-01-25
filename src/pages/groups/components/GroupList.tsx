@@ -6,7 +6,7 @@ import { GroupPreview } from '../types/groupPreview'
 
 type Props = {
   title: string
-  groups: GroupPreview[]
+  groups?: GroupPreview[]
   showOwner?: boolean
   showJoinButton?: boolean
   loading?: boolean
@@ -64,7 +64,7 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
           {title}
         </Heading>
         <VStack alignItems="stretch" mb={3}>
-          {groups.map((g) => (
+          {groups?.map((g) => (
             <Box key={g.id} shadow="md" borderRadius={8} borderWidth={1}>
               <Stack direction={['column', 'row']}>
                 <HStack flexGrow={1} as={Link} to={`/groups/${g.id}`} p={4}>
@@ -80,7 +80,7 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
                     </HStack>
                     <HStack justifyContent="space-between" width="100%">
                       <Text>{g.memberCount} tag</Text>
-                      <Text textAlign="right">Létrehozva: {g.createdAt.toLocaleDateString()}</Text>
+                      <Text textAlign="right">Létrehozva: {new Date(g.createdAt).toLocaleDateString('hu-HU')}</Text>
                     </HStack>
                   </VStack>
                 </HStack>
