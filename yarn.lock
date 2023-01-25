@@ -1644,7 +1644,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/checkbox@npm:2.2.10":
+"@chakra-ui/checkbox@npm:2.2.10, @chakra-ui/checkbox@npm:^2.2.10":
   version: 2.2.10
   resolution: "@chakra-ui/checkbox@npm:2.2.10"
   dependencies:
@@ -1869,7 +1869,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/image@npm:2.0.15":
+"@chakra-ui/image@npm:2.0.15, @chakra-ui/image@npm:^2.0.15":
   version: 2.0.15
   resolution: "@chakra-ui/image@npm:2.0.15"
   dependencies:
@@ -1898,7 +1898,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/layout@npm:2.1.15":
+"@chakra-ui/layout@npm:2.1.15, @chakra-ui/layout@npm:^2.1.15":
   version: 2.1.15
   resolution: "@chakra-ui/layout@npm:2.1.15"
   dependencies:
@@ -2635,7 +2635,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/table@npm:2.0.16":
+"@chakra-ui/table@npm:2.0.16, @chakra-ui/table@npm:^2.0.16":
   version: 2.0.16
   resolution: "@chakra-ui/table@npm:2.0.16"
   dependencies:
@@ -10051,9 +10051,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "konzisite-frontend@workspace:."
   dependencies:
+    "@chakra-ui/checkbox": ^2.2.10
     "@chakra-ui/icons": ^2.0.14
+    "@chakra-ui/image": ^2.0.15
+    "@chakra-ui/layout": ^2.1.15
     "@chakra-ui/react": 2.4.9
     "@chakra-ui/system": 2.3.8
+    "@chakra-ui/table": ^2.0.16
     "@chakra-ui/theme-tools": 2.0.16
     "@emotion/react": 11.10.5
     "@emotion/styled": 11.10.5
