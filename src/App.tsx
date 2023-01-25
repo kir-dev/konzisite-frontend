@@ -1,5 +1,6 @@
 import '@fontsource/aclonica/400.css'
-import { Route, Routes } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import { RLayout } from './components/commons/KLayout'
 import './global.css'
 import { AuthorizedPage } from './pages/authorized/AuthorizedPage'
@@ -16,8 +17,16 @@ import { LogoutPage } from './pages/logout/LogoutPage'
 import { ProfilePage } from './pages/user/ProfilePage'
 import { UserBrowserPage } from './pages/user/UserBrowserPage'
 import { UserPage } from './pages/user/UserPage'
+import { setupResponseInterceptor } from './util/query-client'
 
 export const App = () => {
+  const navigate = useNavigate()
+
+  //TODO
+  useEffect(() => {
+    setupResponseInterceptor(navigate)
+  }, [])
+
   return (
     <RLayout>
       <Routes>

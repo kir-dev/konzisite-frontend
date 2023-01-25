@@ -25,7 +25,7 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
     }
   }
 
-  if (loading)
+  if (loading) {
     return (
       <>
         <Heading mb={4} mt={3} size="lg">
@@ -57,51 +57,56 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
         </VStack>
       </>
     )
-  else
+  } else {
     return (
       <>
         <Heading mb={4} mt={3} size="lg">
           {title}
         </Heading>
-        <VStack alignItems="stretch" mb={3}>
-          {groups?.map((g) => (
-            <Box key={g.id} shadow="md" borderRadius={8} borderWidth={1}>
-              <Stack direction={['column', 'row']}>
-                <HStack flexGrow={1} as={Link} to={`/groups/${g.id}`} p={4}>
-                  <Avatar size="md" name={g.name} src={''} />
-                  <VStack flexGrow={1}>
-                    <HStack justifyContent="space-between" width="100%">
-                      <Heading size="md">{g.name}</Heading>
-                      {showOwner && (
-                        <Heading size="md" textAlign="right">
-                          Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : g.owner.fullName}
-                        </Heading>
+        {groups != undefined && groups.length == 0 ? (
+          <Text>Nincsenek csoportok!</Text>
+        ) : (
+          <VStack alignItems="stretch" mb={3}>
+            {groups?.map((g) => (
+              <Box key={g.id} shadow="md" borderRadius={8} borderWidth={1}>
+                <Stack direction={['column', 'row']}>
+                  <HStack flexGrow={1} as={Link} to={`/groups/${g.id}`} p={4}>
+                    <Avatar size="md" name={g.name} src={''} />
+                    <VStack flexGrow={1}>
+                      <HStack justifyContent="space-between" width="100%">
+                        <Heading size="md">{g.name}</Heading>
+                        {showOwner && (
+                          <Heading size="md" textAlign="right">
+                            Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : g.owner.fullName}
+                          </Heading>
+                        )}
+                      </HStack>
+                      <HStack justifyContent="space-between" width="100%">
+                        <Text>{g.memberCount} tag</Text>
+                        <Text textAlign="right">Létrehozva: {new Date(g.createdAt).toLocaleDateString('hu-HU')}</Text>
+                      </HStack>
+                    </VStack>
+                  </HStack>
+                  {showJoinButton && (g.currentUserRole == GroupRoles.PENDING || g.currentUserRole == GroupRoles.NONE) && (
+                    <VStack p={2} justifyContent="center">
+                      {g.currentUserRole == GroupRoles.PENDING && (
+                        <Button colorScheme="red" onClick={leaveGroup(g)} width="100%">
+                          Kérelem visszavonása
+                        </Button>
                       )}
-                    </HStack>
-                    <HStack justifyContent="space-between" width="100%">
-                      <Text>{g.memberCount} tag</Text>
-                      <Text textAlign="right">Létrehozva: {new Date(g.createdAt).toLocaleDateString('hu-HU')}</Text>
-                    </HStack>
-                  </VStack>
-                </HStack>
-                {showJoinButton && (g.currentUserRole == GroupRoles.PENDING || g.currentUserRole == GroupRoles.NONE) && (
-                  <VStack p={2} justifyContent="center">
-                    {g.currentUserRole == GroupRoles.PENDING && (
-                      <Button colorScheme="red" onClick={leaveGroup(g)} width="100%">
-                        Kérelem visszavonása
-                      </Button>
-                    )}
-                    {g.currentUserRole == GroupRoles.NONE && (
-                      <Button colorScheme="brand" onClick={joinGroup(g)} width="100%">
-                        Csatlakozás
-                      </Button>
-                    )}
-                  </VStack>
-                )}
-              </Stack>
-            </Box>
-          ))}
-        </VStack>
+                      {g.currentUserRole == GroupRoles.NONE && (
+                        <Button colorScheme="brand" onClick={joinGroup(g)} width="100%">
+                          Csatlakozás
+                        </Button>
+                      )}
+                    </VStack>
+                  )}
+                </Stack>
+              </Box>
+            ))}
+          </VStack>
+        )}
       </>
     )
+  }
 }
