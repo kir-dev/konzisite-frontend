@@ -20,6 +20,9 @@ export const initAxios = () => {
       return response
     },
     (error) => {
+      if (Array.isArray(error.response.data.message)) {
+        return Promise.reject({ ...error.response.data, message: error.response.data.message.join(', ') })
+      }
       return Promise.reject(error.response.data)
     }
   )

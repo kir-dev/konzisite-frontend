@@ -10,6 +10,6 @@ export const generateToastParams = (e: KonziError): UseToastOptions => {
     case 500:
       return { title: '500 Ismeretlen hiba', description: 'Kérlek jelezd a fejlesztők felé', status: 'error' }
     default:
-      return { title: `${e.statusCode} ${e.message}`, description: e.error, status: 'error' }
+      return { title: `${e.statusCode} ${e.message}`, status: 'error' }
   }
 }

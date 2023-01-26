@@ -16,7 +16,7 @@ export const GroupsPage = () => {
     refetch
   } = useQuery<GroupPreview[], KonziError>('fetchGroups', () => groupModule.fetchGroups(), { retry: false })
   if (error) {
-    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} messages={[error.error || '']}></ErrorPage>
+    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
 
   return (
