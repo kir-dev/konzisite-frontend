@@ -1,28 +1,30 @@
-import { Avatar, Box, Button, Heading, HStack, Skeleton, SkeletonCircle, Stack, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Badge, Box, Button, Heading, HStack, Skeleton, SkeletonCircle, Stack, Text, VStack } from '@chakra-ui/react'
+import { useMutation } from 'react-query'
 import { Link } from 'react-router-dom'
 import { GroupModel, GroupRoles } from '../../../api/model/group.model'
+import { groupModule } from '../../../api/modules/group.module'
 import { currentUser } from '../demoData'
 import { GroupPreview } from '../types/groupPreview'
 
 type Props = {
   title: string
+  noGroupsMessage: string
   groups?: GroupPreview[]
-  showOwner?: boolean
-  showJoinButton?: boolean
   loading?: boolean
+  refetch: () => void
 }
 
-export const GroupList = ({ groups, showOwner = true, showJoinButton = false, title, loading = false }: Props) => {
-  const joinGroup = (group: GroupModel) => {
-    return () => {
-      alert(`join group ${group.id}`)
-    }
+export const GroupList = ({ groups, title, noGroupsMessage, loading = false, refetch }: Props) => {
+  const joinGroupMutation = useMutation((groupId: number) => groupModule.joinGroup(groupId))
+
+  const joinGroup = async (group: GroupModel) => {
+    await joinGroupMutation.mutateAsync(group.id)
+    refetch()
   }
 
   const leaveGroup = (group: GroupModel) => {
-    return () => {
-      alert(`leave group ${group.id}`)
-    }
+    joinGroupMutation.mutateAsync(group.id)
+    refetch()
   }
 
   if (loading) {
@@ -64,7 +66,7 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
           {title}
         </Heading>
         {groups != undefined && groups.length == 0 ? (
-          <Text>Nincsenek csoportok!</Text>
+          <Text>{noGroupsMessage}</Text>
         ) : (
           <VStack alignItems="stretch" mb={3}>
             {groups?.map((g) => (
@@ -74,12 +76,13 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
                     <Avatar size="md" name={g.name} src={''} />
                     <VStack flexGrow={1}>
                       <HStack justifyContent="space-between" width="100%">
-                        <Heading size="md">{g.name}</Heading>
-                        {showOwner && (
-                          <Heading size="md" textAlign="right">
-                            Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : g.owner.fullName}
-                          </Heading>
-                        )}
+                        <Stack direction={['column', 'row']} align="center">
+                          <Heading size="md">{g.name}</Heading>
+                          {g.currentUserRole === GroupRoles.PENDING && <Badge colorScheme="red">Függőben</Badge>}
+                        </Stack>
+                        <Heading size="md" textAlign="right">
+                          Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : g.owner.fullName}
+                        </Heading>
                       </HStack>
                       <HStack justifyContent="space-between" width="100%">
                         <Text>{g.memberCount} tag</Text>
@@ -87,15 +90,15 @@ export const GroupList = ({ groups, showOwner = true, showJoinButton = false, ti
                       </HStack>
                     </VStack>
                   </HStack>
-                  {showJoinButton && (g.currentUserRole == GroupRoles.PENDING || g.currentUserRole == GroupRoles.NONE) && (
+                  {(g.currentUserRole == GroupRoles.PENDING || g.currentUserRole == GroupRoles.NONE) && (
                     <VStack p={2} justifyContent="center">
                       {g.currentUserRole == GroupRoles.PENDING && (
-                        <Button colorScheme="red" onClick={leaveGroup(g)} width="100%">
+                        <Button colorScheme="red" onClick={() => leaveGroup(g)} width="100%">
                           Kérelem visszavonása
                         </Button>
                       )}
                       {g.currentUserRole == GroupRoles.NONE && (
-                        <Button colorScheme="brand" onClick={joinGroup(g)} width="100%">
+                        <Button colorScheme="brand" onClick={() => joinGroup(g)} width="100%">
                           Csatlakozás
                         </Button>
                       )}

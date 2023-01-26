@@ -1,6 +1,8 @@
 import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, Image, VStack } from '@chakra-ui/react'
+import { useEffect } from 'react'
 import { FaChevronLeft } from 'react-icons/fa'
 import { To, useLocation, useNavigate } from 'react-router-dom'
+import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 
 type ErrorPageState = {
   title?: string
@@ -11,6 +13,7 @@ type ErrorPageState = {
 
 export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState) => {
   const { state } = useLocation()
+  const { onLogout } = useAuthContext()
   const navigate = useNavigate()
   const {
     title: t,
@@ -22,7 +25,13 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
     backPath: '/'
   }
 
-  return (
+  useEffect(() => {
+    if (status === 401) {
+      onLogout('/login')
+    }
+  }, [])
+
+  return status === 401 ? null : (
     <Alert p={10} status="error" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center">
       <AlertIcon boxSize="40px" mr={0} />
       <AlertTitle mt={4} mb={3} fontSize="2xl">

@@ -8,7 +8,7 @@ import { ErrorPage } from '../error/ErrorPage'
 import { GroupList } from './components/GroupList'
 
 export const GroupsPage = () => {
-  const { isLoading, data: groups, error } = useQuery('fetchGroups', () => groupModule.fetchGroups())
+  const { isLoading, data: groups, error, refetch } = useQuery('fetchGroups', () => groupModule.fetchGroups(), { retry: false })
   const navigate = useNavigate()
 
   //TODO
@@ -33,12 +33,19 @@ export const GroupsPage = () => {
         Új csoport létrehozása
       </Button>
       <GroupList
-        groups={groups?.filter((g) => g.currentUserRole != GroupRoles.NONE)}
+        groups={groups?.filter((g) => g.currentUserRole !== GroupRoles.NONE)}
         title="Saját csoportok"
-        showOwner={true}
+        noGroupsMessage="Még nem vagy csoport tagja sem!"
         loading={isLoading}
+        refetch={refetch}
       />
-      <GroupList groups={groups} title="Minden csoport" showJoinButton={true} loading={isLoading} />
+      <GroupList
+        groups={groups?.filter((g) => g.currentUserRole === GroupRoles.NONE)}
+        title="Többi csoport"
+        noGroupsMessage="Nincs több csoport"
+        loading={isLoading}
+        refetch={refetch}
+      />
     </>
   )
 }

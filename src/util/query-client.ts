@@ -1,7 +1,6 @@
 import axios, { AxiosHeaders } from 'axios'
 import Cookies from 'js-cookie'
 import { QueryClient } from 'react-query'
-import { NavigateFunction } from 'react-router-dom'
 import { CookieKeys } from '../api/contexts/CookieKeys'
 import { API_HOST } from './environment'
 
@@ -17,7 +16,7 @@ export const initAxios = () => {
   })
 }
 //TODO
-export const setupResponseInterceptor = (navigate: NavigateFunction) => {
+/*export const setupResponseInterceptor = (navigate: NavigateFunction) => {
   axios.interceptors.response.use(
     (response) => {
       return response
@@ -30,7 +29,7 @@ export const setupResponseInterceptor = (navigate: NavigateFunction) => {
       }
     }
   )
-}
+}*/
 
 export const queryClient = new QueryClient({
   defaultOptions: {

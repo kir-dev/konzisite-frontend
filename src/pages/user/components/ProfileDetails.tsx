@@ -20,13 +20,13 @@ type Props = {
   user: UserModel
   profileOptions?: {
     onChangeProfileImagePressed: () => void
-    onLogoutPressed: () => void
+    onLogoutPressed: (path?: string) => void
   }
 }
 
 export const ProfileDetails = ({ user: { fullName, email }, profileOptions }: Props) => {
   const dangerColor = useColorModeValue('red.600', 'red.400')
-  const { onChangeProfileImagePressed, onLogoutPressed } = profileOptions || {}
+  const { onChangeProfileImagePressed, onLogoutPressed } = profileOptions || { onLogoutPressed: () => {} }
 
   return (
     <Box>
@@ -50,7 +50,7 @@ export const ProfileDetails = ({ user: { fullName, email }, profileOptions }: Pr
                   Change profile image
                 </MenuItem>
                 <MenuDivider />
-                <MenuItem color={dangerColor} icon={<FaSignOutAlt />} onClick={onLogoutPressed}>
+                <MenuItem color={dangerColor} icon={<FaSignOutAlt />} onClick={() => onLogoutPressed()}>
                   Log out
                 </MenuItem>
               </MenuList>
