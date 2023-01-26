@@ -16,14 +16,15 @@ type Props = {
 
 export const GroupList = ({ groups, title, noGroupsMessage, loading = false, refetch }: Props) => {
   const joinGroupMutation = useMutation((groupId: number) => groupModule.joinGroup(groupId))
+  const leaveGroupMutation = useMutation((groupId: number) => groupModule.leaveGroup(groupId))
 
   const joinGroup = async (group: GroupModel) => {
     await joinGroupMutation.mutateAsync(group.id)
     refetch()
   }
 
-  const leaveGroup = (group: GroupModel) => {
-    joinGroupMutation.mutateAsync(group.id)
+  const leaveGroup = async (group: GroupModel) => {
+    await leaveGroupMutation.mutateAsync(group.id)
     refetch()
   }
 

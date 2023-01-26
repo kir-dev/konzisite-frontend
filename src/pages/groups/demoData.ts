@@ -1,9 +1,8 @@
 import { GroupRoles } from '../../api/model/group.model'
 import { UserModel } from '../../api/model/user.model'
-import { GroupDetails } from './types/groupDetails'
 import { GroupPreview } from './types/groupPreview'
 
-export const testGroupsDetails: GroupDetails[] = [
+/*export const testGroupsDetails: GroupDetails[] = [
   {
     id: 1,
     name: 'Legjobb csoport',
@@ -173,7 +172,7 @@ export const testGroupsDetails: GroupDetails[] = [
     createdAt: new Date('2022-08-15').toLocaleDateString()
   }
 ]
-
+*/
 export const testGroupsPreview: GroupPreview[] = [
   {
     id: 1,

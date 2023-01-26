@@ -3,7 +3,7 @@ import { UserModel } from '../../../api/model/user.model'
 
 export type GroupDetails = GroupModel & {
   members: (UserModel & {
-    joinedAt: Date
+    joinedAt: string
     role: GroupRoles
   })[]
   owner: UserModel

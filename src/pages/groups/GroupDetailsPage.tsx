@@ -17,28 +17,39 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FaChevronDown, FaUserCheck, FaUserGraduate, FaUserInjured, FaUserSlash, FaUserTimes } from 'react-icons/fa'
+import { useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
 import { GroupRoles } from '../../api/model/group.model'
 import { UserModel } from '../../api/model/user.model'
+import { groupModule } from '../../api/modules/group.module'
 import { ErrorPage } from '../error/ErrorPage'
 import { GroupOptionsButton } from './components/GroupOptionsButton'
-import { currentUser, testGroupsDetails } from './demoData'
-import { GroupDetails } from './types/groupDetails'
+import { currentUser } from './demoData'
 
 export const GroupDetailsPage = () => {
-  const [loading, setLoading] = useState(true)
-  const groupId = parseInt(useParams<{ groupId: string }>().groupId ?? '-1')
-  const [group, setGroup] = useState<GroupDetails>()
+  //const [loading, setLoading] = useState(true)
+  //const groupId = parseInt(useParams<{ groupId: string }>().groupId ?? '-1')
+  //const [group, setGroup] = useState<GroupDetails>()
   const [displayOnlyPending, setDisplayOnlyPending] = useState(false)
 
-  useEffect(() => {
+  /*useEffect(() => {
     setTimeout(() => {
       setGroup(testGroupsDetails.find((g) => g.id === groupId))
       setLoading(false)
     }, 1000)
-  }, [])
+  }, [])*/
+
+  //TODO
+  const { groupId } = useParams()
+
+  if (groupId === undefined) {
+    return <ErrorPage></ErrorPage>
+  }
+
+  const { isLoading, data: group, error, refetch } = useQuery('fetchGroup', () => groupModule.fetchGroup(+groupId), { retry: false })
+  //console.log(group)
 
   const acceptUser = (user: UserModel) => {
     return () => {
@@ -70,7 +81,7 @@ export const GroupDetailsPage = () => {
     }
   }
 
-  if (loading)
+  if (isLoading)
     return (
       <>
         <VStack mb={3} alignItems="flex-start">
@@ -132,7 +143,7 @@ export const GroupDetailsPage = () => {
                 {<Heading size="lg">Szerepkör: {group.currentUserRole}</Heading>}
               </VStack>
               <VStack alignItems="stretch">
-                <GroupOptionsButton group={group} />
+                <GroupOptionsButton group={group} refetch={refetch} />
               </VStack>
             </Stack>
             <Stack direction={['column', 'row']} justifyContent="space-between" mb={3}>
@@ -167,7 +178,7 @@ export const GroupDetailsPage = () => {
                           </Heading>
                           <HStack justifyContent="space-between" width="100%">
                             <Text>{u.role}</Text>
-                            <Text textAlign="right">Csatlakozás: {u.joinedAt.toLocaleDateString()}</Text>
+                            <Text textAlign="right">Csatlakozás: {new Date(u.joinedAt).toLocaleDateString()}</Text>
                           </HStack>
                         </VStack>
                       </HStack>
