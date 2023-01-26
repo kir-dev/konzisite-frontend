@@ -19,19 +19,23 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { FaChevronDown, FaUserCheck, FaUserGraduate, FaUserInjured, FaUserSlash, FaUserTimes } from 'react-icons/fa'
-import { useMutation, useQuery } from 'react-query'
 import { Link, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
+import {
+  useApproveUserMutation,
+  useDeclineUserMutation,
+  useDemoteUserInGroupMutation,
+  usePromoteUserInGroupMutation,
+  useRemoveUserFromGroupMutation
+} from '../../api/hooks/groupMutationHooks'
+import { useFecthGroupDetailsQuery } from '../../api/hooks/groupQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { GroupRoles } from '../../api/model/group.model'
-import { UserToGroup } from '../../api/model/userToGroup.model'
-import { groupModule } from '../../api/modules/group.module'
 import { generateToastParams } from '../../util/generateToastParams'
 import { translateGroupRole } from '../../util/translateGroupRole'
 import { ErrorPage } from '../error/ErrorPage'
 import { GroupDetailsSkeleton } from './components/GroupDeatilsSkeleton'
 import { GroupOptionsButton } from './components/GroupOptionsButton'
-import { GroupDetails } from './types/groupDetails'
 
 interface GroupMutationParams {
   groupId: number
@@ -41,48 +45,26 @@ interface GroupMutationParams {
 export const GroupDetailsPage = () => {
   const [displayOnlyPending, setDisplayOnlyPending] = useState(false)
   const toast = useToast()
-  //TODO
+
   const { groupId } = useParams()
   if (groupId === undefined) {
     return <ErrorPage />
   }
-  const {
-    isLoading,
-    data: group,
-    error,
-    refetch
-  } = useQuery<GroupDetails, KonziError>('fetchGroup', () => groupModule.fetchGroup(+groupId), { retry: false })
+  const { isLoading, data: group, error, refetch } = useFecthGroupDetailsQuery(+groupId)
 
-  const groupMutationOptions = (successMessage: string) => ({
-    onSuccess: () => {
-      toast({ title: successMessage, status: 'success' })
-      refetch()
-    },
-    onError: (e: KonziError) => {
-      toast(generateToastParams(e))
-    }
-  })
+  const onErrorFn = (e: KonziError) => {
+    toast(generateToastParams(e))
+  }
+  const generateSuccessFn = (successMessage: string) => () => {
+    toast({ title: successMessage, status: 'success' })
+    refetch()
+  }
 
-  const approveUserMutation = useMutation<UserToGroup, KonziError, GroupMutationParams>(
-    async (params) => groupModule.approveUserToGroup(params.groupId, params.userId),
-    groupMutationOptions('Felhasználó elfogadva')
-  )
-  const declineUserMutation = useMutation<UserToGroup, KonziError, GroupMutationParams>(
-    async (params) => groupModule.declineUserToGroup(params.groupId, params.userId),
-    groupMutationOptions('Felhasználó visszautasítva')
-  )
-  const promoteUserMutation = useMutation<UserToGroup, KonziError, GroupMutationParams>(
-    async (params) => groupModule.promoteUserInGroup(params.groupId, params.userId),
-    groupMutationOptions('Felhasználó előléptetve')
-  )
-  const demoteUserMutation = useMutation<UserToGroup, KonziError, GroupMutationParams>(
-    async (params) => groupModule.demoteUserInGroup(params.groupId, params.userId),
-    groupMutationOptions('Felhasználó visszaléptetve')
-  )
-  const removeFromGroupMutation = useMutation<UserToGroup, KonziError, GroupMutationParams>(
-    async (params) => groupModule.removeFromGroup(params.groupId, params.userId),
-    groupMutationOptions('Felhasználó eltávolítva')
-  )
+  const { mutate: approveUser } = useApproveUserMutation(generateSuccessFn('Felhasználó elfogadva'), onErrorFn)
+  const { mutate: declineUser } = useDeclineUserMutation(generateSuccessFn('Felhasználó visszautasítva'), onErrorFn)
+  const { mutate: promoteUser } = usePromoteUserInGroupMutation(generateSuccessFn('Felhasználó előléptetve'), onErrorFn)
+  const { mutate: demoteUser } = useDemoteUserInGroupMutation(generateSuccessFn('Felhasználó visszaléptetve'), onErrorFn)
+  const { mutate: removeFromGroup } = useRemoveUserFromGroupMutation(generateSuccessFn('Felhasználó eltávolítva'), onErrorFn)
 
   const { loggedInUser: currentUser } = useAuthContext()
 
@@ -167,14 +149,14 @@ export const GroupDetailsPage = () => {
                                   <MenuItem
                                     color="green"
                                     icon={<FaUserCheck />}
-                                    onClick={() => approveUserMutation.mutate({ groupId: group.id, userId: u.id })}
+                                    onClick={() => approveUser({ groupId: group.id, userId: u.id })}
                                   >
                                     Elfogadás
                                   </MenuItem>
                                   <MenuItem
                                     color="red"
                                     icon={<FaUserTimes />}
-                                    onClick={() => declineUserMutation.mutate({ groupId: group.id, userId: u.id })}
+                                    onClick={() => declineUser({ groupId: group.id, userId: u.id })}
                                   >
                                     Elutasátas
                                   </MenuItem>
@@ -186,7 +168,7 @@ export const GroupDetailsPage = () => {
                                       <MenuItem
                                         color="red"
                                         icon={<FaUserInjured />}
-                                        onClick={() => demoteUserMutation.mutate({ groupId: group.id, userId: u.id })}
+                                        onClick={() => demoteUser({ groupId: group.id, userId: u.id })}
                                       >
                                         Lefokozás
                                       </MenuItem>
@@ -194,7 +176,7 @@ export const GroupDetailsPage = () => {
                                       <MenuItem
                                         color="green"
                                         icon={<FaUserGraduate />}
-                                        onClick={() => promoteUserMutation.mutate({ groupId: group.id, userId: u.id })}
+                                        onClick={() => promoteUser({ groupId: group.id, userId: u.id })}
                                       >
                                         Előléptetés
                                       </MenuItem>
@@ -202,7 +184,7 @@ export const GroupDetailsPage = () => {
                                   <MenuItem
                                     color="red"
                                     icon={<FaUserSlash />}
-                                    onClick={() => removeFromGroupMutation.mutate({ groupId: group.id, userId: u.id })}
+                                    onClick={() => removeFromGroup({ groupId: group.id, userId: u.id })}
                                   >
                                     Eltávolítás
                                   </MenuItem>

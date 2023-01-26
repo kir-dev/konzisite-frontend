@@ -1,10 +1,8 @@
 import { Button, useToast } from '@chakra-ui/react'
-import { useMutation } from 'react-query'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDeleteGroupMutation, useJoinGroupMutation, useLeaveGroupMutation } from '../../../api/hooks/groupMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
-import { GroupModel, GroupRoles } from '../../../api/model/group.model'
-import { UserToGroup } from '../../../api/model/userToGroup.model'
-import { groupModule } from '../../../api/modules/group.module'
+import { GroupRoles } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { GroupDetails } from '../types/groupDetails'
 
@@ -17,28 +15,21 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
   const toast = useToast()
   const navigate = useNavigate()
 
-  const mutationOnError = (e: KonziError) => {
+  const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
   }
 
-  const joinGroupMutation = useMutation<UserToGroup, KonziError, number>((groupId: number) => groupModule.joinGroup(groupId), {
-    onSuccess: () => {
-      toast({ title: 'Csatlakoztál a csoporthoz!', status: 'success' })
-      refetchDetails()
-    },
-    onError: mutationOnError
-  })
-  const leaveGroupMutation = useMutation<UserToGroup, KonziError, number>((groupId: number) => groupModule.leaveGroup(groupId), {
-    onError: mutationOnError
-  })
+  const joinGroupMutation = useJoinGroupMutation(() => {
+    toast({ title: 'Csatlakoztál a csoporthoz!', status: 'success' })
+    refetchDetails()
+  }, onErrorFn)
 
-  const deleteGroupMutation = useMutation<GroupModel, KonziError, number>((groupId: number) => groupModule.deleteGroup(groupId), {
-    onSuccess: () => {
-      toast({ title: 'Törölted a csoportot!', status: 'success' })
-      navigate('/groups')
-    },
-    onError: mutationOnError
-  })
+  const leaveGroupMutation = useLeaveGroupMutation(onErrorFn)
+
+  const deleteGroupMutation = useDeleteGroupMutation(() => {
+    toast({ title: 'Törölted a csoportot!', status: 'success' })
+    navigate('/groups')
+  }, onErrorFn)
 
   const deleteGroup = () => {
     // TODO confirm modal

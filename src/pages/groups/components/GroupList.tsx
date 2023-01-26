@@ -1,8 +1,9 @@
-import { Avatar, Badge, Box, Button, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react'
-import { useMutation } from 'react-query'
+import { Avatar, Badge, Box, Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
+import { useJoinGroupMutation, useLeaveGroupMutation } from '../../../api/hooks/groupMutationHooks'
+import { KonziError } from '../../../api/model/error.model'
 import { GroupModel, GroupRoles } from '../../../api/model/group.model'
-import { groupModule } from '../../../api/modules/group.module'
+import { generateToastParams } from '../../../util/generateToastParams'
 import { currentUser } from '../demoData'
 import { GroupPreview } from '../types/groupPreview'
 import { GroupListSkeleton } from './GroupListSkeleton'
@@ -16,17 +17,25 @@ type Props = {
 }
 
 export const GroupList = ({ groups, title, noGroupsMessage, loading = false, refetchList }: Props) => {
-  const joinGroupMutation = useMutation((groupId: number) => groupModule.joinGroup(groupId))
-  const leaveGroupMutation = useMutation((groupId: number) => groupModule.leaveGroup(groupId))
-
-  const joinGroup = async (group: GroupModel) => {
-    await joinGroupMutation.mutateAsync(group.id)
+  const toast = useToast()
+  const onErrorFn = (e: KonziError) => {
+    toast(generateToastParams(e))
+  }
+  const generateSuccessFn = (successMessage: string) => () => {
+    toast({ title: successMessage, status: 'success' })
     refetchList()
   }
 
-  const leaveGroup = async (group: GroupModel) => {
-    await leaveGroupMutation.mutateAsync(group.id)
-    refetchList()
+  const { mutate: joinGroup } = useJoinGroupMutation(generateSuccessFn('Csatlakoztál a csoporthoz!'), onErrorFn)
+  const { mutate: leaveGroup } = useLeaveGroupMutation(onErrorFn)
+
+  const undoJoin = (group: GroupModel) => {
+    leaveGroup(group.id, {
+      onSuccess: () => {
+        toast({ title: 'Visszavontad a jelentkezésed!', status: 'success' })
+        refetchList()
+      }
+    })
   }
 
   if (loading) {
@@ -65,12 +74,12 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, ref
                   {(g.currentUserRole == GroupRoles.PENDING || g.currentUserRole == GroupRoles.NONE) && (
                     <VStack p={2} justifyContent="center">
                       {g.currentUserRole == GroupRoles.PENDING && (
-                        <Button colorScheme="red" onClick={() => leaveGroup(g)} width="100%">
+                        <Button colorScheme="red" onClick={() => undoJoin(g)} width="100%">
                           Kérelem visszavonása
                         </Button>
                       )}
                       {g.currentUserRole == GroupRoles.NONE && (
-                        <Button colorScheme="brand" onClick={() => joinGroup(g)} width="100%">
+                        <Button colorScheme="brand" onClick={() => joinGroup(g.id)} width="100%">
                           Csatlakozás
                         </Button>
                       )}

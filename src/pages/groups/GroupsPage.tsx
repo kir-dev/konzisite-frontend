@@ -1,20 +1,12 @@
 import { Button, Flex, Heading } from '@chakra-ui/react'
-import { useQuery } from 'react-query'
 import { Link } from 'react-router-dom'
-import { KonziError } from '../../api/model/error.model'
+import { useFecthGroupListQuery } from '../../api/hooks/groupQueryHooks'
 import { GroupRoles } from '../../api/model/group.model'
-import { groupModule } from '../../api/modules/group.module'
 import { ErrorPage } from '../error/ErrorPage'
 import { GroupList } from './components/GroupList'
-import { GroupPreview } from './types/groupPreview'
 
 export const GroupsPage = () => {
-  const {
-    isLoading,
-    data: groups,
-    error,
-    refetch
-  } = useQuery<GroupPreview[], KonziError>('fetchGroups', () => groupModule.fetchGroups(), { retry: false })
+  const { isLoading, data: groups, error, refetch } = useFecthGroupListQuery()
   if (error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
