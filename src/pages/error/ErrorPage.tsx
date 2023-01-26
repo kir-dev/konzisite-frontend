@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, Image, VStack } from '@chakra-ui/react'
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, Image, useToast, VStack } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { FaChevronLeft } from 'react-icons/fa'
 import { To, useLocation, useNavigate } from 'react-router-dom'
@@ -15,6 +15,7 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
   const { state } = useLocation()
   const { onLogout } = useAuthContext()
   const navigate = useNavigate()
+  const toast = useToast()
   const {
     title: t,
     messages: m,
@@ -27,6 +28,7 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
 
   useEffect(() => {
     if (status === 401) {
+      toast({ title: '401 Nem vagy bejelentkezve', status: 'error' })
       onLogout('/login')
     }
   }, [])

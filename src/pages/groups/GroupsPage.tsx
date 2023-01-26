@@ -1,27 +1,22 @@
-import { Button, Heading } from '@chakra-ui/react'
-import { AxiosError } from 'axios'
+import { Button, Flex, Heading } from '@chakra-ui/react'
 import { useQuery } from 'react-query'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { KonziError } from '../../api/model/error.model'
 import { GroupRoles } from '../../api/model/group.model'
 import { groupModule } from '../../api/modules/group.module'
 import { ErrorPage } from '../error/ErrorPage'
 import { GroupList } from './components/GroupList'
+import { GroupPreview } from './types/groupPreview'
 
 export const GroupsPage = () => {
-  const { isLoading, data: groups, error, refetch } = useQuery('fetchGroups', () => groupModule.fetchGroups(), { retry: false })
-  const navigate = useNavigate()
-
-  //TODO
+  const {
+    isLoading,
+    data: groups,
+    error,
+    refetch
+  } = useQuery<GroupPreview[], KonziError>('fetchGroups', () => groupModule.fetchGroups(), { retry: false })
   if (error) {
-    const err = error as AxiosError<{ message: string }>
-    return (
-      <ErrorPage
-        backPath={'/'}
-        status={err?.response?.status}
-        title={err?.response?.data.message}
-        messages={['VALAMI HIBA sadsa']}
-      ></ErrorPage>
-    )
+    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} messages={[error.error || '']}></ErrorPage>
   }
 
   return (
@@ -29,22 +24,25 @@ export const GroupsPage = () => {
       <Heading size="xl" textAlign="center" mb={3}>
         Csoportok
       </Heading>
-      <Button as={Link} to="/groups/new" colorScheme="brand">
-        Új csoport létrehozása
-      </Button>
+      <Flex justify="flex-end">
+        <Button as={Link} to="/groups/new" colorScheme="brand">
+          Új csoport létrehozása
+        </Button>
+      </Flex>
+
       <GroupList
         groups={groups?.filter((g) => g.currentUserRole !== GroupRoles.NONE)}
         title="Saját csoportok"
         noGroupsMessage="Még nem vagy csoport tagja sem!"
         loading={isLoading}
-        refetch={refetch}
+        refetchList={refetch}
       />
       <GroupList
         groups={groups?.filter((g) => g.currentUserRole === GroupRoles.NONE)}
         title="Többi csoport"
         noGroupsMessage="Nincs több csoport"
         loading={isLoading}
-        refetch={refetch}
+        refetchList={refetch}
       />
     </>
   )

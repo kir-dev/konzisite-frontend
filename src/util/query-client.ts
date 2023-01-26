@@ -14,22 +14,16 @@ export const initAxios = () => {
 
     return config
   })
-}
-//TODO
-/*export const setupResponseInterceptor = (navigate: NavigateFunction) => {
+
   axios.interceptors.response.use(
     (response) => {
       return response
     },
     (error) => {
-      if (error.response.status === 401) {
-        navigate('/login')
-      } else {
-        return Promise.reject(error)
-      }
+      return Promise.reject(error.response.data)
     }
   )
-}*/
+}
 
 export const queryClient = new QueryClient({
   defaultOptions: {

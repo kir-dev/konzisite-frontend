@@ -1,65 +1,36 @@
-import { Avatar, Badge, Box, Button, Heading, HStack, Skeleton, SkeletonCircle, Stack, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Badge, Box, Button, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react'
 import { useMutation } from 'react-query'
 import { Link } from 'react-router-dom'
 import { GroupModel, GroupRoles } from '../../../api/model/group.model'
 import { groupModule } from '../../../api/modules/group.module'
 import { currentUser } from '../demoData'
 import { GroupPreview } from '../types/groupPreview'
+import { GroupListSkeleton } from './GroupListSkeleton'
 
 type Props = {
   title: string
   noGroupsMessage: string
   groups?: GroupPreview[]
   loading?: boolean
-  refetch: () => void
+  refetchList: () => void
 }
 
-export const GroupList = ({ groups, title, noGroupsMessage, loading = false, refetch }: Props) => {
+export const GroupList = ({ groups, title, noGroupsMessage, loading = false, refetchList }: Props) => {
   const joinGroupMutation = useMutation((groupId: number) => groupModule.joinGroup(groupId))
   const leaveGroupMutation = useMutation((groupId: number) => groupModule.leaveGroup(groupId))
 
   const joinGroup = async (group: GroupModel) => {
     await joinGroupMutation.mutateAsync(group.id)
-    refetch()
+    refetchList()
   }
 
   const leaveGroup = async (group: GroupModel) => {
     await leaveGroupMutation.mutateAsync(group.id)
-    refetch()
+    refetchList()
   }
 
   if (loading) {
-    return (
-      <>
-        <Heading mb={4} mt={3} size="lg">
-          {title}
-        </Heading>
-        <VStack alignItems="stretch">
-          <Box shadow="md" borderRadius={8} borderWidth={1}>
-            <Stack direction={['column', 'row']}>
-              <HStack flexGrow={1} p={4}>
-                <SkeletonCircle size="48px" />
-                <VStack flexGrow={1} alignItems="flex-start">
-                  <Skeleton height="20px" width="50%" />
-                  <Skeleton height="20px" width="20%" />
-                </VStack>
-              </HStack>
-            </Stack>
-          </Box>
-          <Box shadow="md" borderRadius={8} borderWidth={1}>
-            <Stack direction={['column', 'row']}>
-              <HStack flexGrow={1} p={4}>
-                <SkeletonCircle size="48px" />
-                <VStack flexGrow={1} alignItems="flex-start">
-                  <Skeleton height="20px" width="60%" />
-                  <Skeleton height="20px" width="90%" />
-                </VStack>
-              </HStack>
-            </Stack>
-          </Box>
-        </VStack>
-      </>
-    )
+    return <GroupListSkeleton title={title} />
   } else {
     return (
       <>
