@@ -20,7 +20,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const [loading, setLoading] = useState(!newConsultation)
   const [name, setName] = useState('')
   const [location, setLocation] = useState('')
-  const [description, setDescription] = useState('')
+  const [description, setDescription] = useState<string | undefined>('')
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [subject, setSubject] = useState<SubjectModel | undefined>(undefined)

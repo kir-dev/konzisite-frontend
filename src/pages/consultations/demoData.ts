@@ -6,6 +6,7 @@ import { ConsultationPreview } from './types/consultationPreview'
 export const testConsultationPreview: ConsultationPreview[] = [
   {
     id: 1,
+    archived: false,
     location: '814',
     startDate: new Date('2021-11-12T16:00:00Z'),
     endDate: new Date('2021-11-12T18:00:00Z'),
@@ -34,6 +35,7 @@ export const testConsultationPreview: ConsultationPreview[] = [
   },
   {
     id: 2,
+    archived: false,
     location: '1317',
     startDate: new Date('2022-02-12T16:00:00Z'),
     endDate: new Date('2022-02-12T18:00:00Z'),
@@ -70,6 +72,7 @@ export const testConsultationPreview: ConsultationPreview[] = [
   },
   {
     id: 4,
+    archived: false,
     location: '817',
     startDate: new Date('2022-02-12T16:00:00Z'),
     endDate: new Date('2022-02-12T18:00:00Z'),
@@ -105,6 +108,7 @@ export const testConsultationPreview: ConsultationPreview[] = [
 export const testConsultationDetails: ConsultationDetails[] = [
   {
     id: 1,
+    archived: false,
     location: '814',
     startDate: new Date('2021-11-12T16:00:00Z'),
     endDate: new Date('2021-11-12T18:00:00Z'),
@@ -168,6 +172,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
   },
   {
     id: 2,
+    archived: false,
     location: '1317',
     startDate: new Date('2022-02-12T16:00:00Z'),
     endDate: new Date('2022-02-12T18:00:00Z'),
@@ -236,6 +241,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
   },
   {
     id: 4,
+    archived: false,
     location: '817',
     startDate: new Date('2022-02-12T16:00:00Z'),
     endDate: new Date('2022-02-12T18:00:00Z'),

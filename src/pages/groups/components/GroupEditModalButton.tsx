@@ -22,6 +22,7 @@ import { CreateGroup } from '../types/createGroup'
 
 type Props = {
   buttonText: string
+  buttonWidth?: string
   modalTitle: string
   successMessage: string
   previousName?: string
@@ -29,7 +30,15 @@ type Props = {
   refetch: () => void
 }
 
-export const GroupEditModal = ({ buttonText, modalTitle, previousName = '', mutation, successMessage, refetch }: Props) => {
+export const GroupEditModalButton = ({
+  buttonText,
+  buttonWidth,
+  modalTitle,
+  previousName = '',
+  mutation,
+  successMessage,
+  refetch
+}: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [name, setName] = useState<string>(previousName)
   const toast = useToast()
@@ -42,9 +51,6 @@ export const GroupEditModal = ({ buttonText, modalTitle, previousName = '', muta
       {
         onSuccess: () => {
           toast({ title: successMessage, status: 'success' })
-          if (!previousName) {
-            setName('')
-          }
           refetch()
           onClose()
         },
@@ -56,11 +62,18 @@ export const GroupEditModal = ({ buttonText, modalTitle, previousName = '', muta
   }
   return (
     <>
-      <Button colorScheme="brand" onClick={onOpen}>
+      <Button
+        colorScheme="brand"
+        width={buttonWidth}
+        onClick={() => {
+          setName(previousName)
+          onOpen()
+        }}
+      >
         {buttonText}
       </Button>
 
-      <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
+      <Modal isCentered motionPreset="slideInBottom" initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <form>

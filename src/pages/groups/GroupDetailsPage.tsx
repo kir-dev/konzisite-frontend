@@ -31,14 +31,14 @@ export const GroupDetailsPage = () => {
             <Heading textAlign="center" mb={3}>
               {group.name}
             </Heading>
-            <Stack direction={['column', 'row']} justifyContent="space-between" mb={3}>
+            <Stack direction={['column-reverse', 'row']} justifyContent="space-between" mb={3}>
               <VStack alignItems="flex-start" spacing={3}>
                 <Heading size="md">Létrehozva: {new Date(group.createdAt).toLocaleDateString('hu-HU')}</Heading>
                 {<Heading size="md">Szerepköröd: {translateGroupRole[group.currentUserRole]}</Heading>}
               </VStack>
-              <Stack direction={['row', 'column']} align="flex-end">
+              <VStack justify={['center', 'flex-end']} align="flex-end">
                 <GroupOptionsButton group={group} refetchDetails={refetch} />
-              </Stack>
+              </VStack>
             </Stack>
             {[GroupRoles.ADMIN, GroupRoles.OWNER].includes(group.currentUserRole) && (
               <>
