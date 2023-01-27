@@ -10,11 +10,12 @@ interface GroupMutationParams {
   userId: number
 }
 
-export const useCreateGroupMutation = (onSuccess: () => void, onError: (e: KonziError) => void) => {
-  return useMutation<GroupModel, KonziError, CreateGroup>(async (formData) => (await axios.post('/groups/', formData)).data, {
-    onSuccess,
-    onError
-  })
+export const useCreateGroupMutation = () => {
+  return useMutation<GroupModel, KonziError, CreateGroup>(async (formData) => (await axios.post('/groups/', formData)).data)
+}
+
+export const useEditGroupMutation = (groupId: number) => {
+  return useMutation<GroupModel, KonziError, CreateGroup>(async (formData) => (await axios.patch(`/groups/${groupId}`, formData)).data)
 }
 
 export const useDeleteGroupMutation = (onSuccess: () => void, onError: (e: KonziError) => void) => {

@@ -1,10 +1,16 @@
 import { Button, useToast } from '@chakra-ui/react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDeleteGroupMutation, useJoinGroupMutation, useLeaveGroupMutation } from '../../../api/hooks/groupMutationHooks'
+import { useNavigate } from 'react-router-dom'
+import {
+  useDeleteGroupMutation,
+  useEditGroupMutation,
+  useJoinGroupMutation,
+  useLeaveGroupMutation
+} from '../../../api/hooks/groupMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { GroupRoles } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { GroupDetails } from '../types/groupDetails'
+import { GroupEditModal } from './GroupEditModal'
 
 type props = {
   group: GroupDetails
@@ -57,9 +63,14 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
     case GroupRoles.OWNER:
       return (
         <>
-          <Button as={Link} to={`/groups/${group.id}/edit`} colorScheme="brand">
-            Szerkesztés
-          </Button>
+          <GroupEditModal
+            buttonText="Szerkesztés"
+            modalTitle="Csoport szerkesztése"
+            successMessage="Csoport sikeresen szerkesztve"
+            mutation={useEditGroupMutation(group.id)}
+            refetch={refetchDetails}
+            previousName={group.name}
+          />
           <Button colorScheme="red" onClick={deleteGroup}>
             Törlés
           </Button>

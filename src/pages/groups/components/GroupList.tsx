@@ -1,10 +1,9 @@
-import { Avatar, Badge, Box, Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
+import { Avatar, Badge, Box, Button, Heading, HStack, SimpleGrid, Stack, Text, useToast, VStack } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { useJoinGroupMutation, useLeaveGroupMutation } from '../../../api/hooks/groupMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { GroupModel, GroupRoles } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
-import { currentUser } from '../demoData'
 import { GroupPreview } from '../types/groupPreview'
 import { GroupListSkeleton } from './GroupListSkeleton'
 
@@ -49,25 +48,18 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, ref
         {groups != undefined && groups.length == 0 ? (
           <Text>{noGroupsMessage}</Text>
         ) : (
-          <VStack alignItems="stretch" mb={3}>
+          <SimpleGrid columns={{ sm: 1, lg: 2 }} gap={4}>
             {groups?.map((g) => (
               <Box key={g.id} shadow="md" borderRadius={8} borderWidth={1}>
-                <Stack direction={['column', 'row']}>
-                  <HStack flexGrow={1} as={Link} to={`/groups/${g.id}`} p={4}>
+                <Stack as={Link} to={`/groups/${g.id}`} direction={['column', 'row']} justify="space-between">
+                  <HStack p={4}>
                     <Avatar size="md" name={g.name} src={''} />
-                    <VStack flexGrow={1}>
-                      <HStack justifyContent="space-between" width="100%">
-                        <Stack direction={['column', 'row']} align="center">
-                          <Heading size="md">{g.name}</Heading>
-                          {g.currentUserRole === GroupRoles.PENDING && <Badge colorScheme="red">Függőben</Badge>}
-                        </Stack>
-                        <Heading size="md" textAlign="right">
-                          Tulajdonos: {g.owner.id == currentUser.id ? 'Te' : g.owner.fullName}
-                        </Heading>
-                      </HStack>
-                      <HStack justifyContent="space-between" width="100%">
+                    <VStack flexGrow={1} align="flex-start">
+                      <Heading size="md">{g.name}</Heading>
+
+                      <HStack justify="space-between" align="center">
                         <Text>{g.memberCount} tag</Text>
-                        <Text textAlign="right">Létrehozva: {new Date(g.createdAt).toLocaleDateString('hu-HU')}</Text>
+                        {g.currentUserRole === GroupRoles.PENDING && <Badge colorScheme="red">Függőben</Badge>}
                       </HStack>
                     </VStack>
                   </HStack>
@@ -88,7 +80,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, ref
                 </Stack>
               </Box>
             ))}
-          </VStack>
+          </SimpleGrid>
         )}
       </>
     )

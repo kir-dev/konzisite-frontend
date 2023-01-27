@@ -1,8 +1,9 @@
-import { Button, Flex, Heading } from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
+import { Flex, Heading } from '@chakra-ui/react'
+import { useCreateGroupMutation } from '../../api/hooks/groupMutationHooks'
 import { useFecthGroupListQuery } from '../../api/hooks/groupQueryHooks'
 import { GroupRoles } from '../../api/model/group.model'
 import { ErrorPage } from '../error/ErrorPage'
+import { GroupEditModal } from './components/GroupEditModal'
 import { GroupList } from './components/GroupList'
 
 export const GroupsPage = () => {
@@ -17,9 +18,13 @@ export const GroupsPage = () => {
         Csoportok
       </Heading>
       <Flex justify="flex-end">
-        <Button as={Link} to="/groups/new" colorScheme="brand">
-          Új csoport létrehozása
-        </Button>
+        <GroupEditModal
+          buttonText="Új csoport"
+          modalTitle="Csoport létrehozása"
+          successMessage="Csoport sikeresen létrehozva"
+          mutation={useCreateGroupMutation()}
+          refetch={refetch}
+        />
       </Flex>
 
       <GroupList
