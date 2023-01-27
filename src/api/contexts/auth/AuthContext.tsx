@@ -16,7 +16,7 @@ export type AuthContextType = {
   loggedInUserError: unknown
   onLoginSuccess: (jwt: string) => void
   onLoginStarted: () => void
-  onLogout: () => void
+  onLogout: (path?: string) => void
   refetchUser: () => Promise<void>
 }
 
@@ -46,11 +46,11 @@ export const AuthProvider: FC<HasChildren> = ({ children }) => {
     window.location.href = `${API_HOST}/auth/login`
   }
 
-  const onLogout = () => {
+  const onLogout = (path: string = '/') => {
     Cookies.remove(CookieKeys.KONZI_JWT_TOKEN)
     setIsLoggedIn(false)
     queryClient.invalidateQueries('currentUser')
-    navigate('/')
+    navigate(path)
   }
 
   const refetchUser = async () => {

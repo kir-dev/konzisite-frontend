@@ -1,13 +1,13 @@
 export interface GroupModel {
   id: number
   name: string
-  createdAt: Date
+  createdAt: string
 }
 
 export enum GroupRoles {
-  PENDING = 'Függőben',
-  MEMBER = 'Tag',
-  ADMIN = 'Admin',
-  OWNER = 'Tulajdonos',
-  NONE = 'Nincs'
+  PENDING = 'PENDING',
+  MEMBER = 'MEMBER',
+  ADMIN = 'ADMIN',
+  OWNER = 'OWNER',
+  NONE = 'NONE'
 }

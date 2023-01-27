@@ -1,32 +1,45 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, VStack } from '@chakra-ui/react'
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, Image, useToast, VStack } from '@chakra-ui/react'
+import { useEffect } from 'react'
 import { FaChevronLeft } from 'react-icons/fa'
 import { To, useLocation, useNavigate } from 'react-router-dom'
+import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 
 type ErrorPageState = {
   title?: string
   messages?: string[]
   backPath?: To
+  status?: number
 }
 
-export const ErrorPage = ({ title, messages, backPath }: ErrorPageState) => {
+export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState) => {
   const { state } = useLocation()
+  const { onLogout } = useAuthContext()
   const navigate = useNavigate()
+  const toast = useToast()
   const {
     title: t,
     messages: m,
     backPath: bp
   } = (state as ErrorPageState) || {
     title: 'This is a blank error page',
-    messages: ['You might have found yourself here by reloading the error page or copying a link from somewhere else.'],
+    messages: [], //['You might have found yourself here by reloading the error page or copying a link from somewhere else.'],
     backPath: '/'
   }
 
-  return (
+  useEffect(() => {
+    if (status === 401) {
+      toast({ title: '401 Nem vagy bejelentkezve', status: 'error' })
+      onLogout('/login')
+    }
+  }, [])
+
+  return status === 401 ? null : (
     <Alert p={10} status="error" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center">
       <AlertIcon boxSize="40px" mr={0} />
       <AlertTitle mt={4} mb={3} fontSize="2xl">
         {title || t || 'Error occured'}
       </AlertTitle>
+      {status && <Image maxHeight={400} src={`/img/${status}.jpg`} />}
       <AlertDescription>
         <VStack justifyContent="center" spacing={1}>
           {messages?.filter(Boolean).map((errorMsg) => (
@@ -37,7 +50,6 @@ export const ErrorPage = ({ title, messages, backPath }: ErrorPageState) => {
               {m?.filter(Boolean).map((errorMsg) => (
                 <span key={errorMsg}>{errorMsg}</span>
               ))}
-              <span>See console for more information</span>
             </>
           )}
         </VStack>
@@ -52,7 +64,7 @@ export const ErrorPage = ({ title, messages, backPath }: ErrorPageState) => {
           else navigate(-1)
         }}
       >
-        Go back
+        Vissza
       </Button>
     </Alert>
   )

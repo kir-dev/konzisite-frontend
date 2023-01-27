@@ -1,32 +1,76 @@
-import { Button } from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
+import { Button, useToast } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom'
+import {
+  useDeleteGroupMutation,
+  useEditGroupMutation,
+  useJoinGroupMutation,
+  useLeaveGroupMutation
+} from '../../../api/hooks/groupMutationHooks'
+import { KonziError } from '../../../api/model/error.model'
 import { GroupRoles } from '../../../api/model/group.model'
+import { generateToastParams } from '../../../util/generateToastParams'
 import { GroupDetails } from '../types/groupDetails'
+import { GroupEditModal } from './GroupEditModal'
 
 type props = {
   group: GroupDetails
+  refetchDetails: () => {}
 }
 
-export const GroupOptionsButton = ({ group }: props) => {
+export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
+  const toast = useToast()
+  const navigate = useNavigate()
+
+  const onErrorFn = (e: KonziError) => {
+    toast(generateToastParams(e))
+  }
+
+  const joinGroupMutation = useJoinGroupMutation(() => {
+    toast({ title: 'Csatlakoztál a csoporthoz!', status: 'success' })
+    refetchDetails()
+  }, onErrorFn)
+
+  const leaveGroupMutation = useLeaveGroupMutation(onErrorFn)
+
+  const deleteGroupMutation = useDeleteGroupMutation(() => {
+    toast({ title: 'Törölted a csoportot!', status: 'success' })
+    navigate('/groups')
+  }, onErrorFn)
+
   const deleteGroup = () => {
-    alert(`delete group ${group?.id}`)
+    // TODO confirm modal
+    deleteGroupMutation.mutate(group.id)
   }
 
-  const joinGroup = () => {
-    alert(`join group ${group?.id}`)
+  const undoRequest = () => {
+    leaveGroupMutation.mutate(group.id, {
+      onSuccess: () => {
+        toast({ title: 'Visszavontad a csatlakozási kérelmed!', status: 'success' })
+        refetchDetails()
+      }
+    })
   }
-
   const leaveGroup = () => {
-    alert(`leave group ${group?.id}`)
+    leaveGroupMutation.mutate(group.id, {
+      onSuccess: () => {
+        toast({ title: 'Kiléptél a csoportból!', status: 'success' })
+        refetchDetails()
+      }
+    })
   }
 
   switch (group.currentUserRole) {
     case GroupRoles.OWNER:
       return (
         <>
-          <Button as={Link} to={`/groups/${group.id}/edit`} colorScheme="brand">
-            Szerkesztés
-          </Button>
+          <GroupEditModal
+            buttonText="Szerkesztés"
+            modalTitle="Csoport szerkesztése"
+            successMessage="Csoport sikeresen szerkesztve"
+            mutation={useEditGroupMutation(group.id)}
+            refetch={refetchDetails}
+            previousName={group.name}
+          />
           <Button colorScheme="red" onClick={deleteGroup}>
             Törlés
           </Button>
@@ -41,13 +85,13 @@ export const GroupOptionsButton = ({ group }: props) => {
       )
     case GroupRoles.PENDING:
       return (
-        <Button colorScheme="red" onClick={leaveGroup}>
+        <Button colorScheme="red" onClick={undoRequest}>
           Kérelem visszavonása
         </Button>
       )
     default:
       return (
-        <Button colorScheme="brand" onClick={joinGroup}>
+        <Button colorScheme="brand" onClick={() => joinGroupMutation.mutate(group.id)}>
           Csatlakozás
         </Button>
       )

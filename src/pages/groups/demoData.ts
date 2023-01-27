@@ -1,9 +1,8 @@
 import { GroupRoles } from '../../api/model/group.model'
 import { UserModel } from '../../api/model/user.model'
-import { GroupDetails } from './types/groupDetails'
 import { GroupPreview } from './types/groupPreview'
 
-export const testGroupsDetails: GroupDetails[] = [
+/*export const testGroupsDetails: GroupDetails[] = [
   {
     id: 1,
     name: 'Legjobb csoport',
@@ -26,7 +25,7 @@ export const testGroupsDetails: GroupDetails[] = [
       }
     ],
     currentUserRole: GroupRoles.NONE,
-    createdAt: new Date('2021-01-01')
+    createdAt: new Date('2021-01-01').toLocaleDateString()
   },
   {
     id: 2,
@@ -68,7 +67,7 @@ export const testGroupsDetails: GroupDetails[] = [
       }
     ],
     currentUserRole: GroupRoles.ADMIN,
-    createdAt: new Date('2021-05-29')
+    createdAt: new Date('2021-05-29').toLocaleDateString()
   },
   {
     id: 5,
@@ -119,7 +118,7 @@ export const testGroupsDetails: GroupDetails[] = [
       }
     ],
     currentUserRole: GroupRoles.OWNER,
-    createdAt: new Date('2022-05-15')
+    createdAt: new Date('2022-05-15').toLocaleDateString()
   },
   {
     id: 8,
@@ -170,10 +169,10 @@ export const testGroupsDetails: GroupDetails[] = [
       }
     ],
     currentUserRole: GroupRoles.PENDING,
-    createdAt: new Date('2022-08-15')
+    createdAt: new Date('2022-08-15').toLocaleDateString()
   }
 ]
-
+*/
 export const testGroupsPreview: GroupPreview[] = [
   {
     id: 1,
@@ -187,7 +186,7 @@ export const testGroupsPreview: GroupPreview[] = [
     },
     memberCount: 1,
     currentUserRole: GroupRoles.NONE,
-    createdAt: new Date('2021-01-01')
+    createdAt: new Date('2021-01-01').toLocaleDateString()
   },
   {
     id: 2,
@@ -201,7 +200,7 @@ export const testGroupsPreview: GroupPreview[] = [
     },
     memberCount: 3,
     currentUserRole: GroupRoles.ADMIN,
-    createdAt: new Date('2021-05-29')
+    createdAt: new Date('2021-05-29').toLocaleDateString()
   },
   {
     id: 5,
@@ -215,7 +214,7 @@ export const testGroupsPreview: GroupPreview[] = [
     },
     memberCount: 4,
     currentUserRole: GroupRoles.OWNER,
-    createdAt: new Date('2022-05-15')
+    createdAt: new Date('2022-05-15').toLocaleDateString()
   },
   {
     id: 8,
@@ -229,7 +228,7 @@ export const testGroupsPreview: GroupPreview[] = [
     },
     memberCount: 4,
     currentUserRole: GroupRoles.PENDING,
-    createdAt: new Date('2022-08-15')
+    createdAt: new Date('2022-08-15').toLocaleDateString()
   }
 ]
 

@@ -225,7 +225,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
       {
         id: 1,
         name: 'Legjobb csoport',
-        createdAt: new Date('2021-01-01')
+        createdAt: new Date('2021-01-01').toLocaleDateString()
       }
     ],
     request: {

@@ -4,7 +4,9 @@ export interface ConsultationModel {
   startDate: Date
   endDate: Date
   name: string
-  descMarkdown: string
+  descMarkdown?: string
+  fileName?: string
+  archived: boolean
   createdAt?: Date
   updatedAt?: Date
 }

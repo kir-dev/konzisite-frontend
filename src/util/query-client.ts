@@ -14,6 +14,18 @@ export const initAxios = () => {
 
     return config
   })
+
+  axios.interceptors.response.use(
+    (response) => {
+      return response
+    },
+    (error) => {
+      if (Array.isArray(error.response.data.message)) {
+        return Promise.reject({ ...error.response.data, message: error.response.data.message.join(', ') })
+      }
+      return Promise.reject(error.response.data)
+    }
+  )
 }
 
 export const queryClient = new QueryClient({

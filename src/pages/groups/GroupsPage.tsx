@@ -1,37 +1,46 @@
-import { Button, Heading } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Flex, Heading } from '@chakra-ui/react'
+import { useCreateGroupMutation } from '../../api/hooks/groupMutationHooks'
+import { useFecthGroupListQuery } from '../../api/hooks/groupQueryHooks'
 import { GroupRoles } from '../../api/model/group.model'
+import { ErrorPage } from '../error/ErrorPage'
+import { GroupEditModal } from './components/GroupEditModal'
 import { GroupList } from './components/GroupList'
-import { testGroupsPreview } from './demoData'
-import { GroupPreview } from './types/groupPreview'
 
 export const GroupsPage = () => {
-  const [groups, setGroups] = useState<GroupPreview[]>([])
-  const [joinedGroups, setJoinedGroups] = useState<GroupPreview[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    setTimeout(() => {
-      setGroups(testGroupsPreview)
-      setLoading(false)
-    }, 1000)
-  }, [])
-
-  useEffect(() => {
-    setJoinedGroups(groups.filter((g) => g.currentUserRole != GroupRoles.NONE))
-  }, [groups])
+  const { isLoading, data: groups, error, refetch } = useFecthGroupListQuery()
+  if (error) {
+    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+  }
 
   return (
     <>
       <Heading size="xl" textAlign="center" mb={3}>
         Csoportok
       </Heading>
-      <Button as={Link} to="/groups/new" colorScheme="brand">
-        Új csoport létrehozása
-      </Button>
-      <GroupList groups={joinedGroups} title="Saját csoportok" showOwner={true} loading={loading} />
-      <GroupList groups={groups} title="Minden csoport" showJoinButton={true} loading={loading} />
+      <Flex justify="flex-end">
+        <GroupEditModal
+          buttonText="Új csoport"
+          modalTitle="Csoport létrehozása"
+          successMessage="Csoport sikeresen létrehozva"
+          mutation={useCreateGroupMutation()}
+          refetch={refetch}
+        />
+      </Flex>
+
+      <GroupList
+        groups={groups?.filter((g) => g.currentUserRole !== GroupRoles.NONE)}
+        title="Saját csoportok"
+        noGroupsMessage="Még nem vagy csoport tagja sem!"
+        loading={isLoading}
+        refetchList={refetch}
+      />
+      <GroupList
+        groups={groups?.filter((g) => g.currentUserRole === GroupRoles.NONE)}
+        title="Többi csoport"
+        noGroupsMessage="Nincs több csoport"
+        loading={isLoading}
+        refetchList={refetch}
+      />
     </>
   )
 }

@@ -1,9 +1,7 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Skeleton, VStack } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { Skeleton, VStack } from '@chakra-ui/react'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { GroupRoles } from '../../api/model/group.model'
-import { ErrorPage } from '../error/ErrorPage'
-import { testGroupsDetails } from './demoData'
+//import { testGroupsDetails } from './demoData'
 import { GroupDetails } from './types/groupDetails'
 
 type Props = {
@@ -18,14 +16,14 @@ export const EditGroupPage = ({ newGroup = false }: Props) => {
 
   const error = name == ''
 
-  useEffect(() => {
+  /*useEffect(() => {
     setTimeout(() => {
       const g = testGroupsDetails.find((g) => g.id === groupId)
       setGroup(g)
       setName(g?.name ?? '')
       setLoading(false)
     }, 1000)
-  }, [])
+  }, [])*/
 
   const submit = () => {
     if (newGroup) {
@@ -35,7 +33,7 @@ export const EditGroupPage = ({ newGroup = false }: Props) => {
     }
   }
 
-  if (loading)
+  if (/*loading*/ true)
     return (
       <>
         <VStack alignItems="flex-start">
@@ -46,7 +44,7 @@ export const EditGroupPage = ({ newGroup = false }: Props) => {
         </VStack>
       </>
     )
-  else
+  /* else
     return (
       <>
         {(group === undefined || group.currentUserRole !== GroupRoles.OWNER) && !newGroup ? (
@@ -71,5 +69,5 @@ export const EditGroupPage = ({ newGroup = false }: Props) => {
           </>
         )}
       </>
-    )
+    )*/
 }
