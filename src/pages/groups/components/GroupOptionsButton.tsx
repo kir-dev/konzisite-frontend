@@ -8,9 +8,10 @@ import {
 } from '../../../api/hooks/groupMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { GroupRoles } from '../../../api/model/group.model'
+import { ConfirmDialogButton } from '../../../components/commons/ConfirmDialogButton'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { GroupDetails } from '../types/groupDetails'
-import { GroupEditModal } from './GroupEditModal'
+import { GroupEditModalButton } from './GroupEditModalButton'
 
 type props = {
   group: GroupDetails
@@ -63,17 +64,24 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
     case GroupRoles.OWNER:
       return (
         <>
-          <GroupEditModal
+          <GroupEditModalButton
             buttonText="Szerkesztés"
+            buttonWidth="100%"
             modalTitle="Csoport szerkesztése"
             successMessage="Csoport sikeresen szerkesztve"
             mutation={useEditGroupMutation(group.id)}
             refetch={refetchDetails}
             previousName={group.name}
           />
-          <Button colorScheme="red" onClick={deleteGroup}>
-            Törlés
-          </Button>
+          <ConfirmDialogButton
+            buttonColorSchene="red"
+            buttonWidth="100%"
+            buttonText="Törlés"
+            headerText="Csoport törlése"
+            bodyText="Biztos törölni szeretnéd a csoportot?"
+            confirmButtonText="Törlés"
+            confirmAction={deleteGroup}
+          />
         </>
       )
     case GroupRoles.ADMIN:

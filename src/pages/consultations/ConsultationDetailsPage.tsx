@@ -64,7 +64,7 @@ export const ConsultationDetailsPage = () => {
               <Button colorScheme="brand">Megyek</Button>
             )}
           </Stack>
-          {consultation.descMarkdown !== '' && (
+          {consultation.descMarkdown && (
             <Box shadow="md" borderRadius={8} borderWidth={1} p={4} width="100%" mb={2}>
               <ReactMarkdown components={ChakraUIRenderer()} children={consultation.descMarkdown} skipHtml />
             </Box>

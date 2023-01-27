@@ -3,7 +3,7 @@ import { useCreateGroupMutation } from '../../api/hooks/groupMutationHooks'
 import { useFecthGroupListQuery } from '../../api/hooks/groupQueryHooks'
 import { GroupRoles } from '../../api/model/group.model'
 import { ErrorPage } from '../error/ErrorPage'
-import { GroupEditModal } from './components/GroupEditModal'
+import { GroupEditModalButton } from './components/GroupEditModalButton'
 import { GroupList } from './components/GroupList'
 
 export const GroupsPage = () => {
@@ -18,7 +18,7 @@ export const GroupsPage = () => {
         Csoportok
       </Heading>
       <Flex justify="flex-end">
-        <GroupEditModal
+        <GroupEditModalButton
           buttonText="Új csoport"
           modalTitle="Csoport létrehozása"
           successMessage="Csoport sikeresen létrehozva"

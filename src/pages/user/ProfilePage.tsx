@@ -17,6 +17,7 @@ const mockProfile: UserDetails = {
   presentations: [
     {
       id: 1,
+      archived: false,
       location: '1317 tanuló',
       startDate: new Date(),
       endDate: new Date(),
@@ -57,6 +58,7 @@ const mockProfile: UserDetails = {
     },
     {
       id: 2,
+      archived: false,
       location: '1317 tanuló',
       startDate: new Date(),
       endDate: new Date(),
@@ -87,6 +89,7 @@ const mockProfile: UserDetails = {
   participations: [
     {
       id: 4,
+      archived: false,
       location: '1317 tanuló',
       startDate: new Date(),
       endDate: new Date(),
