@@ -1,5 +1,5 @@
 import '@fontsource/aclonica/400.css'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { RLayout } from './components/commons/KLayout'
 import './global.css'
 import { AuthorizedPage } from './pages/authorized/AuthorizedPage'
@@ -10,27 +10,19 @@ import { ErrorPage } from './pages/error/ErrorPage'
 import { EditGroupPage } from './pages/groups/EditGroupPage'
 import { GroupDetailsPage } from './pages/groups/GroupDetailsPage'
 import { GroupsPage } from './pages/groups/GroupsPage'
-import { IndexPage } from './pages/index/IndexPage'
 import { LoginPage } from './pages/login/LoginPage'
 import { LogoutPage } from './pages/logout/LogoutPage'
+import { SubjectsPage } from './pages/subjects/SubjectsPage'
 import { ProfilePage } from './pages/user/ProfilePage'
 import { UserBrowserPage } from './pages/user/UserBrowserPage'
 import { UserPage } from './pages/user/UserPage'
-//import { setupResponseInterceptor } from './util/query-client'
 
 export const App = () => {
-  const navigate = useNavigate()
-
-  //TODO
-  /*useEffect(() => {
-    setupResponseInterceptor(navigate)
-  }, [])*/
-
   return (
     <RLayout>
       <Routes>
         <Route path="/">
-          <Route index element={<IndexPage />} />
+          <Route index element={<ConsultationsPage />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="users">
             <Route path=":userId">
@@ -53,6 +45,9 @@ export const App = () => {
             </Route>
             <Route path="new" element={<EditGroupPage newGroup={true} />} />
             <Route index element={<GroupsPage />} />
+          </Route>
+          <Route path="subjects">
+            <Route index element={<SubjectsPage />} />
           </Route>
           <Route path="login" element={<LoginPage />} />
           <Route path="authorized" element={<AuthorizedPage />} />

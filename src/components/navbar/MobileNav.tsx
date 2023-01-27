@@ -9,17 +9,25 @@ type Props = {
 }
 
 const MobileNav: FC<Props> = ({ onNavigate }) => {
-  const { isLoggedIn } = useAuthContext()
+  const { isLoggedIn, loggedInUser } = useAuthContext()
   const [navItems, setNavItems] = useState(NAV_ITEMS)
 
   useEffect(() => {
-    setNavItems(NAV_ITEMS.filter((item) => item.shouldBeShown(isLoggedIn)))
+    setNavItems(NAV_ITEMS.filter((item) => item.shouldBeShown(isLoggedIn, loggedInUser)))
   }, [isLoggedIn])
 
   return (
     <Stack display={{ md: 'none' }} fontWeight={700} fontSize="xl" ml={6} mb={6}>
       {navItems.map((item) => (
-        <HStack key={item.label} as={Link} to={item.path} onClick={onNavigate}>
+        <HStack
+          key={item.label}
+          as={item.external ? undefined : Link}
+          to={item.external ? '' : item.path}
+          onClick={() => {
+            item.onClick()
+            onNavigate()
+          }}
+        >
           <Text textAlign="center" color={useColorModeValue('brand.700', 'white')}>
             {item.label}
           </Text>

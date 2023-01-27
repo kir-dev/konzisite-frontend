@@ -1,53 +1,74 @@
+import { UserModel } from '../api/model/user.model'
+import { API_HOST } from './environment'
+
 export interface INavItem {
   label: string
   path: string
-  shouldBeShown: (isLoggedIn: boolean) => boolean
+  external: boolean
+  onClick: () => void
+  shouldBeShown: (isLoggedIn: boolean, loggedInUser: UserModel | undefined) => boolean
 }
 
 export class NavItem implements INavItem {
   public label: string
   public path: string
+  public external: boolean
+  public onClick: () => void
 
-  public shouldBeShown = (isLoggedIn: boolean) => true
+  public shouldBeShown = (isLoggedIn: boolean, _loggedInUser: UserModel | undefined) => isLoggedIn
 
-  constructor({ label, path }: { label: string; path: string }) {
+  constructor({
+    label,
+    path,
+    onClick = () => {},
+    external = false
+  }: {
+    label: string
+    path: string
+    onClick?: () => void
+    external?: boolean
+  }) {
     this.label = label
     this.path = path
+    this.onClick = onClick
+    this.external = external
   }
 }
 
-const UsersItem = new NavItem({
-  label: 'Felhasználók',
-  path: '/users'
+const SubjectsItem = new NavItem({
+  label: 'Tárgyak',
+  path: '/subjects'
 })
-UsersItem.shouldBeShown = (isLoggedIn: boolean) => isLoggedIn
+SubjectsItem.shouldBeShown = (isLoggedIn: boolean, loggedInUser: UserModel | undefined) => isLoggedIn && (loggedInUser?.isAdmin || false)
 
-const ProfileItem = new NavItem({
-  label: 'Profil',
-  path: '/profile'
+const KonziItem = new NavItem({
+  label: 'Konzultációk',
+  path: '/'
 })
-ProfileItem.shouldBeShown = (isLoggedIn: boolean) => isLoggedIn
+KonziItem.shouldBeShown = (_isLoggedIn: boolean) => true
 
 const LoginItem = new NavItem({
   label: 'Belépés',
-  path: '/login'
+  path: '/login',
+  external: true,
+  onClick: () => (window.location.href = `${API_HOST}/auth/login`)
 })
 LoginItem.shouldBeShown = (isLoggedIn: boolean) => !isLoggedIn
 
 export const NAV_ITEMS: INavItem[] = [
-  new NavItem({
-    label: 'Kezdőlap',
-    path: '/'
-  }),
-  new NavItem({
-    label: 'Konzultációk',
-    path: '/consultations'
-  }),
+  KonziItem,
   new NavItem({
     label: 'Csoportok',
     path: '/groups'
   }),
-  UsersItem,
-  ProfileItem,
+  new NavItem({
+    label: 'Felhasználók',
+    path: '/users'
+  }),
+  SubjectsItem,
+  new NavItem({
+    label: 'Profil',
+    path: '/profile'
+  }),
   LoginItem
 ]

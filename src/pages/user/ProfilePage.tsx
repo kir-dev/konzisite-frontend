@@ -11,6 +11,7 @@ import { UserDetails } from './types/UserDetails'
 const mockProfile: UserDetails = {
   id: 1,
   authSchId: '123',
+  isAdmin: false,
   firstName: 'John',
   fullName: 'Appleseed John',
   email: 'example@gmail.com',
@@ -35,6 +36,7 @@ const mockProfile: UserDetails = {
           value: 5,
           text: 'Yeaaah, eleg jo volt',
           rater: {
+            isAdmin: false,
             id: 1,
             authSchId: 'abc',
             firstName: 'Elek',
@@ -47,6 +49,7 @@ const mockProfile: UserDetails = {
           value: 5,
           text: 'Yeaaah, eleg jo volt szerintem is',
           rater: {
+            isAdmin: false,
             id: 2,
             authSchId: 'abc',
             firstName: 'Elek2',
@@ -76,6 +79,7 @@ const mockProfile: UserDetails = {
           value: 3,
           text: 'Eleg uncsi volt ://',
           rater: {
+            isAdmin: false,
             id: 3,
             authSchId: 'abc',
             firstName: 'Elek3',

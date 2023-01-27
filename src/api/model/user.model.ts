@@ -4,4 +4,5 @@ export interface UserModel {
   firstName: string
   fullName: string
   email: string
+  isAdmin: boolean
 }

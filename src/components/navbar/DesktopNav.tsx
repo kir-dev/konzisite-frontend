@@ -5,11 +5,11 @@ import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { NAV_ITEMS } from '../../util/nav-items'
 
 const DesktopNav: FC = () => {
-  const { isLoggedIn } = useAuthContext()
+  const { isLoggedIn, loggedInUser } = useAuthContext()
   const [navItems, setNavItems] = useState(NAV_ITEMS)
 
   useEffect(() => {
-    setNavItems(NAV_ITEMS.filter((item) => item.shouldBeShown(isLoggedIn)))
+    setNavItems(NAV_ITEMS.filter((item) => item.shouldBeShown(isLoggedIn, loggedInUser)))
   }, [isLoggedIn])
 
   return (
@@ -19,8 +19,9 @@ const DesktopNav: FC = () => {
           flexDir="column"
           alignItems="center"
           key={item.label}
-          as={Link}
-          to={item.path}
+          as={item.external ? undefined : Link}
+          to={item.external ? '' : item.path}
+          onClick={item.onClick}
           px={2}
           py={4}
           variant="ghost"
