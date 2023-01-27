@@ -11,10 +11,7 @@ import { UserList } from './components/UserList'
 
 export const GroupDetailsPage = () => {
   const { groupId } = useParams()
-  if (groupId === undefined) {
-    return <ErrorPage />
-  }
-  const { isLoading, data: group, error, refetch } = useFecthGroupDetailsQuery(+groupId)
+  const { isLoading, data: group, error, refetch } = useFecthGroupDetailsQuery(+groupId!!)
 
   if (error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.error} messages={[error.message]}></ErrorPage>

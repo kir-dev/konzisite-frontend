@@ -156,11 +156,11 @@ export const ProfilePage = () => {
             )}
             <Heading>Tartott konzultációk</Heading>
             {mockProfile.presentations?.map((c) => (
-              <ConsultationListItem c={c} />
+              <ConsultationListItem key={c.id} c={c} />
             ))}
             <Heading>Konzik, amin részt vett</Heading>
             {mockProfile.participations?.map((c) => (
-              <ConsultationListItem c={c} />
+              <ConsultationListItem key={c.id} c={c} />
             ))}
           </VStack>
         </>

@@ -7,6 +7,6 @@ export interface ConsultationModel {
   descMarkdown?: string
   fileName?: string
   archived: boolean
-  createdAt?: Date
-  updatedAt?: Date
+  createdAt?: string
+  updatedAt?: string
 }

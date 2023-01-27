@@ -1,22 +1,16 @@
-import { Button, Heading, VStack } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { Button, Flex, Heading, VStack } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
+import { useFecthConsultationListQuery } from '../../api/hooks/consultationQueryHooks'
+import { ErrorPage } from '../error/ErrorPage'
 import { ConsultationListItem } from './components/ConsultationListItem'
 import { LoadingConsultationList } from './components/LoadingConsultationList'
-import { testConsultationPreview } from './demoData'
-import { ConsultationPreview } from './types/consultationPreview'
 
 export const ConsultationsPage = () => {
-  const [consultaions, setConsultations] = useState<ConsultationPreview[]>([])
-  const [loading, setLoading] = useState(true)
-  useEffect(() => {
-    //setConsultations(axios.get<ConsultationPreview[]>("/consultaions"))
-    setTimeout(() => {
-      setConsultations(testConsultationPreview)
-      setLoading(false)
-    }, 1000)
-  }, [])
+  const { isLoading, data: consultaions, error, refetch } = useFecthConsultationListQuery()
+  if (error) {
+    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+  }
 
   return (
     <>
@@ -24,11 +18,13 @@ export const ConsultationsPage = () => {
       <Heading size="xl" textAlign="center" mb={3}>
         Konzultációk
       </Heading>
-      <Button as={Link} to="/consultations/new" colorScheme="brand">
-        Új konzultáció
-      </Button>
+      <Flex justify="flex-end">
+        <Button as={Link} to="/consultations/new" colorScheme="brand">
+          Új konzultáció
+        </Button>
+      </Flex>
       <VStack alignItems="stretch" mt={3}>
-        {loading ? <LoadingConsultationList /> : consultaions.map((c) => <ConsultationListItem consultation={c} key={c.id} />)}
+        {isLoading ? <LoadingConsultationList /> : consultaions?.map((c) => <ConsultationListItem consultation={c} key={c.id} />)}
       </VStack>
     </>
   )

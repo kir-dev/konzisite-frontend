@@ -1,4 +1,4 @@
-import { Avatar, Badge, Box, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Badge, Box, Heading, HStack, SimpleGrid, Stack, Text, VStack } from '@chakra-ui/react'
 import { FaStar } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { RatingModel } from '../../../api/model/rating.model'
@@ -14,12 +14,13 @@ type Props = {
   })[]
   showRating?: boolean
   showRatingButton?: boolean
+  columns: number
 }
 
-export const UserList = ({ presentations, showRating = true, showRatingButton = false }: Props) => {
+export const UserList = ({ presentations, columns, showRating = true, showRatingButton = false }: Props) => {
   return (
     <>
-      <VStack alignItems="stretch">
+      <SimpleGrid columns={{ sm: 1, md: columns }} gap={4} mb={3}>
         {presentations.map((p) => (
           <Box key={p.id} shadow="md" borderRadius={8} borderWidth={1}>
             <Stack direction={['column', 'row']} width="100%">
@@ -46,7 +47,7 @@ export const UserList = ({ presentations, showRating = true, showRatingButton = 
             </Stack>
           </Box>
         ))}
-      </VStack>
+      </SimpleGrid>
     </>
   )
 }

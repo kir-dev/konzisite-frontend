@@ -1,34 +1,28 @@
 import { Box, Button, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
-import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FaClock, FaMapMarkerAlt } from 'react-icons/fa'
 import ReactMarkdown from 'react-markdown'
 import { Link, useParams } from 'react-router-dom'
+import { useFecthConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { ErrorPage } from '../error/ErrorPage'
 import { LoadingConsultation } from './components/LoadingConsultation'
 import { TargetGroupList } from './components/TargetGroupList'
 import { UserList } from './components/UserList'
-import { currentUser, testConsultationDetails } from './demoData'
-import { ConsultationDetails } from './types/consultationDetails'
+import { currentUser } from './demoData'
 
 export const ConsultationDetailsPage = () => {
-  const [loading, setLoading] = useState(true)
-  const consultationId = parseInt(useParams<{ consultationId: string }>().consultationId ?? '-1')
-  const [consultation, setConsultation] = useState<ConsultationDetails>()
+  const { consultationId } = useParams()
+  const { isLoading, data: consultation, error, refetch } = useFecthConsultationbDetailsQuery(+consultationId!!)
 
-  useEffect(() => {
-    //setConsultations(axios.get<ConsultationFullDetails>("/consultations/id"))
-    setTimeout(() => {
-      setConsultation(testConsultationDetails.find((g) => g.id === consultationId))
-      setLoading(false)
-    }, 1000)
-  }, [])
+  if (error) {
+    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.error} messages={[error.message]}></ErrorPage>
+  }
 
   return (
     <>
       {consultation === undefined ? (
-        loading ? (
+        isLoading ? (
           <LoadingConsultation />
         ) : (
           <ErrorPage title="Nincs ilyen konzultáció" messages={['A konzultáció amit keresel már nem létezik, vagy nem is létezett']} />
@@ -51,8 +45,8 @@ export const ConsultationDetailsPage = () => {
               <HStack>
                 <FaClock />
                 <Text>
-                  {consultation.startDate.toLocaleString('hu-HU', { timeStyle: 'short', dateStyle: 'short' })} -{' '}
-                  {consultation.endDate.toLocaleTimeString('hu-HU', { timeStyle: 'short' })}
+                  {new Date(consultation.startDate).toLocaleString('hu-HU', { timeStyle: 'short', dateStyle: 'short' })} -{' '}
+                  {new Date(consultation.endDate).toLocaleTimeString('hu-HU', { timeStyle: 'short' })}
                 </Text>
               </HStack>
             </VStack>
@@ -74,12 +68,16 @@ export const ConsultationDetailsPage = () => {
           <Heading size="lg" mb={2}>
             Konzitartók ({consultation.presentations.length})
           </Heading>
-          <UserList presentations={consultation.presentations} showRatingButton={consultation.endDate.getTime() < new Date().getTime()} />
+          <UserList
+            columns={1}
+            presentations={consultation.presentations}
+            showRatingButton={new Date(consultation.endDate).getTime() < new Date().getTime()}
+          />
           <TargetGroupList groups={consultation.targetGroups} />
           <Heading size="lg" mt={2} mb={2}>
             Résztvevők ({consultation.participants.length})
           </Heading>
-          <UserList presentations={consultation.participants} showRating={false} />
+          <UserList columns={2} presentations={consultation.participants} showRating={false} />
         </>
       )}
     </>
