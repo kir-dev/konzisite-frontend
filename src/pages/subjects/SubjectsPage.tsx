@@ -26,7 +26,7 @@ export const SubjectsPage = () => {
 
   const createSubjectMutation = useCreateSubjectMutation()
   const updateSubjectMutation = useUpdateSubjectMutation()
-  const { mutate: deleteSubject } = useDeleteSubjectMutation(generateSuccessFn('Tárgy sikeresen törölve'), onErrorFn)
+  const { mutate: deleteSubject } = useDeleteSubjectMutation(onErrorFn)
   if (error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
@@ -69,6 +69,7 @@ export const SubjectsPage = () => {
                   mutation={updateSubjectMutation}
                   previousData={s}
                   refetch={refetch}
+                  deleteAction={deleteSubject}
                 />
               </HStack>
             </Box>

@@ -20,9 +20,8 @@ export const useUpdateSubjectMutation = () => {
   )
 }
 
-export const useDeleteSubjectMutation = (onSuccess: () => void, onError: (e: KonziError) => void) => {
+export const useDeleteSubjectMutation = (onError: (e: KonziError) => void) => {
   return useMutation<SubjectModel, KonziError, number>(async (subjectId: number) => (await axios.delete(`/subjects/${subjectId}`)).data, {
-    onSuccess,
     onError
   })
 }

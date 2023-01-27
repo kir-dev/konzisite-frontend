@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   FormControl,
   FormErrorMessage,
@@ -22,6 +23,7 @@ import { useForm } from 'react-hook-form'
 import { UseMutationResult } from 'react-query'
 import { KonziError } from '../../../api/model/error.model'
 import { Major, SubjectModel } from '../../../api/model/subject.model'
+import { ConfirmDialogButton } from '../../../components/commons/ConfirmDialogButton'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { CreateSubject } from '../types/CreateSubject'
 import { isMajor, MajorArray } from '../util/majorHelpers'
@@ -35,9 +37,19 @@ type Props = {
   previousData?: SubjectModel
   mutation: UseMutationResult<SubjectModel, KonziError, { formData: CreateSubject; subjectId: number }, unknown>
   refetch: () => void
+  deleteAction?: (id: number, options: { onSuccess: () => void }) => void
 }
 
-export const SubjectEditModalButton = ({ buttonText, modalTitle, mutation, successMessage, refetch, previousData, buttonIcon }: Props) => {
+export const SubjectEditModalButton = ({
+  buttonText,
+  modalTitle,
+  mutation,
+  successMessage,
+  refetch,
+  previousData,
+  buttonIcon,
+  deleteAction
+}: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { value: selectedMajors, getCheckboxProps, setValue: setSelectedMajors } = useCheckboxGroup()
   const toast = useToast()
@@ -131,13 +143,35 @@ export const SubjectEditModalButton = ({ buttonText, modalTitle, mutation, succe
               </FormControl>
             </ModalBody>
 
-            <ModalFooter>
-              <Button onClick={onClose} mr={3}>
-                Mégse
-              </Button>
-              <Button type="submit" colorScheme="brand">
-                Mentés
-              </Button>
+            <ModalFooter justifyContent="space-between">
+              {previousData && deleteAction ? (
+                <ConfirmDialogButton
+                  buttonText="Törlés"
+                  buttonColorSchene="red"
+                  headerText="Biztosan törlöd a tárgyat?"
+                  bodyText="Ezzel az tárgyhoz tartozó összes konzultáció is törlődik!"
+                  confirmButtonText="Törlés"
+                  confirmAction={() =>
+                    deleteAction(previousData.id, {
+                      onSuccess: () => {
+                        onClose()
+                        refetch()
+                        toast({ title: 'Tárgy sikeresen törölve', status: 'success' })
+                      }
+                    })
+                  }
+                />
+              ) : (
+                <Box />
+              )}
+              <Box>
+                <Button onClick={onClose} mr={3}>
+                  Mégse
+                </Button>
+                <Button type="submit" colorScheme="brand">
+                  Mentés
+                </Button>
+              </Box>
             </ModalFooter>
           </form>
         </ModalContent>
