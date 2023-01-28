@@ -1,19 +1,34 @@
-import { Box, Button, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { Helmet } from 'react-helmet-async'
 import { FaClock, FaMapMarkerAlt } from 'react-icons/fa'
 import ReactMarkdown from 'react-markdown'
 import { Link, useParams } from 'react-router-dom'
+import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
+import { useJoinConsultationMutation, useLeaveConsultationMutation } from '../../api/hooks/consultationMutationHooks'
 import { useFecthConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
+import { KonziError } from '../../api/model/error.model'
+import { generateToastParams } from '../../util/generateToastParams'
 import { ErrorPage } from '../error/ErrorPage'
 import { LoadingConsultation } from './components/LoadingConsultation'
 import { TargetGroupList } from './components/TargetGroupList'
 import { UserList } from './components/UserList'
-import { currentUser } from './demoData'
 
 export const ConsultationDetailsPage = () => {
   const { consultationId } = useParams()
+  const { loggedInUser } = useAuthContext()
   const { isLoading, data: consultation, error, refetch } = useFecthConsultationbDetailsQuery(+consultationId!!)
+
+  const toast = useToast()
+  const onErrorFn = (e: KonziError) => {
+    toast(generateToastParams(e))
+  }
+
+  const { mutate: joinConsultation } = useJoinConsultationMutation(
+    () => toast({ title: 'Csatlakoztál a konzultációhoz!', status: 'success' }),
+    onErrorFn
+  )
+  const { mutate: leaveConsultation } = useLeaveConsultationMutation(onErrorFn)
 
   if (error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.error} messages={[error.message]}></ErrorPage>
@@ -50,14 +65,36 @@ export const ConsultationDetailsPage = () => {
                 </Text>
               </HStack>
             </VStack>
-            {consultation.owner.id === currentUser.id ? (
+            {consultation.owner.id === loggedInUser!!.id ? (
               <Button as={Link} to={`/consultations/${consultation.id}/edit`} colorScheme="brand">
                 Szerkesztés
               </Button>
-            ) : consultation.participants.some((p) => p.id === currentUser.id) ? (
-              <Button colorScheme="red">Mégsem megyek</Button>
+            ) : consultation.participants.some((p) => p.id === loggedInUser!!.id) ? (
+              <Button
+                onClick={() => {
+                  leaveConsultation(+consultationId!!, {
+                    onSuccess: () => {
+                      toast({ title: 'Kiléptél a konzultációból!', status: 'success' })
+                      refetch()
+                    }
+                  })
+                }}
+                colorScheme="red"
+              >
+                Mégsem megyek
+              </Button>
             ) : (
-              <Button colorScheme="brand">Megyek</Button>
+              <>
+                <Button
+                  onClick={() => {
+                    joinConsultation(+consultationId!!)
+                    refetch()
+                  }}
+                  colorScheme="brand"
+                >
+                  Megyek
+                </Button>
+              </>
             )}
           </Stack>
           {consultation.descMarkdown && (

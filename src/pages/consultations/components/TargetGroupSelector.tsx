@@ -16,13 +16,19 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Skeleton,
+  useDisclosure,
+  useToast,
   VStack
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import debounce from 'lodash.debounce'
+import { useRef, useState } from 'react'
 import { FaSearch, FaTimes } from 'react-icons/fa'
+import { useFecthGroupListMutation } from '../../../api/hooks/groupMutationHooks'
+import { KonziError } from '../../../api/model/error.model'
 import { GroupModel } from '../../../api/model/group.model'
-import { testGroupsPreview } from '../../groups/demoData'
+import { generateToastParams } from '../../../util/generateToastParams'
+import { ErrorPage } from '../../error/ErrorPage'
+import { SelectorSkeleton } from './SelectorSkeleton'
 
 type Props = {
   targetGroups: GroupModel[]
@@ -30,33 +36,19 @@ type Props = {
 }
 
 export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) => {
-  const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [groupList, setGroupList] = useState<GroupModel[]>([])
-  const [filteredGroupList, setFilteredGroupList] = useState<GroupModel[]>([])
+  const toast = useToast()
+  const {
+    isLoading,
+    data: groupList,
+    mutate,
+    reset,
+    error
+  } = useFecthGroupListMutation((e: KonziError) => {
+    toast(generateToastParams(e))
+  })
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [search, setSearch] = useState('')
-  const [filteredCount, setFilteredCount] = useState(0)
-  const [resultLimit, setResultLimit] = useState(10)
-
-  useEffect(() => {
-    if (open) {
-      setLoading(true)
-      setGroupList([])
-      setTimeout(() => {
-        setLoading(false)
-        setGroupList(testGroupsPreview)
-      }, 1000)
-    }
-  }, [open])
-
-  useEffect(() => {
-    const filtered = groupList.filter(
-      (g) => g.name.toLowerCase().includes(search.toLowerCase()) && !targetGroups.some((group) => group.id === g.id)
-    )
-    setFilteredCount(filtered.length)
-
-    setFilteredGroupList(filtered.slice(0, resultLimit))
-  }, [search, groupList, resultLimit])
 
   const addGroup = (group: GroupModel) => {
     setTargetGroups([...targetGroups, group].sort((a, b) => a.name.localeCompare(b.name)))
@@ -64,6 +56,16 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
 
   const removeGroup = (group: GroupModel) => {
     setTargetGroups(targetGroups.filter((g) => g.id !== group.id))
+  }
+
+  const debouncedSearch = useRef(
+    debounce((search: string) => {
+      mutate(search)
+    }, 500)
+  ).current
+
+  if (error) {
+    return <ErrorPage></ErrorPage>
   }
 
   return (
@@ -85,11 +87,18 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
             </HStack>
           </Box>
         ))}
-        <Button onClick={() => setOpen(true)} mt={2}>
+        <Button
+          onClick={() => {
+            onOpen()
+            setSearch('')
+            reset()
+          }}
+          mt={2}
+        >
           Célcsoport hozzáadása
         </Button>
       </FormControl>
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
+      <Modal scrollBehavior={'inside'} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Céscsoport hozzáadása</ModalHeader>
@@ -99,54 +108,49 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
               <InputLeftElement h="100%">
                 <FaSearch />
               </InputLeftElement>
-              <Input placeholder="Keresés..." size="lg" onChange={(e) => setSearch(e.target.value)} value={search} />
+              <Input
+                placeholder="Keresés..."
+                size="lg"
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  debouncedSearch(e.target.value)
+                }}
+                value={search}
+              />
               <InputRightElement h="100%">
                 <FaTimes onClick={() => setSearch('')} cursor="pointer" />
               </InputRightElement>
             </InputGroup>
             <VStack mb={2} maxHeight="500px" overflowY="auto">
-              {loading ? (
-                <>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="30%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="60%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="40%" />
-                  </Box>
-                </>
+              {isLoading ? (
+                <SelectorSkeleton />
               ) : (
-                filteredGroupList.map((g) => (
-                  <Box
-                    borderRadius={6}
-                    borderWidth={1}
-                    cursor="pointer"
-                    key={g.id}
-                    width="100%"
-                    onClick={() => {
-                      addGroup(g)
-                      setOpen(false)
-                    }}
-                  >
-                    <HStack flexGrow={1} p={4}>
-                      <Avatar size="md" name={g.name} src={''} />
-                      <VStack flexGrow={1}>
-                        <Heading size="md" width="100%">
-                          {g.name}
-                        </Heading>
-                      </VStack>
-                    </HStack>
-                  </Box>
-                ))
+                groupList
+                  ?.filter((g) => !targetGroups.some((group) => group.id === g.id))
+                  .map((g) => (
+                    <Box
+                      borderRadius={6}
+                      borderWidth={1}
+                      cursor="pointer"
+                      key={g.id}
+                      width="100%"
+                      onClick={() => {
+                        addGroup(g)
+                        onClose()
+                      }}
+                    >
+                      <HStack flexGrow={1} p={4}>
+                        <Avatar size="md" name={g.name} src={''} />
+                        <VStack flexGrow={1}>
+                          <Heading size="md" width="100%">
+                            {g.name}
+                          </Heading>
+                        </VStack>
+                      </HStack>
+                    </Box>
+                  ))
               )}
             </VStack>
-            {filteredGroupList.length < filteredCount && (
-              <Button colorScheme="brand" onClick={() => setResultLimit((r) => r + 10)} width="100%" mb={4}>
-                Még több betöltése
-              </Button>
-            )}
           </ModalBody>
         </ModalContent>
       </Modal>

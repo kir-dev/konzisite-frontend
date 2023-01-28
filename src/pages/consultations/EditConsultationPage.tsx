@@ -1,9 +1,12 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Textarea, VStack } from '@chakra-ui/react'
+import { Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Textarea, useToast, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useCreateConsultationMutation } from '../../api/hooks/consultationMutationHooks'
+import { KonziError } from '../../api/model/error.model'
 import { Helmet } from 'react-helmet-async'
-import { useParams } from 'react-router-dom'
 import { GroupModel } from '../../api/model/group.model'
 import { SubjectModel } from '../../api/model/subject.model'
+import { generateToastParams } from '../../util/generateToastParams'
 import { ErrorPage } from '../error/ErrorPage'
 import { ConsultationDateForm } from './components/ConsultationDateForm'
 import { LoadingEditConsultation } from './components/LoadingEditConsultation'
@@ -18,6 +21,33 @@ type Props = {
 }
 
 export const EditConsultationPage = ({ newConsultation }: Props) => {
+  const toast = useToast()
+  const navigate = useNavigate()
+  const mutation = useCreateConsultationMutation()
+
+  const submit = () => {
+    mutation.mutate(
+      {
+        name,
+        location,
+        startDate,
+        endDate,
+        subjectId: subject!!.id,
+        presenterIds: presentations.map((p) => p.id),
+        targetGroupIds: targetGroups.map((g) => g.id)
+      },
+      {
+        onSuccess: () => {
+          toast({ title: 'Konzultáció sikeresen létrehozva', status: 'success' })
+          navigate('/consultations')
+        },
+        onError: (e: KonziError) => {
+          toast(generateToastParams(e))
+        }
+      }
+    )
+  }
+
   const [loading, setLoading] = useState(!newConsultation)
   const [name, setName] = useState('')
   const [location, setLocation] = useState('')
@@ -70,10 +100,6 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       setLoading(false)
     }, 1000)
   }, [])
-
-  const submit = () => {
-    alert('submit')
-  }
 
   if (loading) return <LoadingEditConsultation />
   else
@@ -129,7 +155,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
               </FormControl>
               <TargetGroupSelector targetGroups={targetGroups} setTargetGroups={setTargetGroups} />
             </VStack>
-            <Button mt={3} colorScheme="brand" onClick={submit} disabled={errorCount !== 0}>
+            <Button mt={3} colorScheme="brand" onClick={submit} isDisabled={errorCount !== 0}>
               {newConsultation ? 'Létrehozás' : 'Mentés'}
             </Button>
           </>

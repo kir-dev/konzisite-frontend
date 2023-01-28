@@ -18,7 +18,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Skeleton,
   Text,
   VStack
 } from '@chakra-ui/react'
@@ -26,6 +25,7 @@ import { useEffect, useState } from 'react'
 import { FaSearch, FaStar, FaTimes } from 'react-icons/fa'
 import { currentUser, testPresenters } from '../demoData'
 import { Presentation } from '../types/consultationDetails'
+import { SelectorSkeleton } from './SelectorSkeleton'
 
 type Props = {
   presentations: Presentation[]
@@ -120,17 +120,7 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
             </InputGroup>
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {loading ? (
-                <>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="30%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="60%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="40%" />
-                  </Box>
-                </>
+                <SelectorSkeleton />
               ) : (
                 filteredPresenterList.map((p) => (
                   <Box

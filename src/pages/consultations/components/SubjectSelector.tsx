@@ -13,7 +13,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Skeleton,
   Text,
   VStack
 } from '@chakra-ui/react'
@@ -21,6 +20,7 @@ import { useEffect, useState } from 'react'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { SubjectModel } from '../../../api/model/subject.model'
 import { testSubjects } from '../demoData'
+import { SelectorSkeleton } from './SelectorSkeleton'
 
 type Props = {
   subject?: SubjectModel
@@ -78,17 +78,7 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
             </InputGroup>
             <VStack mb={4} maxHeight="600px" overflowY="auto">
               {loading ? (
-                <>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="30%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="60%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="40%" />
-                  </Box>
-                </>
+                <SelectorSkeleton />
               ) : (
                 filteredSubjectList.map((s) => (
                   <Box
