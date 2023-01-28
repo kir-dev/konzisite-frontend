@@ -11,6 +11,7 @@ import { generateToastParams } from '../../util/generateToastParams'
 import { ErrorPage } from '../error/ErrorPage'
 import { MajorBadge } from './components/MajorBadge'
 import { SubjectEditModalButton } from './components/SubjectEditModalButton'
+import { UploadCSVModalButton } from './components/UploadCSVModalButton'
 
 export const SubjectsPage = () => {
   const { error, data: subjects, refetch } = useFetchSubjectsQuery()
@@ -37,6 +38,7 @@ export const SubjectsPage = () => {
         Tárgyak
       </Heading>
       <Flex justify="flex-end" mb={3}>
+        <UploadCSVModalButton refetch={refetch} />
         <SubjectEditModalButton
           buttonText="Új tárgy"
           modalTitle="Tárgy létrehozása"
@@ -54,7 +56,7 @@ export const SubjectsPage = () => {
                   <Heading size="md">
                     {s.name} ({s.code})
                   </Heading>
-                  <HStack wrap="wrap" alignContent="space-between" justify="flex-start">
+                  <HStack spacing={0} wrap="wrap" alignContent="space-between" justify="flex-start">
                     {s.majors.map((m) => (
                       <MajorBadge major={m} key={m} />
                     ))}

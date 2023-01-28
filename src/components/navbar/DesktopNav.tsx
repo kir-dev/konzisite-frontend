@@ -10,7 +10,7 @@ const DesktopNav: FC = () => {
 
   useEffect(() => {
     setNavItems(NAV_ITEMS.filter((item) => item.shouldBeShown(isLoggedIn, loggedInUser)))
-  }, [isLoggedIn])
+  }, [isLoggedIn, loggedInUser])
 
   return (
     <Stack direction="row" spacing={4}>

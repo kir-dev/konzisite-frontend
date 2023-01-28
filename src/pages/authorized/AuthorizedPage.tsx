@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 
@@ -6,6 +7,12 @@ export const AuthorizedPage = () => {
   const { search } = useLocation()
   const searchParams = new URLSearchParams(search)
   const jwt = searchParams.get('jwt')
+
+  useEffect(() => {
+    if (jwt && !isLoggedIn) {
+      onLoginSuccess(jwt)
+    }
+  }, [])
 
   if (isLoggedIn) {
     return <Navigate replace to="/" />
@@ -24,6 +31,5 @@ export const AuthorizedPage = () => {
       />
     )
   }
-  onLoginSuccess(jwt)
   return <Navigate replace to="/" />
 }

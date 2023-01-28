@@ -10,9 +10,9 @@ import {
   InputLeftAddon,
   InputRightAddon
 } from '@chakra-ui/react'
-import { FC, useRef } from 'react'
+import { FC, ReactElement, useRef } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { FaFileImage, FaTimes } from 'react-icons/fa'
+import { FaTimes } from 'react-icons/fa'
 
 type Props = {
   fieldName: string
@@ -20,8 +20,9 @@ type Props = {
   uploadButtonText?: string
   helper?: JSX.Element
   accept?: string
-  multiple?: boolean
   required?: boolean
+  maxFileSizeMB?: number
+  buttonIcon: ReactElement
 }
 
 export const FileUpload: FC<Props> = ({
@@ -30,8 +31,9 @@ export const FileUpload: FC<Props> = ({
   uploadButtonText = 'Feltöltés',
   helper,
   accept = 'image/*',
-  multiple = false,
-  required = false
+  required = false,
+  maxFileSizeMB = 10,
+  buttonIcon
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
   const {
@@ -43,21 +45,19 @@ export const FileUpload: FC<Props> = ({
 
   const validateFiles = (value: FileList | undefined) => {
     if (!value) {
-      return 'Legalább egy kép feltöltése szükséges!'
+      return 'Legalább egy fájl feltöltése szükséges!'
     }
     if (required && value.length < 1) {
-      return 'Legalább egy kép feltöltése szükséges!'
+      return 'Legalább egy fájl feltöltése szükséges!'
     }
-    if (!multiple && value.length > 1) {
-      return 'Csak egy kép feltöltése lehetséges!'
+    if (value.length > 1) {
+      return 'Csak egy fájl feltöltése lehetséges!'
     }
-    for (const file of Array.from(value)) {
-      const fsMb = file.size / (1024 * 1024)
-      const MAX_FILE_SIZE_IN_MB = 10
-      if (fsMb > MAX_FILE_SIZE_IN_MB) return 'A fájl mérete nem haladhatja meg a 10 MB-ot!'
-    }
+    const fsMb = value[0].size / (1024 * 1024)
+    if (fsMb > maxFileSizeMB) return `Maximális megengedett méret: ${maxFileSizeMB} MB`
     return true
   }
+
   const registerProps = { ...register(fieldName, { required: 'Kötelező mező', validate: validateFiles }) }
   const onUploadPressed = () => inputRef.current?.click()
   const onRemovePressed = () => setValue(fieldName, undefined)
@@ -68,7 +68,6 @@ export const FileUpload: FC<Props> = ({
       <InputGroup>
         <input
           type="file"
-          multiple={multiple}
           hidden
           accept={accept}
           {...registerProps}
@@ -77,10 +76,10 @@ export const FileUpload: FC<Props> = ({
             inputRef.current = e
           }}
         />
-        <InputLeftAddon as={Button} leftIcon={<FaFileImage />} onClick={onUploadPressed}>
+        <InputLeftAddon as={Button} leftIcon={buttonIcon} onClick={onUploadPressed}>
           {uploadButtonText}
         </InputLeftAddon>
-        <Input value={watch(fieldName)?.item(0)?.name || 'Nincs fájl kiválasztva'} readOnly />
+        <Input value={watch(fieldName)?.item(0)?.name || 'Nincs fájl kiválasztva'} readOnly onClick={onUploadPressed} cursor="pointer" />
         <InputRightAddon as={IconButton} aria-label="Választott fájl visszavonása" icon={<FaTimes />} onClick={onRemovePressed} />
       </InputGroup>
       {errors?.[fieldName] ? (
