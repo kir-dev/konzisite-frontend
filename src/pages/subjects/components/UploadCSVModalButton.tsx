@@ -59,7 +59,7 @@ export const UploadCSVModalButton = ({ refetch }: Props) => {
 
   return (
     <>
-      <Button colorScheme="green" onClick={onOpen} mr={4}>
+      <Button colorScheme="green" onClick={onOpen}>
         Tárgyak importálása
       </Button>
       <Modal isOpen={isOpen} onClose={onCancelPressed} size="xl">
@@ -72,8 +72,9 @@ export const UploadCSVModalButton = ({ refetch }: Props) => {
               <ModalBody>
                 <Text align="justify" mb={2}>
                   A tárgyakat nem szükséges egyenként létrehozni, lehet őket importálni is. Ehhez egy megfelelően formázott <b>.csv</b>{' '}
-                  fájlt kell feltöltened, amit Excel-lel érdemes létrehozni/szerkeszteni. Egy minta fájlt az alábbi gombbal tudsz letölteni,
-                  ezt érdemes használni kiindulási alapnak, hiszen ez már tartalmazza a kötelező fejlécet és egy minta tárgyat.
+                  fájlt kell feltöltened, <b>aminek a kódolása UTF-8</b>. Excel-lel könnyű csv-t létrehozni/szerkeszteni,{' '}
+                  <b>de az windows-1252 kódolásban ment alapértelmezetten!</b> Egy minta fájlt az alábbi gombbal tudsz letölteni, ezt
+                  érdemes használni kiindulási alapnak, hiszen ez már tartalmazza a kötelező fejlécet és egy minta tárgyat.
                 </Text>
                 <Text align="justify" mb={2}>
                   A feltöltött fájl első sorának kötelezően a következőnek kell lennie: <Code>code;name;majors</Code>. Ezt követően minden

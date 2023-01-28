@@ -20,10 +20,10 @@ export const translateMajor: MajorDictionary = {
 }
 
 export const majorColor: MajorDictionary = {
-  [Major.CE_BSC]: 'brand',
+  [Major.CE_BSC]: 'blue',
   [Major.EE_BSC]: 'green',
   [Major.BPROF]: 'purple',
-  [Major.CE_MSC]: 'brand',
+  [Major.CE_MSC]: 'blue',
   [Major.EE_MSC]: 'green',
   [Major.BI_MSC]: 'orange',
   [Major.HI_MSC]: 'red',
