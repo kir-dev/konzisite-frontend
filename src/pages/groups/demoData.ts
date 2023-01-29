@@ -180,6 +180,7 @@ export const testGroupsPreview: GroupPreview[] = [
     owner: {
       id: 4,
       authSchId: 'abc',
+      isAdmin: false,
       firstName: 'Elek',
       fullName: 'Teszt Elek',
       email: 'elek@example.com'
@@ -193,6 +194,7 @@ export const testGroupsPreview: GroupPreview[] = [
     name: 'Másik csoport',
     owner: {
       id: 2,
+      isAdmin: false,
       authSchId: '123abc',
       firstName: 'Pista',
       fullName: 'Kis Pista',
@@ -208,6 +210,7 @@ export const testGroupsPreview: GroupPreview[] = [
     owner: {
       id: 7,
       authSchId: 'asdf',
+      isAdmin: false,
       firstName: 'Jakab',
       fullName: 'Gipsz Jakab',
       email: 'info@gipszjakab.io'
@@ -222,6 +225,7 @@ export const testGroupsPreview: GroupPreview[] = [
     owner: {
       id: 4,
       authSchId: 'abc',
+      isAdmin: false,
       firstName: 'Elek',
       fullName: 'Teszt Elek',
       email: 'elek@example.com'
@@ -236,6 +240,7 @@ export const currentUser: UserModel = {
   id: 7,
   authSchId: 'asdf',
   firstName: 'Jakab',
+  isAdmin: false,
   fullName: 'Gipsz Jakab',
   email: 'info@gipszjakab.io'
   //ownedConsultations: [],

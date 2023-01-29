@@ -30,6 +30,7 @@ const currentUser: UserPreview = {
   firstName: 'János',
   fullName: 'Kovács János',
   email: 'elek@example.com',
+  isAdmin: false,
   presentations: 0,
   avarageRating: 0,
   attendances: 7
@@ -42,6 +43,7 @@ const MockUsers: UserPreview[] = [
     firstName: 'Elek',
     fullName: 'Teszt Elek',
     email: 'elek@example.com',
+    isAdmin: false,
     presentations: 3,
     avarageRating: 4.5,
     attendances: 0
@@ -53,6 +55,7 @@ const MockUsers: UserPreview[] = [
     firstName: 'Péter',
     fullName: 'Sándor Péter',
     email: 'elek@example.com',
+    isAdmin: false,
     presentations: 1,
     avarageRating: 2.1,
     attendances: 2

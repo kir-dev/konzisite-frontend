@@ -1,16 +1,16 @@
-import { Heading, HStack, Text, useDisclosure, VStack } from '@chakra-ui/react'
+import { Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { Major } from '../../api/model/subject.model'
 import { ConsultationListItem } from './components/ConsultationListItem'
 import { ProfileDetails } from './components/ProfileDetails'
 import { ProfileDetailsLoading } from './components/ProfileDetailsLoading'
-import { UploadImageModal } from './forms/UploadImageModal'
 import { UserDetails } from './types/UserDetails'
 
 const mockProfile: UserDetails = {
   id: 1,
   authSchId: '123',
+  isAdmin: false,
   firstName: 'John',
   fullName: 'Appleseed John',
   email: 'example@gmail.com',
@@ -35,6 +35,7 @@ const mockProfile: UserDetails = {
           value: 5,
           text: 'Yeaaah, eleg jo volt',
           rater: {
+            isAdmin: false,
             id: 1,
             authSchId: 'abc',
             firstName: 'Elek',
@@ -47,6 +48,7 @@ const mockProfile: UserDetails = {
           value: 5,
           text: 'Yeaaah, eleg jo volt szerintem is',
           rater: {
+            isAdmin: false,
             id: 2,
             authSchId: 'abc',
             firstName: 'Elek2',
@@ -76,6 +78,7 @@ const mockProfile: UserDetails = {
           value: 3,
           text: 'Eleg uncsi volt ://',
           rater: {
+            isAdmin: false,
             id: 3,
             authSchId: 'abc',
             firstName: 'Elek3',
@@ -109,7 +112,6 @@ const mockProfile: UserDetails = {
 
 export const ProfilePage = () => {
   const { isLoggedIn, loggedInUser, loggedInUserError, loggedInUserLoading, onLogout } = useAuthContext()
-  const { isOpen: isOpenProfileImageModal, onOpen: onChangeProfileImagePressed, onClose: onCloseProfileImageModal } = useDisclosure()
 
   if (!isLoggedIn) {
     return <Navigate replace to="/error" state={{ title: 'Nem vagy bejelentkezve!', messages: [] }} />
@@ -134,12 +136,10 @@ export const ProfilePage = () => {
       {loggedInUserLoading ? (
         <ProfileDetailsLoading />
       ) : (
-        <ProfileDetails user={loggedInUser!!} profileOptions={{ onLogoutPressed: onLogout, onChangeProfileImagePressed }} />
+        <ProfileDetails user={loggedInUser!!} profileOptions={{ onLogoutPressed: onLogout }} />
       )}
       {loggedInUser && (
         <>
-          <UploadImageModal isOpen={isOpenProfileImageModal} onClose={onCloseProfileImageModal} />
-
           <VStack>
             <Heading>Átlagos értékelés: {mockProfile.avarageRating}</Heading>
 
