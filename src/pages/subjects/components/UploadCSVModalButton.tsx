@@ -17,6 +17,7 @@ import {
   useDisclosure,
   useToast
 } from '@chakra-ui/react'
+import { useColorModeValue } from '@chakra-ui/system'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { FaFileCsv } from 'react-icons/fa'
 import { useImportSubjectsMutation } from '../../../api/hooks/subjectHooks'
@@ -30,6 +31,7 @@ type Props = {
 export const UploadCSVModalButton = ({ refetch }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const methods = useForm<{ files: FileList | undefined }>({ mode: 'all' })
+  const linkColor = useColorModeValue('brand.200', 'brand.800')
   const {
     handleSubmit,
     formState: { isValid },
@@ -115,7 +117,7 @@ export const UploadCSVModalButton = ({ refetch }: Props) => {
                   Az adatbázisban a tárgykódoknak egyedieknek kell lenniük, ezért ha az importált tárgykódok közül csak egy is szerepel már
                   az adatbázisban, hibát fogsz kapni, és egy új tárgy sem kerül létrehozásra. Ha valami probléma lenne az importálással,
                   keresd a fejlesztőket a{' '}
-                  <Link color="blue" href="mailto://kir-dev@sch.bme.hu">
+                  <Link color={linkColor} href="mailto://kir-dev@sch.bme.hu">
                     kir-dev@sch.bme.hu
                   </Link>{' '}
                   címen.
