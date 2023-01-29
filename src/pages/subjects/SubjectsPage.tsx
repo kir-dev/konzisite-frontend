@@ -96,7 +96,7 @@ export const SubjectsPage = () => {
               <SimpleGrid columns={{ sm: 1, md: 2 }}>
                 {[
                   MajorArray.map((m) => (
-                    <ListItem>
+                    <ListItem key={m}>
                       {translateMajor[m]}: <Code>{m}</Code>
                     </ListItem>
                   ))
