@@ -11,7 +11,6 @@ import {
   Stack,
   Text,
   UnorderedList,
-  useColorModeValue,
   useToast,
   VStack
 } from '@chakra-ui/react'
@@ -36,7 +35,6 @@ export const SubjectsPage = () => {
   const { error, data: subjects, refetch } = useFetchSubjectsQuery()
   const [selectedMajor, setSelectedMajor] = useState<string>('all')
   const toast = useToast()
-  const linkColor = useColorModeValue('brand.200', 'brand.800')
 
   const createSubjectMutation = useCreateSubjectMutation()
   const updateSubjectMutation = useUpdateSubjectMutation()
@@ -127,7 +125,7 @@ export const SubjectsPage = () => {
               Az adatbázisban a tárgykódoknak egyedieknek kell lenniük, ezért ha az importált tárgykódok közül csak egy is szerepel már az
               adatbázisban, hibát fogsz kapni, és egy új tárgy sem kerül létrehozásra. Ha valami probléma lenne az importálással, keresd a
               fejlesztőket a{' '}
-              <Link color={linkColor} href="mailto://kir-dev@sch.bme.hu">
+              <Link color="brand.200" href="mailto://kir-dev@sch.bme.hu">
                 kir-dev@sch.bme.hu
               </Link>{' '}
               címen.
