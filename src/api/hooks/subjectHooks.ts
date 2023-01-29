@@ -27,8 +27,9 @@ export const useDeleteSubjectMutation = (onError: (e: KonziError) => void) => {
   })
 }
 
-export const useImportSubjectsMutation = (onError: (e: KonziError) => void) => {
+export const useImportSubjectsMutation = (onError: (e: KonziError) => void, onSuccess: (data: CreateManyResponse) => void) => {
   return useMutation<CreateManyResponse, KonziError, FormData>(async (data: FormData) => (await axios.post('subjects/import', data)).data, {
-    onError
+    onError,
+    onSuccess
   })
 }

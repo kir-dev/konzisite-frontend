@@ -1,10 +1,27 @@
-import { Box, Heading, HStack, Select, SimpleGrid, Stack, useToast, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Code,
+  Heading,
+  HStack,
+  Link,
+  ListItem,
+  Select,
+  SimpleGrid,
+  Stack,
+  Text,
+  UnorderedList,
+  useColorModeValue,
+  useToast,
+  VStack
+} from '@chakra-ui/react'
 import { useState } from 'react'
 import { FaEdit } from 'react-icons/fa'
 import {
   useCreateSubjectMutation,
   useDeleteSubjectMutation,
   useFetchSubjectsQuery,
+  useImportSubjectsMutation,
   useUpdateSubjectMutation
 } from '../../api/hooks/subjectHooks'
 import { KonziError } from '../../api/model/error.model'
@@ -12,16 +29,24 @@ import { generateToastParams } from '../../util/generateToastParams'
 import { ErrorPage } from '../error/ErrorPage'
 import { MajorBadge } from './components/MajorBadge'
 import { SubjectEditModalButton } from './components/SubjectEditModalButton'
-import { UploadCSVModalButton } from './components/UploadCSVModalButton'
+import { UploadFileModalButton } from './components/UploadFileModalButton'
 import { MajorArray, translateMajor } from './util/majorHelpers'
 
 export const SubjectsPage = () => {
   const { error, data: subjects, refetch } = useFetchSubjectsQuery()
   const [selectedMajor, setSelectedMajor] = useState<string>('all')
   const toast = useToast()
+  const linkColor = useColorModeValue('brand.200', 'brand.800')
 
   const createSubjectMutation = useCreateSubjectMutation()
   const updateSubjectMutation = useUpdateSubjectMutation()
+  const importSubjectsmutation = useImportSubjectsMutation(
+    (e) => toast(generateToastParams(e)),
+    (data) => {
+      toast({ title: `${data.count} darab tárgy importálva.`, status: 'success' })
+      refetch()
+    }
+  )
   const { mutate: deleteSubject } = useDeleteSubjectMutation((e: KonziError) => {
     toast(generateToastParams(e))
   })
@@ -47,7 +72,67 @@ export const SubjectsPage = () => {
         </Box>
 
         <HStack>
-          <UploadCSVModalButton refetch={refetch} />
+          <UploadFileModalButton
+            mutation={importSubjectsmutation}
+            modalTitle="Tárgyak importálása"
+            confirmButtonText="Importálás"
+            extraButton={
+              <a href="example_import.csv" download>
+                <Button colorScheme="green">Minta fájl letöltése</Button>
+              </a>
+            }
+          >
+            <Text align="justify" mb={2}>
+              A tárgyakat nem szükséges egyenként létrehozni, lehet őket importálni is. Ehhez egy megfelelően formázott <b>.csv</b> fájlt
+              kell feltöltened, <b>aminek a kódolása UTF-8</b>. Excel-lel könnyű csv-t létrehozni/szerkeszteni,{' '}
+              <b>de az windows-1252 kódolásban ment alapértelmezetten!</b> Egy minta fájlt az alábbi gombbal tudsz letölteni, ezt érdemes
+              használni kiindulási alapnak, hiszen ez már tartalmazza a kötelező fejlécet és egy minta tárgyat.
+            </Text>
+            <Text align="justify" mb={2}>
+              A feltöltött fájl első sorának kötelezően a következőnek kell lennie: <Code>code;name;majors</Code>. Ezt követően minden
+              tárgynak egy új sorban kell szerepelnie, az adatai <b>pontosvesszővel (;)</b> elválasztva. Az adatok sorban: tárgykód, tárgy
+              neve, a szakok, ahol szerepel a tárgy. A szakokat egymástól <b>vesszővel (,)</b> kell elválasztani. A szakok megnevezéséhez az
+              alábbi karakterláncokat használd:
+            </Text>
+            <UnorderedList ml={6} mb={2}>
+              <SimpleGrid columns={{ sm: 1, md: 2 }}>
+                <ListItem>
+                  Mérnökinfó BSc: <Code>CE_BSC</Code>
+                </ListItem>
+                <ListItem>
+                  Villany BSc: <Code>EE_BSC</Code>
+                </ListItem>
+                <ListItem>
+                  Üzemmérnök: <Code>BPROF</Code>
+                </ListItem>
+                <ListItem>
+                  Mérnökinfó MSc: <Code>CE_MSC</Code>
+                </ListItem>
+                <ListItem>
+                  Villany MSc: <Code>EE_MSC</Code>
+                </ListItem>
+                <ListItem>
+                  Gazdinfó MSc: <Code>BI_MSC</Code>
+                </ListItem>
+                <ListItem>
+                  Eü mérnök MSc: <Code>HI_MSC</Code>
+                </ListItem>
+                <ListItem>
+                  Űrmérnök MSc: <Code>SE_MSC</Code>
+                </ListItem>
+              </SimpleGrid>
+            </UnorderedList>
+
+            <Text align="justify" mb={2}>
+              Az adatbázisban a tárgykódoknak egyedieknek kell lenniük, ezért ha az importált tárgykódok közül csak egy is szerepel már az
+              adatbázisban, hibát fogsz kapni, és egy új tárgy sem kerül létrehozásra. Ha valami probléma lenne az importálással, keresd a
+              fejlesztőket a{' '}
+              <Link color={linkColor} href="mailto://kir-dev@sch.bme.hu">
+                kir-dev@sch.bme.hu
+              </Link>{' '}
+              címen.
+            </Text>
+          </UploadFileModalButton>
           <SubjectEditModalButton
             buttonText="Új tárgy"
             modalTitle="Tárgy létrehozása"
