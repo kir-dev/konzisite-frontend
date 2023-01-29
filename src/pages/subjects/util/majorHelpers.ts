@@ -15,7 +15,7 @@ export const translateMajor: MajorDictionary = {
   [Major.CE_MSC]: 'Mérnökinfó MSc',
   [Major.EE_MSC]: 'Villany MSc',
   [Major.BI_MSC]: 'Gazdinfó MSc',
-  [Major.HI_MSC]: 'Egészségügyi mérnök MSc',
+  [Major.HI_MSC]: 'Eü mérnök MSc',
   [Major.SE_MSC]: 'Űrmérnök MSc'
 }
 

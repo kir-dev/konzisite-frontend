@@ -94,30 +94,13 @@ export const SubjectsPage = () => {
             </Text>
             <UnorderedList ml={6} mb={2}>
               <SimpleGrid columns={{ sm: 1, md: 2 }}>
-                <ListItem>
-                  Mérnökinfó BSc: <Code>CE_BSC</Code>
-                </ListItem>
-                <ListItem>
-                  Villany BSc: <Code>EE_BSC</Code>
-                </ListItem>
-                <ListItem>
-                  Üzemmérnök: <Code>BPROF</Code>
-                </ListItem>
-                <ListItem>
-                  Mérnökinfó MSc: <Code>CE_MSC</Code>
-                </ListItem>
-                <ListItem>
-                  Villany MSc: <Code>EE_MSC</Code>
-                </ListItem>
-                <ListItem>
-                  Gazdinfó MSc: <Code>BI_MSC</Code>
-                </ListItem>
-                <ListItem>
-                  Eü mérnök MSc: <Code>HI_MSC</Code>
-                </ListItem>
-                <ListItem>
-                  Űrmérnök MSc: <Code>SE_MSC</Code>
-                </ListItem>
+                {[
+                  MajorArray.map((m) => (
+                    <ListItem>
+                      {translateMajor[m]}: <Code>{m}</Code>
+                    </ListItem>
+                  ))
+                ]}
               </SimpleGrid>
             </UnorderedList>
 
