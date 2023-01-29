@@ -256,7 +256,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
     }
   },
   {
-    id: 4,
+    id: 5,
     archived: false,
     location: '817',
     startDate: new Date('2022-02-12T16:00:00Z'),
@@ -300,7 +300,7 @@ export const testConsultationDetails: ConsultationDetails[] = [
       }
     ],
     owner: {
-      id: 6,
+      id: 1,
       authSchId: 'lll',
       firstName: 'Pista',
       isAdmin: false,

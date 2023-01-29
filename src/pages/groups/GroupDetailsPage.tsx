@@ -14,7 +14,7 @@ export const GroupDetailsPage = () => {
   const { isLoading, data: group, error, refetch } = useFecthGroupDetailsQuery(+groupId!!)
 
   if (error) {
-    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.error} messages={[error.message]}></ErrorPage>
+    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
 
   if (isLoading) {

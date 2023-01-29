@@ -16,10 +16,11 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FaSearch, FaTimes } from 'react-icons/fa'
+import { useFetchSubjectsQuery } from '../../../api/hooks/subjectHooks'
 import { SubjectModel } from '../../../api/model/subject.model'
-import { testSubjects } from '../demoData'
+import { ErrorPage } from '../../error/ErrorPage'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
 type Props = {
@@ -29,13 +30,15 @@ type Props = {
 }
 
 export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) => {
+  const { error, data: subjectList, refetch } = useFetchSubjectsQuery()
+
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [subjectList, setSubjectList] = useState<SubjectModel[]>([])
+
   const [filteredSubjectList, setFilteredSubjectList] = useState<SubjectModel[]>([])
   const [search, setSearch] = useState('')
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (open) {
       setLoading(true)
       setSubjectList([])
@@ -44,13 +47,17 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
         setSubjectList(testSubjects)
       }, 1000)
     }
-  }, [open])
+  }, [open])*/
 
-  useEffect(() => {
+  if (error) {
+    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+  }
+
+  /* useEffect(() => {
     setFilteredSubjectList(
-      subjectList.filter((s) => s.name.toLowerCase().includes(search.toLowerCase()) || s.code.toLowerCase().includes(search.toLowerCase()))
+      subjectList?.filter((s) => s.name.toLowerCase().includes(search.toLowerCase()) || s.code.toLowerCase().includes(search.toLowerCase()))
     )
-  }, [search, subjectList])
+  }, [search, subjectList])*/
 
   return (
     <>
@@ -80,7 +87,7 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
               {loading ? (
                 <SelectorSkeleton />
               ) : (
-                filteredSubjectList.map((s) => (
+                subjectList?.map((s) => (
                   <Box
                     borderRadius={6}
                     borderWidth={1}

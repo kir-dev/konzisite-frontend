@@ -3,11 +3,16 @@ import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { Helmet } from 'react-helmet-async'
 import { FaClock, FaMapMarkerAlt } from 'react-icons/fa'
 import ReactMarkdown from 'react-markdown'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
-import { useJoinConsultationMutation, useLeaveConsultationMutation } from '../../api/hooks/consultationMutationHooks'
+import {
+  useDeleteConsultationMutation,
+  useJoinConsultationMutation,
+  useLeaveConsultationMutation
+} from '../../api/hooks/consultationMutationHooks'
 import { useFecthConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
+import { ConfirmDialogButton } from '../../components/commons/ConfirmDialogButton'
 import { generateToastParams } from '../../util/generateToastParams'
 import { ErrorPage } from '../error/ErrorPage'
 import { LoadingConsultation } from './components/LoadingConsultation'
@@ -20,18 +25,29 @@ export const ConsultationDetailsPage = () => {
   const { isLoading, data: consultation, error, refetch } = useFecthConsultationbDetailsQuery(+consultationId!!)
 
   const toast = useToast()
+  const navigate = useNavigate()
+
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
   }
 
-  const { mutate: joinConsultation } = useJoinConsultationMutation(
-    () => toast({ title: 'Csatlakoztál a konzultációhoz!', status: 'success' }),
-    onErrorFn
-  )
+  const { mutate: joinConsultation } = useJoinConsultationMutation(() => {
+    toast({ title: 'Csatlakoztál a konzultációhoz!', status: 'success' })
+    refetch()
+  }, onErrorFn)
   const { mutate: leaveConsultation } = useLeaveConsultationMutation(onErrorFn)
 
+  const deleteConsultationMutation = useDeleteConsultationMutation(() => {
+    toast({ title: 'Törölted a konzultációt!', status: 'success' })
+    navigate('/consultations')
+  }, onErrorFn)
+
+  const deleteConsultation = () => {
+    deleteConsultationMutation.mutate(+consultationId!!)
+  }
+
   if (error) {
-    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.error} messages={[error.message]}></ErrorPage>
+    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
 
   return (
@@ -48,10 +64,10 @@ export const ConsultationDetailsPage = () => {
           <Heading textAlign="center" mb={3}>
             {consultation.name}
           </Heading>
-          <Heading size="md" as={Link} to={`/subjects/${consultation.subject.id}`} textAlign="center" mb={3}>
+          <Heading size="md" as={Link} to={`/subjects/${consultation.subject.id}`} justifyContent="center" textAlign="center" mb={3}>
             {consultation.subject.name} ({consultation.subject.code})
           </Heading>
-          <Stack direction={['column', 'row']} justifyContent="space-between" mb={3}>
+          <Stack direction={['column-reverse', 'row']} justifyContent="space-between" mb={3}>
             <VStack alignItems="flex-start" spacing={3} flexGrow={1}>
               <HStack>
                 <FaMapMarkerAlt />
@@ -65,37 +81,55 @@ export const ConsultationDetailsPage = () => {
                 </Text>
               </HStack>
             </VStack>
-            {consultation.owner.id === loggedInUser!!.id ? (
-              <Button as={Link} to={`/consultations/${consultation.id}/edit`} colorScheme="brand">
-                Szerkesztés
-              </Button>
-            ) : consultation.participants.some((p) => p.id === loggedInUser!!.id) ? (
-              <Button
-                onClick={() => {
-                  leaveConsultation(+consultationId!!, {
-                    onSuccess: () => {
-                      toast({ title: 'Kiléptél a konzultációból!', status: 'success' })
-                      refetch()
-                    }
-                  })
-                }}
-                colorScheme="red"
-              >
-                Mégsem megyek
-              </Button>
-            ) : (
-              <>
+
+            <VStack justify={['center', 'flex-end']} align="flex-end">
+              {(consultation.owner.id === loggedInUser!!.id || loggedInUser!!.isAdmin) && (
+                <Button width="100%" as={Link} to={`/consultations/${consultation.id}/edit`} colorScheme="brand">
+                  Szerkesztés
+                </Button>
+              )}
+              {(consultation.owner.id === loggedInUser!!.id || loggedInUser!!.isAdmin) && (
+                <>
+                  <ConfirmDialogButton
+                    buttonColorSchene="red"
+                    buttonText="Törlés"
+                    buttonWidth="100%"
+                    headerText="Konzultáció törlése"
+                    bodyText="Biztos törölni szeretnéd a konzultációt?"
+                    confirmButtonText="Törlés"
+                    confirmAction={deleteConsultation}
+                  />
+                </>
+              )}
+              {consultation.participants.some((p) => p.id === loggedInUser!!.id) && (
                 <Button
                   onClick={() => {
-                    joinConsultation(+consultationId!!)
-                    refetch()
+                    leaveConsultation(+consultationId!!, {
+                      onSuccess: () => {
+                        toast({ title: 'Kiléptél a konzultációból!', status: 'success' })
+                        refetch()
+                      }
+                    })
                   }}
-                  colorScheme="brand"
+                  colorScheme="red"
                 >
-                  Megyek
+                  Mégsem megyek
                 </Button>
-              </>
-            )}
+              )}
+              {!consultation.presentations.some((p) => p.id === loggedInUser!!.id) &&
+                !consultation.participants.some((p) => p.id === loggedInUser!!.id) && (
+                  <>
+                    <Button
+                      onClick={() => {
+                        joinConsultation(+consultationId!!)
+                      }}
+                      colorScheme="brand"
+                    >
+                      Megyek
+                    </Button>
+                  </>
+                )}
+            </VStack>
           </Stack>
           {consultation.descMarkdown && (
             <Box shadow="md" borderRadius={8} borderWidth={1} p={4} width="100%" mb={2}>

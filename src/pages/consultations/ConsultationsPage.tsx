@@ -8,6 +8,7 @@ import { LoadingConsultationList } from './components/LoadingConsultationList'
 
 export const ConsultationsPage = () => {
   const { isLoading, data: consultaions, error, refetch } = useFecthConsultationListQuery()
+
   if (error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }

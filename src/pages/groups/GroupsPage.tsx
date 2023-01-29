@@ -9,6 +9,7 @@ import { GroupList } from './components/GroupList'
 
 export const GroupsPage = () => {
   const { isLoading, data: groups, error, refetch } = useFecthGroupListQuery()
+
   if (error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }

@@ -21,9 +21,11 @@ import {
   Text,
   VStack
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FaSearch, FaStar, FaTimes } from 'react-icons/fa'
-import { currentUser, testPresenters } from '../demoData'
+import { useFecthUserListQuery } from '../../../api/hooks/userQueryHooks'
+import { ErrorPage } from '../../error/ErrorPage'
+import { currentUser } from '../demoData'
 import { Presentation } from '../types/consultationDetails'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
@@ -34,15 +36,17 @@ type Props = {
 }
 
 export const PresentersSelector = ({ presentations, setPresentations, presentationsError }: Props) => {
+  const { isLoading, error, data: presenterList, refetch } = useFecthUserListQuery()
+
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [presenterList, setPresenterList] = useState<Presentation[]>([])
+  //const [presenterList, setPresenterList] = useState<Presentation[]>([])
   const [filteredPresenterList, setFilteredPresenterList] = useState<Presentation[]>([])
   const [search, setSearch] = useState('')
   const [filteredCount, setFilteredCount] = useState(0)
   const [resultLimit, setResultLimit] = useState(10)
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (open) {
       setLoading(true)
       setPresenterList([])
@@ -51,16 +55,16 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
         setPresenterList(testPresenters)
       }, 1000)
     }
-  }, [open])
+  }, [open])*/
 
-  useEffect(() => {
+  /* useEffect(() => {
     const filtered = presenterList.filter(
       (p) => p.fullName.toLowerCase().includes(search.toLowerCase()) && !presentations.some((pres) => pres.id === p.id)
     )
     setFilteredCount(filtered.length)
 
     setFilteredPresenterList(filtered.slice(0, resultLimit))
-  }, [search, presenterList, resultLimit])
+  }, [search, presenterList, resultLimit])*/
 
   const addPresenter = (presenter: Presentation) => {
     setPresentations([...presentations, presenter].sort((a, b) => a.fullName.localeCompare(b.fullName)))
@@ -68,6 +72,10 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
 
   const removePresenter = (presenter: Presentation) => {
     setPresentations(presentations.filter((p) => p.id !== presenter.id))
+  }
+
+  if (error) {
+    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
 
   return (
@@ -88,8 +96,17 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
                   )}
                 </Heading>
                 <HStack width="100%">
-                  <Text>Értékelés: {p.averageRating}</Text>
-                  <FaStar />
+                  {' '}
+                  //TODO
+                  <Text>Értékelés:</Text>
+                  {p.averageRating ? (
+                    <>
+                      <Text>{p.averageRating}</Text>
+                      <FaStar />
+                    </>
+                  ) : (
+                    <Text>-</Text>
+                  )}
                 </HStack>
               </VStack>
               <Button colorScheme="red" onClick={() => removePresenter(p)}>
@@ -119,10 +136,10 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
               </InputRightElement>
             </InputGroup>
             <VStack mb={2} maxHeight="500px" overflowY="auto">
-              {loading ? (
+              {isLoading ? (
                 <SelectorSkeleton />
               ) : (
-                filteredPresenterList.map((p) => (
+                presenterList?.map((p) => (
                   <Box
                     borderRadius={6}
                     borderWidth={1}
@@ -146,8 +163,15 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
                           )}
                         </Heading>
                         <HStack width="100%">
-                          <Text>Értékelés: {p.averageRating}</Text>
-                          <FaStar />
+                          <Text>Értékelés:</Text>
+                          {p.averageRating ? (
+                            <>
+                              <Text>{p.averageRating}</Text>
+                              <FaStar />
+                            </>
+                          ) : (
+                            <Text>-</Text>
+                          )}
                         </HStack>
                       </VStack>
                     </HStack>

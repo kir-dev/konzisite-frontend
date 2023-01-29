@@ -108,7 +108,7 @@ const mockProfile: UserDetails = {
     }
   ],
   consultaionRequests: [],
-  avarageRating: 4.2
+  averageRating: 4.2
 }
 
 export const ProfilePage = () => {
@@ -143,7 +143,7 @@ export const ProfilePage = () => {
         <>
           <Helmet title="Profil" />
           <VStack>
-            <Heading>Átlagos értékelés: {mockProfile.avarageRating}</Heading>
+            <Heading>Átlagos értékelés: {mockProfile.averageRating}</Heading>
 
             {mockProfile.presentations.map((p) =>
               p.ratings?.map((r) => (

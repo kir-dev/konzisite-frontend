@@ -32,6 +32,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
         location,
         startDate,
         endDate,
+        descMarkdown: description,
         subjectId: subject!!.id,
         presenterIds: presentations.map((p) => p.id),
         targetGroupIds: targetGroups.map((g) => g.id)
@@ -119,7 +120,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
             </Heading>
             <VStack>
               <FormControl isInvalid={nameError} isRequired>
-                <FormLabel>Csoport neve</FormLabel>
+                <FormLabel>Konzultáció neve</FormLabel>
                 <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Digit vizsgára készülés" />
                 <FormErrorMessage>Név nem lehet üres</FormErrorMessage>
               </FormControl>

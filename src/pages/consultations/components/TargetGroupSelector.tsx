@@ -65,7 +65,7 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
   ).current
 
   if (error) {
-    return <ErrorPage></ErrorPage>
+    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
 
   return (
@@ -101,7 +101,7 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
       <Modal scrollBehavior={'inside'} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Céscsoport hozzáadása</ModalHeader>
+          <ModalHeader>Célcsoport hozzáadása</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <InputGroup my={5}>

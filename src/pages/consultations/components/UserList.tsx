@@ -37,8 +37,15 @@ export const UserList = ({ presentations, columns, showRating = true, showRating
                   </Heading>
                   {showRating && (
                     <HStack width="100%">
-                      <Text>Átlagos értékelés: {p.averageRating}</Text>
-                      <FaStar />
+                      <Text>Értékelés:</Text>
+                      {p.averageRating ? (
+                        <>
+                          <Text>{p.averageRating}</Text>
+                          <FaStar />
+                        </>
+                      ) : (
+                        <Text>-</Text>
+                      )}
                     </HStack>
                   )}
                 </VStack>
