@@ -3,7 +3,7 @@ import { UserModel } from '../model/user.model'
 
 class UserModule {
   async fetchCurrentUser() {
-    const response = await axios.get<UserModel>('/users/profile')
+    const response = await axios.get<UserModel & { jwt?: string }>('/users/profile')
     return response.data
   }
 
