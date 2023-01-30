@@ -1,10 +1,7 @@
-import { Major, SubjectModel } from '../../api/model/subject.model'
-import { UserModel } from '../../api/model/user.model'
-import { ConsultationDetails, Presentation } from './types/consultationDetails'
 import { ConsultationPreview } from './types/consultationPreview'
 
 export const testConsultationPreview: ConsultationPreview[] = [
-  {
+  /*{
     id: 1,
     archived: false,
     location: '814',
@@ -281,7 +278,8 @@ export const testConsultationDetails: ConsultationDetails[] = [
         rating: {
           id: 1,
           value: 5,
-          text: 'Mindent érthetően magyarázott el'
+          text: 'Mindent érthetően magyarázott el',
+          anonymous: false
         }
       },
       {
@@ -295,7 +293,8 @@ export const testConsultationDetails: ConsultationDetails[] = [
         rating: {
           id: 2,
           value: 4,
-          text: 'Jó volt, de nem mindent értettem meg teljesen'
+          text: 'Jó volt, de nem mindent értettem meg teljesen',
+          anonymous: false
         }
       }
     ],
@@ -369,5 +368,5 @@ export const testPresenters: Presentation[] = [
     fullName: 'Kis Pista',
     email: 'abc@cba.com',
     averageRating: 5
-  }
+  }*/
 ]

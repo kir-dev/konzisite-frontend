@@ -83,12 +83,16 @@ export const ConsultationDetailsPage = () => {
             </VStack>
 
             <VStack justify={['center', 'flex-end']} align="flex-end">
-              {(consultation.owner.id === loggedInUser!!.id || loggedInUser!!.isAdmin) && (
+              {(consultation.owner.id === loggedInUser!!.id ||
+                loggedInUser!!.isAdmin ||
+                consultation.presentations.some((p) => p.id === loggedInUser!!.id)) && (
                 <Button width="100%" as={Link} to={`/consultations/${consultation.id}/edit`} colorScheme="brand">
                   Szerkesztés
                 </Button>
               )}
-              {(consultation.owner.id === loggedInUser!!.id || loggedInUser!!.isAdmin) && (
+              {(consultation.owner.id === loggedInUser!!.id ||
+                loggedInUser!!.isAdmin ||
+                consultation.presentations.some((p) => p.id === loggedInUser!!.id)) && (
                 <>
                   <ConfirmDialogButton
                     buttonColorSchene="red"

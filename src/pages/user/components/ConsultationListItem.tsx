@@ -14,7 +14,7 @@ export const ConsultationListItem = ({ c }: ConsultationListItemProps) => {
     <HStack key={c.id}>
       <Text>{c.descMarkdown}</Text>
       <Text>
-        {c.startDate.toDateString()}-{c.endDate.toDateString()}
+        {new Date(c.startDate).toDateString()}-{new Date(c.endDate).toDateString()}
       </Text>
       <Text>{c.subject.name}</Text>
     </HStack>

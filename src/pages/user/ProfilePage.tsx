@@ -20,8 +20,8 @@ const mockProfile: UserDetails = {
       id: 1,
       archived: false,
       location: '1317 tanuló',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date().toDateString(),
+      endDate: new Date().toDateString(),
       name: 'konzi',
       descMarkdown: 'nagyon érdekes konzi',
       subject: {
@@ -35,6 +35,7 @@ const mockProfile: UserDetails = {
           id: 1,
           value: 5,
           text: 'Yeaaah, eleg jo volt',
+          anonymous: false,
           rater: {
             isAdmin: false,
             id: 1,
@@ -48,6 +49,7 @@ const mockProfile: UserDetails = {
           id: 2,
           value: 5,
           text: 'Yeaaah, eleg jo volt szerintem is',
+          anonymous: false,
           rater: {
             isAdmin: false,
             id: 2,
@@ -63,8 +65,8 @@ const mockProfile: UserDetails = {
       id: 2,
       archived: false,
       location: '1317 tanuló',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: new Date().toDateString(),
+      endDate: new Date().toDateString(),
       name: 'még egy konzi',
       descMarkdown: 'kicsit érdekes konzi',
       subject: {
@@ -78,6 +80,7 @@ const mockProfile: UserDetails = {
           id: 3,
           value: 3,
           text: 'Eleg uncsi volt ://',
+          anonymous: false,
           rater: {
             isAdmin: false,
             id: 3,
@@ -95,8 +98,8 @@ const mockProfile: UserDetails = {
       id: 4,
       archived: false,
       location: '1317 tanuló',
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: '0',
+      endDate: '0',
       name: 'ez nem is érdekes',
       descMarkdown: 'másik nagyon érdekes konzi',
       subject: {

@@ -1,7 +1,9 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Textarea, useToast, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useCreateConsultationMutation } from '../../api/hooks/consultationMutationHooks'
+import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
+import { useCreateConsultationMutation, useEditConsultationMutation } from '../../api/hooks/consultationMutationHooks'
+import { useFecthConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { Helmet } from 'react-helmet-async'
 import { GroupModel } from '../../api/model/group.model'
@@ -13,8 +15,7 @@ import { LoadingEditConsultation } from './components/LoadingEditConsultation'
 import { PresentersSelector } from './components/PresentersSelector'
 import { SubjectSelector } from './components/SubjectSelector'
 import { TargetGroupSelector } from './components/TargetGroupSelector'
-import { currentUser, testConsultationDetails } from './demoData'
-import { ConsultationDetails, Presentation } from './types/consultationDetails'
+import { Presentation } from './types/consultationDetails'
 
 type Props = {
   newConsultation?: boolean
@@ -23,15 +24,21 @@ type Props = {
 export const EditConsultationPage = ({ newConsultation }: Props) => {
   const toast = useToast()
   const navigate = useNavigate()
-  const mutation = useCreateConsultationMutation()
+  const { loggedInUser: currentUser } = useAuthContext()
+  const consultationId = parseInt(useParams<{ consultationId: string }>().consultationId ?? '-1')
 
-  const submit = () => {
-    mutation.mutate(
+  const { mutate: createConsultation } = useCreateConsultationMutation()
+  const { mutate: updateConsultation } = useEditConsultationMutation(consultationId)
+
+  const { isLoading, data: consultation, error, refetch } = useFecthConsultationbDetailsQuery(consultationId)
+
+  const createCons = () => {
+    createConsultation(
       {
         name,
         location,
-        startDate,
-        endDate,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
         descMarkdown: description,
         subjectId: subject!!.id,
         presenterIds: presentations.map((p) => p.id),
@@ -39,7 +46,31 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       },
       {
         onSuccess: () => {
-          toast({ title: 'Konzultáció sikeresen létrehozva', status: 'success' })
+          toast({ title: 'Konzultáció sikeresen létrehozva!', status: 'success' })
+          navigate('/consultations')
+        },
+        onError: (e: KonziError) => {
+          toast(generateToastParams(e))
+        }
+      }
+    )
+  }
+
+  const editCons = () => {
+    updateConsultation(
+      {
+        name,
+        location,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        descMarkdown: description,
+        subjectId: subject!!.id,
+        presenterIds: presentations.map((p) => p.id),
+        targetGroupIds: targetGroups.map((g) => g.id)
+      },
+      {
+        onSuccess: () => {
+          toast({ title: 'Konzultáció sikeresen módosítva!', status: 'success' })
           navigate('/consultations')
         },
         onError: (e: KonziError) => {
@@ -58,14 +89,13 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const [subject, setSubject] = useState<SubjectModel | undefined>(undefined)
   const [presentations, setPresentations] = useState<Presentation[]>([])
   const [targetGroups, setTargetGroups] = useState<GroupModel[]>([])
-  const [consultation, setConsultation] = useState<ConsultationDetails | undefined>(undefined)
-  const consultationId = parseInt(useParams<{ consultationId: string }>().consultationId ?? '-1')
+  //const [consultation, setConsultation] = useState<ConsultationDetails | undefined>(undefined)
 
   let nameError = name == ''
   let locationError = location == ''
   let startDateError = newConsultation
     ? startDate.getTime() <= new Date().getTime()
-    : startDate.getTime() < Math.min(consultation?.startDate?.getTime() ?? 0, new Date().getTime())
+    : startDate.getTime() < Math.min(consultation ? new Date(consultation.startDate).getTime() : 0, new Date().getTime())
   let endDateError = endDate.getTime() <= startDate.getTime()
   let subjectError = subject == undefined
   let presentationsError = presentations.length == 0
@@ -82,36 +112,37 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      const c = testConsultationDetails.find((c) => c.id === consultationId)
-      if (!c) {
-        setLoading(false)
-        setConsultation(undefined)
-        return
-      }
-      setConsultation(c)
-      setName(c.name)
-      setLocation(c.location)
-      setDescription(c.descMarkdown)
-      setStartDate(c.startDate)
-      setEndDate(c.endDate)
-      setSubject(c.subject)
-      setPresentations(c.presentations)
-      setTargetGroups(c.targetGroups)
+    //const c = testConsultationDetails.find((c) => c.id === consultationId)
+    if (consultation) {
+      setName(consultation.name)
+      setLocation(consultation.location)
+      setDescription(consultation.descMarkdown)
+      setStartDate(new Date(consultation.startDate))
+      setEndDate(new Date(consultation.endDate))
+      setSubject(consultation.subject)
+      setPresentations(consultation.presentations)
+      setTargetGroups(consultation.targetGroups)
       setLoading(false)
-    }, 1000)
-  }, [])
+    }
+  }, [consultation])
 
-  if (loading) return <LoadingEditConsultation />
-  else
+  if (consultationId != -1 && error) {
+    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+  }
+
+  if (loading || isLoading) {
+    return <LoadingEditConsultation />
+  } else
     return (
       <>
-        {(consultation === undefined || consultation.owner.id !== currentUser.id) && !newConsultation ? (
-          consultation === undefined ? (
-            <ErrorPage title="Nincs ilyen konzultáció" messages={['A konzi amit keresel már nem létezik, vagy nem is létezett']} />
-          ) : (
-            <ErrorPage title="Nincs jogod" messages={['A konzit csak a tulajdonosa szerkesztheti']} />
-          )
+        {(consultation === undefined ||
+          !(
+            currentUser!!.isAdmin ||
+            consultation.owner.id === currentUser!!.id ||
+            consultation.presentations.some((p) => p.id === currentUser!!.id)
+          )) &&
+        !newConsultation ? (
+          <ErrorPage status={401} title="Nincs jogod" messages={['A konzit csak a tulajdonosa szerkesztheti']} />
         ) : (
           <>
             <Helmet title={newConsultation ? 'Új konzultáció' : consultation?.name} />
@@ -143,8 +174,8 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
                 presentationsError={presentationsError}
               />
               <ConsultationDateForm
-                startDate={startDate}
-                endDate={endDate}
+                startDate={new Date(startDate)}
+                endDate={new Date(endDate)}
                 setStartDate={setStartDate}
                 setEndDate={setEndDate}
                 startDateError={startDateError}
@@ -156,7 +187,14 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
               </FormControl>
               <TargetGroupSelector targetGroups={targetGroups} setTargetGroups={setTargetGroups} />
             </VStack>
-            <Button mt={3} colorScheme="brand" onClick={submit} isDisabled={errorCount !== 0}>
+            <Button
+              mt={3}
+              colorScheme="brand"
+              onClick={() => {
+                newConsultation ? createCons() : editCons()
+              }}
+              isDisabled={errorCount !== 0}
+            >
               {newConsultation ? 'Létrehozás' : 'Mentés'}
             </Button>
           </>
