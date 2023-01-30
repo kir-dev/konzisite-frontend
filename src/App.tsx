@@ -9,6 +9,7 @@ import { EditConsultationPage } from './pages/consultations/EditConsultationPage
 import { ErrorPage } from './pages/error/ErrorPage'
 import { GroupDetailsPage } from './pages/groups/GroupDetailsPage'
 import { GroupsPage } from './pages/groups/GroupsPage'
+import ImpressumPage from './pages/impressum/impressum.page'
 import { LoginPage } from './pages/login/LoginPage'
 import { LogoutPage } from './pages/logout/LogoutPage'
 import { SubjectsPage } from './pages/subjects/SubjectsPage'
@@ -47,6 +48,7 @@ export const App = () => {
           <Route path={PATHS.SUBJECTS}>
             <Route index element={<SubjectsPage />} />
           </Route>
+          <Route path="impressum" element={<ImpressumPage />} />
           <Route path={PATHS.LOGIN} element={<LoginPage />} />
           <Route path="authorized" element={<AuthorizedPage />} />
           <Route path="logout" element={<LogoutPage />} />
