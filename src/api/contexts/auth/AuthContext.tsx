@@ -34,7 +34,18 @@ export const AuthContext = createContext<AuthContextType>({
 export const AuthProvider: FC<HasChildren> = ({ children }) => {
   const navigate = useNavigate()
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(typeof Cookies.get(CookieKeys.KONZI_JWT_TOKEN) !== 'undefined')
-  const { isLoading, data: user, error } = useQuery('currentUser', userModule.fetchCurrentUser, { enabled: isLoggedIn })
+  const {
+    isLoading,
+    data: user,
+    error
+  } = useQuery('currentUser', userModule.fetchCurrentUser, {
+    enabled: isLoggedIn,
+    onSuccess: (data) => {
+      if (data.jwt) {
+        Cookies.set(CookieKeys.KONZI_JWT_TOKEN, data.jwt, { expires: 2 })
+      }
+    }
+  })
 
   const onLoginSuccess = (jwt: string) => {
     Cookies.set(CookieKeys.KONZI_JWT_TOKEN, jwt, { expires: 2 })
