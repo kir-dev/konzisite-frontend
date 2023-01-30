@@ -7,7 +7,6 @@ import { ConsultationDetailsPage } from './pages/consultations/ConsultationDetai
 import { ConsultationsPage } from './pages/consultations/ConsultationsPage'
 import { EditConsultationPage } from './pages/consultations/EditConsultationPage'
 import { ErrorPage } from './pages/error/ErrorPage'
-import { EditGroupPage } from './pages/groups/EditGroupPage'
 import { GroupDetailsPage } from './pages/groups/GroupDetailsPage'
 import { GroupsPage } from './pages/groups/GroupsPage'
 import { LoginPage } from './pages/login/LoginPage'
@@ -40,10 +39,8 @@ export const App = () => {
           </Route>
           <Route path="groups">
             <Route path=":groupId">
-              <Route path="edit" element={<EditGroupPage />} />
               <Route index element={<GroupDetailsPage />} />
             </Route>
-            <Route path="new" element={<EditGroupPage newGroup={true} />} />
             <Route index element={<GroupsPage />} />
           </Route>
           <Route path="subjects">

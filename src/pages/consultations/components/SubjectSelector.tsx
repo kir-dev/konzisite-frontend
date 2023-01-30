@@ -30,34 +30,14 @@ type Props = {
 }
 
 export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) => {
-  const { error, data: subjectList, refetch } = useFetchSubjectsQuery()
+  const { isLoading, error, data: subjectList } = useFetchSubjectsQuery()
 
   const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  const [filteredSubjectList, setFilteredSubjectList] = useState<SubjectModel[]>([])
   const [search, setSearch] = useState('')
-
-  /*useEffect(() => {
-    if (open) {
-      setLoading(true)
-      setSubjectList([])
-      setTimeout(() => {
-        setLoading(false)
-        setSubjectList(testSubjects)
-      }, 1000)
-    }
-  }, [open])*/
 
   if (error) {
     return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
-
-  /* useEffect(() => {
-    setFilteredSubjectList(
-      subjectList?.filter((s) => s.name.toLowerCase().includes(search.toLowerCase()) || s.code.toLowerCase().includes(search.toLowerCase()))
-    )
-  }, [search, subjectList])*/
 
   return (
     <>
@@ -84,7 +64,7 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
               </InputRightElement>
             </InputGroup>
             <VStack mb={4} maxHeight="600px" overflowY="auto">
-              {loading ? (
+              {isLoading ? (
                 <SelectorSkeleton />
               ) : (
                 subjectList?.map((s) => (

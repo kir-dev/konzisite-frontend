@@ -30,7 +30,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const { mutate: createConsultation } = useCreateConsultationMutation()
   const { mutate: updateConsultation } = useEditConsultationMutation(consultationId)
 
-  const { isLoading, data: consultation, error, refetch } = useFecthConsultationbDetailsQuery(consultationId)
+  const { isLoading, data: consultation, error } = useFecthConsultationbDetailsQuery(consultationId)
 
   const createCons = () => {
     createConsultation(
@@ -83,13 +83,12 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const [loading, setLoading] = useState(!newConsultation)
   const [name, setName] = useState('')
   const [location, setLocation] = useState('')
-  const [description, setDescription] = useState<string | undefined>('')
+  const [description, setDescription] = useState<string>('')
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
   const [subject, setSubject] = useState<SubjectModel | undefined>(undefined)
   const [presentations, setPresentations] = useState<Presentation[]>([])
   const [targetGroups, setTargetGroups] = useState<GroupModel[]>([])
-  //const [consultation, setConsultation] = useState<ConsultationDetails | undefined>(undefined)
 
   let nameError = name == ''
   let locationError = location == ''
@@ -112,11 +111,10 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   }
 
   useEffect(() => {
-    //const c = testConsultationDetails.find((c) => c.id === consultationId)
     if (consultation) {
       setName(consultation.name)
       setLocation(consultation.location)
-      setDescription(consultation.descMarkdown)
+      setDescription(consultation.descMarkdown || '')
       setStartDate(new Date(consultation.startDate))
       setEndDate(new Date(consultation.endDate))
       setSubject(consultation.subject)

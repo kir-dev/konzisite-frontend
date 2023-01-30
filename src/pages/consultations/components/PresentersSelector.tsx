@@ -40,33 +40,12 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
   const { isLoading, error, data: presenterList, refetch } = useFecthUserListQuery()
   const { loggedInUser: currentUser } = useAuthContext()
 
+  //TODO search?
   const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  //const [presenterList, setPresenterList] = useState<Presentation[]>([])
   const [filteredPresenterList, setFilteredPresenterList] = useState<Presentation[]>([])
   const [search, setSearch] = useState('')
   const [filteredCount, setFilteredCount] = useState(0)
   const [resultLimit, setResultLimit] = useState(10)
-
-  /*useEffect(() => {
-    if (open) {
-      setLoading(true)
-      setPresenterList([])
-      setTimeout(() => {
-        setLoading(false)
-        setPresenterList(testPresenters)
-      }, 1000)
-    }
-  }, [open])*/
-
-  /* useEffect(() => {
-    const filtered = presenterList.filter(
-      (p) => p.fullName.toLowerCase().includes(search.toLowerCase()) && !presentations.some((pres) => pres.id === p.id)
-    )
-    setFilteredCount(filtered.length)
-
-    setFilteredPresenterList(filtered.slice(0, resultLimit))
-  }, [search, presenterList, resultLimit])*/
 
   const addPresenter = (presenter: Presentation) => {
     setPresentations([...presentations, presenter].sort((a, b) => a.fullName.localeCompare(b.fullName)))
