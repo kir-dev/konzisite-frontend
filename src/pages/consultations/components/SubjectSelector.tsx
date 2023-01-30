@@ -18,9 +18,9 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { FaSearch, FaTimes } from 'react-icons/fa'
+import { Navigate } from 'react-router-dom'
 import { useFetchSubjectsQuery } from '../../../api/hooks/subjectHooks'
 import { SubjectModel } from '../../../api/model/subject.model'
-import { ErrorPage } from '../../error/ErrorPage'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
 type Props = {
@@ -50,7 +50,7 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
   }, [open])*/
 
   if (error) {
-    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+    return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
   /* useEffect(() => {

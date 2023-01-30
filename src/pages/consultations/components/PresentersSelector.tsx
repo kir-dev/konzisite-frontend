@@ -18,15 +18,16 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Text,
   VStack
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import { FaSearch, FaStar, FaTimes } from 'react-icons/fa'
+import { FaSearch, FaTimes } from 'react-icons/fa'
+import { Navigate } from 'react-router-dom'
+import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { useFecthUserListQuery } from '../../../api/hooks/userQueryHooks'
-import { ErrorPage } from '../../error/ErrorPage'
-import { currentUser } from '../demoData'
+
 import { Presentation } from '../types/consultationDetails'
+import { Rating } from './Rating'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
 type Props = {
@@ -37,6 +38,7 @@ type Props = {
 
 export const PresentersSelector = ({ presentations, setPresentations, presentationsError }: Props) => {
   const { isLoading, error, data: presenterList, refetch } = useFecthUserListQuery()
+  const { loggedInUser: currentUser } = useAuthContext()
 
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -75,7 +77,7 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
   }
 
   if (error) {
-    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+    return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
   return (
@@ -89,25 +91,13 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
               <VStack flexGrow={1}>
                 <Heading size="md" width="100%">
                   {p.fullName}
-                  {p.id === currentUser.id && (
+                  {p.id === currentUser!!.id && (
                     <Badge colorScheme="brand" ml={1}>
                       Te
                     </Badge>
                   )}
                 </Heading>
-                <HStack width="100%">
-                  {' '}
-                  //TODO
-                  <Text>Értékelés:</Text>
-                  {p.averageRating ? (
-                    <>
-                      <Text>{p.averageRating}</Text>
-                      <FaStar />
-                    </>
-                  ) : (
-                    <Text>-</Text>
-                  )}
-                </HStack>
+                <Rating rating={p.averageRating} />
               </VStack>
               <Button colorScheme="red" onClick={() => removePresenter(p)}>
                 Törlés
@@ -156,23 +146,13 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
                       <VStack flexGrow={1}>
                         <Heading size="md" width="100%">
                           {p.fullName}
-                          {p.id === currentUser.id && (
+                          {p.id === currentUser!!.id && (
                             <Badge colorScheme="brand" ml={1}>
                               Te
                             </Badge>
                           )}
                         </Heading>
-                        <HStack width="100%">
-                          <Text>Értékelés:</Text>
-                          {p.averageRating ? (
-                            <>
-                              <Text>{p.averageRating}</Text>
-                              <FaStar />
-                            </>
-                          ) : (
-                            <Text>-</Text>
-                          )}
-                        </HStack>
+                        <Rating rating={p.averageRating} />
                       </VStack>
                     </HStack>
                   </Box>

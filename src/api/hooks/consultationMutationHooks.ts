@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useMutation } from 'react-query'
 import { CreateConsultation } from '../../pages/consultations/types/createConsultation'
+import { CreateRating } from '../../pages/consultations/types/createRating'
 import { ConsultationModel } from '../model/consultation.model'
 import { KonziError } from '../model/error.model'
 
@@ -40,6 +41,26 @@ export const useLeaveConsultationMutation = (onError: (e: KonziError) => void) =
   return useMutation<ConsultationModel, KonziError, number>(
     async (consultationId) => (await axios.post(`/consultations/${consultationId}/leave/`)).data,
     {
+      onError
+    }
+  )
+}
+
+export const useRateConsultationMutation = (onSuccess: () => void, onError: (e: KonziError) => void) => {
+  return useMutation<ConsultationModel, KonziError, { data: CreateRating; consultationId: number }>(
+    async (params) => (await axios.post(`/consultations/${params.consultationId}/rate/`, params.data)).data,
+    {
+      onSuccess,
+      onError
+    }
+  )
+}
+
+export const useUpdateRatingConsultationMutation = (onSuccess: () => void, onError: (e: KonziError) => void) => {
+  return useMutation<ConsultationModel, KonziError, { data: CreateRating; consultationId: number }>(
+    async (params) => (await axios.patch(`/consultations/${params.consultationId}/rate/`, params.data)).data,
+    {
+      onSuccess,
       onError
     }
   )

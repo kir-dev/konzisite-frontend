@@ -1,23 +1,32 @@
-import { Avatar, Badge, Box, Heading, HStack, SimpleGrid, Stack, Text, VStack } from '@chakra-ui/react'
-import { FaStar } from 'react-icons/fa'
+import { Avatar, Badge, Box, Heading, HStack, SimpleGrid, Stack, VStack } from '@chakra-ui/react'
 import { Link } from 'react-router-dom'
 import { RatingModel } from '../../../api/model/rating.model'
 import { UserModel } from '../../../api/model/user.model'
-import { currentUser } from '../demoData'
+import { Rating } from './Rating'
 import { UserRating } from './UserRating'
 
 type Props = {
   presentations: (UserModel & {
     averageRating?: number
-    ratedByCurrentUser?: boolean
     rating?: RatingModel
   })[]
   showRating?: boolean
   showRatingButton?: boolean
   columns: number
+  participants: UserModel[]
+  currentUser: UserModel
+  refetch: () => {}
 }
 
-export const UserList = ({ presentations, columns, showRating = true, showRatingButton = false }: Props) => {
+export const UserList = ({
+  presentations,
+  participants,
+  currentUser,
+  columns,
+  showRating = true,
+  showRatingButton = false,
+  refetch
+}: Props) => {
   return (
     <>
       <SimpleGrid columns={{ sm: 1, md: columns }} gap={4} mb={3}>
@@ -30,27 +39,15 @@ export const UserList = ({ presentations, columns, showRating = true, showRating
                   <Heading size="md" width="100%">
                     {p.fullName}
                     {p.id === currentUser.id && (
-                      <Badge colorScheme="brand" ml={1}>
+                      <Badge colorScheme="brand" ml={1} mb={1}>
                         Te
                       </Badge>
                     )}
                   </Heading>
-                  {showRating && (
-                    <HStack width="100%">
-                      <Text>Értékelés:</Text>
-                      {p.averageRating ? (
-                        <>
-                          <Text>{p.averageRating}</Text>
-                          <FaStar />
-                        </>
-                      ) : (
-                        <Text>-</Text>
-                      )}
-                    </HStack>
-                  )}
+                  {showRating && <Rating rating={p.averageRating} />}
                 </VStack>
               </HStack>
-              {showRatingButton && <UserRating user={p} />}
+              {showRatingButton && <UserRating participants={participants} currentUser={currentUser} refetch={refetch} user={p} />}
             </Stack>
           </Box>
         ))}

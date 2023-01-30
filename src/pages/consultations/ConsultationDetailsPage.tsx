@@ -101,20 +101,23 @@ export const ConsultationDetailsPage = () => {
                   />
                 </>
               )}
-              {consultation.participants.some((p) => p.id === loggedInUser!!.id) && (
-                <Button
-                  onClick={() => {
-                    leaveConsultation(+consultationId!!, {
-                      onSuccess: () => {
-                        toast({ title: 'Kiléptél a konzultációból!', status: 'success' })
-                        refetch()
-                      }
-                    })
-                  }}
-                  colorScheme="red"
-                >
-                  Mégsem megyek
-                </Button>
+              {consultation.participants.some((p) => p.id === loggedInUser!!.id) && !consultation.presentations.some((p) => p.rating) && (
+                <>
+                  <ConfirmDialogButton
+                    buttonText="Mégsem megyek"
+                    buttonColorSchene="red"
+                    headerText="Biztos nem mész a konzira?"
+                    confirmButtonText="Nem megyek"
+                    confirmAction={() => {
+                      leaveConsultation(+consultationId!!, {
+                        onSuccess: () => {
+                          toast({ title: 'Kiléptél a konzultációból!', status: 'success' })
+                          refetch()
+                        }
+                      })
+                    }}
+                  />
+                </>
               )}
               {!consultation.presentations.some((p) => p.id === loggedInUser!!.id) &&
                 !consultation.participants.some((p) => p.id === loggedInUser!!.id) && (
@@ -142,13 +145,23 @@ export const ConsultationDetailsPage = () => {
           <UserList
             columns={1}
             presentations={consultation.presentations}
+            participants={consultation.participants}
+            currentUser={loggedInUser!!}
             showRatingButton={new Date(consultation.endDate).getTime() < new Date().getTime()}
+            refetch={refetch}
           />
           <TargetGroupList groups={consultation.targetGroups} />
           <Heading size="lg" mt={2} mb={2}>
             Résztvevők ({consultation.participants.length})
           </Heading>
-          <UserList columns={2} presentations={consultation.participants} showRating={false} />
+          <UserList
+            columns={2}
+            presentations={consultation.participants}
+            participants={consultation.participants}
+            currentUser={loggedInUser!!}
+            showRating={false}
+            refetch={refetch}
+          />
         </>
       )}
     </>

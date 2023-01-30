@@ -23,11 +23,11 @@ import {
 import debounce from 'lodash.debounce'
 import { useRef, useState } from 'react'
 import { FaSearch, FaTimes } from 'react-icons/fa'
+import { Navigate } from 'react-router-dom'
 import { useFecthGroupListMutation } from '../../../api/hooks/groupMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { GroupModel } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
-import { ErrorPage } from '../../error/ErrorPage'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
 type Props = {
@@ -65,7 +65,7 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
   ).current
 
   if (error) {
-    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+    return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
   return (
