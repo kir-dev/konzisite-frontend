@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { FaEdit } from 'react-icons/fa'
+import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
   useCreateSubjectMutation,
   useDeleteSubjectMutation,
@@ -35,6 +36,7 @@ export const SubjectsPage = () => {
   const { error, data: subjects, refetch } = useFetchSubjectsQuery()
   const [selectedMajor, setSelectedMajor] = useState<string>('all')
   const toast = useToast()
+  const { loggedInUser } = useAuthContext()
 
   const createSubjectMutation = useCreateSubjectMutation()
   const updateSubjectMutation = useUpdateSubjectMutation()
@@ -50,6 +52,9 @@ export const SubjectsPage = () => {
   })
   if (error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+  }
+  if (!loggedInUser?.isAdmin) {
+    return <ErrorPage backPath={'/'} status={403} title="Nincs jogosultságod az oldal megtekintéséhez" />
   }
 
   return (

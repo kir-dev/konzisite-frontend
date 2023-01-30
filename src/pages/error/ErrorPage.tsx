@@ -31,7 +31,7 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
       toast({ title: '401 Nem vagy bejelentkezve', status: 'error' })
       onLogout('/login')
     }
-  }, [])
+  }, [status])
 
   return status === 401 ? null : (
     <Alert p={10} status="error" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center">
