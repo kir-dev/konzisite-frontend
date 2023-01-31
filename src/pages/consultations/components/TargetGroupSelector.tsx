@@ -16,6 +16,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
   useToast,
   VStack
@@ -65,8 +66,11 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
   ).current
 
   if (error) {
+    console.log('xdd')
     return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
+
+  const filteredGroupList = groupList?.filter((g) => !targetGroups.some((group) => group.id === g.id))
 
   return (
     <>
@@ -124,31 +128,31 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
+              ) : filteredGroupList === undefined ? (
+                <Text>Nincsenek csoportok</Text>
               ) : (
-                groupList
-                  ?.filter((g) => !targetGroups.some((group) => group.id === g.id))
-                  .map((g) => (
-                    <Box
-                      borderRadius={6}
-                      borderWidth={1}
-                      cursor="pointer"
-                      key={g.id}
-                      width="100%"
-                      onClick={() => {
-                        addGroup(g)
-                        onClose()
-                      }}
-                    >
-                      <HStack flexGrow={1} p={4}>
-                        <Avatar size="md" name={g.name} src={''} />
-                        <VStack flexGrow={1}>
-                          <Heading size="md" width="100%">
-                            {g.name}
-                          </Heading>
-                        </VStack>
-                      </HStack>
-                    </Box>
-                  ))
+                filteredGroupList.map((g) => (
+                  <Box
+                    borderRadius={6}
+                    borderWidth={1}
+                    cursor="pointer"
+                    key={g.id}
+                    width="100%"
+                    onClick={() => {
+                      addGroup(g)
+                      onClose()
+                    }}
+                  >
+                    <HStack flexGrow={1} p={4}>
+                      <Avatar size="md" name={g.name} src={''} />
+                      <VStack flexGrow={1}>
+                        <Heading size="md" width="100%">
+                          {g.name}
+                        </Heading>
+                      </VStack>
+                    </HStack>
+                  </Box>
+                ))
               )}
             </VStack>
           </ModalBody>

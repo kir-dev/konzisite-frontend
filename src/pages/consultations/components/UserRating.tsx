@@ -28,17 +28,17 @@ import { KonziError } from '../../../api/model/error.model'
 import { RatingModel } from '../../../api/model/rating.model'
 import { UserModel } from '../../../api/model/user.model'
 import { generateToastParams } from '../../../util/generateToastParams'
+import { ErrorPage } from '../../error/ErrorPage'
 
 type Props = {
   user: UserModel & {
     rating?: RatingModel
   }
-  participants: UserModel[]
-  currentUser: UserModel
+  isParticipant: boolean
   refetch: () => {}
 }
 
-export const UserRating = ({ participants, currentUser, user, refetch }: Props) => {
+export const UserRating = ({ isParticipant, user, refetch }: Props) => {
   const toast = useToast()
   const { consultationId } = useParams()
 
@@ -67,10 +67,14 @@ export const UserRating = ({ participants, currentUser, user, refetch }: Props) 
   const [text, setText] = useState<string>(user.rating?.text ?? '')
   const [anonymous, setAnonymous] = useState<boolean>(user.rating?.anonymous ?? false)
 
+  if (consultationId === undefined || isNaN(+consultationId)) {
+    return <ErrorPage backPath={'/'} status={404} title={'A konzultáció nem található!'} />
+  }
+
   return (
     <>
       <VStack p={2} justifyContent="center">
-        {participants.some((p) => p.id === currentUser.id) && user.rating && (
+        {isParticipant && user.rating && (
           <>
             <HStack>
               <Text>Te értékelésed: {user.rating?.value}</Text>
@@ -90,7 +94,7 @@ export const UserRating = ({ participants, currentUser, user, refetch }: Props) 
             </Button>
           </>
         )}
-        {participants.some((p) => p.id === currentUser.id) && !user.rating && (
+        {isParticipant && !user.rating && (
           <Button
             width="100%"
             colorScheme="brand"
@@ -140,11 +144,11 @@ export const UserRating = ({ participants, currentUser, user, refetch }: Props) 
                   user.rating
                     ? updateRatingConsultation({
                         data: { ratedUserId: user.id, anonymous: anonymous, text: text, value: value },
-                        consultationId: +consultationId!!
+                        consultationId: +consultationId
                       })
                     : rateConsultation({
                         data: { ratedUserId: user.id, anonymous: anonymous, text: text, value: value },
-                        consultationId: +consultationId!!
+                        consultationId: +consultationId
                       })
                   setOpen(false)
                 }}

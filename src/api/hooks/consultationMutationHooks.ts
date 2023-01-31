@@ -37,10 +37,11 @@ export const useJoinConsultationMutation = (onSuccess: () => void, onError: (e: 
   )
 }
 
-export const useLeaveConsultationMutation = (onError: (e: KonziError) => void) => {
+export const useLeaveConsultationMutation = (onSuccess: () => void, onError: (e: KonziError) => void) => {
   return useMutation<ConsultationModel, KonziError, number>(
     async (consultationId) => (await axios.post(`/consultations/${consultationId}/leave/`)).data,
     {
+      onSuccess,
       onError
     }
   )

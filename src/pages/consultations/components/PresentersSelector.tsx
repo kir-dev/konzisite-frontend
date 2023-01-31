@@ -25,6 +25,7 @@ import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { useFecthUserListQuery } from '../../../api/hooks/userQueryHooks'
+import { ErrorPage } from '../../error/ErrorPage'
 
 import { Presentation } from '../types/consultationDetails'
 import { Rating } from './Rating'
@@ -38,7 +39,7 @@ type Props = {
 
 export const PresentersSelector = ({ presentations, setPresentations, presentationsError }: Props) => {
   const { isLoading, error, data: presenterList, refetch } = useFecthUserListQuery()
-  const { loggedInUser: currentUser } = useAuthContext()
+  const { loggedInUser } = useAuthContext()
 
   //TODO search?
   const [open, setOpen] = useState(false)
@@ -53,6 +54,10 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
 
   const removePresenter = (presenter: Presentation) => {
     setPresentations(presentations.filter((p) => p.id !== presenter.id))
+  }
+
+  if (loggedInUser === undefined) {
+    return <ErrorPage status={401} />
   }
 
   if (error) {
@@ -70,7 +75,7 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
               <VStack flexGrow={1}>
                 <Heading size="md" width="100%">
                   {p.fullName}
-                  {p.id === currentUser!!.id && (
+                  {p.id === loggedInUser.id && (
                     <Badge colorScheme="brand" ml={1}>
                       Te
                     </Badge>
@@ -125,7 +130,7 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
                       <VStack flexGrow={1}>
                         <Heading size="md" width="100%">
                           {p.fullName}
-                          {p.id === currentUser!!.id && (
+                          {p.id === loggedInUser.id && (
                             <Badge colorScheme="brand" ml={1}>
                               Te
                             </Badge>

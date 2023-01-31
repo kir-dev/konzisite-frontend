@@ -33,7 +33,7 @@ export const GroupsPage = () => {
       <GroupList
         groups={groups?.filter((g) => g.currentUserRole !== GroupRoles.NONE)}
         title="Saját csoportok"
-        noGroupsMessage="Még nem vagy csoport tagja sem!"
+        noGroupsMessage="Még nem vagy egy csoport tagja sem!"
         loading={isLoading}
         refetchList={refetch}
       />

@@ -4,18 +4,19 @@ import { ConsultationDetails } from '../../pages/consultations/types/consultatio
 import { ConsultationPreview } from '../../pages/consultations/types/consultationPreview'
 import { KonziError } from '../model/error.model'
 
-export const useFecthConsultationListQuery = () => {
+export const useFetchConsultationListQuery = () => {
   return useQuery<ConsultationPreview[], KonziError>('fetchConsultations', async () => (await axios.get('/consultations')).data, {
     retry: false
   })
 }
 
-export const useFecthConsultationbDetailsQuery = (consultationId: number) => {
+export const useFetchConsultationbDetailsQuery = (consultationId: number) => {
   return useQuery<ConsultationDetails, KonziError>(
     ['fetchConsultationDetails', consultationId],
     async () => (await axios.get(`/consultations/${consultationId}`)).data,
     {
-      retry: false
+      retry: false,
+      enabled: consultationId > 0 && !isNaN(consultationId)
     }
   )
 }

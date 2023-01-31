@@ -10,7 +10,7 @@ import {
   useJoinConsultationMutation,
   useLeaveConsultationMutation
 } from '../../api/hooks/consultationMutationHooks'
-import { useFecthConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
+import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { ConfirmDialogButton } from '../../components/commons/ConfirmDialogButton'
 import { generateToastParams } from '../../util/generateToastParams'
@@ -22,8 +22,7 @@ import { UserList } from './components/UserList'
 export const ConsultationDetailsPage = () => {
   const { consultationId } = useParams()
   const { loggedInUser } = useAuthContext()
-  const { isLoading, data: consultation, error, refetch } = useFecthConsultationbDetailsQuery(+consultationId!!)
-
+  const { isLoading, data: consultation, error, refetch } = useFetchConsultationbDetailsQuery(+consultationId!!)
   const toast = useToast()
   const navigate = useNavigate()
 
@@ -35,139 +34,134 @@ export const ConsultationDetailsPage = () => {
     toast({ title: 'Csatlakoztál a konzultációhoz!', status: 'success' })
     refetch()
   }, onErrorFn)
-  const { mutate: leaveConsultation } = useLeaveConsultationMutation(onErrorFn)
 
-  const deleteConsultationMutation = useDeleteConsultationMutation(() => {
+  const { mutate: leaveConsultation } = useLeaveConsultationMutation(() => {
+    toast({ title: 'Kiléptél a konzultációból!', status: 'success' })
+    refetch()
+  }, onErrorFn)
+
+  const { mutate: deleteConsultation } = useDeleteConsultationMutation(() => {
     toast({ title: 'Törölted a konzultációt!', status: 'success' })
     navigate('/consultations')
   }, onErrorFn)
 
-  const deleteConsultation = () => {
-    deleteConsultationMutation.mutate(+consultationId!!)
+  if (consultationId === undefined || isNaN(+consultationId)) {
+    return <ErrorPage backPath={'/'} status={404} title={'A konzultáció nem található!'} />
+  }
+
+  if (loggedInUser === undefined) {
+    return <ErrorPage status={401} />
   }
 
   if (error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
 
+  if (isLoading) {
+    return <LoadingConsultation />
+  }
+
+  if (consultation === undefined) {
+    return (
+      <ErrorPage
+        title="Nincs ilyen konzultáció"
+        status={404}
+        messages={['A konzultáció amit keresel már nem létezik, vagy nem is létezett']}
+      />
+    )
+  }
+
+  const isOwner = consultation.owner.id === loggedInUser.id
+  const isAdmin = loggedInUser.isAdmin
+  const isPresenter = consultation.presentations.some((p) => p.id === loggedInUser.id)
+  const isParticipant = consultation.participants.some((p) => p.id === loggedInUser.id)
+
   return (
     <>
-      {consultation === undefined ? (
-        isLoading ? (
-          <LoadingConsultation />
-        ) : (
-          <ErrorPage title="Nincs ilyen konzultáció" messages={['A konzultáció amit keresel már nem létezik, vagy nem is létezett']} />
-        )
-      ) : (
-        <>
-          <Helmet title={consultation.name} />
-          <Heading textAlign="center" mb={3}>
-            {consultation.name}
-          </Heading>
-          <Heading size="md" as={Link} to={`/subjects/${consultation.subject.id}`} justifyContent="center" textAlign="center" mb={3}>
-            {consultation.subject.name} ({consultation.subject.code})
-          </Heading>
-          <Stack direction={['column-reverse', 'row']} justifyContent="space-between" mb={3}>
-            <VStack alignItems="flex-start" spacing={3} flexGrow={1}>
-              <HStack>
-                <FaMapMarkerAlt />
-                <Text> {consultation.location} </Text>
-              </HStack>
-              <HStack>
-                <FaClock />
-                <Text>
-                  {new Date(consultation.startDate).toLocaleString('hu-HU', { timeStyle: 'short', dateStyle: 'short' })} -{' '}
-                  {new Date(consultation.endDate).toLocaleTimeString('hu-HU', { timeStyle: 'short' })}
-                </Text>
-              </HStack>
-            </VStack>
+      <Helmet title={consultation.name} />
+      <Heading textAlign="center" mb={3}>
+        {consultation.name}
+      </Heading>
+      <Heading size="md" justifyContent="center" textAlign="center" mb={3}>
+        {consultation.subject.name} ({consultation.subject.code})
+      </Heading>
+      <Stack direction={['column-reverse', 'row']} justifyContent="space-between" mb={3}>
+        <VStack alignItems="flex-start" spacing={3} flexGrow={1}>
+          <HStack>
+            <FaMapMarkerAlt />
+            <Text> {consultation.location} </Text>
+          </HStack>
+          <HStack>
+            <FaClock />
+            <Text>
+              {new Date(consultation.startDate).toLocaleString('hu-HU', { timeStyle: 'short', dateStyle: 'short' })} -{' '}
+              {new Date(consultation.endDate).toLocaleTimeString('hu-HU', { timeStyle: 'short' })}
+            </Text>
+          </HStack>
+        </VStack>
 
-            <VStack justify={['center', 'flex-end']} align="flex-end">
-              {(consultation.owner.id === loggedInUser!!.id ||
-                loggedInUser!!.isAdmin ||
-                consultation.presentations.some((p) => p.id === loggedInUser!!.id)) && (
-                <Button width="100%" as={Link} to={`/consultations/${consultation.id}/edit`} colorScheme="brand">
-                  Szerkesztés
-                </Button>
-              )}
-              {(consultation.owner.id === loggedInUser!!.id ||
-                loggedInUser!!.isAdmin ||
-                consultation.presentations.some((p) => p.id === loggedInUser!!.id)) && (
-                <>
-                  <ConfirmDialogButton
-                    buttonColorSchene="red"
-                    buttonText="Törlés"
-                    buttonWidth="100%"
-                    headerText="Konzultáció törlése"
-                    bodyText="Biztos törölni szeretnéd a konzultációt?"
-                    confirmButtonText="Törlés"
-                    confirmAction={deleteConsultation}
-                  />
-                </>
-              )}
-              {consultation.participants.some((p) => p.id === loggedInUser!!.id) && !consultation.presentations.some((p) => p.rating) && (
-                <>
-                  <ConfirmDialogButton
-                    buttonText="Mégsem megyek"
-                    buttonColorSchene="red"
-                    headerText="Biztos nem mész a konzira?"
-                    confirmButtonText="Nem megyek"
-                    confirmAction={() => {
-                      leaveConsultation(+consultationId!!, {
-                        onSuccess: () => {
-                          toast({ title: 'Kiléptél a konzultációból!', status: 'success' })
-                          refetch()
-                        }
-                      })
-                    }}
-                  />
-                </>
-              )}
-              {!consultation.presentations.some((p) => p.id === loggedInUser!!.id) &&
-                !consultation.participants.some((p) => p.id === loggedInUser!!.id) && (
-                  <>
-                    <Button
-                      onClick={() => {
-                        joinConsultation(+consultationId!!)
-                      }}
-                      colorScheme="brand"
-                    >
-                      Megyek
-                    </Button>
-                  </>
-                )}
-            </VStack>
-          </Stack>
-          {consultation.descMarkdown && (
-            <Box shadow="md" borderRadius={8} borderWidth={1} p={4} width="100%" mb={2}>
-              <ReactMarkdown components={ChakraUIRenderer()} children={consultation.descMarkdown} skipHtml />
-            </Box>
+        <VStack justify={['center', 'flex-end']} align="flex-end">
+          {(isOwner || isAdmin || isPresenter) && (
+            <>
+              <Button width="100%" as={Link} to={`/consultations/${consultation.id}/edit`} colorScheme="brand">
+                Szerkesztés
+              </Button>
+              <ConfirmDialogButton
+                buttonColorSchene="red"
+                buttonText="Törlés"
+                buttonWidth="100%"
+                headerText="Konzultáció törlése"
+                bodyText="Biztos törölni szeretnéd a konzultációt?"
+                confirmButtonText="Törlés"
+                confirmAction={() => deleteConsultation(+consultationId)}
+              />
+            </>
           )}
-          <Heading size="lg" mb={2}>
-            Konzitartók ({consultation.presentations.length})
-          </Heading>
-          <UserList
-            columns={1}
-            presentations={consultation.presentations}
-            participants={consultation.participants}
-            currentUser={loggedInUser!!}
-            showRatingButton={new Date(consultation.endDate).getTime() < new Date().getTime()}
-            refetch={refetch}
-          />
-          <TargetGroupList groups={consultation.targetGroups} />
-          <Heading size="lg" mt={2} mb={2}>
-            Résztvevők ({consultation.participants.length})
-          </Heading>
-          <UserList
-            columns={2}
-            presentations={consultation.participants}
-            participants={consultation.participants}
-            currentUser={loggedInUser!!}
-            showRating={false}
-            refetch={refetch}
-          />
-        </>
+          {!isPresenter && !isParticipant && !isOwner && (
+            <Button
+              onClick={() => {
+                joinConsultation(+consultationId)
+              }}
+              colorScheme="brand"
+            >
+              Megyek
+            </Button>
+          )}
+          {isParticipant && (
+            <>
+              <ConfirmDialogButton
+                buttonText="Mégsem megyek"
+                buttonColorSchene="red"
+                headerText="Biztos nem mész a konzira?"
+                confirmButtonText="Nem megyek"
+                confirmAction={() => {
+                  leaveConsultation(+consultationId)
+                }}
+              />
+            </>
+          )}
+        </VStack>
+      </Stack>
+      {consultation.descMarkdown && (
+        <Box shadow="md" borderRadius={8} borderWidth={1} p={4} width="100%" mb={2}>
+          <ReactMarkdown components={ChakraUIRenderer()} children={consultation.descMarkdown} skipHtml />
+        </Box>
       )}
+      <Heading size="lg" mb={2}>
+        Konzitartók ({consultation.presentations.length})
+      </Heading>
+      <UserList
+        columns={1}
+        users={consultation.presentations}
+        isParticipant={isParticipant}
+        showRatingButton={new Date(consultation.endDate).getTime() < new Date().getTime()}
+        refetch={refetch}
+      />
+      <TargetGroupList groups={consultation.targetGroups} />
+      <Heading size="lg" mt={2} mb={2}>
+        Résztvevők ({consultation.participants.length})
+      </Heading>
+      <UserList columns={2} users={consultation.participants} isParticipant={isParticipant} showRating={false} refetch={refetch} />
     </>
   )
 }

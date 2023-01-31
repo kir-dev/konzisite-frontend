@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useCreateConsultationMutation, useEditConsultationMutation } from '../../api/hooks/consultationMutationHooks'
-import { useFecthConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
+import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { Helmet } from 'react-helmet-async'
 import { GroupModel } from '../../api/model/group.model'
@@ -24,13 +24,13 @@ type Props = {
 export const EditConsultationPage = ({ newConsultation }: Props) => {
   const toast = useToast()
   const navigate = useNavigate()
-  const { loggedInUser: currentUser } = useAuthContext()
+  const { loggedInUser } = useAuthContext()
   const consultationId = parseInt(useParams<{ consultationId: string }>().consultationId ?? '-1')
 
   const { mutate: createConsultation } = useCreateConsultationMutation()
   const { mutate: updateConsultation } = useEditConsultationMutation(consultationId)
 
-  const { isLoading, data: consultation, error } = useFecthConsultationbDetailsQuery(consultationId)
+  const { isLoading, data: consultation, error } = useFetchConsultationbDetailsQuery(consultationId)
 
   const createCons = () => {
     createConsultation(
@@ -45,9 +45,9 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
         targetGroupIds: targetGroups.map((g) => g.id)
       },
       {
-        onSuccess: () => {
+        onSuccess: (consultation) => {
           toast({ title: 'Konzultáció sikeresen létrehozva!', status: 'success' })
-          navigate('/consultations')
+          navigate(`/consultations/${consultation.id}`)
         },
         onError: (e: KonziError) => {
           toast(generateToastParams(e))
@@ -69,9 +69,9 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
         targetGroupIds: targetGroups.map((g) => g.id)
       },
       {
-        onSuccess: () => {
+        onSuccess: (consultation) => {
           toast({ title: 'Konzultáció sikeresen módosítva!', status: 'success' })
-          navigate('/consultations')
+          navigate(`/consultations/${consultation.id}`)
         },
         onError: (e: KonziError) => {
           toast(generateToastParams(e))
@@ -90,14 +90,14 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const [presentations, setPresentations] = useState<Presentation[]>([])
   const [targetGroups, setTargetGroups] = useState<GroupModel[]>([])
 
-  let nameError = name == ''
-  let locationError = location == ''
+  let nameError = name === ''
+  let locationError = location === ''
   let startDateError = newConsultation
     ? startDate.getTime() <= new Date().getTime()
     : startDate.getTime() < Math.min(consultation ? new Date(consultation.startDate).getTime() : 0, new Date().getTime())
   let endDateError = endDate.getTime() <= startDate.getTime()
-  let subjectError = subject == undefined
-  let presentationsError = presentations.length == 0
+  let subjectError = subject === undefined
+  let presentationsError = presentations.length === 0
 
   const errorCount = [nameError, locationError, startDateError || endDateError, subjectError, presentationsError].filter((e) => e).length
 
@@ -124,6 +124,10 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
     }
   }, [consultation])
 
+  if (loggedInUser === undefined) {
+    return <ErrorPage status={401} />
+  }
+
   if (consultationId != -1 && error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
@@ -135,12 +139,12 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       <>
         {(consultation === undefined ||
           !(
-            currentUser!!.isAdmin ||
-            consultation.owner.id === currentUser!!.id ||
-            consultation.presentations.some((p) => p.id === currentUser!!.id)
+            loggedInUser.isAdmin ||
+            consultation.owner.id === loggedInUser.id ||
+            consultation.presentations.some((p) => p.id === loggedInUser.id)
           )) &&
         !newConsultation ? (
-          <ErrorPage status={401} title="Nincs jogod" messages={['A konzit csak a tulajdonosa szerkesztheti']} />
+          <ErrorPage status={403} title="Nincs jogod" messages={['A konzit csak a tulajdonosa szerkesztheti']} />
         ) : (
           <>
             <Helmet title={newConsultation ? 'Új konzultáció' : consultation?.name} />
