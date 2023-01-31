@@ -41,7 +41,7 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
   const {
     isLoading,
     data: groupList,
-    mutate,
+    mutate: fetchGroups,
     reset,
     error
   } = useFecthGroupListMutation((e: KonziError) => {
@@ -61,12 +61,11 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
 
   const debouncedSearch = useRef(
     debounce((search: string) => {
-      mutate(search)
-    }, 500)
+      fetchGroups(search)
+    }, 400)
   ).current
 
   if (error) {
-    console.log('xdd')
     return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
@@ -102,7 +101,7 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
           Célcsoport hozzáadása
         </Button>
       </FormControl>
-      <Modal scrollBehavior={'inside'} isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Célcsoport hozzáadása</ModalHeader>
@@ -128,8 +127,10 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
-              ) : filteredGroupList === undefined ? (
-                <Text>Nincsenek csoportok</Text>
+              ) : filteredGroupList === undefined || search.trim().length === 0 ? (
+                <Text>Keress csoportot</Text>
+              ) : filteredGroupList.length === 0 ? (
+                <Text>Nincs találat</Text>
               ) : (
                 filteredGroupList.map((g) => (
                   <Box

@@ -14,13 +14,18 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useDisclosure,
+  useToast,
   VStack
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import debounce from 'lodash.debounce'
+import { useRef, useState } from 'react'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
-import { useFetchSubjectsQuery } from '../../../api/hooks/subjectHooks'
+import { useFecthSubjectListMutation } from '../../../api/hooks/subjectHooks'
+import { KonziError } from '../../../api/model/error.model'
 import { SubjectModel } from '../../../api/model/subject.model'
+import { generateToastParams } from '../../../util/generateToastParams'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
 type Props = {
@@ -30,10 +35,25 @@ type Props = {
 }
 
 export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) => {
-  const { isLoading, error, data: subjectList } = useFetchSubjectsQuery()
+  const toast = useToast()
+  const {
+    isLoading,
+    data: subjectList,
+    mutate: fetchSubjects,
+    reset,
+    error
+  } = useFecthSubjectListMutation((e: KonziError) => {
+    toast(generateToastParams(e))
+  })
 
-  const [open, setOpen] = useState(false)
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [search, setSearch] = useState('')
+
+  const debouncedSearch = useRef(
+    debounce((search: string) => {
+      fetchSubjects(search)
+    }, 400)
+  ).current
 
   if (error) {
     return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
@@ -43,12 +63,24 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
     <>
       <FormControl isInvalid={subjectError} isRequired>
         <FormLabel>Tárgy</FormLabel>
-        <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} cursor="pointer" onClick={() => setOpen(true)}>
+        <Box
+          borderRadius={6}
+          borderWidth={1}
+          pt={2}
+          pb={2}
+          pl={4}
+          cursor="pointer"
+          onClick={() => {
+            onOpen()
+            setSearch('')
+            reset()
+          }}
+        >
           <Text>{subject ? `${subject.name} (${subject.code})` : 'Nincs tárgy választva'}</Text>
         </Box>
         <FormErrorMessage>Kell tárgyat választani</FormErrorMessage>
       </FormControl>
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Tárgy választás</ModalHeader>
@@ -58,7 +90,15 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
               <InputLeftElement h="100%">
                 <FaSearch />
               </InputLeftElement>
-              <Input placeholder="Keresés..." size="lg" onChange={(e) => setSearch(e.target.value)} value={search} />
+              <Input
+                placeholder="Keresés..."
+                size="lg"
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  debouncedSearch(e.target.value)
+                }}
+                value={search}
+              />
               <InputRightElement h="100%">
                 <FaTimes onClick={() => setSearch('')} cursor="pointer" />
               </InputRightElement>
@@ -66,8 +106,12 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
             <VStack mb={4} maxHeight="600px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
+              ) : subjectList === undefined || search.trim().length === 0 ? (
+                <Text>Keress tárgyat</Text>
+              ) : subjectList.length === 0 ? (
+                <Text>Nincs találat</Text>
               ) : (
-                subjectList?.map((s) => (
+                subjectList.map((s) => (
                   <Box
                     borderRadius={6}
                     borderWidth={1}
@@ -79,7 +123,7 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
                     width="100%"
                     onClick={() => {
                       setSubject(s)
-                      setOpen(false)
+                      onClose()
                     }}
                   >
                     <Text>

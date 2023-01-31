@@ -18,13 +18,19 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Text,
+  useDisclosure,
+  useToast,
   VStack
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import debounce from 'lodash.debounce'
+import { useRef, useState } from 'react'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
-import { useFecthUserListQuery } from '../../../api/hooks/userQueryHooks'
+import { useFecthUserListMutation } from '../../../api/hooks/userMutationHooks'
+import { KonziError } from '../../../api/model/error.model'
+import { generateToastParams } from '../../../util/generateToastParams'
 import { ErrorPage } from '../../error/ErrorPage'
 
 import { Presentation } from '../types/consultationDetails'
@@ -38,15 +44,20 @@ type Props = {
 }
 
 export const PresentersSelector = ({ presentations, setPresentations, presentationsError }: Props) => {
-  const { isLoading, error, data: presenterList, refetch } = useFecthUserListQuery()
   const { loggedInUser } = useAuthContext()
+  const toast = useToast()
+  const {
+    isLoading,
+    data: userList,
+    mutate: fetchUsers,
+    reset,
+    error
+  } = useFecthUserListMutation((e: KonziError) => {
+    toast(generateToastParams(e))
+  })
 
-  //TODO search?
-  const [open, setOpen] = useState(false)
-  const [filteredPresenterList, setFilteredPresenterList] = useState<Presentation[]>([])
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [search, setSearch] = useState('')
-  const [filteredCount, setFilteredCount] = useState(0)
-  const [resultLimit, setResultLimit] = useState(10)
 
   const addPresenter = (presenter: Presentation) => {
     setPresentations([...presentations, presenter].sort((a, b) => a.fullName.localeCompare(b.fullName)))
@@ -55,6 +66,12 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
   const removePresenter = (presenter: Presentation) => {
     setPresentations(presentations.filter((p) => p.id !== presenter.id))
   }
+
+  const debouncedSearch = useRef(
+    debounce((search: string) => {
+      fetchUsers(search)
+    }, 400)
+  ).current
 
   if (loggedInUser === undefined) {
     return <ErrorPage status={401} />
@@ -90,11 +107,18 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
           </Box>
         ))}
         <FormErrorMessage>Legalább egy előadónak kell lennie</FormErrorMessage>
-        <Button onClick={() => setOpen(true)} mt={2}>
+        <Button
+          onClick={() => {
+            onOpen()
+            setSearch('')
+            reset()
+          }}
+          mt={2}
+        >
           Előadó hozzáadása
         </Button>
       </FormControl>
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Előadó hozzáadása</ModalHeader>
@@ -104,7 +128,15 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
               <InputLeftElement h="100%">
                 <FaSearch />
               </InputLeftElement>
-              <Input placeholder="Keresés..." size="lg" onChange={(e) => setSearch(e.target.value)} value={search} />
+              <Input
+                placeholder="Keresés..."
+                size="lg"
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  debouncedSearch(e.target.value)
+                }}
+                value={search}
+              />
               <InputRightElement h="100%">
                 <FaTimes onClick={() => setSearch('')} cursor="pointer" />
               </InputRightElement>
@@ -112,8 +144,12 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
+              ) : userList === undefined || search.trim().length === 0 ? (
+                <Text>Keress előadót</Text>
+              ) : userList.length === 0 ? (
+                <Text>Nincs találat</Text>
               ) : (
-                presenterList?.map((p) => (
+                userList?.map((p) => (
                   <Box
                     borderRadius={6}
                     borderWidth={1}
@@ -122,7 +158,7 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
                     width="100%"
                     onClick={() => {
                       addPresenter(p)
-                      setOpen(false)
+                      onClose()
                     }}
                   >
                     <HStack flexGrow={1} p={4}>
@@ -143,11 +179,6 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
                 ))
               )}
             </VStack>
-            {filteredPresenterList.length < filteredCount && (
-              <Button colorScheme="brand" onClick={() => setResultLimit((r) => r + 10)} width="100%" mb={4}>
-                Még több betöltése
-              </Button>
-            )}
           </ModalBody>
         </ModalContent>
       </Modal>
