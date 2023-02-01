@@ -14,7 +14,7 @@ const MobileNav: FC<Props> = ({ onNavigate }) => {
 
   useEffect(() => {
     setNavItems(NAV_ITEMS.filter((item) => item.shouldBeShown(isLoggedIn, loggedInUser)))
-  }, [isLoggedIn])
+  }, [isLoggedIn, loggedInUser])
 
   return (
     <Stack display={{ md: 'none' }} fontWeight={700} fontSize="xl" ml={6} mb={6}>
