@@ -14,7 +14,8 @@ export const ConsultationListItem = ({ c }: ConsultationListItemProps) => {
     <HStack key={c.id}>
       <Text>{c.descMarkdown}</Text>
       <Text>
-        {new Date(c.startDate).toDateString()}-{new Date(c.endDate).toDateString()}
+        {new Date(c.startDate).toLocaleString('hu-HU', { timeStyle: 'short', dateStyle: 'short' })} -{' '}
+        {new Date(c.endDate).toLocaleTimeString('hu-HU', { timeStyle: 'short' })}
       </Text>
       <Text>{c.subject.name}</Text>
     </HStack>

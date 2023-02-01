@@ -1,27 +1,26 @@
-import { Avatar, Box, Button, Flex, HStack, useBreakpointValue, VStack } from '@chakra-ui/react'
-import { Helmet } from 'react-helmet-async'
-import { FaAt, FaSignOutAlt } from 'react-icons/fa'
-import { UserModel } from '../../../api/model/user.model'
+import { Avatar, Box, Button, Flex, Heading, HStack, Text, useBreakpointValue, VStack } from '@chakra-ui/react'
+import { FaSignOutAlt } from 'react-icons/fa'
+import { UserDetails } from '../types/UserDetails'
+import { ConsultationListItem } from './ConsultationListItem'
 
 type Props = {
-  user: UserModel
+  user: UserDetails
   profileOptions?: {
     onLogoutPressed: (path?: string) => void
   }
 }
 
-export const ProfileDetails = ({ user: { fullName, email }, profileOptions }: Props) => {
+export const ProfileDetails = ({ user, profileOptions }: Props) => {
   const { onLogoutPressed } = profileOptions || { onLogoutPressed: () => {} }
 
   return (
     <Box>
-      <Helmet title={fullName} />
       <HStack flexWrap="wrap" justifyContent="space-between" alignItems="center" mb={5}>
         <HStack flexWrap="wrap" spacing={4}>
-          <Avatar size={useBreakpointValue({ base: 'lg', md: 'xl' })} name={fullName} src={''} />
+          <Avatar size={useBreakpointValue({ base: 'lg', md: 'xl' })} name={user.fullName} src={''} />
           <HStack>
             <Box fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={700} wordBreak="break-all">
-              {fullName}
+              {user.fullName}
             </Box>
           </HStack>
         </HStack>
@@ -33,14 +32,29 @@ export const ProfileDetails = ({ user: { fullName, email }, profileOptions }: Pr
           </Flex>
         )}
       </HStack>
-      <VStack align="stretch">
-        <Box>
-          <HStack>
-            <FaAt />
-            <Box>{email}</Box>
-          </HStack>
-        </Box>
-      </VStack>
+      <>
+        <VStack>
+          <Heading>Átlagos értékelés: {user.avarageRating}</Heading>
+
+          {user.presentations.map((p) =>
+            p.ratings?.map((r) => (
+              <HStack key={r.id}>
+                <Text>{r.rater.fullName} </Text>
+                <Text>{r.value}, </Text>
+                <Text>{r.text}</Text>
+              </HStack>
+            ))
+          )}
+          <Heading>Tartott konzultációk</Heading>
+          {user.presentations?.map((c) => (
+            <ConsultationListItem c={c} />
+          ))}
+          <Heading>Konzik, amin részt vett</Heading>
+          {user.participations?.map((c) => (
+            <ConsultationListItem c={c} />
+          ))}
+        </VStack>
+      </>
     </Box>
   )
 }
