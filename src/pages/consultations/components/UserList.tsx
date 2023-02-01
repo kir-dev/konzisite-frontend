@@ -46,7 +46,7 @@ export const UserList = ({ users, isParticipant, columns, showRating = true, sho
                   {showRating && <Rating rating={u.averageRating} />}
                 </VStack>
               </HStack>
-              {showRatingButton && <UserRating isParticipant={isParticipant} refetch={refetch} user={u} />}
+              {showRating && <UserRating showRatingButton={showRatingButton} isParticipant={isParticipant} refetch={refetch} user={u} />}
             </Stack>
           </Box>
         ))}

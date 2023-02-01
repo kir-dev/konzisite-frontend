@@ -35,10 +35,11 @@ type Props = {
     rating?: RatingModel
   }
   isParticipant: boolean
+  showRatingButton: boolean
   refetch: () => {}
 }
 
-export const UserRating = ({ isParticipant, user, refetch }: Props) => {
+export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: Props) => {
   const toast = useToast()
   const { consultationId } = useParams()
 
@@ -98,6 +99,7 @@ export const UserRating = ({ isParticipant, user, refetch }: Props) => {
           <Button
             width="100%"
             colorScheme="brand"
+            isDisabled={!showRatingButton}
             onClick={() => {
               setText('')
               setValue(5)

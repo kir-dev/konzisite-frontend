@@ -75,6 +75,7 @@ export const ConsultationDetailsPage = () => {
   const isAdmin = loggedInUser.isAdmin
   const isPresenter = consultation.presentations.some((p) => p.id === loggedInUser.id)
   const isParticipant = consultation.participants.some((p) => p.id === loggedInUser.id)
+  const ratedConsultation = consultation.presentations.some((p) => p.rating)
 
   return (
     <>
@@ -127,7 +128,7 @@ export const ConsultationDetailsPage = () => {
               Megyek
             </Button>
           )}
-          {isParticipant && (
+          {isParticipant && !ratedConsultation && (
             <>
               <ConfirmDialogButton
                 buttonText="Mégsem megyek"
@@ -154,7 +155,7 @@ export const ConsultationDetailsPage = () => {
         columns={1}
         users={consultation.presentations}
         isParticipant={isParticipant}
-        showRatingButton={new Date(consultation.endDate).getTime() < new Date().getTime()}
+        showRatingButton={new Date(consultation.startDate).getTime() < new Date().getTime()}
         refetch={refetch}
       />
       <TargetGroupList groups={consultation.targetGroups} />

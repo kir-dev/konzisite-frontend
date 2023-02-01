@@ -134,73 +134,70 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
 
   if (loading || isLoading) {
     return <LoadingEditConsultation />
-  } else
-    return (
-      <>
-        {(consultation === undefined ||
-          !(
-            loggedInUser.isAdmin ||
-            consultation.owner.id === loggedInUser.id ||
-            consultation.presentations.some((p) => p.id === loggedInUser.id)
-          )) &&
-        !newConsultation ? (
-          <ErrorPage status={403} title="Nincs jogod" messages={['A konzit csak a tulajdonosa szerkesztheti']} />
-        ) : (
-          <>
-            <Helmet title={newConsultation ? 'Új konzultáció' : consultation?.name} />
-            <Heading size="xl" textAlign="center" mb={3}>
-              {newConsultation ? 'Új konzultáció létrehozása' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`}
-            </Heading>
-            <VStack>
-              <FormControl isInvalid={nameError} isRequired>
-                <FormLabel>Konzultáció neve</FormLabel>
-                <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Digit vizsgára készülés" />
-                <FormErrorMessage>Név nem lehet üres</FormErrorMessage>
-              </FormControl>
-              <FormControl isInvalid={locationError} isRequired>
-                <FormLabel>Helyszín</FormLabel>
-                <Input
-                  type="text"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  placeholder="SCH-1317"
-                  width="30%"
-                  minWidth="150px"
-                />
-                <FormErrorMessage>Helyszín nem lehet üres</FormErrorMessage>
-              </FormControl>
-              <SubjectSelector subjectError={subjectError} subject={subject} setSubject={setSubject} />
-              <PresentersSelector
-                presentations={presentations}
-                setPresentations={setPresentations}
-                presentationsError={presentationsError}
+  }
+
+  return (
+    <>
+      {(consultation === undefined ||
+        !(
+          loggedInUser.isAdmin ||
+          consultation.owner.id === loggedInUser.id ||
+          consultation.presentations.some((p) => p.id === loggedInUser.id)
+        )) &&
+      !newConsultation ? (
+        <ErrorPage status={403} title="Nincs jogod" messages={['A konzit csak a tulajdonosa szerkesztheti']} />
+      ) : (
+        <>
+          <Helmet title={newConsultation ? 'Új konzultáció' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`} />
+          <Heading size="xl" textAlign="center" mb={3}>
+            {newConsultation ? 'Új konzultáció létrehozása' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`}
+          </Heading>
+          <VStack>
+            <FormControl isInvalid={nameError} isRequired>
+              <FormLabel>Konzultáció neve</FormLabel>
+              <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Digit vizsgára készülés" />
+              <FormErrorMessage>Név nem lehet üres</FormErrorMessage>
+            </FormControl>
+            <FormControl isInvalid={locationError} isRequired>
+              <FormLabel>Helyszín</FormLabel>
+              <Input
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="SCH-1317"
+                width="30%"
+                minWidth="150px"
               />
-              <ConsultationDateForm
-                startDate={new Date(startDate)}
-                endDate={new Date(endDate)}
-                setStartDate={setStartDate}
-                setEndDate={setEndDate}
-                startDateError={startDateError}
-                endDateError={endDateError}
-              />
-              <FormControl>
-                <FormLabel>Leírás (markdown)</FormLabel>
-                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-              </FormControl>
-              <TargetGroupSelector targetGroups={targetGroups} setTargetGroups={setTargetGroups} />
-            </VStack>
-            <Button
-              mt={3}
-              colorScheme="brand"
-              onClick={() => {
-                newConsultation ? createCons() : editCons()
-              }}
-              isDisabled={errorCount !== 0}
-            >
-              {newConsultation ? 'Létrehozás' : 'Mentés'}
-            </Button>
-          </>
-        )}
-      </>
-    )
+              <FormErrorMessage>Helyszín nem lehet üres</FormErrorMessage>
+            </FormControl>
+            <SubjectSelector subjectError={subjectError} subject={subject} setSubject={setSubject} />
+            <PresentersSelector presentations={presentations} setPresentations={setPresentations} presentationsError={presentationsError} />
+            <ConsultationDateForm
+              startDate={new Date(startDate)}
+              endDate={new Date(endDate)}
+              setStartDate={setStartDate}
+              setEndDate={setEndDate}
+              startDateError={startDateError}
+              endDateError={endDateError}
+            />
+            <FormControl>
+              <FormLabel>Leírás (markdown)</FormLabel>
+              <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+            </FormControl>
+            <TargetGroupSelector targetGroups={targetGroups} setTargetGroups={setTargetGroups} />
+          </VStack>
+          <Button
+            mt={3}
+            colorScheme="brand"
+            onClick={() => {
+              newConsultation ? createCons() : editCons()
+            }}
+            isDisabled={errorCount !== 0}
+          >
+            {newConsultation ? 'Létrehozás' : 'Mentés'}
+          </Button>
+        </>
+      )}
+    </>
+  )
 }
