@@ -81,6 +81,8 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
     return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
+  const filteredUserList = userList?.filter((u) => !presentations.some((p) => p.id === u.id))
+
   return (
     <>
       <FormControl isInvalid={presentationsError} isRequired>
@@ -144,12 +146,12 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
-              ) : userList === undefined || search.trim().length === 0 ? (
+              ) : filteredUserList === undefined || search.trim().length === 0 ? (
                 <Text>Keress előadót</Text>
-              ) : userList.length === 0 ? (
+              ) : filteredUserList.length === 0 ? (
                 <Text>Nincs találat</Text>
               ) : (
-                userList?.map((p) => (
+                filteredUserList.map((p) => (
                   <Box
                     borderRadius={6}
                     borderWidth={1}
