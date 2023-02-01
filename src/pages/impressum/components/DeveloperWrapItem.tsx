@@ -1,6 +1,5 @@
 import { Flex, HStack, Image, Tag, Text, useColorModeValue, WrapItem } from '@chakra-ui/react'
-
-type Dev = { name: string; img: string; tags: string[] }
+import { Dev } from '../util/developers'
 
 type Props = {
   dev: Dev
