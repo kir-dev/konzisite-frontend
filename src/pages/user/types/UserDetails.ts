@@ -2,12 +2,13 @@ import { ConsultationModel } from '../../../api/model/consultation.model'
 import { ConsultationRequestModel } from '../../../api/model/consultationrequest.model'
 import { RatingModel } from '../../../api/model/rating.model'
 import { SubjectModel } from '../../../api/model/subject.model'
-import { UserModel } from '../../../api/model/user.model'
+import { PublicUser } from './PublicUser'
 
-export type UserDetails = UserModel & {
+export type UserDetails = PublicUser & {
+  isAdmin: boolean
   presentations: (ConsultationModel & {
     subject: SubjectModel
-    ratings: (RatingModel & { rater: UserModel })[]
+    ratings: (RatingModel & { rater: PublicUser })[]
   })[]
   participations: (ConsultationModel & {
     subject: SubjectModel

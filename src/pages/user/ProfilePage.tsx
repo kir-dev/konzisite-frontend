@@ -10,11 +10,8 @@ import { UserDetails } from './types/UserDetails'
 
 const mockProfile: UserDetails = {
   id: 1,
-  authSchId: '123',
   isAdmin: false,
-  firstName: 'John',
   fullName: 'Appleseed John',
-  email: 'example@gmail.com',
   presentations: [
     {
       id: 1,
@@ -37,12 +34,8 @@ const mockProfile: UserDetails = {
           text: 'Yeaaah, eleg jo volt',
           anonymous: false,
           rater: {
-            isAdmin: false,
             id: 1,
-            authSchId: 'abc',
-            firstName: 'Elek',
-            fullName: 'Teszt Elek',
-            email: 'abc@cba.com'
+            fullName: 'Teszt Elek'
           }
         },
         {
@@ -51,12 +44,8 @@ const mockProfile: UserDetails = {
           text: 'Yeaaah, eleg jo volt szerintem is',
           anonymous: false,
           rater: {
-            isAdmin: false,
             id: 2,
-            authSchId: 'abc',
-            firstName: 'Elek2',
-            fullName: 'Teszt Elek2',
-            email: 'abc@cba.com'
+            fullName: 'Teszt Elek2'
           }
         }
       ]
@@ -82,12 +71,8 @@ const mockProfile: UserDetails = {
           text: 'Eleg uncsi volt ://',
           anonymous: false,
           rater: {
-            isAdmin: false,
             id: 3,
-            authSchId: 'abc',
-            firstName: 'Elek3',
-            fullName: 'Teszt Elek3',
-            email: 'abc@cba.com'
+            fullName: 'Teszt Elek3'
           }
         }
       ]
