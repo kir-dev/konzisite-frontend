@@ -21,6 +21,7 @@ import {
   useColorModeValue
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import { UserPreview } from './types/UserPreview'
 
@@ -87,6 +88,7 @@ export const UserBrowserPage = () => {
 
   return (
     <>
+      <Helmet title="Felhasználók" />
       <Heading>Felhasználók keresése</Heading>
       <InputGroup my={5}>
         <InputLeftElement h="100%">

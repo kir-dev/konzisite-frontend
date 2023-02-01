@@ -1,4 +1,5 @@
 import { Heading, Stack, VStack } from '@chakra-ui/react'
+import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 import { useFecthGroupDetailsQuery } from '../../api/hooks/groupQueryHooks'
 import { GroupRoles } from '../../api/model/group.model'
@@ -28,6 +29,7 @@ export const GroupDetailsPage = () => {
           <ErrorPage title="Nincs ilyen cspoort" messages={['A csoport amit keresel már nem létezik, vagy nem is létezett']} />
         ) : (
           <>
+            <Helmet title={group.name} />
             <Heading textAlign="center" mb={3}>
               {group.name}
             </Heading>

@@ -1,5 +1,6 @@
 import { Button, Heading, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { ConsultationListItem } from './components/ConsultationListItem'
 import { LoadingConsultationList } from './components/LoadingConsultationList'
@@ -19,6 +20,7 @@ export const ConsultationsPage = () => {
 
   return (
     <>
+      <Helmet title={'Konzultációk'} />
       <Heading size="xl" textAlign="center" mb={3}>
         Konzultációk
       </Heading>

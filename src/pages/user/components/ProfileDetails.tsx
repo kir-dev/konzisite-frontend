@@ -1,4 +1,5 @@
 import { Avatar, Box, Button, Flex, HStack, useBreakpointValue, VStack } from '@chakra-ui/react'
+import { Helmet } from 'react-helmet-async'
 import { FaAt, FaSignOutAlt } from 'react-icons/fa'
 import { UserModel } from '../../../api/model/user.model'
 
@@ -14,6 +15,7 @@ export const ProfileDetails = ({ user: { fullName, email }, profileOptions }: Pr
 
   return (
     <Box>
+      <Helmet title={fullName} />
       <HStack flexWrap="wrap" justifyContent="space-between" alignItems="center" mb={5}>
         <HStack flexWrap="wrap" spacing={4}>
           <Avatar size={useBreakpointValue({ base: 'lg', md: 'xl' })} name={fullName} src={''} />
