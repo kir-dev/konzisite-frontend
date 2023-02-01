@@ -1,7 +1,19 @@
-import { Avatar, Box, Button, Flex, Heading, HStack, Text, useBreakpointValue, VStack } from '@chakra-ui/react'
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  HStack,
+  SimpleGrid,
+  Stat,
+  StatLabel,
+  StatNumber,
+  useBreakpointValue
+} from '@chakra-ui/react'
 import { FaSignOutAlt } from 'react-icons/fa'
 import { UserDetails } from '../types/UserDetails'
-import { ConsultationListItem } from './ConsultationListItem'
 
 type Props = {
   user: UserDetails
@@ -12,7 +24,7 @@ type Props = {
 
 export const ProfileDetails = ({ user, profileOptions }: Props) => {
   const { onLogoutPressed } = profileOptions || { onLogoutPressed: () => {} }
-
+  console.log(user)
   return (
     <Box>
       <HStack flexWrap="wrap" justifyContent="space-between" alignItems="center" mb={5}>
@@ -33,27 +45,32 @@ export const ProfileDetails = ({ user, profileOptions }: Props) => {
         )}
       </HStack>
       <>
-        <VStack>
-          <Heading>Átlagos értékelés: {user.avarageRating}</Heading>
-
-          {user.presentations.map((p) =>
-            p.ratings?.map((r) => (
-              <HStack key={r.id}>
-                <Text>{r.rater.fullName} </Text>
-                <Text>{r.value}, </Text>
-                <Text>{r.text}</Text>
-              </HStack>
-            ))
-          )}
-          <Heading>Tartott konzultációk</Heading>
-          {user.presentations?.map((c) => (
-            <ConsultationListItem c={c} />
-          ))}
-          <Heading>Konzik, amin részt vett</Heading>
-          {user.participations?.map((c) => (
-            <ConsultationListItem c={c} />
-          ))}
-        </VStack>
+        <Card>
+          <CardBody>
+            <SimpleGrid columns={{ base: 2, md: 5 }}>
+              <Stat>
+                <StatNumber>{user.presentations.length}</StatNumber>
+                <StatLabel>Tartott konzi</StatLabel>
+              </Stat>
+              <Stat>
+                <StatNumber>{user.consultationRequests.length}</StatNumber>
+                <StatLabel>Konzi résztvevő</StatLabel>
+              </Stat>
+              <Stat>
+                <StatNumber>{user.presentations.reduce((acc, cur) => acc + cur.ratings.length, 0)}</StatNumber>
+                <StatLabel>Értékelés</StatLabel>
+              </Stat>
+              <Stat>
+                <StatNumber>{user.averageRating || '-'}</StatNumber>
+                <StatLabel>Átlagos értékelés</StatLabel>
+              </Stat>
+              <Stat>
+                <StatNumber>{user.participations.length}</StatNumber>
+                <StatLabel>Részvétel más konziján</StatLabel>
+              </Stat>
+            </SimpleGrid>
+          </CardBody>
+        </Card>
       </>
     </Box>
   )
