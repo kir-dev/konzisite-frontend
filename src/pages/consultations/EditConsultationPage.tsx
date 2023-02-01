@@ -24,7 +24,7 @@ type Props = {
 export const EditConsultationPage = ({ newConsultation }: Props) => {
   const toast = useToast()
   const navigate = useNavigate()
-  const { loggedInUser } = useAuthContext()
+  const { loggedInUser, loggedInUserLoading } = useAuthContext()
   const consultationId = parseInt(useParams<{ consultationId: string }>().consultationId ?? '-1')
 
   const { mutate: createConsultation } = useCreateConsultationMutation()
@@ -124,16 +124,16 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
     }
   }, [consultation])
 
-  if (loggedInUser === undefined) {
-    return <ErrorPage status={401} />
-  }
-
   if (consultationId != -1 && error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
 
-  if (loading || isLoading) {
+  if (loading || isLoading || loggedInUserLoading) {
     return <LoadingEditConsultation />
+  }
+
+  if (loggedInUser === undefined) {
+    return <ErrorPage status={401} />
   }
 
   return (

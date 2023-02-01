@@ -21,7 +21,7 @@ import { UserList } from './components/UserList'
 
 export const ConsultationDetailsPage = () => {
   const { consultationId } = useParams()
-  const { loggedInUser } = useAuthContext()
+  const { loggedInUser, loggedInUserLoading } = useAuthContext()
   const { isLoading, data: consultation, error, refetch } = useFetchConsultationbDetailsQuery(+consultationId!!)
   const toast = useToast()
   const navigate = useNavigate()
@@ -49,15 +49,11 @@ export const ConsultationDetailsPage = () => {
     return <ErrorPage backPath={'/'} status={404} title={'A konzultáció nem található!'} />
   }
 
-  if (loggedInUser === undefined) {
-    return <ErrorPage status={401} />
-  }
-
   if (error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
 
-  if (isLoading) {
+  if (isLoading || loggedInUserLoading) {
     return <LoadingConsultation />
   }
 
@@ -69,6 +65,10 @@ export const ConsultationDetailsPage = () => {
         messages={['A konzultáció amit keresel már nem létezik, vagy nem is létezett']}
       />
     )
+  }
+
+  if (loggedInUser === undefined) {
+    return <ErrorPage status={401} />
   }
 
   const isOwner = consultation.owner.id === loggedInUser.id
