@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Card,
@@ -7,14 +8,22 @@ import {
   Flex,
   HStack,
   SimpleGrid,
+  Stack,
   Tab,
   TabList,
   TabPanels,
   Tabs,
   Tooltip,
-  useBreakpointValue
+  useBreakpointValue,
+  useToast
 } from '@chakra-ui/react'
 import { FaLock, FaSignOutAlt } from 'react-icons/fa'
+import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
+import { usePromoteUserMutation } from '../../../api/hooks/userMutationHooks'
+import { KonziError } from '../../../api/model/error.model'
+import { UserModel } from '../../../api/model/user.model'
+import { ConfirmDialogButton } from '../../../components/commons/ConfirmDialogButton'
+import { generateToastParams } from '../../../util/generateToastParams'
 import { UserDetails } from '../types/UserDetails'
 import { ParticipationPanel } from './panels/ParticipationPanel'
 import { PresentationPanel } from './panels/PresentationPanel'
@@ -27,6 +36,16 @@ type Props = {
 }
 
 export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
+  const { loggedInUser } = useAuthContext()
+  const toast = useToast()
+  const { mutate: promoteUser } = usePromoteUserMutation(
+    (data: UserModel) => {
+      toast({ title: 'Felhasználó adminnak kinevezve!', status: 'success' })
+      user.isAdmin = data.isAdmin
+    },
+    (e: KonziError) => toast(generateToastParams(e))
+  )
+
   const statData: StatData[] = [
     {
       value: user.presentations.length,
@@ -62,24 +81,41 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
       explanation: `A felhasználó összesen ${user.participations.length} alkalommal vett részt más konzultációján.`
     }
   ]
+
   return (
     <Box>
       <HStack flexWrap="wrap" justifyContent="space-between" alignItems="center" mb={5}>
-        <HStack flexWrap="wrap" spacing={4}>
+        <HStack flexWrap="wrap" spacing={4} mb={2}>
           <Avatar size={useBreakpointValue({ base: 'lg', md: 'xl' })} name={user.fullName} src={''} />
-          <HStack>
+          <Stack direction={{ base: 'column', md: 'row' }} align="center" alignItems={{ base: 'flex-start', md: 'center' }}>
             <Box fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={700} wordBreak="break-all">
               {user.fullName}
             </Box>
-          </HStack>
+            {user.isAdmin && loggedInUser?.isAdmin && (
+              <Badge colorScheme="green" ml={1} fontSize="xl">
+                Konzisite admin
+              </Badge>
+            )}
+          </Stack>
         </HStack>
-        {onLogoutPressed !== undefined && (
-          <Flex flex={1} justifyContent="end">
+        <Flex flex={1} justifyContent="end">
+          {loggedInUser?.isAdmin && !user.isAdmin && (
+            <ConfirmDialogButton
+              headerText="Biztosan kinevezed adminnak?"
+              bodyText="Biztosan kinevezed ezt a felhasználót adminnak? Ezt később csak az adatbázisba nyúlással lehet visszavonni!"
+              buttonText="Adminná tétel"
+              buttonColorSchene="green"
+              confirmButtonText="Kinevezés"
+              refuseButtonText="Mégsem"
+              confirmAction={() => promoteUser(user.id)}
+            />
+          )}
+          {onLogoutPressed !== undefined && (
             <Button colorScheme="brand" rightIcon={<FaSignOutAlt />} onClick={() => onLogoutPressed()}>
               Kijelentkezés
             </Button>
-          </Flex>
-        )}
+          )}
+        </Flex>
       </HStack>
       <Card mb={5}>
         <CardBody>
