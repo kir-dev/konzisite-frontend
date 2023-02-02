@@ -16,6 +16,7 @@ export type UserDetails = PublicUser & {
   })[]
   consultationRequests?: (ConsultationRequestModel & {
     subject: SubjectModel
+    supporters: number
   })[]
   averageRating?: number
 }

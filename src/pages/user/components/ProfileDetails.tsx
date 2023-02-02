@@ -5,25 +5,21 @@ import {
   Card,
   CardBody,
   Flex,
-  Heading,
   HStack,
   SimpleGrid,
-  Stat,
-  StatLabel,
-  StatNumber,
   Tab,
   TabList,
-  TabPanel,
   TabPanels,
   Tabs,
-  Text,
-  useBreakpointValue,
-  VStack
+  Tooltip,
+  useBreakpointValue
 } from '@chakra-ui/react'
-import { FaSignOutAlt } from 'react-icons/fa'
-import { ConsultationListItem } from '../../../components/commons/ConsultationListItem'
+import { FaLock, FaSignOutAlt } from 'react-icons/fa'
 import { UserDetails } from '../types/UserDetails'
-import { RatingListItem } from './RatingListItem'
+import { ParticipationPanel } from './panels/ParticipationPanel'
+import { PresentationPanel } from './panels/PresentationPanel'
+import { RequestPanel } from './panels/RequestPanel'
+import { StatData, UserStat } from './UserStat'
 
 type Props = {
   user: UserDetails
@@ -34,6 +30,42 @@ type Props = {
 
 export const ProfileDetails = ({ user, profileOptions }: Props) => {
   const { onLogoutPressed } = profileOptions || { onLogoutPressed: () => {} }
+
+  const statData: StatData[] = [
+    {
+      value: user.presentations.length,
+      label: 'Tartott konzi',
+      explanation: `A felhasználó ${user.presentations.length} konzultáción volt előadó.`
+    },
+    {
+      value: user.presentations.reduce((acc, cur) => acc + cur.participants, 0),
+      label: 'Konzi résztvevő',
+      explanation: `Azokon a konzikon, ahol a felhasználó előadó volt, összesen ${user.presentations.reduce(
+        (acc, cur) => acc + cur.participants,
+        0
+      )} hallgató vett részt.`
+    },
+    {
+      value: user.presentations.reduce((acc, cur) => acc + cur.ratings.length, 0),
+      label: 'Értékelés',
+      explanation: `A felhasználó előadásaira összesen ${user.presentations.reduce(
+        (acc, cur) => acc + cur.ratings.length,
+        0
+      )} értékelés érkezett.`
+    },
+    {
+      value: user.averageRating?.toFixed(2) || '-',
+      label: 'Átlagos értékelés',
+      explanation: user.averageRating
+        ? `A felhasználó előadásainak átlagértékelése ${user.averageRating?.toFixed(2)}.`
+        : 'A felhasználó előadásaira még nem érkezett értékelés.'
+    },
+    {
+      value: user.participations.length,
+      label: 'Részvétel más konziján',
+      explanation: `A felhasználó összesen ${user.participations.length} alkalommal vett részt más konzultációján.`
+    }
+  ]
   return (
     <Box>
       <HStack flexWrap="wrap" justifyContent="space-between" alignItems="center" mb={5}>
@@ -56,26 +88,9 @@ export const ProfileDetails = ({ user, profileOptions }: Props) => {
       <Card mb={5}>
         <CardBody>
           <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }}>
-            <Stat>
-              <StatNumber>{user.presentations.length}</StatNumber>
-              <StatLabel>Tartott konzi</StatLabel>
-            </Stat>
-            <Stat>
-              <StatNumber>{user.presentations.reduce((acc, cur) => acc + cur.participants, 0)}</StatNumber>
-              <StatLabel>Konzi résztvevő</StatLabel>
-            </Stat>
-            <Stat>
-              <StatNumber>{user.presentations.reduce((acc, cur) => acc + cur.ratings.length, 0)}</StatNumber>
-              <StatLabel>Értékelés</StatLabel>
-            </Stat>
-            <Stat>
-              <StatNumber>{user.averageRating?.toFixed(2) || '-'}</StatNumber>
-              <StatLabel>Átlagos értékelés</StatLabel>
-            </Stat>
-            <Stat>
-              <StatNumber>{user.participations.length}</StatNumber>
-              <StatLabel>Részvétel más konziján</StatLabel>
-            </Stat>
+            {statData.map((sd) => (
+              <UserStat key={sd.label} data={sd} />
+            ))}
           </SimpleGrid>
         </CardBody>
       </Card>
@@ -83,37 +98,19 @@ export const ProfileDetails = ({ user, profileOptions }: Props) => {
         <TabList mb="1em">
           <Tab>Tartott konzik</Tab>
           <Tab>Konzi részvételek</Tab>
-          {user.consultationRequests && <Tab>Konzi kérések</Tab>}
+          {user.consultationRequests && (
+            <Tab>
+              Konzi kérések &nbsp;
+              <Tooltip label="Más felhasználó nem látja, hogy milyen konzikat kértél." shouldWrapChildren hasArrow>
+                <FaLock />
+              </Tooltip>
+            </Tab>
+          )}
         </TabList>
         <TabPanels>
-          <TabPanel>
-            <VStack spacing={4} alignItems="stretch">
-              {user.presentations
-                .sort((c1, c2) => new Date(c2.startDate).getTime() - new Date(c1.startDate).getTime())
-                .map((p) => (
-                  <ConsultationListItem key={p.id} consultation={p} rightSmallText={`${p.participants} résztvevő`}>
-                    <VStack p={4} pt={0} align="flex-start">
-                      {p.ratings.length > 0 ? (
-                        <>
-                          <Heading size="md">Értékelések</Heading>
-                          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2} w="100%">
-                            {p.ratings.map((r) => (
-                              <RatingListItem key={r.id} rating={r} />
-                            ))}
-                          </SimpleGrid>
-                        </>
-                      ) : (
-                        <Text fontStyle="italic">Ezt a konzit még nem értékelte senki.</Text>
-                      )}
-                    </VStack>
-                  </ConsultationListItem>
-                ))}
-            </VStack>
-          </TabPanel>
-          <TabPanel>
-            <p>two!</p>
-          </TabPanel>
-          {user.consultationRequests && <TabPanel>Konzi kérések</TabPanel>}
+          <PresentationPanel presentations={user.presentations} />
+          <ParticipationPanel participations={user.participations} />
+          {user.consultationRequests && <RequestPanel requests={user.consultationRequests} />}
         </TabPanels>
       </Tabs>
     </Box>
