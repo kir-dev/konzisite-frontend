@@ -150,16 +150,10 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
             </FormControl>
             <FormProvider {...form}>
               <SubjectSelector />
-            </FormProvider>
-            <FormProvider {...form}>
               <PresentersSelector />
-            </FormProvider>
-            <FormProvider {...form}>
               <ConsultationDateForm />
-            </FormProvider>
-            <FormControl>
-              <FormLabel>Leírás</FormLabel>
-              <FormProvider {...form}>
+              <FormControl>
+                <FormLabel>Leírás</FormLabel>
                 <RemarkEditor
                   formDetails={{
                     id: 'descMarkdown',
@@ -169,9 +163,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
                   textAreaHeight="8rem"
                   previewHeight="12rem"
                 />
-              </FormProvider>
-            </FormControl>
-            <FormProvider {...form}>
+              </FormControl>
               <TargetGroupSelector />
             </FormProvider>
           </VStack>
