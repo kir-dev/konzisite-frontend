@@ -1,16 +1,15 @@
 import { FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputLeftAddon, Stack } from '@chakra-ui/react'
 import React from 'react'
+import { useFormContext } from 'react-hook-form'
 
-type Props = {
-  startDate: Date
-  endDate: Date
-  setStartDate: (date: Date) => void
-  setEndDate: (date: Date) => void
-  startDateError: boolean
-  endDateError: boolean
-}
+export const ConsultationDateForm = () => {
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors }
+  } = useFormContext()
 
-export const ConsultationDateForm = ({ startDate, endDate, setStartDate, setEndDate, startDateError, endDateError }: Props) => {
   const formatDate = (date: Date) => {
     let month = '' + (date.getMonth() + 1)
     let day = '' + date.getDate()
@@ -34,8 +33,8 @@ export const ConsultationDateForm = ({ startDate, endDate, setStartDate, setEndD
 
   const handleDatechange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = new Date(e.target.value)
-    let start = new Date(startDate)
-    let end = new Date(endDate)
+    let start = new Date(watch('startDate'))
+    let end = new Date(watch('endDate'))
 
     start.setFullYear(date.getFullYear())
     end.setFullYear(date.getFullYear())
@@ -44,47 +43,53 @@ export const ConsultationDateForm = ({ startDate, endDate, setStartDate, setEndD
     start.setDate(date.getDate())
     end.setDate(date.getDate())
 
-    setStartDate(start)
-    setEndDate(end)
+    setValue('startDate', start)
+    setValue('endtDate', end)
   }
 
   const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const hours = parseInt(e.target.value.split(':')[0])
     const minutes = parseInt(e.target.value.split(':')[1])
-    let start = new Date(startDate)
+    let start = new Date(watch('startDate'))
 
     start.setHours(hours)
     start.setMinutes(minutes)
 
-    setStartDate(start)
+    setValue('startDate', start)
   }
 
   const handleEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const hours = parseInt(e.target.value.split(':')[0])
     const minutes = parseInt(e.target.value.split(':')[1])
-    let end = new Date(endDate)
+    let end = new Date(watch('endDate'))
 
     end.setHours(hours)
     end.setMinutes(minutes)
 
-    setEndDate(end)
+    setValue('endDate', end)
   }
 
   return (
-    <FormControl isInvalid={startDateError || endDateError} isRequired>
+    <FormControl isInvalid={!!errors['startDate'] || !!errors['endDate']} isRequired>
       <FormLabel>Időpont</FormLabel>
       <Stack direction={['column', 'row']}>
-        <Input type="date" onChange={handleDatechange} value={formatDate(startDate)} />
+        <Input type="date" onChange={handleDatechange} value={formatDate(watch('startDate'))} />
         <InputGroup>
           <InputLeftAddon children="Kezdés" width="100px" />
-          <Input type="time" onChange={handleStartTimeChange} value={formatTime(startDate)} />
+          <Input type="time" onChange={handleStartTimeChange} value={formatTime(watch('startDate'))} />
         </InputGroup>
         <InputGroup>
           <InputLeftAddon children="Vége" width="100px" />
-          <Input type="time" onChange={handleEndTimeChange} value={formatTime(endDate)} />
+          <Input type="time" onChange={handleEndTimeChange} value={formatTime(watch('endDate'))} />
         </InputGroup>
+        <Input {...register('startDate', { validate: (s) => s > new Date() })} hidden></Input>
+        <Input {...register('endDate', { validate: (e) => e > watch('startDate') })} hidden></Input>
       </Stack>
-      <FormErrorMessage>{startDateError ? 'Nem lehet múltbeli kezdés' : 'Befejezés nem lehet korábban, mint kezdés'}</FormErrorMessage>
+      {(!!errors['startDate'] || !!errors['endDate']) && (
+        <FormErrorMessage>
+          {!!errors['startDate'] ? 'Nem lehet múltbeli kezdés' : 'Befejezés nem lehet korábban, mint kezdés'}
+        </FormErrorMessage>
+      )}
     </FormControl>
   )
 }
