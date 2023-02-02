@@ -9,11 +9,12 @@ export type UserDetails = PublicUser & {
   presentations: (ConsultationModel & {
     subject: SubjectModel
     ratings: (RatingModel & { rater: PublicUser })[]
+    participants: number
   })[]
   participations: (ConsultationModel & {
     subject: SubjectModel
   })[]
-  consultationRequests: (ConsultationRequestModel & {
+  consultationRequests?: (ConsultationRequestModel & {
     subject: SubjectModel
   })[]
   averageRating?: number

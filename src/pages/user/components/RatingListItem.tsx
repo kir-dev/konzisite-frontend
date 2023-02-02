@@ -13,8 +13,8 @@ type Props = {
 export const RatingListItem = ({ rating }: Props) => {
   const anonymous = rating.rater.id === -1
   return (
-    <Box ml={5}>
-      <HStack flexGrow={1} as={!anonymous ? Link : undefined} to={`/users/${rating.rater.id}`} p={4}>
+    <Box shadow="md" borderRadius={8} borderWidth={1}>
+      <HStack flexGrow={1} as={!anonymous ? Link : undefined} to={`/users/${rating.rater.id}`} p={4} align="flex-start">
         <Avatar
           bg={anonymous ? 'brand.500' : undefined}
           icon={anonymous ? <FaUserSecret /> : undefined}
@@ -30,7 +30,9 @@ export const RatingListItem = ({ rating }: Props) => {
             </HStack>
           </Flex>
           <HStack justifyContent="space-between" width="100%">
-            <Text>{rating.text}</Text>
+            <Text fontSize={rating.text ? 'md' : 'sm'} fontStyle={rating.text ? undefined : 'italic'}>
+              {rating.text || 'A felhasználó nem adott szöveges értékelést'}
+            </Text>
           </HStack>
         </VStack>
       </HStack>

@@ -8,8 +8,6 @@ import {
   Heading,
   HStack,
   SimpleGrid,
-  Stack,
-  StackDivider,
   Stat,
   StatLabel,
   StatNumber,
@@ -18,6 +16,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Text,
   useBreakpointValue,
   VStack
 } from '@chakra-ui/react'
@@ -62,7 +61,7 @@ export const ProfileDetails = ({ user, profileOptions }: Props) => {
               <StatLabel>Tartott konzi</StatLabel>
             </Stat>
             <Stat>
-              <StatNumber>{user.consultationRequests.length}</StatNumber>
+              <StatNumber>{user.presentations.reduce((acc, cur) => acc + cur.participants, 0)}</StatNumber>
               <StatLabel>Konzi résztvevő</StatLabel>
             </Stat>
             <Stat>
@@ -84,27 +83,37 @@ export const ProfileDetails = ({ user, profileOptions }: Props) => {
         <TabList mb="1em">
           <Tab>Tartott konzik</Tab>
           <Tab>Konzi részvételek</Tab>
-          <Tab>Konzi kérések</Tab>
+          {user.consultationRequests && <Tab>Konzi kérések</Tab>}
         </TabList>
         <TabPanels>
           <TabPanel>
-            {user.presentations.map((p) => (
-              <ConsultationListItem key={p.id} consultation={p}>
-                <VStack p={4} pt={0} align="flex-start">
-                  <Heading size="md">Értékelések</Heading>
-
-                  <Stack divider={<StackDivider />} spacing="4" w="100%">
-                    {p.ratings.map((r) => (
-                      <RatingListItem key={r.id} rating={r} />
-                    ))}
-                  </Stack>
-                </VStack>
-              </ConsultationListItem>
-            ))}
+            <VStack spacing={4} alignItems="stretch">
+              {user.presentations
+                .sort((c1, c2) => new Date(c2.startDate).getTime() - new Date(c1.startDate).getTime())
+                .map((p) => (
+                  <ConsultationListItem key={p.id} consultation={p} rightSmallText={`${p.participants} résztvevő`}>
+                    <VStack p={4} pt={0} align="flex-start">
+                      {p.ratings.length > 0 ? (
+                        <>
+                          <Heading size="md">Értékelések</Heading>
+                          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2} w="100%">
+                            {p.ratings.map((r) => (
+                              <RatingListItem key={r.id} rating={r} />
+                            ))}
+                          </SimpleGrid>
+                        </>
+                      ) : (
+                        <Text fontStyle="italic">Ezt a konzit még nem értékelte senki.</Text>
+                      )}
+                    </VStack>
+                  </ConsultationListItem>
+                ))}
+            </VStack>
           </TabPanel>
           <TabPanel>
             <p>two!</p>
           </TabPanel>
+          {user.consultationRequests && <TabPanel>Konzi kérések</TabPanel>}
         </TabPanels>
       </Tabs>
     </Box>

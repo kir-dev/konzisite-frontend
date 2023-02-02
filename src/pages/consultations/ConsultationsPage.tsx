@@ -28,7 +28,22 @@ export const ConsultationsPage = () => {
         <Text>Nincsenek konzultációk!</Text>
       ) : (
         <VStack alignItems="stretch" mt={3}>
-          {isLoading ? <LoadingConsultationList /> : consultaions?.map((c) => <ConsultationListItem consultation={c} key={c.id} />)}
+          {isLoading ? (
+            <LoadingConsultationList />
+          ) : (
+            consultaions?.map((c) => (
+              <ConsultationListItem
+                consultation={c}
+                key={c.id}
+                rightSmallText={
+                  c.presentations.length <= 3
+                    ? `Konzitartó${c.presentations.length > 1 ? 'k' : ''}:
+                  ${c.presentations.map((p) => p.fullName).join(', ')}`
+                    : `${c.presentations.length} konzitartó`
+                }
+              />
+            ))
+          )}
         </VStack>
       )}
     </>
