@@ -70,17 +70,16 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
           presenters: consultation.presentations,
           targetGroups: consultation.targetGroups
         }
-      : { targetGroups: [], presenters: [] },
+      : { targetGroups: [], presenters: [], startDate: new Date(), endDate: new Date() },
     mode: 'all'
   })
 
   const {
     register,
     handleSubmit,
-    reset,
     setValue,
     watch,
-    formState: { errors, isValid }
+    formState: { errors, isValid, isSubmitted }
   } = form
 
   const onSubmit = handleSubmit((data) => {
@@ -165,7 +164,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
                   formDetails={{
                     id: 'descMarkdown',
                     promptText: '',
-                    maxChar: 500
+                    maxChar: 1000
                   }}
                   textAreaHeight="8rem"
                   previewHeight="12rem"
@@ -182,7 +181,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
             onClick={() => {
               onSubmit()
             }}
-            //isDisabled={!isValid}
+            isDisabled={!isValid && isSubmitted}
           >
             {newConsultation ? 'Létrehozás' : 'Mentés'}
           </Button>

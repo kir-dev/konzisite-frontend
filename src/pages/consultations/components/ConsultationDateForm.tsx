@@ -1,5 +1,4 @@
 import { FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputLeftAddon, Stack } from '@chakra-ui/react'
-import React from 'react'
 import { useFormContext } from 'react-hook-form'
 
 export const ConsultationDateForm = () => {
@@ -33,8 +32,8 @@ export const ConsultationDateForm = () => {
 
   const handleDatechange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = new Date(e.target.value)
-    let start = new Date(watch('startDate'))
-    let end = new Date(watch('endDate'))
+    const start = new Date(watch('startDate'))
+    const end = new Date(watch('endDate'))
 
     start.setFullYear(date.getFullYear())
     end.setFullYear(date.getFullYear())
@@ -43,30 +42,32 @@ export const ConsultationDateForm = () => {
     start.setDate(date.getDate())
     end.setDate(date.getDate())
 
-    setValue('startDate', start)
-    setValue('endtDate', end)
+    setValue('startDate', start, { shouldValidate: true })
+    setValue('endtDate', end, { shouldValidate: true })
   }
 
   const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const hours = parseInt(e.target.value.split(':')[0])
     const minutes = parseInt(e.target.value.split(':')[1])
-    let start = new Date(watch('startDate'))
+    const start = new Date(watch('startDate'))
 
     start.setHours(hours)
     start.setMinutes(minutes)
 
-    setValue('startDate', start)
+    setValue('startDate', start, { shouldValidate: true })
+    setValue('endtDate', watch('endDate'), { shouldValidate: true })
   }
 
   const handleEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const hours = parseInt(e.target.value.split(':')[0])
     const minutes = parseInt(e.target.value.split(':')[1])
-    let end = new Date(watch('endDate'))
+    const end = new Date(watch('endDate'))
 
     end.setHours(hours)
     end.setMinutes(minutes)
 
-    setValue('endDate', end)
+    setValue('endDate', end, { shouldValidate: true })
+    setValue('startDate', watch('startDate'), { shouldValidate: true })
   }
 
   return (
