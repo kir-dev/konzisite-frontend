@@ -35,11 +35,7 @@ export const ProfilePage = () => {
   return (
     <>
       <Helmet title="Profil" />
-      {loggedInUserLoading || isLoading ? (
-        <ProfileDetailsLoading />
-      ) : (
-        <ProfileDetails user={user!!} profileOptions={{ onLogoutPressed: onLogout }} />
-      )}
+      {loggedInUserLoading || isLoading ? <ProfileDetailsLoading /> : <ProfileDetails user={user!!} onLogoutPressed={onLogout} />}
     </>
   )
 }

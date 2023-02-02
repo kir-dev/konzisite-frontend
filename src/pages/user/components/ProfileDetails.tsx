@@ -23,14 +23,10 @@ import { StatData, UserStat } from './UserStat'
 
 type Props = {
   user: UserDetails
-  profileOptions?: {
-    onLogoutPressed: (path?: string) => void
-  }
+  onLogoutPressed?: (path?: string) => void
 }
 
-export const ProfileDetails = ({ user, profileOptions }: Props) => {
-  const { onLogoutPressed } = profileOptions || { onLogoutPressed: () => {} }
-
+export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
   const statData: StatData[] = [
     {
       value: user.presentations.length,
@@ -62,7 +58,7 @@ export const ProfileDetails = ({ user, profileOptions }: Props) => {
     },
     {
       value: user.participations.length,
-      label: 'Részvétel más konziján',
+      label: 'Konzi részvétel',
       explanation: `A felhasználó összesen ${user.participations.length} alkalommal vett részt más konzultációján.`
     }
   ]
@@ -77,7 +73,7 @@ export const ProfileDetails = ({ user, profileOptions }: Props) => {
             </Box>
           </HStack>
         </HStack>
-        {profileOptions && (
+        {onLogoutPressed !== undefined && (
           <Flex flex={1} justifyContent="end">
             <Button colorScheme="brand" rightIcon={<FaSignOutAlt />} onClick={() => onLogoutPressed()}>
               Kijelentkezés
@@ -87,7 +83,7 @@ export const ProfileDetails = ({ user, profileOptions }: Props) => {
       </HStack>
       <Card mb={5}>
         <CardBody>
-          <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }}>
+          <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacingY={5}>
             {statData.map((sd) => (
               <UserStat key={sd.label} data={sd} />
             ))}
@@ -95,7 +91,7 @@ export const ProfileDetails = ({ user, profileOptions }: Props) => {
         </CardBody>
       </Card>
       <Tabs isFitted rounded="lg" variant="enclosed" colorScheme="brand">
-        <TabList mb="1em">
+        <TabList>
           <Tab>Tartott konzik</Tab>
           <Tab>Konzi részvételek</Tab>
           {user.consultationRequests && (
