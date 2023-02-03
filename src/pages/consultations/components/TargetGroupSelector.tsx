@@ -30,6 +30,7 @@ import { useFecthGroupListMutation } from '../../../api/hooks/groupMutationHooks
 import { KonziError } from '../../../api/model/error.model'
 import { GroupModel } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
+import { PATHS } from '../../../util/paths'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
 export const TargetGroupSelector = () => {
@@ -70,7 +71,7 @@ export const TargetGroupSelector = () => {
   ).current
 
   if (error) {
-    return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
+    return <Navigate replace to={PATHS.ERROR} state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
   const filteredGroupList = groupList?.filter((g) => !watch('targetGroups').some((group: GroupModel) => group.id === g.id))

@@ -1,5 +1,6 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, useToast, VStack } from '@chakra-ui/react'
 import { useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
@@ -7,10 +8,8 @@ import { useCreateConsultationMutation, useEditConsultationMutation } from '../.
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { RemarkEditor } from '../../components/editor/RemarkEditor'
-import { Helmet } from 'react-helmet-async'
-import { GroupModel } from '../../api/model/group.model'
-import { SubjectModel } from '../../api/model/subject.model'
 import { generateToastParams } from '../../util/generateToastParams'
+import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { ConsultationDateForm } from './components/ConsultationDateForm'
 import { LoadingEditConsultation } from './components/LoadingEditConsultation'
@@ -38,7 +37,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
     createConsultation(formData, {
       onSuccess: (consultation) => {
         toast({ title: 'Konzultáció sikeresen létrehozva!', status: 'success' })
-        navigate(`/consultations/${consultation.id}`)
+        navigate(`${PATHS.CONSULTATIONS}/${consultation.id}`)
       },
       onError: (e: KonziError) => {
         toast(generateToastParams(e))
@@ -50,7 +49,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
     updateConsultation(formData, {
       onSuccess: (consultation) => {
         toast({ title: 'Konzultáció sikeresen módosítva!', status: 'success' })
-        navigate(`/consultations/${consultation.id}`)
+        navigate(`${PATHS.CONSULTATIONS}/${consultation.id}`)
       },
       onError: (e: KonziError) => {
         toast(generateToastParams(e))
@@ -110,7 +109,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   }, [consultation])
 
   if (consultationId != -1 && error) {
-    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+    return <ErrorPage backPath={PATHS.INDEX} status={error.statusCode} title={error.message} />
   }
 
   if (isLoading || loggedInUserLoading) {

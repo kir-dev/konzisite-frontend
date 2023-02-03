@@ -3,11 +3,12 @@ import { Helmet } from 'react-helmet-async'
 import { FaHome } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
+import { PATHS } from '../../util/paths'
 
 export const LoginPage = () => {
   const { isLoggedIn, onLoginStarted } = useAuthContext()
 
-  if (isLoggedIn) return <Navigate replace to="/" />
+  if (isLoggedIn) return <Navigate replace to={PATHS.INDEX} />
 
   return (
     <>

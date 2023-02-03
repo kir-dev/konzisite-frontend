@@ -7,11 +7,6 @@ class UserModule {
     return response.data
   }
 
-  async fetchUser(id: number) {
-    const response = await axios.get<UserModel>(`/users/${id}`)
-    return response.data
-  }
-
   async loginUser(accessToken: string) {
     return axios.post<{ jwt: string }>(`/auth/login`, { accessToken })
   }

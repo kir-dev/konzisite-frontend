@@ -10,6 +10,7 @@ import { KonziError } from '../../../api/model/error.model'
 import { GroupRoles } from '../../../api/model/group.model'
 import { ConfirmDialogButton } from '../../../components/commons/ConfirmDialogButton'
 import { generateToastParams } from '../../../util/generateToastParams'
+import { PATHS } from '../../../util/paths'
 import { GroupDetails } from '../types/groupDetails'
 import { GroupEditModalButton } from './GroupEditModalButton'
 
@@ -35,7 +36,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
 
   const deleteGroupMutation = useDeleteGroupMutation(() => {
     toast({ title: 'Törölted a csoportot!', status: 'success' })
-    navigate('/groups')
+    navigate(PATHS.GROUPS)
   }, onErrorFn)
 
   const deleteGroup = () => {

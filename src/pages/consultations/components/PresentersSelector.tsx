@@ -33,6 +33,7 @@ import { useFecthUserListMutation } from '../../../api/hooks/userMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { GroupModel } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
+import { PATHS } from '../../../util/paths'
 import { ErrorPage } from '../../error/ErrorPage'
 
 import { Presentation } from '../types/consultationDetails'
@@ -89,7 +90,7 @@ export const PresentersSelector = () => {
   }
 
   if (error) {
-    return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
+    return <Navigate replace to={PATHS.ERROR} state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
   const filteredUserList = userList?.filter((u) => !watch('presenters').some((p: Presentation) => p.id === u.id))

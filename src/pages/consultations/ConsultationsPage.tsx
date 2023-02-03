@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useFetchConsultationListQuery } from '../../api/hooks/consultationQueryHooks'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
+import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { LoadingConsultationList } from './components/LoadingConsultationList'
 
@@ -10,7 +11,7 @@ export const ConsultationsPage = () => {
   const { isLoading, data: consultaions, error } = useFetchConsultationListQuery()
 
   if (error) {
-    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+    return <ErrorPage backPath={PATHS.INDEX} status={error.statusCode} title={error.message} />
   }
 
   return (
@@ -20,7 +21,7 @@ export const ConsultationsPage = () => {
         Konzultációk
       </Heading>
       <Flex justify="flex-end">
-        <Button as={Link} to="/consultations/new" colorScheme="brand">
+        <Button as={Link} to={`${PATHS.CONSULTATIONS}/new`} colorScheme="brand">
           Új konzultáció
         </Button>
       </Flex>

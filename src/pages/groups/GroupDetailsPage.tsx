@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 import { useFecthGroupDetailsQuery } from '../../api/hooks/groupQueryHooks'
 import { GroupRoles } from '../../api/model/group.model'
+import { PATHS } from '../../util/paths'
 import { translateGroupRole } from '../../util/translateGroupRole'
 import { ErrorPage } from '../error/ErrorPage'
 import { GroupDetailsSkeleton } from './components/GroupDeatilsSkeleton'
@@ -14,11 +15,11 @@ export const GroupDetailsPage = () => {
   const { isLoading, data: group, error, refetch } = useFecthGroupDetailsQuery(+groupId!!)
 
   if (groupId === undefined || isNaN(+groupId)) {
-    return <ErrorPage backPath={'/'} status={404} title={'A csoport nem található!'} />
+    return <ErrorPage backPath={PATHS.INDEX} status={404} title={'A csoport nem található!'} />
   }
 
   if (error) {
-    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+    return <ErrorPage backPath={PATHS.INDEX} status={error.statusCode} title={error.message} />
   }
 
   if (isLoading) {

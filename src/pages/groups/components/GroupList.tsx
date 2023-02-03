@@ -4,6 +4,7 @@ import { useJoinGroupMutation, useLeaveGroupMutation } from '../../../api/hooks/
 import { KonziError } from '../../../api/model/error.model'
 import { GroupModel, GroupRoles } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
+import { PATHS } from '../../../util/paths'
 import { GroupPreview } from '../types/groupPreview'
 import { GroupListSkeleton } from './GroupListSkeleton'
 
@@ -51,7 +52,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, ref
           <SimpleGrid columns={{ sm: 1, lg: 2 }} gap={4}>
             {groups?.map((g) => (
               <Box key={g.id} shadow="md" borderRadius={8} borderWidth={1}>
-                <Stack as={Link} to={`/groups/${g.id}`} direction={['column', 'row']} justify="space-between">
+                <Stack as={Link} to={`${PATHS.GROUPS}/${g.id}`} direction={['column', 'row']} justify="space-between">
                   <HStack p={4}>
                     <Avatar size="md" name={g.name} src={''} />
                     <VStack flexGrow={1} align="flex-start">

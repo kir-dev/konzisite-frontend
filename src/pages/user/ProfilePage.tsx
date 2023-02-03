@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useFecthUserDetailsQuery } from '../../api/hooks/userQueryHooks'
+import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { ProfileDetails } from './components/ProfileDetails'
 import { ProfileDetailsLoading } from './components/ProfileDetailsLoading'
@@ -11,7 +12,7 @@ export const ProfilePage = () => {
   const { isLoading, data: user, error } = useFecthUserDetailsQuery(loggedInUser?.id || -1)
 
   if (!isLoggedIn) {
-    return <Navigate replace to="/error" state={{ title: 'Nem vagy bejelentkezve!', messages: [], status: 401 }} />
+    return <Navigate replace to={PATHS.ERROR} state={{ title: 'Nem vagy bejelentkezve!', messages: [], status: 401 }} />
   }
 
   if (loggedInUserError) {
@@ -19,7 +20,7 @@ export const ProfilePage = () => {
     return (
       <Navigate
         replace
-        to="/error"
+        to={PATHS.ERROR}
         state={{
           title: 'Nem vagy bejelentkezve!',
           messages: [err?.response.data.message || err.message]
@@ -29,7 +30,7 @@ export const ProfilePage = () => {
   }
 
   if (error) {
-    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+    return <ErrorPage backPath={PATHS.INDEX} status={error.statusCode} title={error.message} />
   }
 
   return (

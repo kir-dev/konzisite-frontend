@@ -7,6 +7,7 @@ import { SubjectModel } from '../../api/model/subject.model'
 import { UserModel } from '../../api/model/user.model'
 import { PublicUser } from '../../pages/user/types/PublicUser'
 import { generateDateText, generateTimeSpanText } from '../../util/dateHelper'
+import { PATHS } from '../../util/paths'
 
 type Props = {
   consultation: ConsultationModel & {
@@ -25,7 +26,7 @@ type Props = {
 export const ConsultationListItem = ({ consultation, children, rightSmallText }: Props) => {
   return (
     <Box shadow="md" borderRadius={8} borderWidth={1}>
-      <HStack flexGrow={1} as={Link} to={`/consultations/${consultation.id}`} p={4} align="flex-start">
+      <HStack flexGrow={1} as={Link} to={`${PATHS.CONSULTATIONS}/${consultation.id}`} p={4} align="flex-start">
         <Avatar size="md" name={consultation.subject.name.toString()} src={''} />
         <VStack flexGrow={1}>
           <Stack direction={['column', 'row']} justifyContent="space-between" width="100%">

@@ -27,6 +27,7 @@ import { useRateConsultationMutation, useUpdateRatingConsultationMutation } from
 import { KonziError } from '../../../api/model/error.model'
 import { RatingModel } from '../../../api/model/rating.model'
 import { generateToastParams } from '../../../util/generateToastParams'
+import { PATHS } from '../../../util/paths'
 import { ErrorPage } from '../../error/ErrorPage'
 import { PublicUser } from '../../user/types/PublicUser'
 
@@ -69,7 +70,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
   const [anonymous, setAnonymous] = useState<boolean>(!!user.rating?.anonymous)
 
   if (consultationId === undefined || isNaN(+consultationId)) {
-    return <ErrorPage backPath={'/'} status={404} title={'A konzultáció nem található!'} />
+    return <ErrorPage backPath={PATHS.INDEX} status={404} title={'A konzultáció nem található!'} />
   }
 
   return (

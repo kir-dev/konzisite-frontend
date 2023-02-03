@@ -23,6 +23,7 @@ import {
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
+import { PATHS } from '../../util/paths'
 import { UserPreview } from './types/UserPreview'
 
 const currentUser: UserPreview = {
@@ -127,7 +128,7 @@ export const UserBrowserPage = () => {
           </Thead>
           <Tbody>
             {listToRender.map((user) => (
-              <Tr key={user.id} onClick={() => navigate(`/users/${user.id}`)} _hover={{ bg: hoverBg }} cursor="pointer">
+              <Tr key={user.id} onClick={() => navigate(`${PATHS.USERS}/${user.id}`)} _hover={{ bg: hoverBg }} cursor="pointer">
                 <Td>
                   <Flex align="center">
                     <Avatar size="md" name={user.fullName} src={''} />
