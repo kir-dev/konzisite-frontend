@@ -1,6 +1,7 @@
 import { Box, Button, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { FaClock, FaMapMarkerAlt } from 'react-icons/fa'
 import ReactMarkdown from 'react-markdown'
 import { Link, useParams } from 'react-router-dom'
@@ -34,6 +35,7 @@ export const ConsultationDetailsPage = () => {
         )
       ) : (
         <>
+          <Helmet title={consultation.name} />
           <Heading textAlign="center" mb={3}>
             {consultation.name}
           </Heading>

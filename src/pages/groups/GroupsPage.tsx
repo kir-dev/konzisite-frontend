@@ -1,4 +1,5 @@
 import { Flex, Heading } from '@chakra-ui/react'
+import { Helmet } from 'react-helmet-async'
 import { useCreateGroupMutation } from '../../api/hooks/groupMutationHooks'
 import { useFecthGroupListQuery } from '../../api/hooks/groupQueryHooks'
 import { GroupRoles } from '../../api/model/group.model'
@@ -14,6 +15,7 @@ export const GroupsPage = () => {
 
   return (
     <>
+      <Helmet title="Csoportok" />
       <Heading size="xl" textAlign="center" mb={3}>
         Csoportok
       </Heading>
