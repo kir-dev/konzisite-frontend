@@ -15,6 +15,7 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { FaEdit } from 'react-icons/fa'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
@@ -59,6 +60,7 @@ export const SubjectsPage = () => {
 
   return (
     <>
+      <Helmet title="Tárgyak" />
       <Heading size="xl" textAlign="center" mb={3}>
         Tárgyak
       </Heading>

@@ -1,5 +1,6 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Textarea, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 import { GroupModel } from '../../api/model/group.model'
 import { SubjectModel } from '../../api/model/subject.model'
@@ -86,6 +87,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
           )
         ) : (
           <>
+            <Helmet title={newConsultation ? 'Új konzultáció' : consultation?.name} />
             <Heading size="xl" textAlign="center" mb={3}>
               {newConsultation ? 'Új konzultáció létrehozása' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`}
             </Heading>

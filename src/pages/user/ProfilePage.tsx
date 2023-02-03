@@ -1,4 +1,5 @@
 import { Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import { Helmet } from 'react-helmet-async'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { Major } from '../../api/model/subject.model'
@@ -140,6 +141,7 @@ export const ProfilePage = () => {
       )}
       {loggedInUser && (
         <>
+          <Helmet title="Profil" />
           <VStack>
             <Heading>Átlagos értékelés: {mockProfile.avarageRating}</Heading>
 
