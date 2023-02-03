@@ -116,13 +116,13 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
     return <LoadingEditConsultation />
   }
 
-  if (loggedInUser === undefined) {
+  if (!loggedInUser) {
     return <ErrorPage status={401} />
   }
 
   return (
     <>
-      {(consultation === undefined ||
+      {(!consultation ||
         !(
           loggedInUser.isAdmin ||
           consultation.owner.id === loggedInUser.id ||

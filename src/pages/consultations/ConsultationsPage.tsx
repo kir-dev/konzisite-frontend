@@ -25,7 +25,7 @@ export const ConsultationsPage = () => {
           Új konzultáció
         </Button>
       </Flex>
-      {consultaions != undefined && consultaions.length === 0 ? (
+      {consultaions && consultaions.length === 0 ? (
         <Text>Nincsenek konzultációk!</Text>
       ) : (
         <VStack alignItems="stretch" mt={3}>
