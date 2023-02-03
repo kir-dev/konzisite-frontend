@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async'
 import { Navigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useFecthUserDetailsQuery } from '../../api/hooks/userQueryHooks'
@@ -29,5 +30,10 @@ export const UserPage = () => {
     )
   }
 
-  return <>{isLoading ? <ProfileDetailsLoading /> : <ProfileDetails user={user!!} />}</>
+  return (
+    <>
+      <Helmet title={user?.fullName} />
+      {isLoading ? <ProfileDetailsLoading /> : <ProfileDetails user={user!!} />}
+    </>
+  )
 }
