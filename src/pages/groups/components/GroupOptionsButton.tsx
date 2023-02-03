@@ -39,7 +39,6 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
   }, onErrorFn)
 
   const deleteGroup = () => {
-    // TODO confirm modal
     deleteGroupMutation.mutate(group.id)
   }
 

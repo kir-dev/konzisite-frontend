@@ -9,6 +9,14 @@ export const useFetchSubjectsQuery = () => {
   return useQuery<SubjectModel[], KonziError>('fetchSubject', async () => (await axios.get('/subjects')).data, { retry: false })
 }
 
+export const useFecthSubjectListMutation = (onError: (e: KonziError) => void) => {
+  return useMutation<SubjectModel[], KonziError, string>(
+    'fetchSubjectsMuatation',
+    async (search: string) => (await axios.get(`/subjects?search=${search}`)).data,
+    { onError }
+  )
+}
+
 export const useCreateSubjectMutation = () => {
   return useMutation<SubjectModel, KonziError, { formData: CreateSubject; subjectId: number }>(
     async ({ subjectId, ...otherData }) => (await axios.post('/subjects', otherData.formData)).data

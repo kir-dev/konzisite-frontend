@@ -51,6 +51,7 @@ export const SubjectsPage = () => {
   const { mutate: deleteSubject } = useDeleteSubjectMutation((e: KonziError) => {
     toast(generateToastParams(e))
   })
+
   if (error) {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }

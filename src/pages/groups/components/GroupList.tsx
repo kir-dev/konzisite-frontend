@@ -45,7 +45,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, ref
         <Heading mb={4} mt={3} size="lg">
           {title}
         </Heading>
-        {groups != undefined && groups.length == 0 ? (
+        {groups != undefined && groups.length === 0 ? (
           <Text>{noGroupsMessage}</Text>
         ) : (
           <SimpleGrid columns={{ sm: 1, lg: 2 }} gap={4}>

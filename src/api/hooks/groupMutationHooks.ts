@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useMutation } from 'react-query'
 import { CreateGroup } from '../../pages/groups/types/createGroup'
+import { GroupPreview } from '../../pages/groups/types/groupPreview'
 import { KonziError } from '../model/error.model'
 import { GroupModel } from '../model/group.model'
 import { UserToGroup } from '../model/userToGroup.model'
@@ -8,6 +9,14 @@ import { UserToGroup } from '../model/userToGroup.model'
 interface GroupMutationParams {
   groupId: number
   userId: number
+}
+
+export const useFecthGroupListMutation = (onError: (e: KonziError) => void) => {
+  return useMutation<GroupPreview[], KonziError, string>(
+    'fetchGroupsMuatation',
+    async (search: string) => (await axios.get(`/groups?search=${search}`)).data,
+    { onError }
+  )
 }
 
 export const useCreateGroupMutation = () => {

@@ -16,13 +16,20 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Skeleton,
+  Text,
+  useDisclosure,
+  useToast,
   VStack
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import debounce from 'lodash.debounce'
+import { useRef, useState } from 'react'
 import { FaSearch, FaTimes } from 'react-icons/fa'
+import { Navigate } from 'react-router-dom'
+import { useFecthGroupListMutation } from '../../../api/hooks/groupMutationHooks'
+import { KonziError } from '../../../api/model/error.model'
 import { GroupModel } from '../../../api/model/group.model'
-import { testGroupsPreview } from '../../groups/demoData'
+import { generateToastParams } from '../../../util/generateToastParams'
+import { SelectorSkeleton } from './SelectorSkeleton'
 
 type Props = {
   targetGroups: GroupModel[]
@@ -30,33 +37,19 @@ type Props = {
 }
 
 export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) => {
-  const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [groupList, setGroupList] = useState<GroupModel[]>([])
-  const [filteredGroupList, setFilteredGroupList] = useState<GroupModel[]>([])
+  const toast = useToast()
+  const {
+    isLoading,
+    data: groupList,
+    mutate: fetchGroups,
+    reset,
+    error
+  } = useFecthGroupListMutation((e: KonziError) => {
+    toast(generateToastParams(e))
+  })
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [search, setSearch] = useState('')
-  const [filteredCount, setFilteredCount] = useState(0)
-  const [resultLimit, setResultLimit] = useState(10)
-
-  useEffect(() => {
-    if (open) {
-      setLoading(true)
-      setGroupList([])
-      setTimeout(() => {
-        setLoading(false)
-        setGroupList(testGroupsPreview)
-      }, 1000)
-    }
-  }, [open])
-
-  useEffect(() => {
-    const filtered = groupList.filter(
-      (g) => g.name.toLowerCase().includes(search.toLowerCase()) && !targetGroups.some((group) => group.id === g.id)
-    )
-    setFilteredCount(filtered.length)
-
-    setFilteredGroupList(filtered.slice(0, resultLimit))
-  }, [search, groupList, resultLimit])
 
   const addGroup = (group: GroupModel) => {
     setTargetGroups([...targetGroups, group].sort((a, b) => a.name.localeCompare(b.name)))
@@ -65,6 +58,18 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
   const removeGroup = (group: GroupModel) => {
     setTargetGroups(targetGroups.filter((g) => g.id !== group.id))
   }
+
+  const debouncedSearch = useRef(
+    debounce((search: string) => {
+      fetchGroups(search)
+    }, 400)
+  ).current
+
+  if (error) {
+    return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
+  }
+
+  const filteredGroupList = groupList?.filter((g) => !targetGroups.some((group) => group.id === g.id))
 
   return (
     <>
@@ -85,38 +90,47 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
             </HStack>
           </Box>
         ))}
-        <Button onClick={() => setOpen(true)} mt={2}>
+        <Button
+          onClick={() => {
+            onOpen()
+            setSearch('')
+            reset()
+          }}
+          mt={2}
+        >
           Célcsoport hozzáadása
         </Button>
       </FormControl>
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Céscsoport hozzáadása</ModalHeader>
+          <ModalHeader>Célcsoport hozzáadása</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <InputGroup my={5}>
               <InputLeftElement h="100%">
                 <FaSearch />
               </InputLeftElement>
-              <Input placeholder="Keresés..." size="lg" onChange={(e) => setSearch(e.target.value)} value={search} />
+              <Input
+                placeholder="Keresés..."
+                size="lg"
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  debouncedSearch(e.target.value)
+                }}
+                value={search}
+              />
               <InputRightElement h="100%">
                 <FaTimes onClick={() => setSearch('')} cursor="pointer" />
               </InputRightElement>
             </InputGroup>
             <VStack mb={2} maxHeight="500px" overflowY="auto">
-              {loading ? (
-                <>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="30%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="60%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="40%" />
-                  </Box>
-                </>
+              {isLoading ? (
+                <SelectorSkeleton />
+              ) : filteredGroupList === undefined || search.trim().length === 0 ? (
+                <Text>Keress csoportot</Text>
+              ) : filteredGroupList.length === 0 ? (
+                <Text>Nincs találat</Text>
               ) : (
                 filteredGroupList.map((g) => (
                   <Box
@@ -127,7 +141,7 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
                     width="100%"
                     onClick={() => {
                       addGroup(g)
-                      setOpen(false)
+                      onClose()
                     }}
                   >
                     <HStack flexGrow={1} p={4}>
@@ -142,11 +156,6 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
                 ))
               )}
             </VStack>
-            {filteredGroupList.length < filteredCount && (
-              <Button colorScheme="brand" onClick={() => setResultLimit((r) => r + 10)} width="100%" mb={4}>
-                Még több betöltése
-              </Button>
-            )}
           </ModalBody>
         </ModalContent>
       </Modal>
