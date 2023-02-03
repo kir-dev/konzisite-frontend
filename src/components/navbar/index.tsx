@@ -2,6 +2,7 @@ import { Box, Collapse, Flex, Heading, HStack, IconButton, useColorModeValue, us
 import { FC } from 'react'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import { PATHS } from '../../util/paths'
 import { ColorModeSwitcher } from './ColorModeSwitcher'
 import DesktopNav from './DesktopNav'
 import MobileNav from './MobileNav'
@@ -22,7 +23,7 @@ export const Navbar: FC = () => {
               aria-label="Open navigation"
             />
           </Flex>
-          <Heading fontFamily="title" as={Link} to="/" _hover={{ textDecoration: 'none' }}>
+          <Heading fontFamily="title" as={Link} to={PATHS.INDEX} _hover={{ textDecoration: 'none' }}>
             Konzisite
           </Heading>
           <Flex display={{ base: 'none', md: 'flex' }} flex={1} justifyContent="center">

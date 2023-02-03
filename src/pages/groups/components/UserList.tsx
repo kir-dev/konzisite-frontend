@@ -29,6 +29,7 @@ import { KonziError } from '../../../api/model/error.model'
 import { GroupRoles } from '../../../api/model/group.model'
 import { UserModel } from '../../../api/model/user.model'
 import { generateToastParams } from '../../../util/generateToastParams'
+import { PATHS } from '../../../util/paths'
 import { translateGroupRole } from '../../../util/translateGroupRole'
 import { GroupDetails } from '../types/groupDetails'
 
@@ -65,7 +66,7 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
       {users?.map((u) => (
         <Box key={u.id} shadow="md" borderRadius={8} borderWidth={1}>
           <HStack>
-            <HStack flexGrow={1} as={Link} to={`/users/${u.id}`} p={4}>
+            <HStack flexGrow={1} as={Link} to={`${PATHS.USERS}/${u.id}`} p={4}>
               <Avatar size="md" name={u.fullName} src={''} />
               <VStack flexGrow={1}>
                 <Flex width="100%">

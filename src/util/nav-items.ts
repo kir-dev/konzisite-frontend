@@ -37,7 +37,7 @@ export class NavItem implements INavItem {
 
 const SubjectsItem = new NavItem({
   label: 'Tárgyak',
-  path: '/subjects'
+  path: 'subjects'
 })
 SubjectsItem.shouldBeShown = (isLoggedIn: boolean, loggedInUser: UserModel | undefined) => isLoggedIn && (loggedInUser?.isAdmin || false)
 
@@ -61,10 +61,10 @@ export const NAV_ITEMS: INavItem[] = [
     label: 'Csoportok',
     path: '/groups'
   }),
-  new NavItem({
+  /*new NavItem({
     label: 'Felhasználók',
     path: '/users'
-  }),
+  }),*/
   SubjectsItem,
   new NavItem({
     label: 'Profil',

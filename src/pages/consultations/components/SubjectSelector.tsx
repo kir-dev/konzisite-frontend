@@ -27,6 +27,7 @@ import { useFecthSubjectListMutation } from '../../../api/hooks/subjectHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { SubjectModel } from '../../../api/model/subject.model'
 import { generateToastParams } from '../../../util/generateToastParams'
+import { PATHS } from '../../../util/paths'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
 export const SubjectSelector = () => {
@@ -58,7 +59,7 @@ export const SubjectSelector = () => {
   ).current
 
   if (error) {
-    return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
+    return <Navigate replace to={PATHS.ERROR} state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
   return (

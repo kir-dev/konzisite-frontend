@@ -15,21 +15,22 @@ import { SubjectsPage } from './pages/subjects/SubjectsPage'
 import { ProfilePage } from './pages/user/ProfilePage'
 import { UserBrowserPage } from './pages/user/UserBrowserPage'
 import { UserPage } from './pages/user/UserPage'
+import { PATHS } from './util/paths'
 
 export const App = () => {
   return (
     <RLayout>
       <Routes>
-        <Route path="/">
+        <Route path={PATHS.INDEX}>
           <Route index element={<ConsultationsPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="users">
+          <Route path={PATHS.PROFILE} element={<ProfilePage />} />
+          <Route path={PATHS.USERS}>
             <Route path=":userId">
               <Route index element={<UserPage />} />
             </Route>
             <Route index element={<UserBrowserPage />} />
           </Route>
-          <Route path="consultations">
+          <Route path={PATHS.CONSULTATIONS}>
             <Route path=":consultationId">
               <Route index element={<ConsultationDetailsPage />} />
               <Route path="edit" element={<EditConsultationPage />} />
@@ -37,19 +38,19 @@ export const App = () => {
             <Route path="new" element={<EditConsultationPage newConsultation={true} />} />
             <Route index element={<ConsultationsPage />} />
           </Route>
-          <Route path="groups">
+          <Route path={PATHS.GROUPS}>
             <Route path=":groupId">
               <Route index element={<GroupDetailsPage />} />
             </Route>
             <Route index element={<GroupsPage />} />
           </Route>
-          <Route path="subjects">
+          <Route path={PATHS.SUBJECTS}>
             <Route index element={<SubjectsPage />} />
           </Route>
-          <Route path="login" element={<LoginPage />} />
+          <Route path={PATHS.LOGIN} element={<LoginPage />} />
           <Route path="authorized" element={<AuthorizedPage />} />
           <Route path="logout" element={<LogoutPage />} />
-          <Route path="error" element={<ErrorPage />} />
+          <Route path={PATHS.ERROR} element={<ErrorPage />} />
           <Route
             path="*"
             element={<ErrorPage title="Az oldal nem található" messages={['Hupsz, olyan oldalra kerültél, ami nem létezik!']} />}

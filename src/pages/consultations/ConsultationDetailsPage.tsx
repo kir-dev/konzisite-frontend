@@ -14,6 +14,7 @@ import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQ
 import { KonziError } from '../../api/model/error.model'
 import { ConfirmDialogButton } from '../../components/commons/ConfirmDialogButton'
 import { generateToastParams } from '../../util/generateToastParams'
+import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { LoadingConsultation } from './components/LoadingConsultation'
 import { TargetGroupList } from './components/TargetGroupList'
@@ -42,15 +43,15 @@ export const ConsultationDetailsPage = () => {
 
   const { mutate: deleteConsultation } = useDeleteConsultationMutation(() => {
     toast({ title: 'Törölted a konzultációt!', status: 'success' })
-    navigate('/consultations')
+    navigate(PATHS.CONSULTATIONS)
   }, onErrorFn)
 
   if (consultationId === undefined || isNaN(+consultationId)) {
-    return <ErrorPage backPath={'/'} status={404} title={'A konzultáció nem található!'} />
+    return <ErrorPage backPath={PATHS.INDEX} status={404} title={'A konzultáció nem található!'} />
   }
 
   if (error) {
-    return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
+    return <ErrorPage backPath={PATHS.INDEX} status={error.statusCode} title={error.message} />
   }
 
   if (isLoading || loggedInUserLoading) {
@@ -104,7 +105,7 @@ export const ConsultationDetailsPage = () => {
         <VStack justify={['center', 'flex-end']} align="flex-end">
           {(isOwner || isAdmin || isPresenter) && (
             <>
-              <Button width="100%" as={Link} to={`/consultations/${consultation.id}/edit`} colorScheme="brand">
+              <Button width="100%" as={Link} to={`${PATHS.CONSULTATIONS}/${consultation.id}/edit`} colorScheme="brand">
                 Szerkesztés
               </Button>
               <ConfirmDialogButton

@@ -2,6 +2,7 @@ import { Avatar, Box, Flex, Heading, HStack, Text, VStack } from '@chakra-ui/rea
 import { FaStar, FaUserSecret } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { RatingModel } from '../../../api/model/rating.model'
+import { PATHS } from '../../../util/paths'
 import { PublicUser } from '../types/PublicUser'
 
 type Props = {
@@ -14,7 +15,7 @@ export const RatingListItem = ({ rating }: Props) => {
   const anonymous = rating.rater.id === -1
   return (
     <Box shadow="md" borderRadius={8} borderWidth={1}>
-      <HStack flexGrow={1} as={!anonymous ? Link : undefined} to={`/users/${rating.rater.id}`} p={4} align="flex-start">
+      <HStack flexGrow={1} as={!anonymous ? Link : undefined} to={`${PATHS.USERS}/${rating.rater.id}`} p={4} align="flex-start">
         <Avatar
           bg={anonymous ? 'brand.500' : undefined}
           icon={anonymous ? <FaUserSecret /> : undefined}

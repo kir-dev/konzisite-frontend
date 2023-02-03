@@ -2,6 +2,7 @@ import { Avatar, Badge, Box, Heading, HStack, SimpleGrid, Stack, VStack } from '
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { RatingModel } from '../../../api/model/rating.model'
+import { PATHS } from '../../../util/paths'
 import { ErrorPage } from '../../error/ErrorPage'
 import { PublicUser } from '../../user/types/PublicUser'
 import { Rating } from './Rating'
@@ -32,7 +33,7 @@ export const UserList = ({ users, isParticipant, columns, showRating = true, sho
         {users.map((u) => (
           <Box key={u.id} shadow="md" borderRadius={8} borderWidth={1}>
             <Stack direction={['column', 'row']} width="100%">
-              <HStack flexGrow={1} as={Link} to={`/users/${u.id}`} p={4}>
+              <HStack flexGrow={1} as={Link} to={`${PATHS.USERS}/${u.id}`} p={4}>
                 <Avatar size="md" name={u.fullName} src={''} />
                 <VStack flexGrow={1}>
                   <Heading size="md" width="100%">

@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async'
 import { Navigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useFecthUserDetailsQuery } from '../../api/hooks/userQueryHooks'
+import { PATHS } from '../../util/paths'
 import { ProfileDetails } from './components/ProfileDetails'
 import { ProfileDetailsLoading } from './components/ProfileDetailsLoading'
 
@@ -14,20 +15,18 @@ export const UserPage = () => {
     return (
       <Navigate
         replace
-        to="/error"
+        to={PATHS.ERROR}
         state={{ title: 'Érvénytelen paraméter', messages: ['Nem található felhasználó ilyen azonosítóval!'] }}
       />
     )
   }
 
   if (parseInt(userId) === loggedInUser?.id) {
-    return <Navigate replace to="/profile" />
+    return <Navigate replace to={PATHS.PROFILE} />
   }
 
   if (error) {
-    return (
-      <Navigate replace to="/error" state={{ title: 'Error occured loading user', messages: [(error as any)?.response.data.message] }} />
-    )
+    return <Navigate replace to={PATHS.ERROR} state={{ title: error.message, status: error.statusCode }} />
   }
 
   return (

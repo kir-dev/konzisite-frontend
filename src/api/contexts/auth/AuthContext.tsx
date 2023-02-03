@@ -3,6 +3,7 @@ import { createContext, FC, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { API_HOST } from '../../../util/environment'
+import { PATHS } from '../../../util/paths'
 import { queryClient } from '../../../util/query-client'
 import { HasChildren } from '../../../util/react-types.util'
 import { UserModel } from '../../model/user.model'
@@ -40,6 +41,7 @@ export const AuthProvider: FC<HasChildren> = ({ children }) => {
     error
   } = useQuery('currentUser', userModule.fetchCurrentUser, {
     enabled: isLoggedIn,
+    retry: false,
     onSuccess: (data) => {
       if (data.jwt) {
         Cookies.set(CookieKeys.KONZI_JWT_TOKEN, data.jwt, { expires: 2 })
@@ -57,7 +59,7 @@ export const AuthProvider: FC<HasChildren> = ({ children }) => {
     window.location.href = `${API_HOST}/auth/login`
   }
 
-  const onLogout = (path: string = '/') => {
+  const onLogout = (path: string = PATHS.INDEX) => {
     Cookies.remove(CookieKeys.KONZI_JWT_TOKEN)
     setIsLoggedIn(false)
     queryClient.invalidateQueries('currentUser')
