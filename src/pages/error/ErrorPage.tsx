@@ -20,7 +20,8 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
   const {
     title: t,
     messages: m,
-    backPath: bp
+    backPath: bp,
+    status: s
   } = (state as ErrorPageState) || {
     title: 'This is a blank error page',
     messages: [], //['You might have found yourself here by reloading the error page or copying a link from somewhere else.'],
@@ -28,13 +29,13 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
   }
 
   useEffect(() => {
-    if (status === 401) {
-      toast({ title: '401 Nem vagy bejelentkezve', status: 'error' })
+    if (status === 401 || s === 401) {
+      toast({ title: 'Nem vagy bejelentkezve', status: 'error' })
       onLogout('/login')
     }
-  }, [status])
+  }, [status, s])
 
-  return status === 401 ? null : (
+  return status === 401 || s === 401 ? null : (
     <>
       <Helmet title="Hiba" />
       <Alert p={10} status="error" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center">

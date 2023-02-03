@@ -1,12 +1,12 @@
 export interface ConsultationModel {
   id: number
   location: string
-  startDate: Date
-  endDate: Date
+  startDate: string
+  endDate: string
   name: string
   descMarkdown?: string
   fileName?: string
   archived: boolean
-  createdAt?: Date
-  updatedAt?: Date
+  createdAt?: string
+  updatedAt?: string
 }

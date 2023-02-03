@@ -33,7 +33,7 @@ const currentUser: UserPreview = {
   email: 'elek@example.com',
   isAdmin: false,
   presentations: 0,
-  avarageRating: 0,
+  averageRating: 0,
   attendances: 7
 }
 
@@ -46,7 +46,7 @@ const MockUsers: UserPreview[] = [
     email: 'elek@example.com',
     isAdmin: false,
     presentations: 3,
-    avarageRating: 4.5,
+    averageRating: 4.5,
     attendances: 0
   },
   currentUser,
@@ -58,7 +58,7 @@ const MockUsers: UserPreview[] = [
     email: 'elek@example.com',
     isAdmin: false,
     presentations: 1,
-    avarageRating: 2.1,
+    averageRating: 2.1,
     attendances: 2
   }
 ]
@@ -66,7 +66,7 @@ const MockUsers: UserPreview[] = [
 enum COLUMNS {
   NAME = 'name',
   PRESENTATIONS = 'presentations',
-  RATING = 'avarageRating',
+  RATING = 'averageRating',
   ATTENDANCES = 'attendances'
 }
 
@@ -155,7 +155,7 @@ export const UserBrowserPage = () => {
                 </Td>
 
                 <Td textAlign="center">{user.presentations}</Td>
-                <Td textAlign="center">{user.avarageRating}</Td>
+                <Td textAlign="center">{user.averageRating}</Td>
                 <Td textAlign="center">{user.attendances}</Td>
               </Tr>
             ))}

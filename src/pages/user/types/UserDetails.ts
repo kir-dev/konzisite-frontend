@@ -15,5 +15,5 @@ export type UserDetails = UserModel & {
   consultaionRequests: (ConsultationRequestModel & {
     subject: SubjectModel
   })[]
-  avarageRating: number
+  averageRating: number
 }

@@ -13,14 +13,20 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Skeleton,
   Text,
+  useDisclosure,
+  useToast,
   VStack
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import debounce from 'lodash.debounce'
+import { useRef, useState } from 'react'
 import { FaSearch, FaTimes } from 'react-icons/fa'
+import { Navigate } from 'react-router-dom'
+import { useFecthSubjectListMutation } from '../../../api/hooks/subjectHooks'
+import { KonziError } from '../../../api/model/error.model'
 import { SubjectModel } from '../../../api/model/subject.model'
-import { testSubjects } from '../demoData'
+import { generateToastParams } from '../../../util/generateToastParams'
+import { SelectorSkeleton } from './SelectorSkeleton'
 
 type Props = {
   subject?: SubjectModel
@@ -29,39 +35,52 @@ type Props = {
 }
 
 export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) => {
-  const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [subjectList, setSubjectList] = useState<SubjectModel[]>([])
-  const [filteredSubjectList, setFilteredSubjectList] = useState<SubjectModel[]>([])
+  const toast = useToast()
+  const {
+    isLoading,
+    data: subjectList,
+    mutate: fetchSubjects,
+    reset,
+    error
+  } = useFecthSubjectListMutation((e: KonziError) => {
+    toast(generateToastParams(e))
+  })
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [search, setSearch] = useState('')
 
-  useEffect(() => {
-    if (open) {
-      setLoading(true)
-      setSubjectList([])
-      setTimeout(() => {
-        setLoading(false)
-        setSubjectList(testSubjects)
-      }, 1000)
-    }
-  }, [open])
+  const debouncedSearch = useRef(
+    debounce((search: string) => {
+      fetchSubjects(search)
+    }, 400)
+  ).current
 
-  useEffect(() => {
-    setFilteredSubjectList(
-      subjectList.filter((s) => s.name.toLowerCase().includes(search.toLowerCase()) || s.code.toLowerCase().includes(search.toLowerCase()))
-    )
-  }, [search, subjectList])
+  if (error) {
+    return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
+  }
 
   return (
     <>
       <FormControl isInvalid={subjectError} isRequired>
         <FormLabel>Tárgy</FormLabel>
-        <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} cursor="pointer" onClick={() => setOpen(true)}>
+        <Box
+          borderRadius={6}
+          borderWidth={1}
+          pt={2}
+          pb={2}
+          pl={4}
+          cursor="pointer"
+          onClick={() => {
+            onOpen()
+            setSearch('')
+            reset()
+          }}
+        >
           <Text>{subject ? `${subject.name} (${subject.code})` : 'Nincs tárgy választva'}</Text>
         </Box>
         <FormErrorMessage>Kell tárgyat választani</FormErrorMessage>
       </FormControl>
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Tárgy választás</ModalHeader>
@@ -71,26 +90,28 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
               <InputLeftElement h="100%">
                 <FaSearch />
               </InputLeftElement>
-              <Input placeholder="Keresés..." size="lg" onChange={(e) => setSearch(e.target.value)} value={search} />
+              <Input
+                placeholder="Keresés..."
+                size="lg"
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  debouncedSearch(e.target.value)
+                }}
+                value={search}
+              />
               <InputRightElement h="100%">
                 <FaTimes onClick={() => setSearch('')} cursor="pointer" />
               </InputRightElement>
             </InputGroup>
             <VStack mb={4} maxHeight="600px" overflowY="auto">
-              {loading ? (
-                <>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="30%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="60%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="40%" />
-                  </Box>
-                </>
+              {isLoading ? (
+                <SelectorSkeleton />
+              ) : subjectList === undefined || search.trim().length === 0 ? (
+                <Text>Keress tárgyat</Text>
+              ) : subjectList.length === 0 ? (
+                <Text>Nincs találat</Text>
               ) : (
-                filteredSubjectList.map((s) => (
+                subjectList.map((s) => (
                   <Box
                     borderRadius={6}
                     borderWidth={1}
@@ -102,7 +123,7 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
                     width="100%"
                     onClick={() => {
                       setSubject(s)
-                      setOpen(false)
+                      onClose()
                     }}
                   >
                     <Text>

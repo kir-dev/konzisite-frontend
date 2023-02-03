@@ -18,14 +18,24 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Skeleton,
   Text,
+  useDisclosure,
+  useToast,
   VStack
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
-import { FaSearch, FaStar, FaTimes } from 'react-icons/fa'
-import { currentUser, testPresenters } from '../demoData'
+import debounce from 'lodash.debounce'
+import { useRef, useState } from 'react'
+import { FaSearch, FaTimes } from 'react-icons/fa'
+import { Navigate } from 'react-router-dom'
+import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
+import { useFecthUserListMutation } from '../../../api/hooks/userMutationHooks'
+import { KonziError } from '../../../api/model/error.model'
+import { generateToastParams } from '../../../util/generateToastParams'
+import { ErrorPage } from '../../error/ErrorPage'
+
 import { Presentation } from '../types/consultationDetails'
+import { Rating } from './Rating'
+import { SelectorSkeleton } from './SelectorSkeleton'
 
 type Props = {
   presentations: Presentation[]
@@ -34,33 +44,20 @@ type Props = {
 }
 
 export const PresentersSelector = ({ presentations, setPresentations, presentationsError }: Props) => {
-  const [open, setOpen] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [presenterList, setPresenterList] = useState<Presentation[]>([])
-  const [filteredPresenterList, setFilteredPresenterList] = useState<Presentation[]>([])
+  const { loggedInUser } = useAuthContext()
+  const toast = useToast()
+  const {
+    isLoading,
+    data: userList,
+    mutate: fetchUsers,
+    reset,
+    error
+  } = useFecthUserListMutation((e: KonziError) => {
+    toast(generateToastParams(e))
+  })
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [search, setSearch] = useState('')
-  const [filteredCount, setFilteredCount] = useState(0)
-  const [resultLimit, setResultLimit] = useState(10)
-
-  useEffect(() => {
-    if (open) {
-      setLoading(true)
-      setPresenterList([])
-      setTimeout(() => {
-        setLoading(false)
-        setPresenterList(testPresenters)
-      }, 1000)
-    }
-  }, [open])
-
-  useEffect(() => {
-    const filtered = presenterList.filter(
-      (p) => p.fullName.toLowerCase().includes(search.toLowerCase()) && !presentations.some((pres) => pres.id === p.id)
-    )
-    setFilteredCount(filtered.length)
-
-    setFilteredPresenterList(filtered.slice(0, resultLimit))
-  }, [search, presenterList, resultLimit])
 
   const addPresenter = (presenter: Presentation) => {
     setPresentations([...presentations, presenter].sort((a, b) => a.fullName.localeCompare(b.fullName)))
@@ -69,6 +66,22 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
   const removePresenter = (presenter: Presentation) => {
     setPresentations(presentations.filter((p) => p.id !== presenter.id))
   }
+
+  const debouncedSearch = useRef(
+    debounce((search: string) => {
+      fetchUsers(search)
+    }, 400)
+  ).current
+
+  if (loggedInUser === undefined) {
+    return <ErrorPage status={401} />
+  }
+
+  if (error) {
+    return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
+  }
+
+  const filteredUserList = userList?.filter((u) => !presentations.some((p) => p.id === u.id))
 
   return (
     <>
@@ -81,16 +94,13 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
               <VStack flexGrow={1}>
                 <Heading size="md" width="100%">
                   {p.fullName}
-                  {p.id === currentUser.id && (
+                  {p.id === loggedInUser.id && (
                     <Badge colorScheme="brand" ml={1}>
                       Te
                     </Badge>
                   )}
                 </Heading>
-                <HStack width="100%">
-                  <Text>Értékelés: {p.averageRating}</Text>
-                  <FaStar />
-                </HStack>
+                <Rating rating={p.averageRating} />
               </VStack>
               <Button colorScheme="red" onClick={() => removePresenter(p)}>
                 Törlés
@@ -99,11 +109,18 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
           </Box>
         ))}
         <FormErrorMessage>Legalább egy előadónak kell lennie</FormErrorMessage>
-        <Button onClick={() => setOpen(true)} mt={2}>
+        <Button
+          onClick={() => {
+            onOpen()
+            setSearch('')
+            reset()
+          }}
+          mt={2}
+        >
           Előadó hozzáadása
         </Button>
       </FormControl>
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Előadó hozzáadása</ModalHeader>
@@ -113,26 +130,28 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
               <InputLeftElement h="100%">
                 <FaSearch />
               </InputLeftElement>
-              <Input placeholder="Keresés..." size="lg" onChange={(e) => setSearch(e.target.value)} value={search} />
+              <Input
+                placeholder="Keresés..."
+                size="lg"
+                onChange={(e) => {
+                  setSearch(e.target.value)
+                  debouncedSearch(e.target.value)
+                }}
+                value={search}
+              />
               <InputRightElement h="100%">
                 <FaTimes onClick={() => setSearch('')} cursor="pointer" />
               </InputRightElement>
             </InputGroup>
             <VStack mb={2} maxHeight="500px" overflowY="auto">
-              {loading ? (
-                <>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="30%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="60%" />
-                  </Box>
-                  <Box borderRadius={6} borderWidth={1} pt={2} pb={2} pl={4} width="100%">
-                    <Skeleton height="20px" width="40%" />
-                  </Box>
-                </>
+              {isLoading ? (
+                <SelectorSkeleton />
+              ) : filteredUserList === undefined || search.trim().length === 0 ? (
+                <Text>Keress előadót</Text>
+              ) : filteredUserList.length === 0 ? (
+                <Text>Nincs találat</Text>
               ) : (
-                filteredPresenterList.map((p) => (
+                filteredUserList.map((p) => (
                   <Box
                     borderRadius={6}
                     borderWidth={1}
@@ -141,7 +160,7 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
                     width="100%"
                     onClick={() => {
                       addPresenter(p)
-                      setOpen(false)
+                      onClose()
                     }}
                   >
                     <HStack flexGrow={1} p={4}>
@@ -149,27 +168,19 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
                       <VStack flexGrow={1}>
                         <Heading size="md" width="100%">
                           {p.fullName}
-                          {p.id === currentUser.id && (
+                          {p.id === loggedInUser.id && (
                             <Badge colorScheme="brand" ml={1}>
                               Te
                             </Badge>
                           )}
                         </Heading>
-                        <HStack width="100%">
-                          <Text>Értékelés: {p.averageRating}</Text>
-                          <FaStar />
-                        </HStack>
+                        <Rating rating={p.averageRating} />
                       </VStack>
                     </HStack>
                   </Box>
                 ))
               )}
             </VStack>
-            {filteredPresenterList.length < filteredCount && (
-              <Button colorScheme="brand" onClick={() => setResultLimit((r) => r + 10)} width="100%" mb={4}>
-                Még több betöltése
-              </Button>
-            )}
           </ModalBody>
         </ModalContent>
       </Modal>
