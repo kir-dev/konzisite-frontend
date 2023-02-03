@@ -2,8 +2,8 @@ import { Button, Flex, Heading, Text, VStack } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useFetchConsultationListQuery } from '../../api/hooks/consultationQueryHooks'
+import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
 import { ErrorPage } from '../error/ErrorPage'
-import { ConsultationListItem } from './components/ConsultationListItem'
 import { LoadingConsultationList } from './components/LoadingConsultationList'
 
 export const ConsultationsPage = () => {
@@ -28,7 +28,22 @@ export const ConsultationsPage = () => {
         <Text>Nincsenek konzultációk!</Text>
       ) : (
         <VStack alignItems="stretch" mt={3}>
-          {isLoading ? <LoadingConsultationList /> : consultaions?.map((c) => <ConsultationListItem consultation={c} key={c.id} />)}
+          {isLoading ? (
+            <LoadingConsultationList />
+          ) : (
+            consultaions?.map((c) => (
+              <ConsultationListItem
+                consultation={c}
+                key={c.id}
+                rightSmallText={
+                  c.presentations.length <= 3
+                    ? `Konzitartó${c.presentations.length > 1 ? 'k' : ''}:
+                  ${c.presentations.map((p) => p.fullName).join(', ')}`
+                    : `${c.presentations.length} konzitartó`
+                }
+              />
+            ))
+          )}
         </VStack>
       )}
     </>

@@ -2,13 +2,13 @@ import { Avatar, Badge, Box, Heading, HStack, SimpleGrid, Stack, VStack } from '
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { RatingModel } from '../../../api/model/rating.model'
-import { UserModel } from '../../../api/model/user.model'
 import { ErrorPage } from '../../error/ErrorPage'
+import { PublicUser } from '../../user/types/PublicUser'
 import { Rating } from './Rating'
 import { UserRating } from './UserRating'
 
 type Props = {
-  users: (UserModel & {
+  users: (PublicUser & {
     averageRating?: number
     rating?: RatingModel
   })[]

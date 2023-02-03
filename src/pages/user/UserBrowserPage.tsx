@@ -27,11 +27,7 @@ import { UserPreview } from './types/UserPreview'
 
 const currentUser: UserPreview = {
   id: 1,
-  authSchId: 'abc2',
-  firstName: 'János',
   fullName: 'Kovács János',
-  email: 'elek@example.com',
-  isAdmin: false,
   presentations: 0,
   averageRating: 0,
   attendances: 7
@@ -40,11 +36,7 @@ const currentUser: UserPreview = {
 const MockUsers: UserPreview[] = [
   {
     id: 4,
-    authSchId: 'abc',
-    firstName: 'Elek',
     fullName: 'Teszt Elek',
-    email: 'elek@example.com',
-    isAdmin: false,
     presentations: 3,
     averageRating: 4.5,
     attendances: 0
@@ -52,11 +44,7 @@ const MockUsers: UserPreview[] = [
   currentUser,
   {
     id: 2,
-    authSchId: 'abc',
-    firstName: 'Péter',
     fullName: 'Sándor Péter',
-    email: 'elek@example.com',
-    isAdmin: false,
     presentations: 1,
     averageRating: 2.1,
     attendances: 2

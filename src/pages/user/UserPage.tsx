@@ -1,21 +1,21 @@
-import { useQuery } from 'react-query'
+import { Helmet } from 'react-helmet-async'
 import { Navigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
-import { userModule } from '../../api/modules/user.module'
+import { useFecthUserDetailsQuery } from '../../api/hooks/userQueryHooks'
 import { ProfileDetails } from './components/ProfileDetails'
 import { ProfileDetailsLoading } from './components/ProfileDetailsLoading'
 
 export const UserPage = () => {
   const { userId } = useParams()
   const { loggedInUser } = useAuthContext()
-  const { isLoading, data: user, error } = useQuery(['user', userId], () => userModule.fetchUser(parseInt(userId!!)))
+  const { isLoading, data: user, error } = useFecthUserDetailsQuery(parseInt(userId!!))
 
   if (!userId || isNaN(parseInt(userId))) {
     return (
       <Navigate
         replace
         to="/error"
-        state={{ title: 'Error occured in route params', messages: ['The id parameter entered is invalid!'] }}
+        state={{ title: 'Érvénytelen paraméter', messages: ['Nem található felhasználó ilyen azonosítóval!'] }}
       />
     )
   }
@@ -30,5 +30,10 @@ export const UserPage = () => {
     )
   }
 
-  return <>{isLoading ? <ProfileDetailsLoading /> : <ProfileDetails user={user!!} />}</>
+  return (
+    <>
+      <Helmet title={user?.fullName} />
+      {isLoading ? <ProfileDetailsLoading /> : <ProfileDetails user={user!!} />}
+    </>
+  )
 }

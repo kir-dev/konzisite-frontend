@@ -10,6 +10,7 @@ export const useFecthUserListQuery = () => {
 
 export const useFecthUserDetailsQuery = (userId: number) => {
   return useQuery<UserDetails, KonziError>(['fetchUserDetails', userId], async () => (await axios.get(`/users/${userId}`)).data, {
-    retry: false
+    retry: false,
+    enabled: userId > 0 && !isNaN(userId)
   })
 }
