@@ -25,11 +25,13 @@ import {
 } from '@chakra-ui/react'
 import debounce from 'lodash.debounce'
 import { useRef, useState } from 'react'
+import { useFormContext } from 'react-hook-form'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { useFecthUserListMutation } from '../../../api/hooks/userMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
+import { GroupModel } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { ErrorPage } from '../../error/ErrorPage'
 
@@ -37,13 +39,14 @@ import { Presentation } from '../types/consultationDetails'
 import { Rating } from './Rating'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
-type Props = {
-  presentations: Presentation[]
-  setPresentations: (presentations: Presentation[]) => void
-  presentationsError: boolean
-}
+export const PresentersSelector = () => {
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors }
+  } = useFormContext()
 
-export const PresentersSelector = ({ presentations, setPresentations, presentationsError }: Props) => {
   const { loggedInUser } = useAuthContext()
   const toast = useToast()
   const {
@@ -60,11 +63,19 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
   const [search, setSearch] = useState('')
 
   const addPresenter = (presenter: Presentation) => {
-    setPresentations([...presentations, presenter].sort((a, b) => a.fullName.localeCompare(b.fullName)))
+    setValue(
+      'presenters',
+      [...watch('presenters'), presenter].sort((a, b) => a.fullName.localeCompare(b.fullName)),
+      { shouldValidate: true }
+    )
   }
 
   const removePresenter = (presenter: Presentation) => {
-    setPresentations(presentations.filter((p) => p.id !== presenter.id))
+    setValue(
+      'presenters',
+      watch('presenters').filter((p: Presentation) => p.id !== presenter.id),
+      { shouldValidate: true }
+    )
   }
 
   const debouncedSearch = useRef(
@@ -81,13 +92,13 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
     return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
-  const filteredUserList = userList?.filter((u) => !presentations.some((p) => p.id === u.id))
+  const filteredUserList = userList?.filter((u) => !watch('presenters').some((p: Presentation) => p.id === u.id))
 
   return (
     <>
-      <FormControl isInvalid={presentationsError} isRequired>
+      <FormControl isInvalid={!!errors['presenters']} isRequired>
         <FormLabel>Előadók</FormLabel>
-        {presentations.map((p) => (
+        {watch('presenters').map((p: Presentation) => (
           <Box borderRadius={6} borderWidth={1} mb={2} key={p.id}>
             <HStack flexGrow={1} p={4}>
               <Avatar size="md" name={p.fullName} src={''} />
@@ -143,6 +154,12 @@ export const PresentersSelector = ({ presentations, setPresentations, presentati
                 <FaTimes onClick={() => setSearch('')} cursor="pointer" />
               </InputRightElement>
             </InputGroup>
+            <Input
+              {...register('presenters', {
+                validate: (g: GroupModel[]) => g.length > 0
+              })}
+              hidden
+            />
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />

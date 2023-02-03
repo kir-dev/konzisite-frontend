@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react'
 import debounce from 'lodash.debounce'
 import { useRef, useState } from 'react'
+import { useFormContext } from 'react-hook-form'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useFecthGroupListMutation } from '../../../api/hooks/groupMutationHooks'
@@ -31,12 +32,9 @@ import { GroupModel } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
-type Props = {
-  targetGroups: GroupModel[]
-  setTargetGroups: (targetGroups: GroupModel[]) => void
-}
+export const TargetGroupSelector = () => {
+  const { register, watch, setValue } = useFormContext()
 
-export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) => {
   const toast = useToast()
   const {
     isLoading,
@@ -52,11 +50,17 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
   const [search, setSearch] = useState('')
 
   const addGroup = (group: GroupModel) => {
-    setTargetGroups([...targetGroups, group].sort((a, b) => a.name.localeCompare(b.name)))
+    setValue(
+      'targetGroups',
+      [...watch('targetGroups', []), group].sort((a, b) => a.name.localeCompare(b.name))
+    )
   }
 
   const removeGroup = (group: GroupModel) => {
-    setTargetGroups(targetGroups.filter((g) => g.id !== group.id))
+    setValue(
+      'targetGroups',
+      watch('targetGroups').filter((g: GroupModel) => g.id !== group.id)
+    )
   }
 
   const debouncedSearch = useRef(
@@ -69,13 +73,13 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
     return <Navigate replace to="/error" state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
-  const filteredGroupList = groupList?.filter((g) => !targetGroups.some((group) => group.id === g.id))
+  const filteredGroupList = groupList?.filter((g) => !watch('targetGroups').some((group: GroupModel) => group.id === g.id))
 
   return (
     <>
       <FormControl>
         <FormLabel>Célcsoportok</FormLabel>
-        {targetGroups.map((g) => (
+        {watch('targetGroups').map((g: GroupModel) => (
           <Box borderRadius={6} borderWidth={1} mb={2} key={g.id}>
             <HStack flexGrow={1} p={4}>
               <Avatar size="md" name={g.name} src={''} />
@@ -124,6 +128,7 @@ export const TargetGroupSelector = ({ targetGroups, setTargetGroups }: Props) =>
                 <FaTimes onClick={() => setSearch('')} cursor="pointer" />
               </InputRightElement>
             </InputGroup>
+            <Input {...register('targetGroups')} hidden />
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />

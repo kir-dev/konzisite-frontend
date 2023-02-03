@@ -20,6 +20,7 @@ import {
 } from '@chakra-ui/react'
 import debounce from 'lodash.debounce'
 import { useRef, useState } from 'react'
+import { useFormContext } from 'react-hook-form'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useFecthSubjectListMutation } from '../../../api/hooks/subjectHooks'
@@ -28,13 +29,14 @@ import { SubjectModel } from '../../../api/model/subject.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
-type Props = {
-  subject?: SubjectModel
-  setSubject: (subject: SubjectModel) => void
-  subjectError: boolean
-}
+export const SubjectSelector = () => {
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors }
+  } = useFormContext()
 
-export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) => {
   const toast = useToast()
   const {
     isLoading,
@@ -61,23 +63,20 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
 
   return (
     <>
-      <FormControl isInvalid={subjectError} isRequired>
+      <FormControl isInvalid={!!errors['subject']} isRequired>
         <FormLabel>Tárgy</FormLabel>
-        <Box
-          borderRadius={6}
-          borderWidth={1}
-          pt={2}
-          pb={2}
-          pl={4}
+
+        <Input
           cursor="pointer"
           onClick={() => {
             onOpen()
             setSearch('')
             reset()
           }}
-        >
-          <Text>{subject ? `${subject.name} (${subject.code})` : 'Nincs tárgy választva'}</Text>
-        </Box>
+          readOnly
+          value={watch('subject') ? `${watch('subject').name} (${watch('subject').code})` : 'Nincs tárgy választva'}
+        />
+
         <FormErrorMessage>Kell tárgyat választani</FormErrorMessage>
       </FormControl>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -103,6 +102,12 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
                 <FaTimes onClick={() => setSearch('')} cursor="pointer" />
               </InputRightElement>
             </InputGroup>
+            <Input
+              {...register('subject', {
+                validate: (s: SubjectModel) => s !== undefined
+              })}
+              hidden
+            />
             <VStack mb={4} maxHeight="600px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
@@ -122,7 +127,7 @@ export const SubjectSelector = ({ subject, setSubject, subjectError }: Props) =>
                     key={s.id}
                     width="100%"
                     onClick={() => {
-                      setSubject(s)
+                      setValue('subject', s, { shouldValidate: true })
                       onClose()
                     }}
                   >

@@ -1,10 +1,12 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Textarea, useToast, VStack } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, useToast, VStack } from '@chakra-ui/react'
+import { useEffect } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useCreateConsultationMutation, useEditConsultationMutation } from '../../api/hooks/consultationMutationHooks'
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
+import { RemarkEditor } from '../../components/editor/RemarkEditor'
 import { Helmet } from 'react-helmet-async'
 import { GroupModel } from '../../api/model/group.model'
 import { SubjectModel } from '../../api/model/subject.model'
@@ -15,7 +17,7 @@ import { LoadingEditConsultation } from './components/LoadingEditConsultation'
 import { PresentersSelector } from './components/PresentersSelector'
 import { SubjectSelector } from './components/SubjectSelector'
 import { TargetGroupSelector } from './components/TargetGroupSelector'
-import { Presentation } from './types/consultationDetails'
+import { CreateConsultation, CreateConsultationForm } from './types/createConsultation'
 
 type Props = {
   newConsultation?: boolean
@@ -32,95 +34,78 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
 
   const { isLoading, data: consultation, error } = useFetchConsultationbDetailsQuery(consultationId)
 
-  const createCons = () => {
-    createConsultation(
-      {
-        name,
-        location,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
-        descMarkdown: description,
-        subjectId: subject!!.id,
-        presenterIds: presentations.map((p) => p.id),
-        targetGroupIds: targetGroups.map((g) => g.id)
+  const createCons = (formData: CreateConsultation) => {
+    createConsultation(formData, {
+      onSuccess: (consultation) => {
+        toast({ title: 'Konzultáció sikeresen létrehozva!', status: 'success' })
+        navigate(`/consultations/${consultation.id}`)
       },
-      {
-        onSuccess: (consultation) => {
-          toast({ title: 'Konzultáció sikeresen létrehozva!', status: 'success' })
-          navigate(`/consultations/${consultation.id}`)
-        },
-        onError: (e: KonziError) => {
-          toast(generateToastParams(e))
-        }
+      onError: (e: KonziError) => {
+        toast(generateToastParams(e))
       }
-    )
+    })
   }
 
-  const editCons = () => {
-    updateConsultation(
-      {
-        name,
-        location,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
-        descMarkdown: description,
-        subjectId: subject!!.id,
-        presenterIds: presentations.map((p) => p.id),
-        targetGroupIds: targetGroups.map((g) => g.id)
+  const editCons = (formData: CreateConsultation) => {
+    updateConsultation(formData, {
+      onSuccess: (consultation) => {
+        toast({ title: 'Konzultáció sikeresen módosítva!', status: 'success' })
+        navigate(`/consultations/${consultation.id}`)
       },
-      {
-        onSuccess: (consultation) => {
-          toast({ title: 'Konzultáció sikeresen módosítva!', status: 'success' })
-          navigate(`/consultations/${consultation.id}`)
-        },
-        onError: (e: KonziError) => {
-          toast(generateToastParams(e))
-        }
+      onError: (e: KonziError) => {
+        toast(generateToastParams(e))
       }
-    )
+    })
   }
 
-  const [loading, setLoading] = useState(!newConsultation)
-  const [name, setName] = useState('')
-  const [location, setLocation] = useState('')
-  const [description, setDescription] = useState<string>('')
-  const [startDate, setStartDate] = useState(new Date())
-  const [endDate, setEndDate] = useState(new Date())
-  const [subject, setSubject] = useState<SubjectModel | undefined>(undefined)
-  const [presentations, setPresentations] = useState<Presentation[]>([])
-  const [targetGroups, setTargetGroups] = useState<GroupModel[]>([])
+  const form = useForm<CreateConsultationForm>({
+    defaultValues: consultation
+      ? {
+          name: consultation.name,
+          location: consultation.location,
+          descMarkdown: consultation.descMarkdown,
+          startDate: new Date(consultation.startDate),
+          endDate: new Date(consultation.endDate),
+          subject: consultation.subject,
+          presenters: consultation.presentations,
+          targetGroups: consultation.targetGroups
+        }
+      : { targetGroups: [], presenters: [], startDate: new Date(), endDate: new Date() },
+    mode: 'all'
+  })
 
-  let nameError = name === ''
-  let locationError = location === ''
-  let startDateError = newConsultation
-    ? startDate.getTime() <= new Date().getTime()
-    : startDate.getTime() < Math.min(consultation ? new Date(consultation.startDate).getTime() : 0, new Date().getTime())
-  let endDateError = endDate.getTime() <= startDate.getTime()
-  let subjectError = subject === undefined
-  let presentationsError = presentations.length === 0
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors, isValid, isSubmitted }
+  } = form
 
-  const errorCount = [nameError, locationError, startDateError || endDateError, subjectError, presentationsError].filter((e) => e).length
-
-  if (errorCount > 2) {
-    nameError = false
-    locationError = false
-    startDateError = false
-    endDateError = false
-    subjectError = false
-    presentationsError = false
-  }
+  const onSubmit = handleSubmit((data) => {
+    const formData = {
+      name: data.name,
+      location: data.location,
+      startDate: new Date(data.startDate),
+      endDate: new Date(data.endDate),
+      descMarkdown: data.descMarkdown,
+      subjectId: data.subject.id,
+      presenterIds: data.presenters.map((p) => p.id),
+      targetGroupIds: data.targetGroups.map((g) => g.id)
+    }
+    newConsultation ? createCons(formData) : editCons(formData)
+  })
 
   useEffect(() => {
-    if (consultation) {
-      setName(consultation.name)
-      setLocation(consultation.location)
-      setDescription(consultation.descMarkdown || '')
-      setStartDate(new Date(consultation.startDate))
-      setEndDate(new Date(consultation.endDate))
-      setSubject(consultation.subject)
-      setPresentations(consultation.presentations)
-      setTargetGroups(consultation.targetGroups)
-      setLoading(false)
+    if (consultation && !watch('name')) {
+      setValue('name', consultation.name)
+      setValue('location', consultation.location)
+      setValue('descMarkdown', consultation.descMarkdown)
+      setValue('presenters', consultation.presentations)
+      setValue('subject', consultation.subject)
+      setValue('targetGroups', consultation.targetGroups)
+      setValue('startDate', new Date(consultation.startDate))
+      setValue('endDate', new Date(consultation.endDate))
     }
   }, [consultation])
 
@@ -128,7 +113,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
     return <ErrorPage backPath={'/'} status={error.statusCode} title={error.message} />
   }
 
-  if (loading || isLoading || loggedInUserLoading) {
+  if (isLoading || loggedInUserLoading) {
     return <LoadingEditConsultation />
   }
 
@@ -153,46 +138,42 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
             {newConsultation ? 'Új konzultáció létrehozása' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`}
           </Heading>
           <VStack>
-            <FormControl isInvalid={nameError} isRequired>
+            <FormControl isInvalid={!!errors.name} isRequired>
               <FormLabel>Konzultáció neve</FormLabel>
-              <Input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Digit vizsgára készülés" />
-              <FormErrorMessage>Név nem lehet üres</FormErrorMessage>
+              <Input type="text" {...register('name', { required: true })} placeholder="Digit vizsgára készülés" />
+              {errors.name && <FormErrorMessage>Név nem lehet üres</FormErrorMessage>}
             </FormControl>
-            <FormControl isInvalid={locationError} isRequired>
+            <FormControl isInvalid={!!errors.location} isRequired>
               <FormLabel>Helyszín</FormLabel>
-              <Input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="SCH-1317"
-                width="30%"
-                minWidth="150px"
-              />
-              <FormErrorMessage>Helyszín nem lehet üres</FormErrorMessage>
+              <Input type="text" {...register('location', { required: true })} placeholder="SCH-1317" width="30%" minWidth="150px" />
+              {errors.location && <FormErrorMessage>Helyszín nem lehet üres</FormErrorMessage>}
             </FormControl>
-            <SubjectSelector subjectError={subjectError} subject={subject} setSubject={setSubject} />
-            <PresentersSelector presentations={presentations} setPresentations={setPresentations} presentationsError={presentationsError} />
-            <ConsultationDateForm
-              startDate={new Date(startDate)}
-              endDate={new Date(endDate)}
-              setStartDate={setStartDate}
-              setEndDate={setEndDate}
-              startDateError={startDateError}
-              endDateError={endDateError}
-            />
-            <FormControl>
-              <FormLabel>Leírás (markdown)</FormLabel>
-              <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-            </FormControl>
-            <TargetGroupSelector targetGroups={targetGroups} setTargetGroups={setTargetGroups} />
+            <FormProvider {...form}>
+              <SubjectSelector />
+              <PresentersSelector />
+              <ConsultationDateForm />
+              <FormControl>
+                <FormLabel>Leírás</FormLabel>
+                <RemarkEditor
+                  formDetails={{
+                    id: 'descMarkdown',
+                    promptText: '',
+                    maxChar: 1000
+                  }}
+                  textAreaHeight="8rem"
+                  previewHeight="12rem"
+                />
+              </FormControl>
+              <TargetGroupSelector />
+            </FormProvider>
           </VStack>
           <Button
             mt={3}
             colorScheme="brand"
             onClick={() => {
-              newConsultation ? createCons() : editCons()
+              onSubmit()
             }}
-            isDisabled={errorCount !== 0}
+            isDisabled={!isValid && isSubmitted}
           >
             {newConsultation ? 'Létrehozás' : 'Mentés'}
           </Button>
