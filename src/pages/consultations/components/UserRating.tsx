@@ -66,7 +66,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState<number>(user.rating?.value ?? 5)
   const [text, setText] = useState<string>(user.rating?.text ?? '')
-  const [anonymous, setAnonymous] = useState<boolean>(user.rating?.anonymous ?? false)
+  const [anonymous, setAnonymous] = useState<boolean>(!!user.rating?.anonymous)
 
   if (consultationId === undefined || isNaN(+consultationId)) {
     return <ErrorPage backPath={'/'} status={404} title={'A konzultáció nem található!'} />
