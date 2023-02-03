@@ -26,12 +26,12 @@ import { useParams } from 'react-router-dom'
 import { useRateConsultationMutation, useUpdateRatingConsultationMutation } from '../../../api/hooks/consultationMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { RatingModel } from '../../../api/model/rating.model'
-import { UserModel } from '../../../api/model/user.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { ErrorPage } from '../../error/ErrorPage'
+import { PublicUser } from '../../user/types/PublicUser'
 
 type Props = {
-  user: UserModel & {
+  user: PublicUser & {
     rating?: RatingModel
   }
   isParticipant: boolean

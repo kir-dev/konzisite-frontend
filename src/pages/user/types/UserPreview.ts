@@ -1,6 +1,6 @@
-import { UserModel } from '../../../api/model/user.model'
+import { PublicUser } from './PublicUser'
 
-export type UserPreview = UserModel & {
+export type UserPreview = PublicUser & {
   presentations: number
   averageRating: number
   attendances: number
