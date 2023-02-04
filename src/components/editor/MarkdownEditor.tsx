@@ -31,7 +31,7 @@ type Props = {
   previewHeight?: string | number
 }
 
-export const RemarkEditor: FC<Props> = ({ textAreaHeight = '22rem', previewHeight = '26rem', defaultValue, formDetails }) => {
+export const MarkdownEditor: FC<Props> = ({ textAreaHeight = '22rem', previewHeight = '26rem', defaultValue, formDetails }) => {
   const {
     register,
     watch,
