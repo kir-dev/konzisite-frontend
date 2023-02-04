@@ -48,7 +48,7 @@ export const App = () => {
           <Route path={PATHS.SUBJECTS}>
             <Route index element={<SubjectsPage />} />
           </Route>
-          <Route path="impressum" element={<ImpressumPage />} />
+          <Route path={PATHS.IMPRESSUM} element={<ImpressumPage />} />
           <Route path={PATHS.LOGIN} element={<LoginPage />} />
           <Route path="authorized" element={<AuthorizedPage />} />
           <Route path="logout" element={<LogoutPage />} />
