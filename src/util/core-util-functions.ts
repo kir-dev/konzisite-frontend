@@ -20,4 +20,4 @@ export const toDateTimeString = (timestamp: number): string => format(new Date(t
 export const ellipsifyLongText = (text: string, maxLength: number = 100): string =>
   text.substring(0, maxLength - 1) + (text.length > maxLength ? '...' : '')
 
-export const isValidId = (id: string): boolean => !isNaN(+id) && +id > 0
+export const isValidId = (id: string | number): boolean => !isNaN(+id) && +id > 0
