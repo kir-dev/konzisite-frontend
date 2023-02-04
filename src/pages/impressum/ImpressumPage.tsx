@@ -1,11 +1,13 @@
 import { Heading, Wrap } from '@chakra-ui/react'
+import { Helmet } from 'react-helmet-async'
 import ReactMarkdown from 'react-markdown'
 import { DeveloperWrapItem } from './components/DeveloperWrapItem'
 import { developers } from './util/developers'
 
-const ImpressumPage = () => {
+export const ImpressumPage = () => {
   return (
     <>
+      <Helmet title="Impressum" />
       <Heading size="xl" textAlign="center" mb={3}>
         Impressum
       </Heading>
@@ -34,5 +36,3 @@ const ImpressumPage = () => {
     </>
   )
 }
-
-export default ImpressumPage
