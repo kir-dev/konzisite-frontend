@@ -5,7 +5,7 @@ type Props = {
   textAreaHeight?: string | number
 }
 
-export const RemarkEditorLoading: FC<Props> = ({ textAreaHeight = '22rem' }) => {
+export const MarkdownEditorLoading: FC<Props> = ({ textAreaHeight = '22rem' }) => {
   return (
     <VStack width="full" align="stretch">
       <Skeleton width="10rem" height="2rem" />

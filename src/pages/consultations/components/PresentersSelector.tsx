@@ -31,12 +31,12 @@ import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { useFecthUserListMutation } from '../../../api/hooks/userMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
-import { GroupModel } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { PATHS } from '../../../util/paths'
 import { ErrorPage } from '../../error/ErrorPage'
 
 import { Presentation } from '../types/consultationDetails'
+import { CreateConsultationForm } from '../types/createConsultation'
 import { Rating } from './Rating'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
@@ -46,7 +46,7 @@ export const PresentersSelector = () => {
     watch,
     setValue,
     formState: { errors }
-  } = useFormContext()
+  } = useFormContext<CreateConsultationForm>()
 
   const { loggedInUser } = useAuthContext()
   const toast = useToast()
@@ -157,7 +157,7 @@ export const PresentersSelector = () => {
             </InputGroup>
             <Input
               {...register('presenters', {
-                validate: (g: GroupModel[]) => g.length > 0
+                validate: (p: Presentation[]) => p.length > 0
               })}
               hidden
             />

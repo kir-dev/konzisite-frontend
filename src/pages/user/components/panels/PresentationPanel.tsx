@@ -17,7 +17,7 @@ type Props = {
 }
 export const PresentationPanel = ({ presentations }: Props) => {
   return (
-    <TabPanel>
+    <TabPanel px={0}>
       <VStack spacing={4} alignItems="stretch">
         {presentations.length > 0 ? (
           presentations
@@ -41,7 +41,9 @@ export const PresentationPanel = ({ presentations }: Props) => {
               </ConsultationListItem>
             ))
         ) : (
-          <Text fontStyle="italic">A felhasználó még nem tartott konzultációt.</Text>
+          <Text fontStyle="italic" textAlign="center">
+            A felhasználó még nem tartott konzultációt.
+          </Text>
         )}
       </VStack>
     </TabPanel>

@@ -31,10 +31,11 @@ import { KonziError } from '../../../api/model/error.model'
 import { GroupModel } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { PATHS } from '../../../util/paths'
+import { CreateConsultationForm } from '../types/createConsultation'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
 export const TargetGroupSelector = () => {
-  const { register, watch, setValue } = useFormContext()
+  const { register, watch, setValue } = useFormContext<CreateConsultationForm>()
 
   const toast = useToast()
   const {

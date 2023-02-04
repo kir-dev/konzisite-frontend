@@ -28,6 +28,7 @@ import { KonziError } from '../../../api/model/error.model'
 import { SubjectModel } from '../../../api/model/subject.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { PATHS } from '../../../util/paths'
+import { CreateConsultationForm } from '../types/createConsultation'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
 export const SubjectSelector = () => {
@@ -36,7 +37,7 @@ export const SubjectSelector = () => {
     watch,
     setValue,
     formState: { errors }
-  } = useFormContext()
+  } = useFormContext<CreateConsultationForm>()
 
   const toast = useToast()
   const {
