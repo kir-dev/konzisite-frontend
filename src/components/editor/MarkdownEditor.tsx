@@ -14,9 +14,8 @@ import {
 } from '@chakra-ui/react'
 import { FC } from 'react'
 import { useFormContext } from 'react-hook-form'
-import ReactMarkdown from 'react-markdown'
-import { RemarkUIRenderer } from '../../assets/remark-ui-renderer'
 import { KLink } from '../commons/KLink'
+import Markdown from '../commons/Markdown'
 import { getStatusString } from './editorUtils'
 
 type Props = {
@@ -77,7 +76,7 @@ export const MarkdownEditor: FC<Props> = ({ textAreaHeight = '22rem', previewHei
         </TabPanel>
         <TabPanel>
           <Box maxHeight={previewHeight} overflowY="scroll">
-            <ReactMarkdown components={RemarkUIRenderer()} children={watch(formDetails.id)} skipHtml />
+            <Markdown markdown={watch(formDetails.id)} />
           </Box>
         </TabPanel>
       </TabPanels>

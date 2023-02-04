@@ -60,6 +60,8 @@ export const SubjectsPage = () => {
     return <ErrorPage backPath={PATHS.INDEX} status={403} title="Nincs jogosultságod az oldal megtekintéséhez" />
   }
 
+  const filteredSubjects = subjects?.filter((s) => s.majors.some((m) => m === selectedMajor) || selectedMajor === 'all')
+
   return (
     <>
       <Helmet title="Tárgyak" />
@@ -132,38 +134,40 @@ export const SubjectsPage = () => {
           />
         </HStack>
       </Stack>
-      {subjects && subjects?.length > 0 && (
+      {filteredSubjects && filteredSubjects?.length > 0 ? (
         <SimpleGrid columns={{ sm: 1, md: 2 }} gap={4}>
-          {subjects
-            ?.filter((s) => s.majors.some((m) => m === selectedMajor) || selectedMajor === 'all')
-            .map((s) => (
-              <Box key={s.id} shadow="md" borderRadius={8} borderWidth={1} p={4}>
-                <HStack justify="space-between">
-                  <VStack align="flex-start" flexGrow={1}>
-                    <Heading size="md">
-                      {s.name} ({s.code})
-                    </Heading>
-                    <HStack spacing={0} wrap="wrap" alignContent="space-between" justify="flex-start">
-                      {s.majors.map((m) => (
-                        <MajorBadge major={m} key={m} />
-                      ))}
-                    </HStack>
-                  </VStack>
+          {filteredSubjects.map((s) => (
+            <Box key={s.id} shadow="md" borderRadius={8} borderWidth={1} p={4}>
+              <HStack justify="space-between">
+                <VStack align="flex-start" flexGrow={1}>
+                  <Heading size="md">
+                    {s.name} ({s.code})
+                  </Heading>
+                  <HStack spacing={0} wrap="wrap" alignContent="space-between" justify="flex-start">
+                    {s.majors.map((m) => (
+                      <MajorBadge major={m} key={m} />
+                    ))}
+                  </HStack>
+                </VStack>
 
-                  <SubjectEditModalButton
-                    buttonIcon={<FaEdit />}
-                    buttonText="Tárgy szerkesztése"
-                    modalTitle="Tárgy szerkesztése"
-                    successMessage="Tárgy sikeresen frissítve"
-                    mutation={updateSubjectMutation}
-                    previousData={s}
-                    refetch={refetch}
-                    deleteAction={deleteSubject}
-                  />
-                </HStack>
-              </Box>
-            ))}
+                <SubjectEditModalButton
+                  buttonIcon={<FaEdit />}
+                  buttonText="Tárgy szerkesztése"
+                  modalTitle="Tárgy szerkesztése"
+                  successMessage="Tárgy sikeresen frissítve"
+                  mutation={updateSubjectMutation}
+                  previousData={s}
+                  refetch={refetch}
+                  deleteAction={deleteSubject}
+                />
+              </HStack>
+            </Box>
+          ))}
         </SimpleGrid>
+      ) : (
+        <Text fontStyle="italic" textAlign="center">
+          Még egy tárgy sem lett felvéve{selectedMajor !== 'all' && ' ezen szakon'}.
+        </Text>
       )}
     </>
   )

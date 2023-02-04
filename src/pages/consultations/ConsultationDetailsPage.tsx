@@ -1,8 +1,6 @@
 import { Box, Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
-import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { Helmet } from 'react-helmet-async'
 import { FaClock, FaMapMarkerAlt } from 'react-icons/fa'
-import ReactMarkdown from 'react-markdown'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
@@ -13,6 +11,7 @@ import {
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { ConfirmDialogButton } from '../../components/commons/ConfirmDialogButton'
+import Markdown from '../../components/commons/Markdown'
 import { isValidId } from '../../util/core-util-functions'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
@@ -147,7 +146,7 @@ export const ConsultationDetailsPage = () => {
       </Stack>
       {consultation.descMarkdown && (
         <Box shadow="md" borderRadius={8} borderWidth={1} p={4} width="100%" mb={2}>
-          <ReactMarkdown components={ChakraUIRenderer()} children={consultation.descMarkdown} skipHtml />
+          <Markdown markdown={consultation.descMarkdown} />
         </Box>
       )}
       <Heading size="lg" mb={2}>
