@@ -1,13 +1,18 @@
 import { FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputLeftAddon, Stack } from '@chakra-ui/react'
 import { useFormContext } from 'react-hook-form'
+import { CreateConsultationForm } from '../types/createConsultation'
 
-export const ConsultationDateForm = () => {
+type Props = {
+  prevStartDate?: Date
+}
+
+export const ConsultationDateForm = ({ prevStartDate }: Props) => {
   const {
     register,
     watch,
     setValue,
     formState: { errors }
-  } = useFormContext()
+  } = useFormContext<CreateConsultationForm>()
 
   const formatDate = (date: Date) => {
     let month = '' + (date.getMonth() + 1)
@@ -43,7 +48,7 @@ export const ConsultationDateForm = () => {
     end.setDate(date.getDate())
 
     setValue('startDate', start, { shouldValidate: true })
-    setValue('endtDate', end, { shouldValidate: true })
+    setValue('endDate', end, { shouldValidate: true })
   }
 
   const handleStartTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +60,7 @@ export const ConsultationDateForm = () => {
     start.setMinutes(minutes)
 
     setValue('startDate', start, { shouldValidate: true })
-    setValue('endtDate', watch('endDate'), { shouldValidate: true })
+    setValue('endDate', watch('endDate'), { shouldValidate: true })
   }
 
   const handleEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +88,12 @@ export const ConsultationDateForm = () => {
           <InputLeftAddon children="Vége" width="100px" />
           <Input type="time" onChange={handleEndTimeChange} value={formatTime(watch('endDate'))} />
         </InputGroup>
-        <Input {...register('startDate', { validate: (s) => s > new Date() })} hidden></Input>
+        <Input
+          {...register('startDate', {
+            validate: (s) => (prevStartDate && prevStartDate < new Date() ? true : s > new Date())
+          })}
+          hidden
+        ></Input>
         <Input {...register('endDate', { validate: (e) => e > watch('startDate') })} hidden></Input>
       </Stack>
       {(!!errors['startDate'] || !!errors['endDate']) && (

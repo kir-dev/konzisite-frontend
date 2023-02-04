@@ -150,7 +150,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
             <FormProvider {...form}>
               <SubjectSelector />
               <PresentersSelector />
-              <ConsultationDateForm />
+              <ConsultationDateForm prevStartDate={consultation && new Date(consultation.startDate)} />
               <FormControl>
                 <FormLabel>Leírás</FormLabel>
                 <RemarkEditor

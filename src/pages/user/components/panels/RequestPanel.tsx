@@ -10,7 +10,7 @@ type Props = {
 }
 export const RequestPanel = ({ requests }: Props) => {
   return (
-    <TabPanel>
+    <TabPanel px={0}>
       <VStack spacing={4} alignItems="stretch">
         {requests.length > 0 ? (
           requests.map((p) => (
@@ -19,7 +19,9 @@ export const RequestPanel = ({ requests }: Props) => {
             </Text>
           ))
         ) : (
-          <Text fontStyle="italic">Még nem kértél konzultációt.</Text>
+          <Text fontStyle="italic" textAlign="center">
+            Még nem kértél konzultációt.
+          </Text>
         )}
       </VStack>
     </TabPanel>
