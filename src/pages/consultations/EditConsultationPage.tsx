@@ -7,7 +7,7 @@ import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useCreateConsultationMutation, useEditConsultationMutation } from '../../api/hooks/consultationMutationHooks'
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
-import { RemarkEditor } from '../../components/editor/RemarkEditor'
+import { MarkdownEditor } from '../../components/editor/MarkdownEditor'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
@@ -25,7 +25,7 @@ type Props = {
 export const EditConsultationPage = ({ newConsultation }: Props) => {
   const toast = useToast()
   const navigate = useNavigate()
-  const { loggedInUser, loggedInUserLoading } = useAuthContext()
+  const { isLoggedIn, loggedInUser, loggedInUserLoading } = useAuthContext()
   const consultationId = parseInt(useParams<{ consultationId: string }>().consultationId ?? '-1')
 
   const { mutate: createConsultation } = useCreateConsultationMutation()
@@ -116,7 +116,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
     return <LoadingEditConsultation />
   }
 
-  if (!loggedInUser) {
+  if (!loggedInUser || !isLoggedIn) {
     return <ErrorPage status={401} />
   }
 
@@ -150,10 +150,10 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
             <FormProvider {...form}>
               <SubjectSelector />
               <PresentersSelector />
-              <ConsultationDateForm />
+              <ConsultationDateForm prevStartDate={consultation && new Date(consultation.startDate)} />
               <FormControl>
                 <FormLabel>Leírás</FormLabel>
-                <RemarkEditor
+                <MarkdownEditor
                   formDetails={{
                     id: 'descMarkdown',
                     promptText: '',
