@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { useFecthGroupDetailsQuery } from '../../api/hooks/groupQueryHooks'
 import { GroupRoles } from '../../api/model/group.model'
 import { PATHS } from '../../util/paths'
+import { isValidId } from '../../util/core-util-functions'
 import { translateGroupRole } from '../../util/translateGroupRole'
 import { ErrorPage } from '../error/ErrorPage'
 import { GroupDetailsSkeleton } from './components/GroupDeatilsSkeleton'
@@ -14,7 +15,7 @@ export const GroupDetailsPage = () => {
   const { groupId } = useParams()
   const { isLoading, data: group, error, refetch } = useFecthGroupDetailsQuery(+groupId!!)
 
-  if (groupId === undefined || isNaN(+groupId)) {
+  if (!groupId || !isValidId(groupId)) {
     return <ErrorPage backPath={PATHS.INDEX} status={404} title={'A csoport nem található!'} />
   }
 
@@ -26,7 +27,7 @@ export const GroupDetailsPage = () => {
     return <GroupDetailsSkeleton />
   }
 
-  if (group === undefined) {
+  if (!group) {
     return (
       <ErrorPage status={404} title="Nincs ilyen cspoort" messages={['A csoport amit keresel már nem létezik, vagy nem is létezett']} />
     )

@@ -23,7 +23,7 @@ type Props = {
 export const UserList = ({ users, isParticipant, columns, showRating = true, showRatingButton = false, refetch }: Props) => {
   const { loggedInUser } = useAuthContext()
 
-  if (loggedInUser === undefined) {
+  if (!loggedInUser) {
     return <ErrorPage status={401} />
   }
 

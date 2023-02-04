@@ -133,7 +133,7 @@ export const TargetGroupSelector = () => {
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
-              ) : filteredGroupList === undefined || search.trim().length === 0 ? (
+              ) : !filteredGroupList || search.trim().length === 0 ? (
                 <Text>Keress csoportot</Text>
               ) : filteredGroupList.length === 0 ? (
                 <Text>Nincs találat</Text>

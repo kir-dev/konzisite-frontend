@@ -85,7 +85,7 @@ export const PresentersSelector = () => {
     }, 400)
   ).current
 
-  if (loggedInUser === undefined) {
+  if (!loggedInUser) {
     return <ErrorPage status={401} />
   }
 
@@ -164,7 +164,7 @@ export const PresentersSelector = () => {
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
-              ) : filteredUserList === undefined || search.trim().length === 0 ? (
+              ) : !filteredUserList || search.trim().length === 0 ? (
                 <Text>Keress előadót</Text>
               ) : filteredUserList.length === 0 ? (
                 <Text>Nincs találat</Text>

@@ -13,6 +13,7 @@ import {
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { ConfirmDialogButton } from '../../components/commons/ConfirmDialogButton'
+import { isValidId } from '../../util/core-util-functions'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
@@ -46,7 +47,7 @@ export const ConsultationDetailsPage = () => {
     navigate(PATHS.CONSULTATIONS)
   }, onErrorFn)
 
-  if (consultationId === undefined || isNaN(+consultationId)) {
+  if (!consultationId || !isValidId(consultationId)) {
     return <ErrorPage backPath={PATHS.INDEX} status={404} title={'A konzultáció nem található!'} />
   }
 
@@ -58,7 +59,7 @@ export const ConsultationDetailsPage = () => {
     return <LoadingConsultation />
   }
 
-  if (consultation === undefined) {
+  if (!consultation) {
     return (
       <ErrorPage
         title="Nincs ilyen konzultáció"
@@ -68,7 +69,7 @@ export const ConsultationDetailsPage = () => {
     )
   }
 
-  if (loggedInUser === undefined) {
+  if (!loggedInUser) {
     return <ErrorPage status={401} />
   }
 
