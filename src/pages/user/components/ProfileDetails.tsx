@@ -110,7 +110,7 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
               confirmAction={() => promoteUser(user.id)}
             />
           )}
-          {onLogoutPressed !== undefined && (
+          {onLogoutPressed && (
             <Button colorScheme="brand" rightIcon={<FaSignOutAlt />} onClick={() => onLogoutPressed()}>
               Kijelentkezés
             </Button>

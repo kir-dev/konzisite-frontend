@@ -2,6 +2,7 @@ import { Helmet } from 'react-helmet-async'
 import { Navigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useFecthUserDetailsQuery } from '../../api/hooks/userQueryHooks'
+import { isValidId } from '../../util/core-util-functions'
 import { PATHS } from '../../util/paths'
 import { ProfileDetails } from './components/ProfileDetails'
 import { ProfileDetailsLoading } from './components/ProfileDetailsLoading'
@@ -11,7 +12,7 @@ export const UserPage = () => {
   const { loggedInUser } = useAuthContext()
   const { isLoading, data: user, error } = useFecthUserDetailsQuery(parseInt(userId!!))
 
-  if (!userId || isNaN(parseInt(userId))) {
+  if (!userId || !isValidId(userId)) {
     return (
       <Navigate
         replace

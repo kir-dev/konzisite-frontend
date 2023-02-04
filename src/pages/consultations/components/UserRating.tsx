@@ -26,6 +26,7 @@ import { useParams } from 'react-router-dom'
 import { useRateConsultationMutation, useUpdateRatingConsultationMutation } from '../../../api/hooks/consultationMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { RatingModel } from '../../../api/model/rating.model'
+import { isValidId } from '../../../util/core-util-functions'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { PATHS } from '../../../util/paths'
 import { ErrorPage } from '../../error/ErrorPage'
@@ -69,7 +70,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
   const [text, setText] = useState<string>(user.rating?.text ?? '')
   const [anonymous, setAnonymous] = useState<boolean>(!!user.rating?.anonymous)
 
-  if (consultationId === undefined || isNaN(+consultationId)) {
+  if (!consultationId || !isValidId(consultationId)) {
     return <ErrorPage backPath={PATHS.INDEX} status={404} title={'A konzultáció nem található!'} />
   }
 

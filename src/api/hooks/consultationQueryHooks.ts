@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useQuery } from 'react-query'
 import { ConsultationDetails } from '../../pages/consultations/types/consultationDetails'
 import { ConsultationPreview } from '../../pages/consultations/types/consultationPreview'
+import { isValidId } from '../../util/core-util-functions'
 import { PATHS } from '../../util/paths'
 import { KonziError } from '../model/error.model'
 
@@ -17,7 +18,7 @@ export const useFetchConsultationbDetailsQuery = (consultationId: number) => {
     async () => (await axios.get(`${PATHS.CONSULTATIONS}/${consultationId}`)).data,
     {
       retry: false,
-      enabled: consultationId > 0 && !isNaN(consultationId)
+      enabled: isValidId(consultationId)
     }
   )
 }

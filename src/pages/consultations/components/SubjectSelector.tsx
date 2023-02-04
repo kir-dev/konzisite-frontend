@@ -105,14 +105,14 @@ export const SubjectSelector = () => {
             </InputGroup>
             <Input
               {...register('subject', {
-                validate: (s: SubjectModel) => s !== undefined
+                validate: (s: SubjectModel) => !!s
               })}
               hidden
             />
             <VStack mb={4} maxHeight="600px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
-              ) : subjectList === undefined || search.trim().length === 0 ? (
+              ) : !subjectList || search.trim().length === 0 ? (
                 <Text>Keress tárgyat</Text>
               ) : subjectList.length === 0 ? (
                 <Text>Nincs találat</Text>
