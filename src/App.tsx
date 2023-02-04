@@ -25,7 +25,7 @@ export const App = () => {
           <Route index element={<ConsultationsPage />} />
           <Route path={PATHS.PROFILE} element={<ProfilePage />} />
           <Route path={PATHS.USERS}>
-            <Route path=':userId'>
+            <Route path=":userId">
               <Route index element={<UserPage />} />
             </Route>
             <Route index element={<UserBrowserPage />} />
