@@ -130,9 +130,15 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
                                 Előléptetés
                               </MenuItem>
                             ))}
-                          <MenuItem color="red" icon={<FaUserSlash />} onClick={() => removeFromGroup({ groupId: group.id, userId: u.id })}>
-                            Eltávolítás
-                          </MenuItem>
+                          {u.role !== GroupRoles.ADMIN && (
+                            <MenuItem
+                              color="red"
+                              icon={<FaUserSlash />}
+                              onClick={() => removeFromGroup({ groupId: group.id, userId: u.id })}
+                            >
+                              Eltávolítás
+                            </MenuItem>
+                          )}
                         </>
                       )}
                     </MenuList>
