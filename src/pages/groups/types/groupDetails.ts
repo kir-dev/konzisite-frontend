@@ -1,11 +1,11 @@
 import { GroupModel, GroupRoles } from '../../../api/model/group.model'
-import { UserModel } from '../../../api/model/user.model'
+import { PublicUser } from '../../user/types/PublicUser'
 
 export type GroupDetails = GroupModel & {
-  members: (UserModel & {
+  members: (PublicUser & {
     joinedAt: string
     role: GroupRoles
   })[]
-  owner: UserModel
+  owner: PublicUser
   currentUserRole: GroupRoles
 }

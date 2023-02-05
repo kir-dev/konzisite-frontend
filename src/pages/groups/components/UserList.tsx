@@ -27,14 +27,14 @@ import {
 } from '../../../api/hooks/groupMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { GroupRoles } from '../../../api/model/group.model'
-import { UserModel } from '../../../api/model/user.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { PATHS } from '../../../util/paths'
 import { translateGroupRole } from '../../../util/translateGroupRole'
+import { PublicUser } from '../../user/types/PublicUser'
 import { GroupDetails } from '../types/groupDetails'
 
 type Props = {
-  users: (UserModel & {
+  users: (PublicUser & {
     joinedAt: string
     role: GroupRoles
   })[]
