@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async'
 import { useCreateGroupMutation } from '../../api/hooks/groupMutationHooks'
 import { useFecthGroupListQuery } from '../../api/hooks/groupQueryHooks'
 import { GroupRoles } from '../../api/model/group.model'
-import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { GroupEditModalButton } from './components/GroupEditModalButton'
 import { GroupList } from './components/GroupList'
@@ -13,7 +12,7 @@ export const GroupsPage = () => {
   const createGroupMutation = useCreateGroupMutation()
 
   if (error) {
-    return <ErrorPage backPath={PATHS.INDEX} status={error.statusCode} title={error.message} />
+    return <ErrorPage status={error.statusCode} title={error.message} />
   }
 
   return (

@@ -108,8 +108,8 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
     }
   }, [consultation])
 
-  if (consultationId != -1 && error) {
-    return <ErrorPage backPath={PATHS.INDEX} status={error.statusCode} title={error.message} />
+  if (error) {
+    return <ErrorPage status={error.statusCode} title={error.message} />
   }
 
   if (isLoading || loggedInUserLoading) {
