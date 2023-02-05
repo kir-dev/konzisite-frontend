@@ -168,7 +168,7 @@ export const SubjectEditModalButton = ({
                 <Button onClick={onClose} mr={3}>
                   Mégse
                 </Button>
-                <Button type="submit" colorScheme="brand">
+                <Button type="submit" colorScheme="brand" isLoading={mutation.isLoading}>
                   Mentés
                 </Button>
               </Box>
