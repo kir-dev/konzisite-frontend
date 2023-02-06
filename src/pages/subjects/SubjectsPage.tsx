@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { FaEdit } from 'react-icons/fa'
+import { FaEdit, FaFileCsv } from 'react-icons/fa'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
   useCreateSubjectMutation,
@@ -26,11 +26,11 @@ import {
   useUpdateSubjectMutation
 } from '../../api/hooks/subjectHooks'
 import { KonziError } from '../../api/model/error.model'
+import { UploadFileModalButton } from '../../components/commons/UploadFileModalButton'
 import { generateToastParams } from '../../util/generateToastParams'
 import { ErrorPage } from '../error/ErrorPage'
 import { MajorBadge } from './components/MajorBadge'
 import { SubjectEditModalButton } from './components/SubjectEditModalButton'
-import { UploadFileModalButton } from './components/UploadFileModalButton'
 import { MajorArray, translateMajor } from './util/majorHelpers'
 
 export const SubjectsPage = () => {
@@ -84,6 +84,8 @@ export const SubjectsPage = () => {
             mutation={importSubjectsmutation}
             modalTitle="Tárgyak importálása"
             confirmButtonText="Importálás"
+            accept=".csv"
+            fileIcon={<FaFileCsv />}
             extraButton={
               <a href="example_import.csv" download>
                 <Button colorScheme="green">Minta fájl letöltése</Button>

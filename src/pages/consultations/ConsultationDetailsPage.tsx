@@ -1,17 +1,20 @@
-import { Box, Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Heading, HStack, Stack, Text, Tooltip, useToast, VStack } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
-import { FaClock, FaMapMarkerAlt } from 'react-icons/fa'
+import { FaClock, FaFileUpload, FaMapMarkerAlt } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
   useDeleteConsultationMutation,
+  useDeleteFileMutation,
   useJoinConsultationMutation,
-  useLeaveConsultationMutation
+  useLeaveConsultationMutation,
+  useUploadFileMutation
 } from '../../api/hooks/consultationMutationHooks'
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { ConfirmDialogButton } from '../../components/commons/ConfirmDialogButton'
 import Markdown from '../../components/commons/Markdown'
+import { UploadFileModalButton } from '../../components/commons/UploadFileModalButton'
 import { isValidId } from '../../util/core-util-functions'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
@@ -45,6 +48,24 @@ export const ConsultationDetailsPage = () => {
     toast({ title: 'Törölted a konzultációt!', status: 'success' })
     navigate(PATHS.CONSULTATIONS)
   }, onErrorFn)
+
+  const uploadFileMutation = useUploadFileMutation(
+    +consultationId!!,
+    () => {
+      toast({ title: 'Jegyzet feltöltve!', status: 'success' })
+      refetch()
+    },
+    onErrorFn
+  )
+
+  const { mutate: deleteFileFromConsultation } = useDeleteFileMutation(
+    +consultationId!!,
+    () => {
+      toast({ title: 'Törölted a jegyzetet!', status: 'success' })
+      refetch()
+    },
+    onErrorFn
+  )
 
   if (!consultationId || !isValidId(consultationId)) {
     return <ErrorPage backPath={PATHS.CONSULTATIONS} status={404} title={'A konzultáció nem található!'} />
@@ -114,6 +135,40 @@ export const ConsultationDetailsPage = () => {
               <Button width="100%" as={Link} to={`${PATHS.CONSULTATIONS}/${consultation.id}/edit`} colorScheme="brand">
                 Szerkesztés
               </Button>
+              <Tooltip
+                label={consultation.archived ? 'A konzi archiválva lett, már nem lehet feltölteni fájlt.' : ''}
+                placement="left"
+                hasArrow
+                shouldWrapChildren
+              >
+                <UploadFileModalButton
+                  modalTitle={consultation.fileName ? 'Jegyzet szerkesztése' : 'Jegyzet feltöltése'}
+                  confirmButtonText="Mentés"
+                  mutation={uploadFileMutation}
+                  accept=".jpg,.jpeg,.png,.pdf,.docx,.pptx,.zip"
+                  fileIcon={<FaFileUpload />}
+                  disabled={consultation.archived}
+                  buttonWidth="100%"
+                  extraButton={
+                    consultation.fileName && (
+                      <Button colorScheme="red" onClick={() => deleteFileFromConsultation()}>
+                        Jegyzet törlése
+                      </Button>
+                    )
+                  }
+                >
+                  <Text textAlign="justify">
+                    Előadóként vagy létrehozóként van lehetőséged egy fájl feltöltésére a konzihoz. Ezt a fájlt a konzi résztvevői a konzi
+                    kezdete után tudják letölteni, ha már értékelték az előadókat.
+                  </Text>
+                  <Text as="b">Megengedett fájlformátumok: .jpg, .png, .pdf, .docx, .pptx, .zip</Text>
+                  <br />
+                  <Text as="b">Maximális fájlméret: 10 MB</Text>
+                  <Alert my={2} status="warning">
+                    <AlertIcon />A fájl a konzi vége után 30 nappal törlődik a szerverről, és nem lesz többé letölthető!
+                  </Alert>
+                </UploadFileModalButton>
+              </Tooltip>
               <ConfirmDialogButton
                 buttonColorSchene="red"
                 buttonText="Törlés"
