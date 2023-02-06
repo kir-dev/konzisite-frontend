@@ -1,4 +1,5 @@
 import { Alert, AlertIcon, Box, Button, Heading, HStack, Stack, Text, Tooltip, useToast, VStack } from '@chakra-ui/react'
+import { useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FaClock, FaFileUpload, FaMapMarkerAlt } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -6,6 +7,7 @@ import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
   useDeleteConsultationMutation,
   useDeleteFileMutation,
+  useDownloadFileMutation,
   useJoinConsultationMutation,
   useLeaveConsultationMutation,
   useUploadFileMutation
@@ -29,6 +31,7 @@ export const ConsultationDetailsPage = () => {
   const { isLoading, data: consultation, error, refetch } = useFetchConsultationbDetailsQuery(+consultationId!!)
   const toast = useToast()
   const navigate = useNavigate()
+  const downloadRef = useRef<HTMLAnchorElement>(null)
 
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
@@ -66,6 +69,14 @@ export const ConsultationDetailsPage = () => {
     },
     onErrorFn
   )
+
+  const { mutate: downloadFile } = useDownloadFileMutation((f: ArrayBuffer) => {
+    const b = new Blob([f], { type: 'application/octet-stream' })
+    if (downloadRef.current) {
+      downloadRef.current.href = URL.createObjectURL(b)
+      downloadRef.current.click()
+    }
+  }, onErrorFn)
 
   if (!consultationId || !isValidId(consultationId)) {
     return <ErrorPage backPath={PATHS.CONSULTATIONS} status={404} title={'A konzultáció nem található!'} />
@@ -145,7 +156,7 @@ export const ConsultationDetailsPage = () => {
                   modalTitle={consultation.fileName ? 'Jegyzet szerkesztése' : 'Jegyzet feltöltése'}
                   confirmButtonText="Mentés"
                   mutation={uploadFileMutation}
-                  accept=".jpg,.jpeg,.png,.pdf,.docx,.pptx,.zip"
+                  accept=".jpg,.jpeg,.png,.pdf,.docx,.pptx,.zip,.txt"
                   fileIcon={<FaFileUpload />}
                   disabled={consultation.archived}
                   buttonWidth="100%"
@@ -203,6 +214,16 @@ export const ConsultationDetailsPage = () => {
               />
             </>
           )}
+          {
+            /*(isPresenter || isOwner || isAdmin || (isParticipant && ratedConsultation)) &&*/ consultation.fileName && (
+              <>
+                <a ref={downloadRef} download={consultation.fileName} hidden />
+                <Button colorScheme="green" onClick={() => downloadFile(+consultationId)}>
+                  Jegyzet letöltése
+                </Button>
+              </>
+            )
+          }
         </VStack>
       </Stack>
       {consultation.descMarkdown && (

@@ -95,3 +95,13 @@ export const useDeleteFileMutation = (
     }
   )
 }
+
+export const useDownloadFileMutation = (onSuccess: (data: ArrayBuffer) => void, onError: (e: KonziError) => void) => {
+  return useMutation<ArrayBuffer, KonziError, number>(
+    async (consultationId) => (await axios.get(`${PATHS.CONSULTATIONS}/${consultationId}/file`)).data,
+    {
+      onError,
+      onSuccess
+    }
+  )
+}
