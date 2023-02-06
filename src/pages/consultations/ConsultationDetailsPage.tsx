@@ -70,13 +70,22 @@ export const ConsultationDetailsPage = () => {
     onErrorFn
   )
 
-  const { mutate: downloadFile } = useDownloadFileMutation((f: ArrayBuffer) => {
-    const b = new Blob([f], { type: 'application/octet-stream' })
-    if (downloadRef.current) {
-      downloadRef.current.href = URL.createObjectURL(b)
-      downloadRef.current.click()
+  const { mutate: downloadFile } = useDownloadFileMutation(
+    (rawFile: ArrayBuffer) => {
+      const blob = new Blob([rawFile])
+      if (downloadRef.current) {
+        downloadRef.current.href = URL.createObjectURL(blob)
+        downloadRef.current.click()
+      }
+    },
+    () => {
+      toast({
+        title: 'Hiba a fájl letöltése közben',
+        description: 'Lehet hogy már törlésre került, vagy nincs jogod megtakinteni.',
+        status: 'error'
+      })
     }
-  }, onErrorFn)
+  )
 
   if (!consultationId || !isValidId(consultationId)) {
     return <ErrorPage backPath={PATHS.CONSULTATIONS} status={404} title={'A konzultáció nem található!'} />
@@ -214,16 +223,33 @@ export const ConsultationDetailsPage = () => {
               />
             </>
           )}
-          {
-            /*(isPresenter || isOwner || isAdmin || (isParticipant && ratedConsultation)) &&*/ consultation.fileName && (
+          {(isPresenter || isOwner || isAdmin || isParticipant) &&
+            new Date() > new Date(consultation.startDate) &&
+            consultation.fileName && (
               <>
                 <a ref={downloadRef} download={consultation.fileName} hidden />
-                <Button colorScheme="green" onClick={() => downloadFile(+consultationId)}>
-                  Jegyzet letöltése
-                </Button>
+                <Tooltip
+                  label={
+                    consultation.archived
+                      ? 'A konzi archiválva lett, már nem lehet letölteni a fájlt.'
+                      : isParticipant && !ratedConsultation && !isAdmin
+                      ? 'Akkor tudod letölteni a fájlt, ha már értékelted az előadókat!'
+                      : ''
+                  }
+                  placement="left"
+                  hasArrow
+                  shouldWrapChildren
+                >
+                  <Button
+                    isDisabled={consultation.archived || (isParticipant && !ratedConsultation && !isAdmin)}
+                    colorScheme="green"
+                    onClick={() => downloadFile(+consultationId)}
+                  >
+                    Jegyzet letöltése
+                  </Button>
+                </Tooltip>
               </>
-            )
-          }
+            )}
         </VStack>
       </Stack>
       {consultation.descMarkdown && (
