@@ -11,7 +11,7 @@ export const ConsultationsPage = () => {
   const { isLoading, data: consultaions, error } = useFetchConsultationListQuery()
 
   if (error) {
-    return <ErrorPage backPath={PATHS.INDEX} status={error.statusCode} title={error.message} />
+    return <ErrorPage status={error.statusCode} title={error.message} />
   }
 
   return (

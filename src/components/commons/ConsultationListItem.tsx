@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 import { ConsultationModel } from '../../api/model/consultation.model'
 import { RatingModel } from '../../api/model/rating.model'
 import { SubjectModel } from '../../api/model/subject.model'
-import { UserModel } from '../../api/model/user.model'
 import { PublicUser } from '../../pages/user/types/PublicUser'
 import { generateDateText, generateTimeSpanText } from '../../util/dateHelper'
 import { PATHS } from '../../util/paths'
@@ -15,7 +14,7 @@ type Props = {
     ratings?: (RatingModel & {
       rater: PublicUser
     })[]
-    presentations?: (UserModel & {
+    presentations?: (PublicUser & {
       averageRating: number
     })[]
   }

@@ -27,7 +27,6 @@ import {
 } from '../../api/hooks/subjectHooks'
 import { KonziError } from '../../api/model/error.model'
 import { generateToastParams } from '../../util/generateToastParams'
-import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { MajorBadge } from './components/MajorBadge'
 import { SubjectEditModalButton } from './components/SubjectEditModalButton'
@@ -54,10 +53,10 @@ export const SubjectsPage = () => {
   })
 
   if (error) {
-    return <ErrorPage backPath={PATHS.INDEX} status={error.statusCode} title={error.message} />
+    return <ErrorPage status={error.statusCode} title={error.message} />
   }
   if (!loggedInUser?.isAdmin) {
-    return <ErrorPage backPath={PATHS.INDEX} status={403} title="Nincs jogosultságod az oldal megtekintéséhez" />
+    return <ErrorPage status={403} title="Nincs jogosultságod az oldal megtekintéséhez" />
   }
 
   const filteredSubjects = subjects?.filter((s) => s.majors.some((m) => m === selectedMajor) || selectedMajor === 'all')

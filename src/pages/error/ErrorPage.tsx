@@ -23,9 +23,7 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
     backPath: bp,
     status: s
   } = (state as ErrorPageState) || {
-    title: 'This is a blank error page',
-    messages: [], //['You might have found yourself here by reloading the error page or copying a link from somewhere else.'],
-    backPath: '/'
+    title: 'Hiba történt'
   }
 
   useEffect(() => {
@@ -41,10 +39,9 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
       <Alert p={10} status="error" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center">
         <AlertIcon boxSize="40px" mr={0} />
         <AlertTitle mt={4} mb={3} fontSize="2xl">
-          {title || t || 'Error occured'}
+          {title || t || 'Hiba történt'}
         </AlertTitle>
-        {status && <Image maxHeight={400} src={`/img/${status}.jpg`} />}
-        <AlertDescription>
+        <AlertDescription mb={2}>
           <VStack justifyContent="center" spacing={1}>
             {messages?.filter(Boolean).map((errorMsg) => (
               <span key={errorMsg}>{errorMsg}</span>
@@ -58,6 +55,8 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
             )}
           </VStack>
         </AlertDescription>
+        {status && [401, 403, 404].includes(status) && <Image maxHeight={400} src={`/img/${status}.jpg`} />}
+
         <Button
           colorScheme="brand"
           mt={6}
