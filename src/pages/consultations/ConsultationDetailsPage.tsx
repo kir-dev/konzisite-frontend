@@ -223,8 +223,7 @@ export const ConsultationDetailsPage = () => {
               />
             </>
           )}
-          {(isPresenter || isOwner || isAdmin || isParticipant) &&
-            new Date() > new Date(consultation.startDate) &&
+          {((new Date() > new Date(consultation.startDate) && isParticipant) || isPresenter || isOwner || isAdmin) &&
             consultation.fileName && (
               <>
                 <a ref={downloadRef} download={consultation.fileName} hidden />
