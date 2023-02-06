@@ -168,7 +168,6 @@ export const ConsultationDetailsPage = () => {
                   accept=".jpg,.jpeg,.png,.pdf,.docx,.pptx,.zip,.txt"
                   fileIcon={<FaFileUpload />}
                   disabled={consultation.archived}
-                  buttonWidth="100%"
                   extraButton={
                     consultation.fileName && (
                       <Button colorScheme="red" onClick={() => deleteFileFromConsultation()}>

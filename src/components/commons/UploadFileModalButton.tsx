@@ -25,7 +25,6 @@ type Props = {
   fileIcon: ReactElement
   extraButton?: ReactNode
   disabled?: boolean
-  buttonWidth?: string
 }
 
 export const UploadFileModalButton = ({
@@ -36,8 +35,7 @@ export const UploadFileModalButton = ({
   extraButton,
   accept,
   fileIcon,
-  disabled = false,
-  buttonWidth
+  disabled = false
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const methods = useForm<{ files: FileList | undefined }>({ mode: 'all' })
