@@ -30,7 +30,7 @@ export const ProfilePage = () => {
   }
 
   if (error) {
-    return <ErrorPage backPath={PATHS.INDEX} status={error.statusCode} title={error.message} />
+    return <ErrorPage status={error.statusCode} title={error.message} />
   }
 
   return (

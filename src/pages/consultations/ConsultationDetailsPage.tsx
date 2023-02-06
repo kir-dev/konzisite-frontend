@@ -47,11 +47,17 @@ export const ConsultationDetailsPage = () => {
   }, onErrorFn)
 
   if (!consultationId || !isValidId(consultationId)) {
-    return <ErrorPage backPath={PATHS.INDEX} status={404} title={'A konzultáció nem található!'} />
+    return <ErrorPage backPath={PATHS.CONSULTATIONS} status={404} title={'A konzultáció nem található!'} />
   }
 
   if (error) {
-    return <ErrorPage backPath={PATHS.INDEX} status={error.statusCode} title={error.message} />
+    return (
+      <ErrorPage
+        status={error.statusCode}
+        title={error.message}
+        messages={error.statusCode === 404 ? ['A konzultáció amit keresel nem létezik, vagy nincs jogosultságod megtekinteni.'] : []}
+      />
+    )
   }
 
   if (isLoading || loggedInUserLoading) {
@@ -61,9 +67,9 @@ export const ConsultationDetailsPage = () => {
   if (!consultation) {
     return (
       <ErrorPage
-        title="Nincs ilyen konzultáció"
+        title="Nem található a konzultáció"
         status={404}
-        messages={['A konzultáció amit keresel már nem létezik, vagy nem is létezett']}
+        messages={['A konzultáció amit keresel nem létezik, vagy nincs jogosultságod megtekinteni.']}
       />
     )
   }

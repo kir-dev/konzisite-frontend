@@ -3,7 +3,6 @@ import { ConsultationRequestModel } from '../../../api/model/consultationrequest
 import { GroupModel } from '../../../api/model/group.model'
 import { RatingModel } from '../../../api/model/rating.model'
 import { SubjectModel } from '../../../api/model/subject.model'
-import { UserModel } from '../../../api/model/user.model'
 import { PublicUser } from '../../user/types/PublicUser'
 
 export type Presentation = PublicUser & {
@@ -14,8 +13,8 @@ export type ConsultationDetails = ConsultationModel & {
   presentations: (Presentation & {
     rating?: RatingModel
   })[]
-  participants: UserModel[]
-  owner: UserModel
+  participants: PublicUser[]
+  owner: PublicUser
   targetGroups: GroupModel[]
   subject: SubjectModel
   request?: ConsultationRequestModel

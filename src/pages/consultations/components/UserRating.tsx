@@ -28,7 +28,6 @@ import { KonziError } from '../../../api/model/error.model'
 import { RatingModel } from '../../../api/model/rating.model'
 import { isValidId } from '../../../util/core-util-functions'
 import { generateToastParams } from '../../../util/generateToastParams'
-import { PATHS } from '../../../util/paths'
 import { ErrorPage } from '../../error/ErrorPage'
 import { PublicUser } from '../../user/types/PublicUser'
 
@@ -71,7 +70,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
   const [anonymous, setAnonymous] = useState<boolean>(!!user.rating?.anonymous)
 
   if (!consultationId || !isValidId(consultationId)) {
-    return <ErrorPage backPath={PATHS.INDEX} status={404} title={'A konzultáció nem található!'} />
+    return <ErrorPage status={404} title={'A konzultáció nem található!'} />
   }
 
   return (

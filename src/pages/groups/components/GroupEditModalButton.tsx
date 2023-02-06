@@ -43,9 +43,10 @@ export const GroupEditModalButton = ({
   const [name, setName] = useState<string>(previousName)
   const toast = useToast()
 
-  const initialRef = useRef(null)
+  const initialRef = useRef<HTMLInputElement>(null)
   const onSave = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
+    initialRef.current?.blur()
     mutation.mutate(
       { name },
       {
@@ -90,7 +91,7 @@ export const GroupEditModalButton = ({
               <Button onClick={onClose} mr={3}>
                 Mégse
               </Button>
-              <Button type="submit" isDisabled={!name} colorScheme="brand" onClick={(e) => onSave(e)}>
+              <Button type="submit" isDisabled={!name} isLoading={mutation.isLoading} colorScheme="brand" onClick={(e) => onSave(e)}>
                 Mentés
               </Button>
             </ModalFooter>
