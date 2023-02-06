@@ -170,9 +170,14 @@ export const ConsultationDetailsPage = () => {
                   disabled={consultation.archived}
                   extraButton={
                     consultation.fileName && (
-                      <Button colorScheme="red" onClick={() => deleteFileFromConsultation()}>
-                        Jegyzet törlése
-                      </Button>
+                      <ConfirmDialogButton
+                        bodyText="Biztosan törlöd a feltöltött fájlt? A résztvevők ezentúl nem fogják tudni letölteni."
+                        confirmAction={() => deleteFileFromConsultation()}
+                        headerText="Jegyzet törlése"
+                        buttonText="Jegyzet törlése"
+                        confirmButtonText="Törlés"
+                        buttonColorSchene="red"
+                      />
                     )
                   }
                 >
