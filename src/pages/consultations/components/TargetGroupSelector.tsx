@@ -102,7 +102,7 @@ export const TargetGroupSelector = () => {
             setSearch('')
             reset()
           }}
-          mt={2}
+          mt={watch('targetGroups').length > 0 ? 2 : 0}
         >
           Célcsoport hozzáadása
         </Button>
@@ -118,6 +118,7 @@ export const TargetGroupSelector = () => {
                 <FaSearch />
               </InputLeftElement>
               <Input
+                autoFocus
                 placeholder="Keresés..."
                 size="lg"
                 onChange={(e) => {

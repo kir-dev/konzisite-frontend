@@ -30,7 +30,6 @@ export const GroupsPage = () => {
           refetch={refetch}
         />
       </Flex>
-
       <GroupList
         groups={groups?.filter((g) => g.currentUserRole !== GroupRoles.NONE)}
         title="Saját csoportok"
@@ -43,6 +42,7 @@ export const GroupsPage = () => {
         title="Többi csoport"
         noGroupsMessage="Nincs több csoport"
         loading={isLoading}
+        mt={8}
         refetchList={refetch}
       />
     </>

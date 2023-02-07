@@ -65,7 +65,7 @@ export const SubjectSelector = () => {
 
   return (
     <>
-      <FormControl isInvalid={!!errors['subject']} isRequired>
+      <FormControl isInvalid={!!errors.subject} isRequired>
         <FormLabel>Tárgy</FormLabel>
 
         <Input
@@ -92,6 +92,7 @@ export const SubjectSelector = () => {
                 <FaSearch />
               </InputLeftElement>
               <Input
+                autoFocus
                 placeholder="Keresés..."
                 size="lg"
                 onChange={(e) => {
