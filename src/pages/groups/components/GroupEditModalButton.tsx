@@ -44,7 +44,7 @@ export const GroupEditModalButton = ({
   const [name, setName] = useState<string>(previousName)
   const toast = useToast()
 
-  const [largeScreen] = useMediaQuery('(min-width: 30rem)')
+  const [largeScreen] = useMediaQuery('(min-width: 48em)')
 
   const initialRef = useRef<HTMLInputElement>(null)
   const onSave = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -77,13 +77,7 @@ export const GroupEditModalButton = ({
         {buttonText}
       </Button>
 
-      <Modal
-        isCentered={largeScreen ? true : false}
-        motionPreset="slideInBottom"
-        initialFocusRef={initialRef}
-        isOpen={isOpen}
-        onClose={onClose}
-      >
+      <Modal isCentered={largeScreen} motionPreset="slideInBottom" initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <form>
