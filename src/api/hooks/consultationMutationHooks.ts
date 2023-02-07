@@ -67,3 +67,41 @@ export const useUpdateRatingConsultationMutation = (onSuccess: () => void, onErr
     }
   )
 }
+
+export const useUploadFileMutation = (
+  consultationId: number,
+  onSuccess: (data: ConsultationModel) => void,
+  onError: (e: KonziError) => void
+) => {
+  return useMutation<ConsultationModel, KonziError, FormData>(
+    async (data) => (await axios.patch(`${PATHS.CONSULTATIONS}/${consultationId}/file`, data)).data,
+    {
+      onError,
+      onSuccess
+    }
+  )
+}
+
+export const useDeleteFileMutation = (
+  consultationId: number,
+  onSuccess: (data: ConsultationModel) => void,
+  onError: (e: KonziError) => void
+) => {
+  return useMutation<ConsultationModel, KonziError>(
+    async () => (await axios.patch(`${PATHS.CONSULTATIONS}/${consultationId}/deleteFile`)).data,
+    {
+      onError,
+      onSuccess
+    }
+  )
+}
+
+export const useDownloadFileMutation = (onSuccess: (data: ArrayBuffer) => void, onError: () => void) => {
+  return useMutation<ArrayBuffer, ArrayBuffer, number>(
+    async (consultationId) => (await axios.get(`${PATHS.CONSULTATIONS}/${consultationId}/file`, { responseType: 'arraybuffer' })).data,
+    {
+      onError,
+      onSuccess
+    }
+  )
+}
