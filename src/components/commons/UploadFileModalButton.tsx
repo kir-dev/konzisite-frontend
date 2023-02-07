@@ -10,22 +10,33 @@ import {
   Spacer,
   useDisclosure
 } from '@chakra-ui/react'
-import { ReactNode } from 'react'
+import { ReactElement, ReactNode } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
-import { FaFileCsv } from 'react-icons/fa'
 import { UseMutationResult } from 'react-query'
-import { KonziError } from '../../../api/model/error.model'
-import { FileUpload } from '../../../components/form-elements/FileUpload'
+import { KonziError } from '../../api/model/error.model'
+import { FileUpload } from '../form-elements/FileUpload'
 
 type Props = {
   mutation: UseMutationResult<unknown, KonziError, FormData, unknown>
   modalTitle: string
   confirmButtonText: string
   children: ReactNode
+  accept: string
+  fileIcon: ReactElement
   extraButton?: ReactNode
+  disabled?: boolean
 }
 
-export const UploadFileModalButton = ({ mutation, modalTitle, confirmButtonText, children, extraButton }: Props) => {
+export const UploadFileModalButton = ({
+  mutation,
+  modalTitle,
+  confirmButtonText,
+  children,
+  extraButton,
+  accept,
+  fileIcon,
+  disabled = false
+}: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const methods = useForm<{ files: FileList | undefined }>({ mode: 'all' })
   const {
@@ -41,6 +52,7 @@ export const UploadFileModalButton = ({ mutation, modalTitle, confirmButtonText,
       mutation.mutate(formData, {
         onSuccess: () => {
           onClose()
+          reset()
         }
       })
     }
@@ -53,7 +65,7 @@ export const UploadFileModalButton = ({ mutation, modalTitle, confirmButtonText,
 
   return (
     <>
-      <Button colorScheme="green" onClick={onOpen}>
+      <Button colorScheme="green" onClick={onOpen} isDisabled={disabled}>
         {modalTitle}
       </Button>
       <Modal isOpen={isOpen} onClose={onCancelPressed} size="xl">
@@ -66,7 +78,7 @@ export const UploadFileModalButton = ({ mutation, modalTitle, confirmButtonText,
               <ModalBody>
                 {children}
 
-                <FileUpload required fieldName="files" buttonIcon={<FaFileCsv />} accept=".csv" />
+                <FileUpload required fieldName="files" buttonIcon={fileIcon} accept={accept} />
               </ModalBody>
               <ModalFooter>
                 {extraButton}

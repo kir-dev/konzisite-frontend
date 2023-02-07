@@ -157,7 +157,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
                   formDetails={{
                     id: 'descMarkdown',
                     promptText: '',
-                    maxChar: 1000
+                    maxChar: 5000
                   }}
                   textAreaHeight="8rem"
                   previewHeight="12rem"
