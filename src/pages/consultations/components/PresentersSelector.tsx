@@ -29,7 +29,7 @@ import { useFormContext } from 'react-hook-form'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
-import { useFecthUserListMutation } from '../../../api/hooks/userMutationHooks'
+import { FetchUserListMutationProps, useFecthUserListMutation } from '../../../api/hooks/userMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { PATHS } from '../../../util/paths'
@@ -81,7 +81,10 @@ export const PresentersSelector = () => {
 
   const debouncedSearch = useRef(
     debounce((search: string) => {
-      fetchUsers(search)
+      const props: FetchUserListMutationProps = {
+        search: search
+      }
+      fetchUsers(props)
     }, 400)
   ).current
 
@@ -93,7 +96,7 @@ export const PresentersSelector = () => {
     return <Navigate replace to={PATHS.ERROR} state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
-  const filteredUserList = userList?.filter((u) => !watch('presenters').some((p: Presentation) => p.id === u.id))
+  const filteredUserList = userList?.userList.filter((u) => !watch('presenters').some((p: Presentation) => p.id === u.id))
 
   return (
     <>

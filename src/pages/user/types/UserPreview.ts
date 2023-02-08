@@ -5,3 +5,8 @@ export type UserPreview = PublicUser & {
   averageRating: number
   attendances: number
 }
+
+export interface UserList {
+  userList: UserPreview[]
+  userCount: number
+}

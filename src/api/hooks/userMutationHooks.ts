@@ -1,17 +1,25 @@
 import axios from 'axios'
 import { useMutation } from 'react-query'
-import { UserPreview } from '../../pages/user/types/UserPreview'
+import { UserList } from '../../pages/user/types/UserPreview'
 import { API_HOST } from '../../util/environment'
 import { PATHS } from '../../util/paths'
 import { KonziError } from '../model/error.model'
 import { UserModel } from '../model/user.model'
 
+export type FetchUserListMutationProps = {
+  search: string
+  page?: number
+  pageSize?: number
+}
+
 export const useFecthUserListMutation = (onError: (e: KonziError) => void) => {
-  return useMutation<UserPreview[], KonziError, string>(
+  return useMutation<UserList, KonziError, FetchUserListMutationProps>(
     'fetchUsersMuatation',
-    async (search: string) => {
+    async ({ search, page, pageSize }: FetchUserListMutationProps) => {
       const url = new URL(PATHS.USERS, API_HOST)
       url.searchParams.append('search', search)
+      if (page) url.searchParams.append('page', page.toString())
+      if (pageSize) url.searchParams.append('pageSize', pageSize.toString())
       return (await axios.get(url.toString())).data
     },
     { onError }
