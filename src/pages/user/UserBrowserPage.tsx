@@ -1,4 +1,4 @@
-import { ChevronDownIcon, CloseIcon, SearchIcon } from '@chakra-ui/icons'
+import { CloseIcon, SearchIcon } from '@chakra-ui/icons'
 import {
   Avatar,
   Badge,
@@ -6,39 +6,28 @@ import {
   Button,
   Flex,
   Heading,
+  HStack,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  Table,
-  TableCaption,
-  TableContainer,
-  Tbody,
-  Td,
+  SimpleGrid,
+  Stack,
   Text,
-  Th,
-  Thead,
-  Tr,
   useColorModeValue,
-  useToast
+  useToast,
+  VStack
 } from '@chakra-ui/react'
 import debounce from 'lodash.debounce'
 import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { FetchUserListMutationProps, useFecthUserListMutation } from '../../api/hooks/userMutationHooks'
 import { KonziError } from '../../api/model/error.model'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
-
-enum COLUMNS {
-  NAME = 'name',
-  PRESENTATIONS = 'presentations',
-  RATING = 'averageRating',
-  ATTENDANCES = 'attendances'
-}
 
 export const UserBrowserPage = () => {
   const { loggedInUser } = useAuthContext()
@@ -52,11 +41,10 @@ export const UserBrowserPage = () => {
     toast(generateToastParams(e))
   })
 
-  const [sortBy, setSortBy] = useState<COLUMNS>(COLUMNS.NAME)
-  const [resultCount, setResultCount] = useState<number>(3)
+  const resultCount = 3
   const [resultStart, setResultStart] = useState<number>(0)
   const [search, setSearch] = useState<string>('')
-  const navigate = useNavigate()
+
   const hoverBg = useColorModeValue('brand.50', 'brand.700')
 
   const debouncedSearch = useRef(
@@ -106,62 +94,26 @@ export const UserBrowserPage = () => {
           <CloseIcon onClick={() => setSearch('')} cursor="pointer" />
         </InputRightElement>
       </InputGroup>
-      <TableContainer>
-        <Table variant="simple">
-          {data.userCount === 0 && <TableCaption>Nincs ilyen nevű felhasználó!</TableCaption>}
-          <Thead>
-            <Tr>
-              <Th _hover={{ bg: hoverBg }} onClick={() => setSortBy(COLUMNS.NAME)} cursor="pointer">
-                <>
-                  Név
-                  {sortBy === COLUMNS.NAME && <ChevronDownIcon />}
-                </>
-              </Th>
-              <Th _hover={{ bg: hoverBg }} onClick={() => setSortBy(COLUMNS.PRESENTATIONS)} cursor="pointer" textAlign="center">
-                <>
-                  Tartott konzik
-                  {sortBy === COLUMNS.PRESENTATIONS && <ChevronDownIcon />}
-                </>
-              </Th>
-              <Th _hover={{ bg: hoverBg }} onClick={() => setSortBy(COLUMNS.RATING)} cursor="pointer" textAlign="center">
-                <>
-                  Átlagos értékelés
-                  {sortBy === COLUMNS.RATING && <ChevronDownIcon />}
-                </>
-              </Th>
-              <Th _hover={{ bg: hoverBg }} onClick={() => setSortBy(COLUMNS.ATTENDANCES)} cursor="pointer" textAlign="center">
-                <>
-                  Részvételek
-                  {sortBy === COLUMNS.ATTENDANCES && <ChevronDownIcon />}
-                </>
-              </Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {data.userList.map((user) => (
-              <Tr key={user.id} onClick={() => navigate(`${PATHS.USERS}/${user.id}`)} _hover={{ bg: hoverBg }} cursor="pointer">
-                <Td>
-                  <Flex align="center">
-                    <Avatar size="md" name={user.fullName} src={''} />
-                    <Heading ml={5} size="md">
-                      {user.fullName}
-                    </Heading>
-                    {user.id === loggedInUser?.id && (
-                      <Badge colorScheme="brand" ml={2}>
-                        Te
-                      </Badge>
-                    )}
-                  </Flex>
-                </Td>
 
-                <Td textAlign="center">{user.presentations}</Td>
-                <Td textAlign="center">{user.averageRating}</Td>
-                <Td textAlign="center">{user.attendances}</Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <SimpleGrid columns={{ sm: 1, lg: 2 }} gap={4}>
+        {data.userList.map((user) => (
+          <Box key={user.id} shadow="md" borderRadius={8} borderWidth={1}>
+            <Stack as={Link} to={`${PATHS.USERS}/${user.id}`} direction={['column', 'row']} justify="space-between">
+              <HStack p={4}>
+                <Avatar size="md" name={user.fullName} src={''} />
+                <VStack flexGrow={1} align="flex-start">
+                  <Heading size="md">{user.fullName}</Heading>
+                  {user.id === loggedInUser?.id && (
+                    <Badge colorScheme="brand" ml={2}>
+                      Te
+                    </Badge>
+                  )}
+                </VStack>
+              </HStack>
+            </Stack>
+          </Box>
+        ))}
+      </SimpleGrid>
       <Flex justify={resultStart <= 0 ? 'flex-end' : 'space-between'}>
         {resultStart > 0 && (
           <Box my={3}>
