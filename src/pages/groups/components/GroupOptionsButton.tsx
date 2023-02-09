@@ -87,9 +87,15 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
     case GroupRoles.ADMIN:
     case GroupRoles.MEMBER:
       return (
-        <Button colorScheme="red" onClick={leaveGroup}>
-          Kilépés
-        </Button>
+        <ConfirmDialogButton
+          buttonColorSchene="red"
+          buttonWidth="100%"
+          buttonText="Kilépés"
+          headerText="Kilépés a csoportból"
+          bodyText="Biztos ki szeretnél lépni a csoportból?"
+          confirmButtonText="Kilépés"
+          confirmAction={leaveGroup}
+        />
       )
     case GroupRoles.PENDING:
       return (

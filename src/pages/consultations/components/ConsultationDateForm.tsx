@@ -76,7 +76,7 @@ export const ConsultationDateForm = ({ prevStartDate }: Props) => {
   }
 
   return (
-    <FormControl isInvalid={!!errors['startDate'] || !!errors['endDate']} isRequired>
+    <FormControl isInvalid={!!errors.startDate || !!errors.endDate} isRequired>
       <FormLabel>Időpont</FormLabel>
       <Stack direction={['column', 'row']}>
         <Input type="date" onChange={handleDatechange} value={formatDate(watch('startDate'))} />
@@ -96,9 +96,9 @@ export const ConsultationDateForm = ({ prevStartDate }: Props) => {
         ></Input>
         <Input {...register('endDate', { validate: (e) => e > watch('startDate') })} hidden></Input>
       </Stack>
-      {(!!errors['startDate'] || !!errors['endDate']) && (
+      {(!!errors.startDate || !!errors.endDate) && (
         <FormErrorMessage>
-          {!!errors['startDate'] ? 'Nem lehet múltbeli kezdés' : 'Befejezés nem lehet korábban, mint kezdés'}
+          {!!errors.startDate ? 'Nem lehet múltbeli kezdés' : 'Befejezés nem lehet korábban, mint kezdés'}
         </FormErrorMessage>
       )}
     </FormControl>

@@ -11,6 +11,7 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
+  useMediaQuery,
   useToast
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
@@ -43,6 +44,8 @@ export const GroupEditModalButton = ({
   const [name, setName] = useState<string>(previousName)
   const toast = useToast()
 
+  const [largeScreen] = useMediaQuery('(min-width: 48em)')
+
   const initialRef = useRef<HTMLInputElement>(null)
   const onSave = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
@@ -74,7 +77,7 @@ export const GroupEditModalButton = ({
         {buttonText}
       </Button>
 
-      <Modal isCentered motionPreset="slideInBottom" initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
+      <Modal isCentered={largeScreen} motionPreset="slideInBottom" initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <form>
@@ -83,7 +86,7 @@ export const GroupEditModalButton = ({
             <ModalBody pb={6}>
               <FormControl>
                 <FormLabel>Csoport neve</FormLabel>
-                <Input ref={initialRef} placeholder="Csoport neve" value={name} onChange={(e) => setName(e.target.value)} />
+                <Input autoFocus ref={initialRef} placeholder="Csoport neve" value={name} onChange={(e) => setName(e.target.value)} />
               </FormControl>
             </ModalBody>
 
