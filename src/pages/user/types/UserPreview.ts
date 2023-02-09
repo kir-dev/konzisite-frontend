@@ -9,4 +9,6 @@ export type UserPreview = PublicUser & {
 export interface UserList {
   userList: UserPreview[]
   userCount: number
+  pageSize: number
+  page: number
 }

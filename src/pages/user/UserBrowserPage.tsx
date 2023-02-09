@@ -1,36 +1,27 @@
 import { CloseIcon, SearchIcon } from '@chakra-ui/icons'
 import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
   Flex,
   Heading,
-  HStack,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
-  SimpleGrid,
-  Stack,
-  Text,
-  useColorModeValue,
-  useToast,
-  VStack
+  useBreakpointValue,
+  useToast
 } from '@chakra-ui/react'
 import debounce from 'lodash.debounce'
 import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom'
-import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { FetchUserListMutationProps, useFecthUserListMutation } from '../../api/hooks/userMutationHooks'
 import { KonziError } from '../../api/model/error.model'
 import { generateToastParams } from '../../util/generateToastParams'
-import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
+import { LoadingUserList } from './components/LoadingUserList'
+import { UserListWithPagination } from './components/UserListWithPagination'
 
 export const UserBrowserPage = () => {
-  const { loggedInUser } = useAuthContext()
   const toast = useToast()
   const {
     isLoading,
@@ -41,33 +32,26 @@ export const UserBrowserPage = () => {
     toast(generateToastParams(e))
   })
 
-  const resultCount = 3
-  const [resultStart, setResultStart] = useState<number>(0)
+  const resultCount = useBreakpointValue({ base: 4, lg: 6, '3xl': 8 }, { ssr: false }) || 4
   const [search, setSearch] = useState<string>('')
 
-  const hoverBg = useColorModeValue('brand.50', 'brand.700')
+  const searchUsers = (search: string, page: number, pageSize: number) => {
+    const props: FetchUserListMutationProps = {
+      search: search,
+      page: page,
+      pageSize: pageSize
+    }
+    fetchUsers(props)
+  }
 
-  const debouncedSearch = useRef(
-    debounce((search: string, page: number, pageSize: number) => {
-      const props: FetchUserListMutationProps = {
-        search: search,
-        page: page,
-        pageSize: pageSize
-      }
-      fetchUsers(props)
-    }, 400)
-  ).current
+  const debouncedSearch = useRef(debounce(searchUsers, 400)).current
 
   useEffect(() => {
-    debouncedSearch(search, resultStart, resultCount)
-  }, [resultStart])
+    searchUsers('', 0, resultCount)
+  }, [])
 
   if (error) {
     return <ErrorPage status={error?.statusCode} title={error?.message} />
-  }
-
-  if (isLoading || !data) {
-    return <Text>xd</Text> //TODO
   }
 
   return (
@@ -79,66 +63,49 @@ export const UserBrowserPage = () => {
           <SearchIcon />
         </InputLeftElement>
         <Input
-          bg={hoverBg}
           placeholder="Keresés..."
           size="lg"
           onChange={(e) => {
             setSearch(e.target.value)
-            setResultStart(0)
-            debouncedSearch(e.target.value, resultStart, resultCount)
+            debouncedSearch(e.target.value, 0, resultCount)
           }}
           value={search}
           autoFocus={true}
         />
         <InputRightElement h="100%">
-          <CloseIcon onClick={() => setSearch('')} cursor="pointer" />
+          <CloseIcon
+            onClick={() => {
+              setSearch('')
+              searchUsers('', 0, resultCount)
+            }}
+            cursor="pointer"
+          />
         </InputRightElement>
       </InputGroup>
-
-      <SimpleGrid columns={{ sm: 1, lg: 2 }} gap={4}>
-        {data.userList.map((user) => (
-          <Box key={user.id} shadow="md" borderRadius={8} borderWidth={1}>
-            <Stack as={Link} to={`${PATHS.USERS}/${user.id}`} direction={['column', 'row']} justify="space-between">
-              <HStack p={4}>
-                <Avatar size="md" name={user.fullName} src={''} />
-                <VStack flexGrow={1} align="flex-start">
-                  <Heading size="md">{user.fullName}</Heading>
-                  {user.id === loggedInUser?.id && (
-                    <Badge colorScheme="brand" ml={2}>
-                      Te
-                    </Badge>
-                  )}
-                </VStack>
-              </HStack>
-            </Stack>
-          </Box>
-        ))}
-      </SimpleGrid>
-      <Flex justify={resultStart <= 0 ? 'flex-end' : 'space-between'}>
-        {resultStart > 0 && (
-          <Box my={3}>
-            <Button
-              colorScheme="brand"
-              onClick={() => {
-                setResultStart(resultStart - 1)
-              }}
-            >
-              Előző oldal
-            </Button>
-          </Box>
-        )}
-        {(resultStart + 1) * resultCount < data.userCount && (
-          <Box my={3}>
-            <Button
-              colorScheme="brand"
-              onClick={() => {
-                setResultStart(resultStart + 1)
-              }}
-            >
-              {'>'}
-            </Button>
-          </Box>
-        )}
+      {isLoading || !data ? (
+        <LoadingUserList count={resultCount} />
+      ) : (
+        <UserListWithPagination data={data} pageSize={resultCount} searchValue={search} searchFn={searchUsers} />
+      )}
+      <Flex justify="space-between">
+        <IconButton
+          size="lg"
+          my={3}
+          isDisabled={!data || data.page === 0}
+          colorScheme="brand"
+          aria-label="Előző oldal"
+          onClick={() => searchUsers(search, data!!.page - 1, resultCount)}
+          icon={<FaChevronLeft />}
+        />
+        <IconButton
+          size="lg"
+          my={3}
+          isDisabled={!data || (data.page + 1) * resultCount >= data.userCount}
+          colorScheme="brand"
+          aria-label="Következő oldal"
+          onClick={() => searchUsers(search, data!!.page + 1, resultCount)}
+          icon={<FaChevronRight />}
+        />
       </Flex>
     </>
   )
