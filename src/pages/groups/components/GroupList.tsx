@@ -13,10 +13,11 @@ type Props = {
   noGroupsMessage: string
   groups?: GroupPreview[]
   loading?: boolean
+  mt?: number
   refetchList: () => void
 }
 
-export const GroupList = ({ groups, title, noGroupsMessage, loading = false, refetchList }: Props) => {
+export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt = 0, refetchList }: Props) => {
   const toast = useToast()
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
@@ -43,7 +44,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, ref
   } else {
     return (
       <>
-        <Heading mb={4} mt={3} size="lg">
+        <Heading mb={4} mt={mt} size="lg">
           {title}
         </Heading>
         {groups && groups.length === 0 ? (

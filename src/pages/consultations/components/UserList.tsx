@@ -29,7 +29,7 @@ export const UserList = ({ users, isParticipant, columns, showRating = true, sho
 
   return (
     <>
-      <SimpleGrid columns={{ sm: 1, md: columns }} gap={4} mb={3}>
+      <SimpleGrid columns={{ sm: 1, md: columns }} gap={4} mb={6}>
         {users.map((u) => (
           <Box key={u.id} shadow="md" borderRadius={8} borderWidth={1}>
             <Stack direction={['column', 'row']} width="100%">

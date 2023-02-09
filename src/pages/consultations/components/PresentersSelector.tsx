@@ -97,7 +97,7 @@ export const PresentersSelector = () => {
 
   return (
     <>
-      <FormControl isInvalid={!!errors['presenters']} isRequired>
+      <FormControl isInvalid={!!errors.presenters} isRequired>
         <FormLabel>Előadók</FormLabel>
         {watch('presenters').map((p: Presentation) => (
           <Box borderRadius={6} borderWidth={1} mb={2} key={p.id}>
@@ -127,7 +127,7 @@ export const PresentersSelector = () => {
             setSearch('')
             reset()
           }}
-          mt={2}
+          mt={watch('presenters').length > 0 || !!errors.presenters ? 2 : 0}
         >
           Előadó hozzáadása
         </Button>
@@ -143,6 +143,7 @@ export const PresentersSelector = () => {
                 <FaSearch />
               </InputLeftElement>
               <Input
+                autoFocus
                 placeholder="Keresés..."
                 size="lg"
                 onChange={(e) => {
