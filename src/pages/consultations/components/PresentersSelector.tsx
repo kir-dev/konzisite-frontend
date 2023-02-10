@@ -40,6 +40,8 @@ import { CreateConsultationForm } from '../types/createConsultation'
 import { Rating } from './Rating'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
+const INITIAL_USER_COUNT = 5
+
 export const PresentersSelector = () => {
   const {
     register,
@@ -82,7 +84,8 @@ export const PresentersSelector = () => {
   const debouncedSearch = useRef(
     debounce((search: string) => {
       const props: FetchUserListMutationProps = {
-        search: search
+        search: search,
+        pageSize: search ? undefined : INITIAL_USER_COUNT
       }
       fetchUsers(props)
     }, 400)
@@ -129,6 +132,7 @@ export const PresentersSelector = () => {
             onOpen()
             setSearch('')
             reset()
+            fetchUsers({ search: '', pageSize: INITIAL_USER_COUNT })
           }}
           mt={watch('presenters').length > 0 || !!errors.presenters ? 2 : 0}
         >
@@ -168,10 +172,8 @@ export const PresentersSelector = () => {
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
-              ) : !filteredUserList || search.trim().length === 0 ? (
-                <Text>Keress előadót</Text>
-              ) : filteredUserList.length === 0 ? (
-                <Text>Nincs találat</Text>
+              ) : !filteredUserList || filteredUserList.length === 0 ? (
+                <Text fontStyle="italic">Nincs találat</Text>
               ) : (
                 filteredUserList.map((p) => (
                   <Box

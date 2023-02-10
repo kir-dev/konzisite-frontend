@@ -13,12 +13,18 @@ interface GroupMutationParams {
   userId: number
 }
 
+interface FetchGroupListMutationProps {
+  search: string
+  limit?: number
+}
+
 export const useFecthGroupListMutation = (onError: (e: KonziError) => void) => {
-  return useMutation<GroupPreview[], KonziError, string>(
+  return useMutation<GroupPreview[], KonziError, FetchGroupListMutationProps>(
     'fetchGroupsMuatation',
-    async (search: string) => {
+    async ({ search, limit }) => {
       const url = new URL(PATHS.GROUPS, API_HOST)
       url.searchParams.append('search', search)
+      if (limit) url.searchParams.append('limit', limit.toString())
       return (await axios.get(url.toString())).data
     },
     { onError }

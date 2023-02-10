@@ -34,12 +34,13 @@ export const UserBrowserPage = () => {
 
   const resultCount = useBreakpointValue({ base: 4, lg: 6, '3xl': 8 }, { ssr: false }) || 4
   const [search, setSearch] = useState<string>('')
+  const [page, setPage] = useState(0)
 
-  const searchUsers = (search: string, page: number, pageSize: number) => {
+  const searchUsers = (search: string, page: number, pageSize: number = resultCount) => {
     const props: FetchUserListMutationProps = {
-      search: search,
-      page: page,
-      pageSize: pageSize
+      search,
+      page,
+      pageSize
     }
     fetchUsers(props)
   }
@@ -47,7 +48,7 @@ export const UserBrowserPage = () => {
   const debouncedSearch = useRef(debounce(searchUsers, 400)).current
 
   useEffect(() => {
-    searchUsers('', 0, resultCount)
+    searchUsers('', 0)
   }, [])
 
   if (error) {
@@ -67,7 +68,8 @@ export const UserBrowserPage = () => {
           size="lg"
           onChange={(e) => {
             setSearch(e.target.value)
-            debouncedSearch(e.target.value, 0, resultCount)
+            setPage(0)
+            debouncedSearch(e.target.value, 0)
           }}
           value={search}
           autoFocus={true}
@@ -75,35 +77,40 @@ export const UserBrowserPage = () => {
         <InputRightElement h="100%">
           <CloseIcon
             onClick={() => {
-              setSearch('')
-              searchUsers('', 0, resultCount)
+              if (search) {
+                searchUsers('', 0)
+                setSearch('')
+                setPage(0)
+              }
             }}
             cursor="pointer"
           />
         </InputRightElement>
       </InputGroup>
-      {isLoading || !data ? (
-        <LoadingUserList count={resultCount} />
-      ) : (
-        <UserListWithPagination data={data} pageSize={resultCount} searchValue={search} searchFn={searchUsers} />
-      )}
+      {isLoading || !data ? <LoadingUserList count={resultCount} /> : <UserListWithPagination data={data} />}
       <Flex justify="space-between">
         <IconButton
           size="lg"
           my={3}
-          isDisabled={!data || data.page === 0}
+          isDisabled={!data || page === 0}
           colorScheme="brand"
           aria-label="Előző oldal"
-          onClick={() => searchUsers(search, data!!.page - 1, resultCount)}
+          onClick={() => {
+            searchUsers(search, page - 1)
+            setPage(page - 1)
+          }}
           icon={<FaChevronLeft />}
         />
         <IconButton
           size="lg"
           my={3}
-          isDisabled={!data || (data.page + 1) * resultCount >= data.userCount}
+          isDisabled={!data || (page + 1) * resultCount >= data.userCount}
           colorScheme="brand"
           aria-label="Következő oldal"
-          onClick={() => searchUsers(search, data!!.page + 1, resultCount)}
+          onClick={() => {
+            searchUsers(search, page + 1)
+            setPage(page + 1)
+          }}
           icon={<FaChevronRight />}
         />
       </Flex>

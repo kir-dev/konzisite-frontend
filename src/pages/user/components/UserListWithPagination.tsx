@@ -6,12 +6,9 @@ import { UserList } from '../types/UserPreview'
 
 type Props = {
   data: UserList
-  pageSize: number
-  searchValue: string
-  searchFn: (search: string, page: number, pageSize: number) => void
 }
 
-export const UserListWithPagination = ({ data, pageSize, searchValue, searchFn }: Props) => {
+export const UserListWithPagination = ({ data }: Props) => {
   const { loggedInUser } = useAuthContext()
 
   return (
