@@ -31,6 +31,8 @@ import { PATHS } from '../../../util/paths'
 import { CreateConsultationForm } from '../types/createConsultation'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
+const INITIAL_SUBJECT_COUNT = 5
+
 export const SubjectSelector = () => {
   const {
     register,
@@ -55,7 +57,7 @@ export const SubjectSelector = () => {
 
   const debouncedSearch = useRef(
     debounce((search: string) => {
-      fetchSubjects(search)
+      fetchSubjects({ search, limit: search ? undefined : INITIAL_SUBJECT_COUNT })
     }, 400)
   ).current
 
@@ -74,6 +76,7 @@ export const SubjectSelector = () => {
             onOpen()
             setSearch('')
             reset()
+            fetchSubjects({ search: '', limit: INITIAL_SUBJECT_COUNT })
           }}
           readOnly
           value={watch('subject') ? `${watch('subject').name} (${watch('subject').code})` : 'Nincs tárgy választva'}
@@ -114,10 +117,8 @@ export const SubjectSelector = () => {
             <VStack mb={4} maxHeight="600px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
-              ) : !subjectList || search.trim().length === 0 ? (
-                <Text>Keress tárgyat</Text>
-              ) : subjectList.length === 0 ? (
-                <Text>Nincs találat</Text>
+              ) : !subjectList || subjectList.length === 0 ? (
+                <Text fontStyle="italic">Nincs találat</Text>
               ) : (
                 subjectList.map((s) => (
                   <Box

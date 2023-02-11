@@ -61,10 +61,10 @@ export const NAV_ITEMS: INavItem[] = [
     label: 'Csoportok',
     path: '/groups'
   }),
-  /*new NavItem({
+  new NavItem({
     label: 'Felhasználók',
     path: '/users'
-  }),*/
+  }),
   SubjectsItem,
   new NavItem({
     label: 'Profil',

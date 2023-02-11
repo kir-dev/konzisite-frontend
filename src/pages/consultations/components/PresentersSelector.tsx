@@ -29,7 +29,7 @@ import { useFormContext } from 'react-hook-form'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
-import { useFecthUserListMutation } from '../../../api/hooks/userMutationHooks'
+import { FetchUserListMutationProps, useFecthUserListMutation } from '../../../api/hooks/userMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { PATHS } from '../../../util/paths'
@@ -39,6 +39,8 @@ import { Presentation } from '../types/consultationDetails'
 import { CreateConsultationForm } from '../types/createConsultation'
 import { Rating } from './Rating'
 import { SelectorSkeleton } from './SelectorSkeleton'
+
+const INITIAL_USER_COUNT = 5
 
 export const PresentersSelector = () => {
   const {
@@ -81,7 +83,11 @@ export const PresentersSelector = () => {
 
   const debouncedSearch = useRef(
     debounce((search: string) => {
-      fetchUsers(search)
+      const props: FetchUserListMutationProps = {
+        search: search,
+        pageSize: search ? undefined : INITIAL_USER_COUNT
+      }
+      fetchUsers(props)
     }, 400)
   ).current
 
@@ -93,7 +99,7 @@ export const PresentersSelector = () => {
     return <Navigate replace to={PATHS.ERROR} state={{ title: error.message, status: error.statusCode, messages: [] }} />
   }
 
-  const filteredUserList = userList?.filter((u) => !watch('presenters').some((p: Presentation) => p.id === u.id))
+  const filteredUserList = userList?.userList.filter((u) => !watch('presenters').some((p: Presentation) => p.id === u.id))
 
   return (
     <>
@@ -126,6 +132,7 @@ export const PresentersSelector = () => {
             onOpen()
             setSearch('')
             reset()
+            fetchUsers({ search: '', pageSize: INITIAL_USER_COUNT })
           }}
           mt={watch('presenters').length > 0 || !!errors.presenters ? 2 : 0}
         >
@@ -165,10 +172,8 @@ export const PresentersSelector = () => {
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
-              ) : !filteredUserList || search.trim().length === 0 ? (
-                <Text>Keress előadót</Text>
-              ) : filteredUserList.length === 0 ? (
-                <Text>Nincs találat</Text>
+              ) : !filteredUserList || filteredUserList.length === 0 ? (
+                <Text fontStyle="italic">Nincs találat</Text>
               ) : (
                 filteredUserList.map((p) => (
                   <Box
