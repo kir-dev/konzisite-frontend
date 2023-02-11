@@ -34,6 +34,8 @@ import { PATHS } from '../../../util/paths'
 import { CreateConsultationForm } from '../types/createConsultation'
 import { SelectorSkeleton } from './SelectorSkeleton'
 
+const INITIAL_GROUP_COUNT = 5
+
 export const TargetGroupSelector = () => {
   const { register, watch, setValue } = useFormContext<CreateConsultationForm>()
 
@@ -67,7 +69,7 @@ export const TargetGroupSelector = () => {
 
   const debouncedSearch = useRef(
     debounce((search: string) => {
-      fetchGroups(search)
+      fetchGroups({ search, limit: search ? undefined : INITIAL_GROUP_COUNT })
     }, 400)
   ).current
 
@@ -101,6 +103,7 @@ export const TargetGroupSelector = () => {
             onOpen()
             setSearch('')
             reset()
+            fetchGroups({ search: '', limit: INITIAL_GROUP_COUNT })
           }}
           mt={watch('targetGroups').length > 0 ? 2 : 0}
         >
@@ -135,10 +138,8 @@ export const TargetGroupSelector = () => {
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading ? (
                 <SelectorSkeleton />
-              ) : !filteredGroupList || search.trim().length === 0 ? (
-                <Text>Keress csoportot</Text>
-              ) : filteredGroupList.length === 0 ? (
-                <Text>Nincs találat</Text>
+              ) : !filteredGroupList || filteredGroupList.length === 0 ? (
+                <Text fontStyle="italic">Nincs találat</Text>
               ) : (
                 filteredGroupList.map((g) => (
                   <Box

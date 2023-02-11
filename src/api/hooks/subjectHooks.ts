@@ -7,16 +7,22 @@ import { CreateManyResponse } from '../model/createManyResponse'
 import { KonziError } from '../model/error.model'
 import { SubjectModel } from '../model/subject.model'
 
+type FetchSubjectListMutationProps = {
+  search: string
+  limit?: number
+}
+
 export const useFetchSubjectsQuery = () => {
   return useQuery<SubjectModel[], KonziError>('fetchSubject', async () => (await axios.get(PATHS.SUBJECTS)).data, { retry: false })
 }
 
 export const useFecthSubjectListMutation = (onError: (e: KonziError) => void) => {
-  return useMutation<SubjectModel[], KonziError, string>(
+  return useMutation<SubjectModel[], KonziError, FetchSubjectListMutationProps>(
     'fetchSubjectsMuatation',
-    async (search: string) => {
+    async ({ search, limit }) => {
       const url = new URL(PATHS.SUBJECTS, API_HOST)
       url.searchParams.append('search', search)
+      if (limit) url.searchParams.append('limit', limit.toString())
       return (await axios.get(url.toString())).data
     },
     { onError }
