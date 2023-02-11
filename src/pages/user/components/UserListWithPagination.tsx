@@ -11,49 +11,48 @@ type Props = {
 export const UserListWithPagination = ({ data }: Props) => {
   const { loggedInUser } = useAuthContext()
 
+  if (data.userList.length === 0) {
+    return (
+      <Text textAlign="center" fontStyle="italic">
+        Nem található felhasználó ilyen névvel
+      </Text>
+    )
+  }
   return (
-    <>
-      {data.userList.length > 0 ? (
-        <SimpleGrid columns={{ sm: 1, lg: 2 }} gap={4}>
-          {data.userList.map((user) => (
-            <Box key={user.id} shadow="md" borderRadius={8} borderWidth={1}>
-              <VStack spacing={0} as={Link} to={`${PATHS.USERS}/${user.id}`} p={2} w="100%" align="flex-start">
-                <HStack p={2}>
-                  <Avatar size="md" name={user.fullName} src={''} />
-                  <Flex width="100%">
-                    <Heading size="md">{user.fullName}</Heading>
-                    {user.id === loggedInUser?.id && (
-                      <Flex align="center">
-                        <Badge colorScheme="brand" ml={2}>
-                          Te
-                        </Badge>
-                      </Flex>
-                    )}
+    <SimpleGrid columns={{ sm: 1, lg: 2 }} gap={4}>
+      {data.userList.map((user) => (
+        <Box key={user.id} shadow="md" borderRadius={8} borderWidth={1}>
+          <VStack spacing={0} as={Link} to={`${PATHS.USERS}/${user.id}`} p={2} w="100%" align="flex-start">
+            <HStack p={2}>
+              <Avatar size="md" name={user.fullName} src={''} />
+              <Flex width="100%">
+                <Heading size="md">{user.fullName}</Heading>
+                {user.id === loggedInUser?.id && (
+                  <Flex align="center">
+                    <Badge colorScheme="brand" ml={2}>
+                      Te
+                    </Badge>
                   </Flex>
-                </HStack>
-                <HStack p={2} w="100%">
-                  <Stat size="sm">
-                    <StatNumber>{user.presentations}</StatNumber>
-                    <StatLabel>Tartott konzi</StatLabel>
-                  </Stat>
-                  <Stat size="sm">
-                    <StatNumber>{user.averageRating?.toFixed(2) || '-'}</StatNumber>
-                    <StatLabel>Átlagos értékelés</StatLabel>
-                  </Stat>
-                  <Stat size="sm">
-                    <StatNumber>{user.attendances}</StatNumber>
-                    <StatLabel>Konzi részvétel</StatLabel>
-                  </Stat>
-                </HStack>
-              </VStack>
-            </Box>
-          ))}
-        </SimpleGrid>
-      ) : (
-        <Text textAlign="center" fontStyle="italic">
-          Nem található felhasználó ilyen névvel
-        </Text>
-      )}
-    </>
+                )}
+              </Flex>
+            </HStack>
+            <HStack p={2} w="100%">
+              <Stat size="sm">
+                <StatNumber>{user.presentations}</StatNumber>
+                <StatLabel>Tartott konzi</StatLabel>
+              </Stat>
+              <Stat size="sm">
+                <StatNumber>{user.averageRating?.toFixed(2) || '-'}</StatNumber>
+                <StatLabel>Átlagos értékelés</StatLabel>
+              </Stat>
+              <Stat size="sm">
+                <StatNumber>{user.attendances}</StatNumber>
+                <StatLabel>Konzi részvétel</StatLabel>
+              </Stat>
+            </HStack>
+          </VStack>
+        </Box>
+      ))}
+    </SimpleGrid>
   )
 }

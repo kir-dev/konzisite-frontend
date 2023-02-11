@@ -33,7 +33,7 @@ export const UserBrowserPage = () => {
   })
 
   const resultCount = useBreakpointValue({ base: 4, lg: 6, '3xl': 8 }, { ssr: false }) || 4
-  const [search, setSearch] = useState<string>('')
+  const [search, setSearch] = useState('')
   const [page, setPage] = useState(0)
 
   const searchUsers = (search: string, page: number, pageSize: number = resultCount) => {
@@ -52,7 +52,7 @@ export const UserBrowserPage = () => {
   }, [])
 
   if (error) {
-    return <ErrorPage status={error?.statusCode} title={error?.message} />
+    return <ErrorPage status={error.statusCode} title={error.message} />
   }
 
   return (

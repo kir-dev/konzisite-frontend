@@ -135,9 +135,9 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
                 Értékelés névtelenül
               </Checkbox>
               {anonymous && (
-                <Alert rounded={'md'} status="info">
+                <Alert rounded="md" status="info">
                   <AlertIcon />
-                  Attól még, hogy név nélkül értékelsz, az oldal adminjai továbbra is látni fogják a neved. Kérlek értelmes kritikát írj.
+                  Attól még, hogy név nélkül értékelsz, az oldal adminjai továbbra is látni fogják a neved. Kérlek értelmes kritikát írj!
                 </Alert>
               )}
               <Button
