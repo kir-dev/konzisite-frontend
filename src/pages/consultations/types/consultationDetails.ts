@@ -7,6 +7,7 @@ import { PublicUser } from '../../user/types/PublicUser'
 
 export type Presentation = PublicUser & {
   averageRating: number
+  averageRatingForConsultation?: number
 }
 
 export type ConsultationDetails = ConsultationModel & {
