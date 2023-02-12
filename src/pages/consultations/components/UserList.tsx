@@ -11,6 +11,7 @@ import { UserRating } from './UserRating'
 type Props = {
   users: (PublicUser & {
     averageRating?: number
+    averageRatingForConsultation?: number
     rating?: RatingModel
   })[]
   showRating?: boolean
@@ -44,7 +45,12 @@ export const UserList = ({ users, isParticipant, columns, showRating = true, sho
                       </Badge>
                     )}
                   </Heading>
-                  {showRating && <Rating rating={u.averageRating} />}
+                  {showRating && (
+                    <Stack spacing={[0, 4]} justify="flex-start" width="100%" direction={['column', 'row']}>
+                      <Rating label="Összesített értékelés:" rating={u.averageRating} />
+                      <Rating label="Értékelés erre a konzira:" rating={u.averageRatingForConsultation} />
+                    </Stack>
+                  )}
                 </VStack>
               </HStack>
               {showRating && <UserRating showRatingButton={showRatingButton} isParticipant={isParticipant} refetch={refetch} user={u} />}

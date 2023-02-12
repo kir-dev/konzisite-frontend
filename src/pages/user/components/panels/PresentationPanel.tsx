@@ -23,7 +23,13 @@ export const PresentationPanel = ({ presentations }: Props) => {
           presentations
             .sort((c1, c2) => new Date(c2.startDate).getTime() - new Date(c1.startDate).getTime())
             .map((p) => (
-              <ConsultationListItem key={p.id} consultation={p} rightSmallText={`${p.participants} résztvevő`}>
+              <ConsultationListItem
+                key={p.id}
+                consultation={p}
+                rightSmallText={`${p.participants} résztvevő, értékelés: ${
+                  p.ratings.length === 0 ? '-' : (p.ratings.reduce((acc, val) => acc + val.value, 0) / p.ratings.length).toFixed(2)
+                }`}
+              >
                 <VStack p={4} pt={0} align="flex-start">
                   {p.ratings.length > 0 ? (
                     <>
