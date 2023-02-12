@@ -1,7 +1,23 @@
-import { Alert, AlertIcon, Box, Button, Heading, HStack, Stack, Text, Tooltip, useToast, VStack } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Stack,
+  Text,
+  Tooltip,
+  useToast,
+  VStack
+} from '@chakra-ui/react'
 import { useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { FaClock, FaFileUpload, FaMapMarkerAlt } from 'react-icons/fa'
+import { FaChevronDown, FaClock, FaEdit, FaFileUpload, FaMapMarkerAlt, FaTrash } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
@@ -32,6 +48,10 @@ export const ConsultationDetailsPage = () => {
   const toast = useToast()
   const navigate = useNavigate()
   const downloadRef = useRef<HTMLAnchorElement>(null)
+  const uploadModalRef = useRef<HTMLButtonElement>(null)
+  const deleteKonziRef = useRef<HTMLButtonElement>(null)
+  const deleteFileFromKonziRef = useRef<HTMLButtonElement>(null)
+  const leaveKonziRef = useRef<HTMLButtonElement>(null)
 
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
@@ -152,56 +172,76 @@ export const ConsultationDetailsPage = () => {
         <VStack justify={['center', 'flex-end']} align="flex-end">
           {(isOwner || isAdmin || isPresenter) && (
             <>
-              <Button width="100%" as={Link} to={`${PATHS.CONSULTATIONS}/${consultation.id}/edit`} colorScheme="brand">
-                Szerkesztés
-              </Button>
-              <Tooltip
-                label={consultation.archived ? 'A konzi archiválva lett, már nem lehet feltölteni fájlt.' : ''}
-                placement="left"
-                hasArrow
-                shouldWrapChildren
-              >
-                <UploadFileModalButton
-                  modalTitle={consultation.fileName ? 'Jegyzet szerkesztése' : 'Jegyzet feltöltése'}
-                  confirmButtonText="Mentés"
-                  mutation={uploadFileMutation}
-                  accept=".jpg,.jpeg,.png,.pdf,.docx,.pptx,.zip,.txt"
-                  fileIcon={<FaFileUpload />}
-                  disabled={consultation.archived}
-                  extraButton={
-                    consultation.fileName && (
-                      <ConfirmDialogButton
-                        bodyText="Biztosan törlöd a feltöltött fájlt? A résztvevők ezentúl nem fogják tudni letölteni."
-                        confirmAction={() => deleteFileFromConsultation()}
-                        headerText="Jegyzet törlése"
-                        buttonText="Jegyzet törlése"
-                        confirmButtonText="Törlés"
-                        buttonColorSchene="red"
-                      />
-                    )
-                  }
-                >
-                  <Text textAlign="justify">
-                    Előadóként vagy létrehozóként van lehetőséged egy fájl feltöltésére a konzihoz. Ezt a fájlt a konzi résztvevői a konzi
-                    kezdete után tudják letölteni, ha már értékelték az előadókat.
-                  </Text>
-                  <Text as="b">Megengedett fájlformátumok: .jpg, .png, .pdf, .docx, .pptx, .zip</Text>
-                  <br />
-                  <Text as="b">Maximális fájlméret: 10 MB</Text>
-                  <Alert my={2} status="warning">
-                    <AlertIcon />A fájl a konzi vége után 30 nappal törlődik a szerverről, és nem lesz többé letölthető!
-                  </Alert>
-                </UploadFileModalButton>
-              </Tooltip>
-              <ConfirmDialogButton
-                buttonColorSchene="red"
-                buttonText="Törlés"
-                buttonWidth="100%"
-                headerText="Konzultáció törlése"
-                bodyText="Biztos törölni szeretnéd a konzultációt?"
-                confirmButtonText="Törlés"
-                confirmAction={() => deleteConsultation(+consultationId)}
-              />
+              <Menu>
+                <MenuButton as={Button} colorScheme="brand" rightIcon={<FaChevronDown />}>
+                  Műveletek
+                </MenuButton>
+                <MenuList>
+                  <MenuItem color="blue" as={Link} to={`${PATHS.CONSULTATIONS}/${consultation.id}/edit`} icon={<FaEdit />}>
+                    Szerkesztés
+                  </MenuItem>
+
+                  <Tooltip
+                    label={consultation.archived ? 'A konzi archiválva lett, már nem lehet feltölteni fájlt.' : ''}
+                    placement="left"
+                    hasArrow
+                    shouldWrapChildren
+                  >
+                    <UploadFileModalButton
+                      initiatorButton={
+                        <MenuItem color="green" ref={uploadModalRef} icon={<FaFileUpload />} disabled={consultation.archived}>
+                          {consultation.fileName ? 'Jegyzet módosítása' : 'Jegyzet feltöltése'}
+                        </MenuItem>
+                      }
+                      initiatorButtonRef={uploadModalRef}
+                      modalTitle={consultation.fileName ? 'Jegyzet módosítása' : 'Jegyzet feltöltése'}
+                      confirmButtonText="Mentés"
+                      mutation={uploadFileMutation}
+                      accept=".jpg,.jpeg,.png,.pdf,.docx,.pptx,.zip,.txt"
+                      fileIcon={<FaFileUpload />}
+                      extraButton={
+                        consultation.fileName && (
+                          <ConfirmDialogButton
+                            initiatorButton={
+                              <Button ref={deleteFileFromKonziRef} colorScheme="red">
+                                Jegyzet törlése
+                              </Button>
+                            }
+                            initiatorButtonRef={deleteFileFromKonziRef}
+                            bodyText="Biztosan törlöd a feltöltött fájlt? A résztvevők ezentúl nem fogják tudni letölteni."
+                            confirmAction={() => deleteFileFromConsultation()}
+                            headerText="Jegyzet törlése"
+                            confirmButtonText="Törlés"
+                          />
+                        )
+                      }
+                    >
+                      <Text textAlign="justify">
+                        Előadóként vagy létrehozóként van lehetőséged egy fájl feltöltésére a konzihoz. Ezt a fájlt a konzi résztvevői a
+                        konzi kezdete után tudják letölteni, ha már értékelték az előadókat.
+                      </Text>
+                      <Text as="b">Megengedett fájlformátumok: .jpg, .png, .pdf, .docx, .pptx, .zip</Text>
+                      <br />
+                      <Text as="b">Maximális fájlméret: 10 MB</Text>
+                      <Alert rounded="md" my={2} status="warning">
+                        <AlertIcon />A fájl a konzi vége után 30 nappal törlődik a szerverről, és nem lesz többé letölthető!
+                      </Alert>
+                    </UploadFileModalButton>
+                  </Tooltip>
+                  <ConfirmDialogButton
+                    initiatorButton={
+                      <MenuItem color="red" ref={deleteKonziRef} icon={<FaTrash />}>
+                        Törlés
+                      </MenuItem>
+                    }
+                    initiatorButtonRef={deleteKonziRef}
+                    headerText="Konzultáció törlése"
+                    bodyText="Biztos törölni szeretnéd a konzultációt?"
+                    confirmButtonText="Törlés"
+                    confirmAction={() => deleteConsultation(+consultationId)}
+                  />
+                </MenuList>
+              </Menu>
             </>
           )}
           {!isPresenter && !isParticipant && !isOwner && (
@@ -217,8 +257,12 @@ export const ConsultationDetailsPage = () => {
           {isParticipant && !ratedConsultation && (
             <>
               <ConfirmDialogButton
-                buttonText="Mégsem megyek"
-                buttonColorSchene="red"
+                initiatorButton={
+                  <Button colorScheme="red" ref={leaveKonziRef}>
+                    Mégsem megyek
+                  </Button>
+                }
+                initiatorButtonRef={leaveKonziRef}
                 headerText="Biztos nem mész a konzira?"
                 confirmButtonText="Nem megyek"
                 confirmAction={() => {
@@ -253,6 +297,9 @@ export const ConsultationDetailsPage = () => {
                 </Tooltip>
               </>
             )}
+          {new Date() < new Date(consultation.startDate) &&
+            // TODO .ics fájl letöltő gomb
+            false}
         </VStack>
       </Stack>
       {consultation.descMarkdown && (

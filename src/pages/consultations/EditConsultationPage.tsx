@@ -1,8 +1,9 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, useToast, VStack } from '@chakra-ui/react'
+import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, useToast, VStack } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FormProvider, useForm } from 'react-hook-form'
-import { useNavigate, useParams } from 'react-router-dom'
+import { FaArrowLeft } from 'react-icons/fa'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useCreateConsultationMutation, useEditConsultationMutation } from '../../api/hooks/consultationMutationHooks'
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
@@ -151,6 +152,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
               <SubjectSelector />
               <PresentersSelector />
               <ConsultationDateForm prevStartDate={consultation && new Date(consultation.startDate)} />
+              <TargetGroupSelector />
               <FormControl>
                 <FormLabel>Leírás</FormLabel>
                 <MarkdownEditor
@@ -163,19 +165,26 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
                   previewHeight="12rem"
                 />
               </FormControl>
-              <TargetGroupSelector />
             </FormProvider>
           </VStack>
-          <Button
-            mt={3}
-            colorScheme="brand"
-            onClick={() => {
-              onSubmit()
-            }}
-            isDisabled={!isValid && isSubmitted}
-          >
-            {newConsultation ? 'Létrehozás' : 'Mentés'}
-          </Button>
+          <Flex mt={1} justify="space-between">
+            <Button
+              leftIcon={<FaArrowLeft />}
+              as={Link}
+              to={newConsultation ? PATHS.CONSULTATIONS : `${PATHS.CONSULTATIONS}/${consultationId}`}
+            >
+              Vissza
+            </Button>
+            <Button
+              colorScheme="brand"
+              onClick={() => {
+                onSubmit()
+              }}
+              isDisabled={!isValid && isSubmitted}
+            >
+              {newConsultation ? 'Létrehozás' : 'Mentés'}
+            </Button>
+          </Flex>
         </>
       )}
     </>
