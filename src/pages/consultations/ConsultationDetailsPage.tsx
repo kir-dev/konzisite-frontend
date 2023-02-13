@@ -6,11 +6,13 @@ import { useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
   useDownloadFileMutation,
+  useExportConsultationMutation,
   useJoinConsultationMutation,
   useLeaveConsultationMutation
 } from '../../api/hooks/consultationMutationHooks'
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
+import { DownloadFileFromServerButton } from '../../components/commons/DownloadFileFromServerButton'
 import Markdown from '../../components/commons/Markdown'
 import { isValidId } from '../../util/core-util-functions'
 import { generateToastParams } from '../../util/generateToastParams'
@@ -26,8 +28,8 @@ export const ConsultationDetailsPage = () => {
   const { loggedInUser, loggedInUserLoading } = useAuthContext()
   const { isLoading, data: consultation, error, refetch } = useFetchConsultationbDetailsQuery(+consultationId!!)
   const toast = useToast()
-  const downloadRef = useRef<HTMLAnchorElement>(null)
-  const leaveKonziRef = useRef<HTMLButtonElement>(null)
+  const downloadFileRef = useRef<HTMLButtonElement>(null)
+  const exportKonziRef = useRef<HTMLButtonElement>(null)
 
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
@@ -43,22 +45,8 @@ export const ConsultationDetailsPage = () => {
     refetch()
   }, onErrorFn)
 
-  const { mutate: downloadFile } = useDownloadFileMutation(
-    (rawFile: ArrayBuffer) => {
-      const blob = new Blob([rawFile])
-      if (downloadRef.current) {
-        downloadRef.current.href = URL.createObjectURL(blob)
-        downloadRef.current.click()
-      }
-    },
-    () => {
-      toast({
-        title: 'Hiba a fájl letöltése közben',
-        description: 'Lehet hogy már törlésre került, vagy nincs jogod megtakinteni.',
-        status: 'error'
-      })
-    }
-  )
+  const downloadFileMutation = useDownloadFileMutation()
+  const exportKonziMutation = useExportConsultationMutation()
 
   if (!consultationId || !isValidId(consultationId)) {
     return <ErrorPage backPath={PATHS.CONSULTATIONS} status={404} title={'A konzultáció nem található!'} />
@@ -126,7 +114,7 @@ export const ConsultationDetailsPage = () => {
           {!isPresenter && !isParticipant && !isOwner && (
             <Button
               onClick={() => {
-                joinConsultation(+consultationId)
+                joinConsultation(consultation.id)
               }}
               w="100%"
               colorScheme="brand"
@@ -139,7 +127,7 @@ export const ConsultationDetailsPage = () => {
               w="100%"
               colorScheme="red"
               onClick={() => {
-                leaveConsultation(+consultationId)
+                leaveConsultation(consultation.id)
               }}
             >
               {new Date() < new Date(consultation.startDate) ? 'Nem veszek részt' : 'Nem vettem részt'}
@@ -147,8 +135,12 @@ export const ConsultationDetailsPage = () => {
           )}
           {((new Date() > new Date(consultation.startDate) && isParticipant) || isPresenter || isOwner || isAdmin) &&
             consultation.fileName && (
-              <>
-                <a ref={downloadRef} download={consultation.fileName} hidden />
+              <DownloadFileFromServerButton
+                buttonRef={downloadFileRef}
+                entityId={consultation.id}
+                fileName={consultation.fileName}
+                downloadMutation={downloadFileMutation}
+              >
                 <Tooltip
                   label={
                     consultation.archived
@@ -161,21 +153,27 @@ export const ConsultationDetailsPage = () => {
                   hasArrow
                 >
                   <Button
+                    ref={downloadFileRef}
                     w="100%"
                     isDisabled={consultation.archived || (isParticipant && !ratedConsultation && !isAdmin)}
                     colorScheme="green"
-                    onClick={() => downloadFile(+consultationId)}
                   >
                     Jegyzet letöltése
                   </Button>
                 </Tooltip>
-              </>
+              </DownloadFileFromServerButton>
             )}
           {new Date() < new Date(consultation.startDate) && (
-            // TODO .ics fájl letöltő gomb
-            <Button w="100%" isDisabled colorScheme="green">
-              Exportálás naptárba
-            </Button>
+            <DownloadFileFromServerButton
+              buttonRef={exportKonziRef}
+              downloadMutation={exportKonziMutation}
+              fileName={`konzultacio_${consultation.id}.ics`}
+              entityId={consultation.id}
+            >
+              <Button ref={exportKonziRef} w="100%" colorScheme="green">
+                Exportálás naptárba
+              </Button>
+            </DownloadFileFromServerButton>
           )}
           {(isOwner || isAdmin || isPresenter) && <ConsultationAdminActions refetch={refetch} consultation={consultation} />}
         </VStack>
