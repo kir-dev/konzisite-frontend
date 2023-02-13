@@ -17,6 +17,7 @@ import {
   useBreakpointValue,
   useToast
 } from '@chakra-ui/react'
+import { useRef } from 'react'
 import { FaLock, FaSignOutAlt } from 'react-icons/fa'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { usePromoteUserMutation } from '../../../api/hooks/userMutationHooks'
@@ -38,6 +39,7 @@ type Props = {
 export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
   const { loggedInUser } = useAuthContext()
   const toast = useToast()
+  const promoteUserRef = useRef<HTMLButtonElement>(null)
   const { mutate: promoteUser } = usePromoteUserMutation(
     (data: UserModel) => {
       toast({ title: 'Felhasználó adminnak kinevezve!', status: 'success' })
@@ -101,10 +103,15 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
         <Flex flex={1} justifyContent="end">
           {loggedInUser?.isAdmin && !user.isAdmin && (
             <ConfirmDialogButton
+              initiatorButton={
+                <Button colorScheme="green" ref={promoteUserRef}>
+                  Adminná tétel
+                </Button>
+              }
+              initiatorButtonRef={promoteUserRef}
               headerText="Biztosan kinevezed adminnak?"
               bodyText="Biztosan kinevezed ezt a felhasználót adminnak? Ezt később csak az adatbázisba nyúlással lehet visszavonni!"
-              buttonText="Adminná tétel"
-              buttonColorSchene="green"
+              buttonColorScheme="green"
               confirmButtonText="Kinevezés"
               refuseButtonText="Mégsem"
               confirmAction={() => promoteUser(user.id)}

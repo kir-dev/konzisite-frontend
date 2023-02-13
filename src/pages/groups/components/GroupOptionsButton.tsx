@@ -1,4 +1,5 @@
 import { Button, useToast } from '@chakra-ui/react'
+import { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   useDeleteGroupMutation,
@@ -22,6 +23,8 @@ type props = {
 export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
   const toast = useToast()
   const navigate = useNavigate()
+  const deleteGroupRef = useRef<HTMLButtonElement>(null)
+  const leaveGroupRef = useRef<HTMLButtonElement>(null)
 
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
@@ -74,9 +77,12 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
             previousName={group.name}
           />
           <ConfirmDialogButton
-            buttonColorSchene="red"
-            buttonWidth="100%"
-            buttonText="Törlés"
+            initiatorButton={
+              <Button w="100%" ref={deleteGroupRef} colorScheme="red">
+                Törlés
+              </Button>
+            }
+            initiatorButtonRef={deleteGroupRef}
             headerText="Csoport törlése"
             bodyText="Biztos törölni szeretnéd a csoportot?"
             confirmButtonText="Törlés"
@@ -88,9 +94,12 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
     case GroupRoles.MEMBER:
       return (
         <ConfirmDialogButton
-          buttonColorSchene="red"
-          buttonWidth="100%"
-          buttonText="Kilépés"
+          initiatorButton={
+            <Button w="100%" ref={leaveGroupRef} colorScheme="red">
+              Kilépés
+            </Button>
+          }
+          initiatorButtonRef={leaveGroupRef}
           headerText="Kilépés a csoportból"
           bodyText="Biztos ki szeretnél lépni a csoportból?"
           confirmButtonText="Kilépés"

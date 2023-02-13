@@ -18,7 +18,7 @@ import {
   useDisclosure,
   useToast
 } from '@chakra-ui/react'
-import { ReactElement } from 'react'
+import { ReactElement, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { UseMutationResult } from 'react-query'
 import { KonziError } from '../../../api/model/error.model'
@@ -53,6 +53,7 @@ export const SubjectEditModalButton = ({
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { value: selectedMajors, getCheckboxProps, setValue: setSelectedMajors } = useCheckboxGroup()
   const toast = useToast()
+  const deleteSubjectRef = useRef<HTMLButtonElement>(null)
 
   const {
     register,
@@ -146,8 +147,12 @@ export const SubjectEditModalButton = ({
             <ModalFooter justifyContent="space-between">
               {previousData && deleteAction ? (
                 <ConfirmDialogButton
-                  buttonText="Törlés"
-                  buttonColorSchene="red"
+                  initiatorButton={
+                    <Button colorScheme="red" ref={deleteSubjectRef}>
+                      Törlés
+                    </Button>
+                  }
+                  initiatorButtonRef={deleteSubjectRef}
                   headerText="Biztosan törlöd a tárgyat?"
                   bodyText="Ezzel az tárgyhoz tartozó összes konzultáció is törlődik!"
                   confirmButtonText="Törlés"
