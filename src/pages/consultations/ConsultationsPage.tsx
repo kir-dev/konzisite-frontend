@@ -1,7 +1,8 @@
-import { Button, Flex, Heading, Text, VStack } from '@chakra-ui/react'
+import { Button, Flex, Heading, Select, Text, VStack } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useFetchConsultationListQuery } from '../../api/hooks/consultationQueryHooks'
+import { Major } from '../../api/model/subject.model'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
@@ -32,18 +33,27 @@ export const ConsultationsPage = () => {
           {isLoading ? (
             <LoadingConsultationList />
           ) : (
-            consultaions?.map((c) => (
-              <ConsultationListItem
-                consultation={c}
-                key={c.id}
-                rightSmallText={
-                  c.presentations.length <= 3
-                    ? `Konzitartó${c.presentations.length > 1 ? 'k' : ''}:
+            <>
+              <Text>Szak</Text>
+              <Select placeholder="Válassz szakot">
+                {Object.keys(Major).map((m) => (
+                  <option>{m}</option>
+                ))}
+              </Select>
+
+              {consultaions?.map((c) => (
+                <ConsultationListItem
+                  consultation={c}
+                  key={c.id}
+                  rightSmallText={
+                    c.presentations.length <= 3
+                      ? `Konzitartó${c.presentations.length > 1 ? 'k' : ''}:
                   ${c.presentations.map((p) => p.fullName).join(', ')}`
-                    : `${c.presentations.length} konzitartó`
-                }
-              />
-            ))
+                      : `${c.presentations.length} konzitartó`
+                  }
+                />
+              ))}
+            </>
           )}
         </VStack>
       )}
