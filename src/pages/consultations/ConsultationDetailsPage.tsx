@@ -1,26 +1,24 @@
-import { Alert, AlertIcon, Box, Button, Heading, HStack, Stack, Text, Tooltip, useToast, VStack } from '@chakra-ui/react'
+import { Box, Button, Heading, HStack, Stack, Text, Tooltip, useToast, VStack } from '@chakra-ui/react'
 import { useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { FaClock, FaFileUpload, FaMapMarkerAlt } from 'react-icons/fa'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { FaClock, FaMapMarkerAlt } from 'react-icons/fa'
+import { useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
-  useDeleteConsultationMutation,
-  useDeleteFileMutation,
   useDownloadFileMutation,
+  //useExportConsultationMutation,
   useJoinConsultationMutation,
-  useLeaveConsultationMutation,
-  useUploadFileMutation
+  useLeaveConsultationMutation
 } from '../../api/hooks/consultationMutationHooks'
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
-import { ConfirmDialogButton } from '../../components/commons/ConfirmDialogButton'
+import { DownloadFileFromServerButton } from '../../components/commons/DownloadFileFromServerButton'
 import Markdown from '../../components/commons/Markdown'
-import { UploadFileModalButton } from '../../components/commons/UploadFileModalButton'
 import { isValidId } from '../../util/core-util-functions'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
+import { ConsultationAdminActions } from './components/ConsultationAdminActions'
 import { LoadingConsultation } from './components/LoadingConsultation'
 import { TargetGroupList } from './components/TargetGroupList'
 import { UserList } from './components/UserList'
@@ -30,8 +28,8 @@ export const ConsultationDetailsPage = () => {
   const { loggedInUser, loggedInUserLoading } = useAuthContext()
   const { isLoading, data: consultation, error, refetch } = useFetchConsultationbDetailsQuery(+consultationId!!)
   const toast = useToast()
-  const navigate = useNavigate()
-  const downloadRef = useRef<HTMLAnchorElement>(null)
+  const downloadFileRef = useRef<HTMLButtonElement>(null)
+  //const exportKonziRef = useRef<HTMLButtonElement>(null)
 
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
@@ -47,45 +45,8 @@ export const ConsultationDetailsPage = () => {
     refetch()
   }, onErrorFn)
 
-  const { mutate: deleteConsultation } = useDeleteConsultationMutation(() => {
-    toast({ title: 'Törölted a konzultációt!', status: 'success' })
-    navigate(PATHS.CONSULTATIONS)
-  }, onErrorFn)
-
-  const uploadFileMutation = useUploadFileMutation(
-    +consultationId!!,
-    () => {
-      toast({ title: 'Jegyzet feltöltve!', status: 'success' })
-      refetch()
-    },
-    onErrorFn
-  )
-
-  const { mutate: deleteFileFromConsultation } = useDeleteFileMutation(
-    +consultationId!!,
-    () => {
-      toast({ title: 'Törölted a jegyzetet!', status: 'success' })
-      refetch()
-    },
-    onErrorFn
-  )
-
-  const { mutate: downloadFile } = useDownloadFileMutation(
-    (rawFile: ArrayBuffer) => {
-      const blob = new Blob([rawFile])
-      if (downloadRef.current) {
-        downloadRef.current.href = URL.createObjectURL(blob)
-        downloadRef.current.click()
-      }
-    },
-    () => {
-      toast({
-        title: 'Hiba a fájl letöltése közben',
-        description: 'Lehet hogy már törlésre került, vagy nincs jogod megtakinteni.',
-        status: 'error'
-      })
-    }
-  )
+  const downloadFileMutation = useDownloadFileMutation()
+  //const exportKonziMutation = useExportConsultationMutation()
 
   if (!consultationId || !isValidId(consultationId)) {
     return <ErrorPage backPath={PATHS.CONSULTATIONS} status={404} title={'A konzultáció nem található!'} />
@@ -149,88 +110,37 @@ export const ConsultationDetailsPage = () => {
           </HStack>
         </VStack>
 
-        <VStack justify={['center', 'flex-end']} align="flex-end">
-          {(isOwner || isAdmin || isPresenter) && (
-            <>
-              <Button width="100%" as={Link} to={`${PATHS.CONSULTATIONS}/${consultation.id}/edit`} colorScheme="brand">
-                Szerkesztés
-              </Button>
-              <Tooltip
-                label={consultation.archived ? 'A konzi archiválva lett, már nem lehet feltölteni fájlt.' : ''}
-                placement="left"
-                hasArrow
-                shouldWrapChildren
-              >
-                <UploadFileModalButton
-                  modalTitle={consultation.fileName ? 'Jegyzet szerkesztése' : 'Jegyzet feltöltése'}
-                  confirmButtonText="Mentés"
-                  mutation={uploadFileMutation}
-                  accept=".jpg,.jpeg,.png,.pdf,.docx,.pptx,.zip,.txt"
-                  fileIcon={<FaFileUpload />}
-                  disabled={consultation.archived}
-                  extraButton={
-                    consultation.fileName && (
-                      <ConfirmDialogButton
-                        bodyText="Biztosan törlöd a feltöltött fájlt? A résztvevők ezentúl nem fogják tudni letölteni."
-                        confirmAction={() => deleteFileFromConsultation()}
-                        headerText="Jegyzet törlése"
-                        buttonText="Jegyzet törlése"
-                        confirmButtonText="Törlés"
-                        buttonColorSchene="red"
-                      />
-                    )
-                  }
-                >
-                  <Text textAlign="justify">
-                    Előadóként vagy létrehozóként van lehetőséged egy fájl feltöltésére a konzihoz. Ezt a fájlt a konzi résztvevői a konzi
-                    kezdete után tudják letölteni, ha már értékelték az előadókat.
-                  </Text>
-                  <Text as="b">Megengedett fájlformátumok: .jpg, .png, .pdf, .docx, .pptx, .zip</Text>
-                  <br />
-                  <Text as="b">Maximális fájlméret: 10 MB</Text>
-                  <Alert my={2} status="warning">
-                    <AlertIcon />A fájl a konzi vége után 30 nappal törlődik a szerverről, és nem lesz többé letölthető!
-                  </Alert>
-                </UploadFileModalButton>
-              </Tooltip>
-              <ConfirmDialogButton
-                buttonColorSchene="red"
-                buttonText="Törlés"
-                buttonWidth="100%"
-                headerText="Konzultáció törlése"
-                bodyText="Biztos törölni szeretnéd a konzultációt?"
-                confirmButtonText="Törlés"
-                confirmAction={() => deleteConsultation(+consultationId)}
-              />
-            </>
-          )}
+        <VStack align="flex-end">
           {!isPresenter && !isParticipant && !isOwner && (
             <Button
               onClick={() => {
-                joinConsultation(+consultationId)
+                joinConsultation(consultation.id)
               }}
+              w="100%"
               colorScheme="brand"
             >
-              Megyek
+              {new Date() < new Date(consultation.startDate) ? 'Részt veszek' : 'Részt vettem'}
             </Button>
           )}
           {isParticipant && !ratedConsultation && (
-            <>
-              <ConfirmDialogButton
-                buttonText="Mégsem megyek"
-                buttonColorSchene="red"
-                headerText="Biztos nem mész a konzira?"
-                confirmButtonText="Nem megyek"
-                confirmAction={() => {
-                  leaveConsultation(+consultationId)
-                }}
-              />
-            </>
+            <Button
+              w="100%"
+              colorScheme="red"
+              onClick={() => {
+                leaveConsultation(consultation.id)
+              }}
+            >
+              {new Date() < new Date(consultation.startDate) ? 'Nem veszek részt' : 'Nem vettem részt'}
+            </Button>
           )}
           {((new Date() > new Date(consultation.startDate) && isParticipant) || isPresenter || isOwner || isAdmin) &&
             consultation.fileName && (
-              <>
-                <a ref={downloadRef} download={consultation.fileName} hidden />
+              <DownloadFileFromServerButton
+                buttonRef={downloadFileRef}
+                entityId={consultation.id}
+                fileName={consultation.fileName}
+                downloadMutation={downloadFileMutation}
+              >
                 <Tooltip
                   label={
                     consultation.archived
@@ -241,18 +151,31 @@ export const ConsultationDetailsPage = () => {
                   }
                   placement="left"
                   hasArrow
-                  shouldWrapChildren
                 >
                   <Button
+                    ref={downloadFileRef}
+                    w="100%"
                     isDisabled={consultation.archived || (isParticipant && !ratedConsultation && !isAdmin)}
                     colorScheme="green"
-                    onClick={() => downloadFile(+consultationId)}
                   >
                     Jegyzet letöltése
                   </Button>
                 </Tooltip>
-              </>
+              </DownloadFileFromServerButton>
             )}
+          {/*new Date() < new Date(consultation.startDate) && (   // TODO remove comment when the backend is ready
+            <DownloadFileFromServerButton
+              buttonRef={exportKonziRef}
+              downloadMutation={exportKonziMutation}
+              fileName={`konzultacio_${consultation.id}.ics`}
+              entityId={consultation.id}
+            >
+              <Button ref={exportKonziRef} w="100%" colorScheme="green">
+                Exportálás naptárba
+              </Button>
+            </DownloadFileFromServerButton>
+          )*/}
+          {(isOwner || isAdmin || isPresenter) && <ConsultationAdminActions refetch={refetch} consultation={consultation} />}
         </VStack>
       </Stack>
       {consultation.descMarkdown && (
@@ -267,14 +190,20 @@ export const ConsultationDetailsPage = () => {
         columns={1}
         users={consultation.presentations}
         isParticipant={isParticipant}
-        showRatingButton={new Date(consultation.startDate).getTime() < new Date().getTime()}
+        showRatingButton={new Date(consultation.startDate) < new Date() && isParticipant}
         refetch={refetch}
       />
       <TargetGroupList groups={consultation.targetGroups} />
       <Heading size="lg" mt={2} mb={2}>
         Résztvevők ({consultation.participants.length})
       </Heading>
-      <UserList columns={2} users={consultation.participants} isParticipant={isParticipant} showRating={false} refetch={refetch} />
+      {consultation.participants.length > 0 ? (
+        <UserList columns={2} users={consultation.participants} isParticipant={isParticipant} showRating={false} refetch={refetch} />
+      ) : (
+        <Text textAlign="center" fontStyle="italic">
+          Még nincs egy résztvevő se.
+        </Text>
+      )}
     </>
   )
 }

@@ -94,9 +94,10 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
                 </HStack>
               </VStack>
             </HStack>
-            {(group.currentUserRole == GroupRoles.ADMIN || group.currentUserRole == GroupRoles.OWNER) &&
-              u.id !== group.owner.id &&
-              u.id !== currentUser?.id && (
+            {u.id !== group.owner.id &&
+              u.id !== currentUser?.id &&
+              (group.currentUserRole === GroupRoles.OWNER ||
+                (group.currentUserRole === GroupRoles.ADMIN && u.role !== GroupRoles.ADMIN)) && (
                 <Flex alignItems="center" p={2}>
                   <Menu>
                     <MenuButton as={IconButton} colorScheme="brand" icon={<FaChevronDown />} width="100%" />

@@ -9,27 +9,25 @@ import {
   Button,
   useDisclosure
 } from '@chakra-ui/react'
-import { useRef } from 'react'
+import { ReactElement, RefObject, useEffect, useRef } from 'react'
 
 interface ConfirmDialogButtonProps {
   headerText?: string
   bodyText?: string
-  buttonText?: string
-  buttonColorSchene?: string
-  buttonVariant?: string
+  initiatorButton: ReactElement
+  initiatorButtonRef: RefObject<HTMLButtonElement>
+  buttonColorScheme?: string
   confirmButtonText?: string
   refuseButtonText?: string
-  buttonWidth?: string
   confirmAction: () => void
 }
 
 export const ConfirmDialogButton = ({
   headerText,
   bodyText,
-  buttonText = '',
-  buttonColorSchene,
-  buttonVariant,
-  buttonWidth,
+  initiatorButton,
+  initiatorButtonRef,
+  buttonColorScheme = 'red',
   confirmButtonText = 'Igen',
   refuseButtonText = 'Mégse',
   confirmAction
@@ -37,11 +35,15 @@ export const ConfirmDialogButton = ({
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = useRef(null)
 
+  useEffect(() => {
+    if (initiatorButtonRef?.current) {
+      initiatorButtonRef.current.onclick = onOpen
+    }
+  }, [])
+
   return (
     <>
-      <Button onClick={onOpen} width={buttonWidth} colorScheme={buttonColorSchene} variant={buttonVariant}>
-        {buttonText}
-      </Button>
+      {initiatorButton}
       <AlertDialog
         preserveScrollBarGap={true}
         motionPreset="slideInBottom"
@@ -59,7 +61,7 @@ export const ConfirmDialogButton = ({
             <Button ref={cancelRef} onClick={onClose}>
               {refuseButtonText}
             </Button>
-            <Button colorScheme={buttonColorSchene} ml={3} onClick={confirmAction}>
+            <Button colorScheme={buttonColorScheme} ml={3} onClick={confirmAction}>
               {confirmButtonText}
             </Button>
           </AlertDialogFooter>
