@@ -29,7 +29,6 @@ import { SubjectModel } from '../../../api/model/subject.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { PATHS } from '../../../util/paths'
 import { CreateConsultationForm } from '../types/createConsultation'
-import { SelectorSkeleton } from './SelectorSkeleton'
 
 const INITIAL_SUBJECT_COUNT = 5
 
@@ -84,7 +83,7 @@ export const SubjectSelector = () => {
 
         <FormErrorMessage>Kell tárgyat választani</FormErrorMessage>
       </FormControl>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal scrollBehavior="inside" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Tárgy választás</ModalHeader>
@@ -105,7 +104,13 @@ export const SubjectSelector = () => {
                 value={search}
               />
               <InputRightElement h="100%">
-                <FaTimes onClick={() => setSearch('')} cursor="pointer" />
+                <FaTimes
+                  onClick={() => {
+                    setSearch('')
+                    fetchSubjects({ search: '', limit: INITIAL_SUBJECT_COUNT })
+                  }}
+                  cursor="pointer"
+                />
               </InputRightElement>
             </InputGroup>
             <Input
@@ -115,9 +120,7 @@ export const SubjectSelector = () => {
               hidden
             />
             <VStack mb={4} maxHeight="600px" overflowY="auto">
-              {isLoading ? (
-                <SelectorSkeleton />
-              ) : !subjectList || subjectList.length === 0 ? (
+              {isLoading || !subjectList || subjectList.length === 0 ? (
                 <Text fontStyle="italic">Nincs találat</Text>
               ) : (
                 subjectList.map((s) => (
