@@ -14,7 +14,7 @@ import {
   useToast,
   VStack
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FaEdit, FaFileCsv } from 'react-icons/fa'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
@@ -38,6 +38,7 @@ export const SubjectsPage = () => {
   const [selectedMajor, setSelectedMajor] = useState<string>('all')
   const toast = useToast()
   const { loggedInUser } = useAuthContext()
+  const importModalRef = useRef<HTMLButtonElement>(null)
 
   const createSubjectMutation = useCreateSubjectMutation()
   const updateSubjectMutation = useUpdateSubjectMutation()
@@ -81,6 +82,12 @@ export const SubjectsPage = () => {
 
         <HStack>
           <UploadFileModalButton
+            initiatorButton={
+              <Button ref={importModalRef} colorScheme="green">
+                Tárgyak importálása
+              </Button>
+            }
+            initiatorButtonRef={importModalRef}
             mutation={importSubjectsmutation}
             modalTitle="Tárgyak importálása"
             confirmButtonText="Importálás"

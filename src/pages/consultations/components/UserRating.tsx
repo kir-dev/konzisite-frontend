@@ -17,6 +17,7 @@ import {
   SliderTrack,
   Text,
   Textarea,
+  Tooltip,
   useToast,
   VStack
 } from '@chakra-ui/react'
@@ -97,19 +98,21 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
           </>
         )}
         {isParticipant && !user.rating && (
-          <Button
-            width="100%"
-            colorScheme="brand"
-            isDisabled={!showRatingButton}
-            onClick={() => {
-              setText('')
-              setValue(5)
-              setAnonymous(false)
-              setOpen(true)
-            }}
-          >
-            Értékelés
-          </Button>
+          <Tooltip label={showRatingButton ? '' : 'A konzi kezdete után tudod értékelni az előadót.'} placement="left" hasArrow>
+            <Button
+              width="100%"
+              colorScheme="brand"
+              isDisabled={!showRatingButton}
+              onClick={() => {
+                setText('')
+                setValue(5)
+                setAnonymous(false)
+                setOpen(true)
+              }}
+            >
+              Értékelés
+            </Button>
+          </Tooltip>
         )}
       </VStack>
       <Modal isCentered motionPreset="slideInBottom" isOpen={open} onClose={() => setOpen(false)}>

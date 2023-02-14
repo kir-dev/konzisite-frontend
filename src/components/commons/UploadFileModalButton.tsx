@@ -10,7 +10,7 @@ import {
   Spacer,
   useDisclosure
 } from '@chakra-ui/react'
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement, ReactNode, RefObject, useEffect } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { UseMutationResult } from 'react-query'
 import { KonziError } from '../../api/model/error.model'
@@ -23,8 +23,9 @@ type Props = {
   children: ReactNode
   accept: string
   fileIcon: ReactElement
+  initiatorButton: ReactElement
+  initiatorButtonRef: RefObject<HTMLButtonElement>
   extraButton?: ReactNode
-  disabled?: boolean
 }
 
 export const UploadFileModalButton = ({
@@ -35,7 +36,8 @@ export const UploadFileModalButton = ({
   extraButton,
   accept,
   fileIcon,
-  disabled = false
+  initiatorButton,
+  initiatorButtonRef
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const methods = useForm<{ files: FileList | undefined }>({ mode: 'all' })
@@ -57,6 +59,11 @@ export const UploadFileModalButton = ({
       })
     }
   }
+  useEffect(() => {
+    if (initiatorButtonRef?.current) {
+      initiatorButtonRef.current.onclick = onOpen
+    }
+  }, [])
 
   const onCancelPressed = () => {
     onClose()
@@ -65,9 +72,7 @@ export const UploadFileModalButton = ({
 
   return (
     <>
-      <Button colorScheme="green" onClick={onOpen} isDisabled={disabled}>
-        {modalTitle}
-      </Button>
+      {initiatorButton}
       <Modal isOpen={isOpen} onClose={onCancelPressed} size="xl">
         <ModalOverlay />
         <ModalContent>

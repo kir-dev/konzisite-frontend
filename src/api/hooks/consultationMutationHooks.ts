@@ -96,12 +96,14 @@ export const useDeleteFileMutation = (
   )
 }
 
-export const useDownloadFileMutation = (onSuccess: (data: ArrayBuffer) => void, onError: () => void) => {
+export const useDownloadFileMutation = () => {
   return useMutation<ArrayBuffer, ArrayBuffer, number>(
-    async (consultationId) => (await axios.get(`${PATHS.CONSULTATIONS}/${consultationId}/file`, { responseType: 'arraybuffer' })).data,
-    {
-      onError,
-      onSuccess
-    }
+    async (consultationId) => (await axios.get(`${PATHS.CONSULTATIONS}/${consultationId}/file`, { responseType: 'arraybuffer' })).data
+  )
+}
+
+export const useExportConsultationMutation = () => {
+  return useMutation<ArrayBuffer, ArrayBuffer, number>( // TODO finalize url when it's done on the backend
+    async (consultationId) => (await axios.get(`${PATHS.CONSULTATIONS}/${consultationId}/export`, { responseType: 'arraybuffer' })).data
   )
 }
