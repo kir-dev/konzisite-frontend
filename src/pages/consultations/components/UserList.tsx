@@ -53,7 +53,9 @@ export const UserList = ({ users, isParticipant, columns, showRating = true, sho
                   )}
                 </VStack>
               </HStack>
-              {showRating && <UserRating showRatingButton={showRatingButton} isParticipant={isParticipant} refetch={refetch} user={u} />}
+              {showRatingButton && (
+                <UserRating showRatingButton={showRatingButton} isParticipant={isParticipant} refetch={refetch} user={u} />
+              )}
             </Stack>
           </Box>
         ))}

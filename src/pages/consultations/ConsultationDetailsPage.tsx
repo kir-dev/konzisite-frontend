@@ -190,7 +190,7 @@ export const ConsultationDetailsPage = () => {
         columns={1}
         users={consultation.presentations}
         isParticipant={isParticipant}
-        showRatingButton={new Date(consultation.startDate).getTime() < new Date().getTime()}
+        showRatingButton={new Date(consultation.startDate) < new Date() && isParticipant}
         refetch={refetch}
       />
       <TargetGroupList groups={consultation.targetGroups} />
