@@ -38,7 +38,6 @@ import { ErrorPage } from '../../error/ErrorPage'
 import { Presentation } from '../types/consultationDetails'
 import { CreateConsultationForm } from '../types/createConsultation'
 import { Rating } from './Rating'
-import { SelectorSkeleton } from './SelectorSkeleton'
 
 const INITIAL_USER_COUNT = 5
 
@@ -139,7 +138,7 @@ export const PresentersSelector = () => {
           Előadó hozzáadása
         </Button>
       </FormControl>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal scrollBehavior="inside" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Előadó hozzáadása</ModalHeader>
@@ -160,7 +159,13 @@ export const PresentersSelector = () => {
                 value={search}
               />
               <InputRightElement h="100%">
-                <FaTimes onClick={() => setSearch('')} cursor="pointer" />
+                <FaTimes
+                  onClick={() => {
+                    setSearch('')
+                    fetchUsers({ search: '', pageSize: INITIAL_USER_COUNT })
+                  }}
+                  cursor="pointer"
+                />
               </InputRightElement>
             </InputGroup>
             <Input
@@ -170,9 +175,7 @@ export const PresentersSelector = () => {
               hidden
             />
             <VStack mb={2} maxHeight="500px" overflowY="auto">
-              {isLoading ? (
-                <SelectorSkeleton />
-              ) : !filteredUserList || filteredUserList.length === 0 ? (
+              {isLoading || !filteredUserList || filteredUserList.length === 0 ? (
                 <Text fontStyle="italic">Nincs találat</Text>
               ) : (
                 filteredUserList.map((p) => (
