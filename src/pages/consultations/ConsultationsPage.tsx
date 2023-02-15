@@ -1,15 +1,40 @@
-import { Button, Flex, Heading, Select, Text, VStack } from '@chakra-ui/react'
+import { Button, Flex, Heading, Select, Text, useToast, VStack } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
-import { useFetchConsultationListQuery } from '../../api/hooks/consultationQueryHooks'
+import { FetchConsultationsMutationProps, useFetchConsultationListMutation } from '../../api/hooks/consultationQueryHooks'
+import { KonziError } from '../../api/model/error.model'
 import { Major } from '../../api/model/subject.model'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
+import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { LoadingConsultationList } from './components/LoadingConsultationList'
 
 export const ConsultationsPage = () => {
-  const { isLoading, data: consultaions, error } = useFetchConsultationListQuery()
+  //const { isLoading, data: consultaions, error } = useFetchConsultationListQuery()
+  const toast = useToast()
+  const {
+    isLoading,
+    data: consultaions,
+    mutate: mutateConsultations,
+    error
+  } = useFetchConsultationListMutation((e: KonziError) => {
+    toast(generateToastParams(e))
+  })
+
+  const fetchConsultations = (major?: Major) => {
+    const props: FetchConsultationsMutationProps = {
+      major
+    }
+    mutateConsultations(props)
+  }
+
+  const [major, setMajor] = useState<Major>()
+
+  useEffect(() => {
+    fetchConsultations(major)
+  }, [major])
 
   if (error) {
     return <ErrorPage status={error.statusCode} title={error.message} />
@@ -26,21 +51,22 @@ export const ConsultationsPage = () => {
           Új konzultáció
         </Button>
       </Flex>
+      <Text>Szak</Text>
+      <Select placeholder="Válassz szakot" onChange={(e) => setMajor(e.target.value as Major)}>
+        {Object.keys(Major).map((m) => (
+          <option key={m}>{m}</option>
+        ))}
+      </Select>
       {consultaions && consultaions.length === 0 ? (
-        <Text>Nincsenek konzultációk!</Text>
+        <Text mt={3} textAlign="center">
+          Nincsenek konzultációk!
+        </Text>
       ) : (
         <VStack alignItems="stretch" mt={3}>
           {isLoading ? (
             <LoadingConsultationList />
           ) : (
             <>
-              <Text>Szak</Text>
-              <Select placeholder="Válassz szakot">
-                {Object.keys(Major).map((m) => (
-                  <option>{m}</option>
-                ))}
-              </Select>
-
               {consultaions?.map((c) => (
                 <ConsultationListItem
                   consultation={c}
