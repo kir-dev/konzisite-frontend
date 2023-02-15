@@ -32,7 +32,6 @@ import { GroupModel } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { PATHS } from '../../../util/paths'
 import { CreateConsultationForm } from '../types/createConsultation'
-import { SelectorSkeleton } from './SelectorSkeleton'
 
 const INITIAL_GROUP_COUNT = 5
 
@@ -110,7 +109,7 @@ export const TargetGroupSelector = () => {
           Célcsoport hozzáadása
         </Button>
       </FormControl>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal scrollBehavior="inside" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Célcsoport hozzáadása</ModalHeader>
@@ -131,14 +130,18 @@ export const TargetGroupSelector = () => {
                 value={search}
               />
               <InputRightElement h="100%">
-                <FaTimes onClick={() => setSearch('')} cursor="pointer" />
+                <FaTimes
+                  onClick={() => {
+                    setSearch('')
+                    fetchGroups({ search: '', limit: INITIAL_GROUP_COUNT })
+                  }}
+                  cursor="pointer"
+                />
               </InputRightElement>
             </InputGroup>
             <Input {...register('targetGroups')} hidden />
-            <VStack mb={2} maxHeight="500px" overflowY="auto">
-              {isLoading ? (
-                <SelectorSkeleton />
-              ) : !filteredGroupList || filteredGroupList.length === 0 ? (
+            <VStack pr={0} mb={2} maxHeight="500px" overflowY="auto">
+              {isLoading || !filteredGroupList || filteredGroupList.length === 0 ? (
                 <Text fontStyle="italic">Nincs találat</Text>
               ) : (
                 filteredGroupList.map((g) => (
