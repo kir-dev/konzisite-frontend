@@ -41,7 +41,8 @@ export const IndexPage = () => {
         <Box mb={5}>
           <Alert rounded="md" my={2} status="warning">
             <AlertIcon />
-            Vannak konzultációk, amelyeken részt vettél, de még nem értékelted az előadókat!
+            Az alábbi konzultációkon részt vettél, de még nem értékelted az előadókat! Kérlek tedd meg minél előbb, hogy kapjanak
+            visszajelzést!
           </Alert>
           {data.unratedConsultations.map((c) => (
             <ConsultationListItem consultation={c} key={c.id} rightSmallText="Még nem értékelted valamelyik előadót!" />
