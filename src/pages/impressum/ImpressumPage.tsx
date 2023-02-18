@@ -7,7 +7,7 @@ import { developers } from './util/developers'
 export const ImpressumPage = () => {
   return (
     <>
-      <Helmet title="Impressum" />
+      <Helmet title="Impresszum" />
       <Heading size="xl" textAlign="center" mb={3}>
         Impresszum
       </Heading>
