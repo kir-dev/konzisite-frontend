@@ -106,7 +106,9 @@ const customTheme = extendTheme({
       700: '#042135',
       800: '#031b2b',
       900: '#021422'
-    }
+    },
+    kirDev: '#f15a29',
+    hk: '#2581c5'
   },
   components: {
     Button: {
