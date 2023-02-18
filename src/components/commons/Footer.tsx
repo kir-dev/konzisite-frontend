@@ -18,7 +18,7 @@ export const Footer: FC = () => {
   return (
     <Box as="footer">
       <Container py={8} as={Flex} justifyContent="space-evenly" direction={{ base: 'column', sm: 'row' }} maxW="6xl">
-        <HStack justify="center" spacing={5} mb={{ base: 8, sm: 0 }}>
+        <HStack justify="center" spacing={5} mb={{ base: 12, sm: 0 }}>
           <VStack>
             <Link textAlign="center" href="https://vik.hk/" isExternal _hover={{ color: customTheme.colors.hk }}>
               VIK Hallgatói Képviselet
@@ -31,7 +31,7 @@ export const Footer: FC = () => {
               <Link href="https://www.facebook.com/vik.hk" isExternal _hover={{ color: customTheme.colors.hk }}>
                 <FaFacebook size={25} />
               </Link>
-              <Link href="mailto://hk@vik.hk" isExternal _hover={{ color: customTheme.colors.hk }}>
+              <Link href="mailto:hk@vik.hk" isExternal _hover={{ color: customTheme.colors.hk }}>
                 <FaEnvelope size={25} />
               </Link>
             </HStack>
@@ -56,7 +56,7 @@ export const Footer: FC = () => {
           <VStack>
             <HStack spacing={2} justify="center">
               <Text textAlign="center">Made with</Text>
-              <FaHeart color="red" />
+              <FaHeart fontSize="1.5rem" color="red" />
               <Text textAlign="center">
                 by{' '}
                 <Link href="https://kir-dev.hu" isExternal _hover={{ color: customTheme.colors.kirDev }}>

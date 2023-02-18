@@ -24,17 +24,12 @@ export const developers: Dev[] = [
   {
     name: 'Smuky',
     img: 'https://warp.sch.bme.hu/images/smukferenc',
-    tags: ['Backend']
+    tags: ['Backend', 'HK Contact']
   },
   {
     name: 'Máté',
     img: 'https://warp.sch.bme.hu/images/nmate',
     tags: ['Backend']
-  },
-  {
-    name: 'Tamás',
-    img: '',
-    tags: ['Backend', 'Frontend']
   },
   {
     name: 'Trisz',
