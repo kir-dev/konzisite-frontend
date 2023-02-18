@@ -16,14 +16,18 @@ export const useFetchConsultationListQuery = () => {
 
 export type FetchConsultationsMutationProps = {
   major?: Major
+  startDate?: Date
+  endDate?: Date
 }
 
 export const useFetchConsultationListMutation = (onError: (e: KonziError) => void) => {
   return useMutation<ConsultationPreview[], KonziError, FetchConsultationsMutationProps>(
     'fetchConsultationsMuatation',
-    async ({ major }: FetchConsultationsMutationProps) => {
+    async ({ major, startDate, endDate }: FetchConsultationsMutationProps) => {
       const url = new URL(PATHS.CONSULTATIONS, API_HOST)
       if (major) url.searchParams.append('major', major.toString())
+      if (startDate) url.searchParams.append('startDate', startDate.getTime().toString())
+      if (endDate) url.searchParams.append('endDate', endDate.getTime().toString())
       return (await axios.get(url.toString())).data
     },
     { onError }
