@@ -1,4 +1,4 @@
-import { Major } from '../../../api/model/subject.model'
+import { Major } from '../api/model/subject.model'
 
 type MajorDictionary = {
   [K in Major]: string

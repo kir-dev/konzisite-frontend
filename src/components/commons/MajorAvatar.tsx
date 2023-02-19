@@ -1,6 +1,6 @@
 import { Avatar } from '@chakra-ui/react'
 import { SubjectModel } from '../../api/model/subject.model'
-import { majorColorForIcon } from '../../pages/subjects/util/majorHelpers'
+import { majorColorForIcon } from '../../util/majorHelpers'
 import { MajorIcon } from './MajorIcon'
 
 type Props = {

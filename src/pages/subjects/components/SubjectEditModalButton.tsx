@@ -25,8 +25,8 @@ import { KonziError } from '../../../api/model/error.model'
 import { Major, SubjectModel } from '../../../api/model/subject.model'
 import { ConfirmDialogButton } from '../../../components/commons/ConfirmDialogButton'
 import { generateToastParams } from '../../../util/generateToastParams'
+import { isMajor, MajorArray } from '../../../util/majorHelpers'
 import { CreateSubject } from '../types/CreateSubject'
-import { isMajor, MajorArray } from '../util/majorHelpers'
 import { MajorCheckbox } from './MajorCheckbox'
 
 type Props = {
