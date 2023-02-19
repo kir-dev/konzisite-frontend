@@ -12,9 +12,9 @@ export const ImpressumPage = () => {
         Impresszum
       </Heading>
       <Text textAlign="justify">
-        Az alkalmazást a HK felkérésére Kir-Dev webfejlesztő kör készítette. Mint ahogy az összes többi projektünk, ez is nyílt forráskódú.
-        A projekt alapja egy NodeJS REST API, mely egy PostgreSQL adatbázisban tárolja az adatokat. A webes kommunikációt a NestJS, az
-        adatbázissal való kapcsolatot pedig a Prisma keretrendszer egyszerűsíti. A backend kódbázisa{' '}
+        Az alkalmazást a HK felkérésére a Kir-Dev webfejlesztő kör készítette. Mint ahogy az összes többi projektünk, ez is nyílt
+        forráskódú. A projekt alapja egy NodeJS REST API, mely egy PostgreSQL adatbázisban tárolja az adatokat. A webes kommunikációt a
+        NestJS, az adatbázissal való kapcsolatot pedig a Prisma keretrendszer egyszerűsíti. A backend kódbázisa{' '}
         <Link color={customTheme.colors.kirDev} href="https://github.com/kir-dev/konzisite-api" isExternal>
           itt böngészhető
         </Link>

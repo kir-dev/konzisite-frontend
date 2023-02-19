@@ -4,6 +4,7 @@ import { FaEnvelope, FaFacebook, FaGithub, FaGlobe, FaHeart, FaInstagram } from 
 import { Link as RRDLink } from 'react-router-dom'
 import customTheme from '../../assets/theme'
 import { PATHS } from '../../util/paths'
+import { ColorfulExternalLink } from './ColorfulExternalLink'
 
 export const Footer: FC = () => {
   const kirDevLogo = useColorModeValue('/img/kirdev.svg', '/img/kirdev-white.svg')
@@ -20,20 +21,20 @@ export const Footer: FC = () => {
       <Container py={8} as={Flex} justifyContent="space-evenly" direction={{ base: 'column', sm: 'row' }} maxW="6xl">
         <HStack justify="center" spacing={5} mb={{ base: 12, sm: 0 }}>
           <VStack>
-            <Link textAlign="center" href="https://vik.hk/" isExternal _hover={{ color: customTheme.colors.hk }}>
+            <ColorfulExternalLink centered url="https://vik.hk/" hoverColor={customTheme.colors.hk}>
               VIK Hallgatói Képviselet
-            </Link>
+            </ColorfulExternalLink>
 
             <HStack spacing={2} mt={4} justify="space-evenly">
-              <Link href="https:/vik.hk" isExternal _hover={{ color: customTheme.colors.hk }}>
+              <ColorfulExternalLink url="https:/vik.hk" hoverColor={customTheme.colors.hk}>
                 <FaGlobe size={25} />
-              </Link>
-              <Link href="https://www.facebook.com/vik.hk" isExternal _hover={{ color: customTheme.colors.hk }}>
+              </ColorfulExternalLink>
+              <ColorfulExternalLink url="https://www.facebook.com/vik.hk" hoverColor={customTheme.colors.hk}>
                 <FaFacebook size={25} />
-              </Link>
-              <Link href="mailto:hk@vik.hk" isExternal _hover={{ color: customTheme.colors.hk }}>
+              </ColorfulExternalLink>
+              <ColorfulExternalLink url="mailto:hk@vik.hk" hoverColor={customTheme.colors.hk}>
                 <FaEnvelope size={25} />
-              </Link>
+              </ColorfulExternalLink>
             </HStack>
           </VStack>
 
@@ -59,9 +60,9 @@ export const Footer: FC = () => {
               <FaHeart fontSize="1.5rem" color="red" />
               <Text textAlign="center">
                 by{' '}
-                <Link href="https://kir-dev.hu" isExternal _hover={{ color: customTheme.colors.kirDev }}>
+                <ColorfulExternalLink url="https://kir-dev.hu" hoverColor={customTheme.colors.kirDev}>
                   Kir-Dev
-                </Link>
+                </ColorfulExternalLink>
               </Text>
             </HStack>
             <Text textAlign="center">
@@ -72,18 +73,18 @@ export const Footer: FC = () => {
             </Text>
 
             <HStack spacing={2} mt={4} justify="space-evenly">
-              <Link href="https://github.com/kir-dev" isExternal _hover={{ color: customTheme.colors.kirDev }}>
+              <ColorfulExternalLink url="https://github.com/kir-dev" hoverColor={customTheme.colors.kirDev}>
                 <FaGithub size={25} />
-              </Link>
-              <Link href="https://kir-dev.hu" isExternal _hover={{ color: customTheme.colors.kirDev }}>
+              </ColorfulExternalLink>
+              <ColorfulExternalLink url="https://kir-dev.hu" hoverColor={customTheme.colors.kirDev}>
                 <FaGlobe size={25} />
-              </Link>
-              <Link href="https://www.facebook.com/kirdevteam" isExternal _hover={{ color: customTheme.colors.kirDev }}>
+              </ColorfulExternalLink>
+              <ColorfulExternalLink url="https://www.facebook.com/kirdevteam" hoverColor={customTheme.colors.kirDev}>
                 <FaFacebook size={25} />
-              </Link>
-              <Link href="https://www.instagram.com/kir.dev/" isExternal _hover={{ color: customTheme.colors.kirDev }}>
+              </ColorfulExternalLink>
+              <ColorfulExternalLink url="https://www.instagram.com/kir.dev/" hoverColor={customTheme.colors.kirDev}>
                 <FaInstagram size={25} />
-              </Link>
+              </ColorfulExternalLink>
             </HStack>
           </VStack>
         </HStack>
