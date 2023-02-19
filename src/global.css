@@ -1,17 +1,18 @@
 *::-webkit-scrollbar {
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 0.5rem;
+  height: 0.5rem;
 }
 *::-webkit-scrollbar-track {
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background: var(--chakra-colors-theme-300);
+  background: var(--chakra-colors-gray-400);
   border-radius: 10px;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: var(--chakra-colors-theme-200);
+  background: var(--chakra-colors-gray-500);
 }
 html {
   scroll-behavior: smooth;
+  overflow-y: scroll;
 }
