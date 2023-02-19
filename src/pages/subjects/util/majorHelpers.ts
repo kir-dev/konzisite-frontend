@@ -41,4 +41,15 @@ export const majorVariant: MajorDictionary = {
   [Major.SE_MSC]: 'solid'
 }
 
+export const majorColorForIcon: MajorDictionary = {
+  [Major.CE_BSC]: 'brand.200',
+  [Major.EE_BSC]: 'green.300',
+  [Major.BPROF]: 'purple.300',
+  [Major.CE_MSC]: 'brand.400',
+  [Major.EE_MSC]: 'green.600',
+  [Major.BI_MSC]: 'orange.400',
+  [Major.HI_MSC]: 'red.400',
+  [Major.SE_MSC]: 'yellow.400'
+}
+
 export const MajorArray = [Major.CE_BSC, Major.EE_BSC, Major.BPROF, Major.CE_MSC, Major.EE_MSC, Major.BI_MSC, Major.HI_MSC, Major.SE_MSC]

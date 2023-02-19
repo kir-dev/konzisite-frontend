@@ -1,4 +1,4 @@
-import { Avatar, Box, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react'
+import { Box, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react'
 import { ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 import { ConsultationModel } from '../../api/model/consultation.model'
@@ -7,6 +7,7 @@ import { SubjectModel } from '../../api/model/subject.model'
 import { PublicUser } from '../../pages/user/types/PublicUser'
 import { generateDateText, generateTimeSpanText } from '../../util/dateHelper'
 import { PATHS } from '../../util/paths'
+import { MajorAvatar } from './MajorAvatar'
 
 type Props = {
   consultation: ConsultationModel & {
@@ -26,7 +27,7 @@ export const ConsultationListItem = ({ consultation, children, rightSmallText }:
   return (
     <Box shadow="md" borderRadius={8} borderWidth={1}>
       <HStack flexGrow={1} as={Link} to={`${PATHS.CONSULTATIONS}/${consultation.id}`} p={4} align="flex-start">
-        <Avatar size="md" name={consultation.subject.name.toString()} src={''} />
+        <MajorAvatar subject={consultation.subject} />
         <VStack flexGrow={1}>
           <Stack direction={['column', 'row']} justifyContent="space-between" width="100%">
             <Heading size="md">{consultation.name}</Heading>
