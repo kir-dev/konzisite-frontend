@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom'
 import { FetchConsultationsMutationProps, useFetchConsultationListMutation } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { Major } from '../../api/model/subject.model'
+import { formatDate } from '../../util/dateHelper'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
@@ -49,14 +50,19 @@ export const ConsultationsPage = () => {
   }
 
   const [major, setMajor] = useState<Major>()
-  const [startDate, setStartDate] = useState<Date>()
+  const [startDate, setStartDate] = useState<Date>(new Date())
   const [endDate, setEndDate] = useState<Date>()
+  const [hideCalendar, setHideCalendar] = useState<boolean>(false)
 
-  const { isOpen, onToggle } = useDisclosure()
+  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true })
 
   useEffect(() => {
     fetchConsultations(major, startDate, endDate)
   }, [major, startDate, endDate])
+
+  useEffect(() => {
+    setTimeout(() => setHideCalendar(true), 25)
+  }, [])
 
   if (error) {
     return <ErrorPage status={error.statusCode} title={error.message} />
@@ -77,7 +83,7 @@ export const ConsultationsPage = () => {
         </Button>
       </Flex>
       <Flex></Flex>
-      <Collapse in={isOpen}>
+      <Collapse in={isOpen} animateOpacity>
         <Stack columnGap={5} mt={3} direction={{ base: 'column', md: 'row' }}>
           <Flex direction={{ base: 'column', md: 'row' }} align={{ base: '', md: 'center' }} grow={1}>
             <Text mr={2} fontWeight="bold">
@@ -95,24 +101,24 @@ export const ConsultationsPage = () => {
             <Text mr={2} fontWeight="bold">
               Kezdés
             </Text>
-            <Input type="date" onChange={(e) => setStartDate(new Date(e.target.value))} />
+            <Input value={formatDate(startDate)} type="date" onChange={(e) => setStartDate(new Date(e.target.value))} />
           </Flex>
           <Flex direction={{ base: 'column', md: 'row' }} align={{ base: '', md: 'center' }} grow={1}>
             <Text mr={2} fontWeight="bold">
               Befejezés
             </Text>
-            <Input type="date" onChange={(e) => setEndDate(new Date(e.target.value))} />
+            <Input value={formatDate(endDate)} type="date" onChange={(e) => setEndDate(new Date(e.target.value))} />
           </Flex>
         </Stack>
       </Collapse>
       <Tabs mt={8} isFitted rounded="lg" variant="enclosed" colorScheme="brand">
         <TabList>
-          <Tab>Lista</Tab>
-          <Tab>Naptár</Tab>
+          <Tab onClick={() => setHideCalendar(true)}>Lista</Tab>
+          <Tab onClick={() => setHideCalendar(false)}>Naptár</Tab>
         </TabList>
         <TabPanels>
           <ConsultationsListPanel isLoading={isLoading} consultaions={consultaions} />
-          <ConsultationsCalendarPanel consultaions={consultaions} />
+          <ConsultationsCalendarPanel hideCalendar={hideCalendar} consultaions={consultaions} />
         </TabPanels>
       </Tabs>
     </>

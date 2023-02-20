@@ -12,7 +12,7 @@ export const ConsultationsListPanel = ({ isLoading, consultaions }: Props) => {
   return (
     <TabPanel px={0}>
       {consultaions && consultaions.length === 0 ? (
-        <Text mt={3} textAlign="center">
+        <Text mt={3} textAlign="center" fontStyle="italic">
           Nincsenek konzultációk!
         </Text>
       ) : (
