@@ -1,6 +1,6 @@
 import { Badge, StackItem } from '@chakra-ui/react'
 import { Major } from '../../../api/model/subject.model'
-import { majorColor, majorVariant, translateMajor } from '../util/majorHelpers'
+import { majorColor, majorVariant, translateMajor } from '../../../util/majorHelpers'
 
 export const MajorBadge = ({ major }: { major: Major }) => {
   return (

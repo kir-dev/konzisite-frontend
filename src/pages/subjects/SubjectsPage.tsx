@@ -28,10 +28,10 @@ import {
 import { KonziError } from '../../api/model/error.model'
 import { UploadFileModalButton } from '../../components/commons/UploadFileModalButton'
 import { generateToastParams } from '../../util/generateToastParams'
+import { MajorArray, translateMajor } from '../../util/majorHelpers'
 import { ErrorPage } from '../error/ErrorPage'
 import { MajorBadge } from './components/MajorBadge'
 import { SubjectEditModalButton } from './components/SubjectEditModalButton'
-import { MajorArray, translateMajor } from './util/majorHelpers'
 
 export const SubjectsPage = () => {
   const { error, data: subjects, refetch } = useFetchSubjectsQuery()
