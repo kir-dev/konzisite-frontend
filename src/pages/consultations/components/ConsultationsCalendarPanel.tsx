@@ -46,6 +46,10 @@ const StyleWrapper = styled.div`
   .fc-event {
     cursor: pointer;
   }
+
+  .fc-popover {
+    background-color: ${(props) => (props.className === 'light' ? '' : customTheme.colors.brand[600])};
+  }
 `
 
 export const ConsultationsCalendarPanel = ({ consultaions, hideCalendar }: Props) => {
