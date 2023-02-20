@@ -1,7 +1,7 @@
 import { Checkbox } from '@chakra-ui/react'
 import { ChangeEvent } from 'react'
 import { Major } from '../../../api/model/subject.model'
-import { translateMajor } from '../util/majorHelpers'
+import { translateMajor } from '../../../util/majorHelpers'
 
 type Props = {
   getCheckboxProps: (props?: Record<string, any> | undefined) => {

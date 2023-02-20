@@ -68,12 +68,26 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
                   {(g.currentUserRole == GroupRoles.PENDING || g.currentUserRole == GroupRoles.NONE) && (
                     <VStack p={2} justifyContent="center">
                       {g.currentUserRole == GroupRoles.PENDING && (
-                        <Button colorScheme="red" onClick={() => undoJoin(g)} width="100%">
+                        <Button
+                          colorScheme="red"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            undoJoin(g)
+                          }}
+                          width="100%"
+                        >
                           Kérelem visszavonása
                         </Button>
                       )}
                       {g.currentUserRole == GroupRoles.NONE && (
-                        <Button colorScheme="brand" onClick={() => joinGroup(g.id)} width="100%">
+                        <Button
+                          colorScheme="brand"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            joinGroup(g.id)
+                          }}
+                          width="100%"
+                        >
                           Csatlakozás
                         </Button>
                       )}
