@@ -1,10 +1,12 @@
-import { Box, useMediaQuery } from '@chakra-ui/react'
+import { Box, useColorMode, useMediaQuery } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { useNavigate } from 'react-router-dom'
+import customTheme from '../../../assets/theme'
+import { majorColor } from '../../../util/majorHelpers'
 import { PATHS } from '../../../util/paths'
 import { ConsultationPreview } from '../types/consultationPreview'
 
@@ -21,17 +23,26 @@ type eventProps = {
   color: string
 }
 
-/*
-.fc-button.fc-prev-button,
-  .fc-button.fc-next-button,
-  .fc-button.fc-button-secondary,
-  .fc-button.fc-button-primary {
-    background: #062c4c;
-  }
-  */
-
 const StyleWrapper = styled.div`
-  --fc-button-bg-color: #062c4c;
+  --fc-button-active-bg-color: ${(props) => customTheme.colors.brand[props.className === 'light' ? 400 : 300]};
+  --fc-button-bg-color: ${(props) => customTheme.colors.brand[props.className === 'light' ? 500 : 200]};
+  --fc-button-border-color: ${(props) => customTheme.colors.brand[props.className === 'light' ? 500 : 200]};
+  --fc-button-hover-bg-color: ${(props) => customTheme.colors.brand[props.className === 'light' ? 400 : 300]};
+  --fc-button-hover-border-color: ${(props) => customTheme.colors.brand[props.className === 'light' ? 400 : 300]};
+
+  .fc-button:disabled {
+    opacity: 0.35;
+  }
+
+  .fc-button,
+  .fc-button:focus,
+  .fc-button:active,
+  .fc-button-primary:not(:disabled):active:focus,
+  .fc-button-primary:not(:disabled).fc-button-active:focus {
+    box-shadow: 0 0 0 0;
+    border: 0;
+  }
+
   .fc-event {
     cursor: pointer;
   }
@@ -40,6 +51,7 @@ const StyleWrapper = styled.div`
 export const ConsultationsCalendarPanel = ({ consultaions, hideCalendar }: Props) => {
   const navigate = useNavigate()
   const [largeScreen] = useMediaQuery('(min-width: 48em)')
+  const colorMode = useColorMode()
 
   const events: eventProps[] | undefined = consultaions?.map((c) => {
     return {
@@ -47,13 +59,13 @@ export const ConsultationsCalendarPanel = ({ consultaions, hideCalendar }: Props
       title: c.name,
       start: c.startDate,
       end: c.endDate,
-      color: c.subject.majors.length > 1 ? 'purple' : 'blue' //TODO with major colors
+      color: c.subject.majors.length > 1 ? 'purple' : majorColor[c.subject.majors[0]]
     }
   })
 
   return (
     <Box mt={5} hidden={hideCalendar}>
-      <StyleWrapper>
+      <StyleWrapper className={colorMode.colorMode}>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={
@@ -84,8 +96,6 @@ export const ConsultationsCalendarPanel = ({ consultaions, hideCalendar }: Props
           locale="hu"
           firstDay={1}
           allDaySlot={false}
-          //initialView="dayGridMonth"
-          //selectable={true}
           dayMaxEvents={true}
           weekends={true}
           nowIndicator={true}
