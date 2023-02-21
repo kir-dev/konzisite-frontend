@@ -30,7 +30,9 @@ export const ConsultationListItem = ({ consultation, children, rightSmallText }:
         <MajorAvatar subject={consultation.subject} />
         <VStack flexGrow={1}>
           <Stack direction={['column', 'row']} justifyContent="space-between" width="100%">
-            <Heading size="md">{consultation.name}</Heading>
+            <Heading isTruncated maxWidth={{ base: '15rem', sm: '9rem', m: '15rem', md: '22rem', lg: '35rem' }} size="md">
+              {consultation.name}
+            </Heading>
             <Heading size={{ base: 'sm', md: 'md' }}>
               {generateDateText(consultation.startDate)} {generateTimeSpanText(consultation.startDate, consultation.endDate)}
             </Heading>
