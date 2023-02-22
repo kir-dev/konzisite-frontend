@@ -73,8 +73,8 @@ export const ConsultationDateForm = ({ prevStartDate }: Props) => {
             validate: (s) => (prevStartDate && prevStartDate < new Date() ? true : s > new Date())
           })}
           hidden
-        ></Input>
-        <Input {...register('endDate', { validate: (e) => e > watch('startDate') })} hidden></Input>
+        />
+        <Input {...register('endDate', { validate: (e) => e > watch('startDate') })} hidden />
       </Stack>
       {(!!errors.startDate || !!errors.endDate) && (
         <FormErrorMessage>

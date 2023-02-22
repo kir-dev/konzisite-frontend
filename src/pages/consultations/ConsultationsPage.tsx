@@ -80,7 +80,6 @@ export const ConsultationsPage = () => {
           Új konzultáció
         </Button>
       </Flex>
-      <Flex></Flex>
       <Collapse in={isOpen} animateOpacity>
         <Stack columnGap={5} mt={3} direction={{ base: 'column', md: 'row' }}>
           <Flex direction={{ base: 'column', md: 'row' }} align={{ base: '', md: 'center' }} grow={1}>
