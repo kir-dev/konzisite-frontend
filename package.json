@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@types/jest": "29.4.0",
-    "@types/js-cookie": "3.0.2",
+    "@types/js-cookie": "3.0.3",
     "@types/lodash.debounce": "^4.0.7",
     "@types/node": "18.14.0",
     "@types/react": "18.0.28",
