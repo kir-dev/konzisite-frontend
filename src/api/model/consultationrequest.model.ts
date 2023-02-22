@@ -1,5 +1,6 @@
 export interface ConsultationRequestModel {
   id: number
-  descMarkdown: String
-  expiryDate: Date
+  name: string
+  descMarkdown: string
+  expiryDate: string
 }

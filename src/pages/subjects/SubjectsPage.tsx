@@ -26,6 +26,7 @@ import {
   useUpdateSubjectMutation
 } from '../../api/hooks/subjectHooks'
 import { KonziError } from '../../api/model/error.model'
+import { PageHeading } from '../../components/commons/PageHeading'
 import { UploadFileModalButton } from '../../components/commons/UploadFileModalButton'
 import { generateToastParams } from '../../util/generateToastParams'
 import { MajorArray, translateMajor } from '../../util/majorHelpers'
@@ -65,9 +66,7 @@ export const SubjectsPage = () => {
   return (
     <>
       <Helmet title="Tárgyak" />
-      <Heading size="xl" textAlign="center" mb={3}>
-        Tárgyak
-      </Heading>
+      <PageHeading title="Tárgyak" />
       <Stack direction={['column', 'row']} mb={3} justifyContent="space-between">
         <Box>
           <Select value={selectedMajor} onChange={(e) => setSelectedMajor(e.target.value)}>
