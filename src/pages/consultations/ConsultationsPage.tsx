@@ -113,8 +113,8 @@ export const ConsultationsPage = () => {
       </Collapse>
       <Tabs mt={8} isFitted rounded="lg" variant="enclosed" colorScheme="brand">
         <TabList>
-          <Tab onClick={() => setHideCalendar(true)}>Lista</Tab>
-          <Tab onClick={() => setHideCalendar(false)}>Naptár</Tab>
+          <Tab onFocus={() => setHideCalendar(true)}>Lista</Tab>
+          <Tab onFocus={() => setHideCalendar(false)}>Naptár</Tab>
         </TabList>
         <TabPanels>
           <ConsultationsListPanel isLoading={isLoading} consultaions={consultaions} />
