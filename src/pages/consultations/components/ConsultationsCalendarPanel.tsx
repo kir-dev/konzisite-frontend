@@ -23,12 +23,17 @@ type eventProps = {
   color: string
 }
 
+const lightModeLightColor = customTheme.colors.brand[400]
+const lightModeDarkcolor = customTheme.colors.brand[500]
+const darkModeLightColor = customTheme.colors.brand[300]
+const darkModeDarkColor = customTheme.colors.brand[400]
+
 const StyleWrapper = styled.div`
-  --fc-button-active-bg-color: ${(props) => customTheme.colors.brand[props.className === 'light' ? 400 : 300]};
-  --fc-button-bg-color: ${(props) => customTheme.colors.brand[props.className === 'light' ? 500 : 200]};
-  --fc-button-border-color: ${(props) => customTheme.colors.brand[props.className === 'light' ? 500 : 200]};
-  --fc-button-hover-bg-color: ${(props) => customTheme.colors.brand[props.className === 'light' ? 400 : 300]};
-  --fc-button-hover-border-color: ${(props) => customTheme.colors.brand[props.className === 'light' ? 400 : 300]};
+  --fc-button-active-bg-color: ${(props) => (props.className === 'light' ? lightModeDarkcolor : darkModeDarkColor)};
+  --fc-button-bg-color: ${(props) => (props.className === 'light' ? lightModeLightColor : darkModeLightColor)};
+  --fc-button-border-color: ${(props) => (props.className === 'light' ? lightModeLightColor : darkModeLightColor)};
+  --fc-button-hover-bg-color: ${(props) => (props.className === 'light' ? lightModeDarkcolor : darkModeDarkColor)};
+  --fc-button-hover-border-color: ${(props) => (props.className === 'light' ? lightModeDarkcolor : darkModeDarkColor)};
 
   .fc-button:disabled {
     opacity: 0.35;
