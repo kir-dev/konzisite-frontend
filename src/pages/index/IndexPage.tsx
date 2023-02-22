@@ -30,7 +30,7 @@ export const IndexPage = () => {
 
   return (
     <>
-      <PageHeading title="Üdvözlünk a Konzisite-on!" />
+      <PageHeading title="Üdvözlünk a Konzisite&#8209;on!" />
       {data.alert && (
         <Alert rounded="md" my={2} status={data.alert.type}>
           <AlertIcon />
