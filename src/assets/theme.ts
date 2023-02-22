@@ -117,6 +117,11 @@ const customTheme = extendTheme({
         ghost: buttonVariantGhost,
         outline: buttonVariantOutline
       }
+    },
+    Heading: {
+      baseStyle: (props: StyleFunctionProps) => ({
+        color: mode('brand.500', 'white')(props)
+      })
     }
   },
   breakpoints: {

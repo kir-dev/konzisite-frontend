@@ -10,6 +10,7 @@ import { ErrorPage } from './pages/error/ErrorPage'
 import { GroupDetailsPage } from './pages/groups/GroupDetailsPage'
 import { GroupsPage } from './pages/groups/GroupsPage'
 import { ImpressumPage } from './pages/impressum/ImpressumPage'
+import { IndexPage } from './pages/index/IndexPage'
 import { LoginPage } from './pages/login/LoginPage'
 import { LogoutPage } from './pages/logout/LogoutPage'
 import { SubjectsPage } from './pages/subjects/SubjectsPage'
@@ -23,7 +24,7 @@ export const App = () => {
     <RLayout>
       <Routes>
         <Route path={PATHS.INDEX}>
-          <Route index element={<ConsultationsPage />} />
+          <Route index element={<IndexPage />} />
           <Route path={PATHS.PROFILE} element={<ProfilePage />} />
           <Route path={PATHS.USERS}>
             <Route path=":userId">

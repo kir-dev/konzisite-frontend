@@ -1,5 +1,6 @@
 import { UserModel } from '../api/model/user.model'
 import { API_HOST } from './environment'
+import { PATHS } from './paths'
 
 export interface INavItem {
   label: string
@@ -37,38 +38,45 @@ export class NavItem implements INavItem {
 
 const SubjectsItem = new NavItem({
   label: 'Tárgyak',
-  path: 'subjects'
+  path: PATHS.SUBJECTS
 })
 SubjectsItem.shouldBeShown = (isLoggedIn: boolean, loggedInUser: UserModel | undefined) => isLoggedIn && (loggedInUser?.isAdmin || false)
 
 const KonziItem = new NavItem({
   label: 'Konzultációk',
-  path: '/'
+  path: PATHS.CONSULTATIONS
+})
+KonziItem.shouldBeShown = (_isLoggedIn: boolean) => true
+
+const HomeItem = new NavItem({
+  label: 'Kezdőlap',
+  path: PATHS.INDEX
 })
 KonziItem.shouldBeShown = (_isLoggedIn: boolean) => true
 
 const LoginItem = new NavItem({
   label: 'Belépés',
-  path: '/login',
+  path: PATHS.LOGIN,
   external: true,
   onClick: () => (window.location.href = `${API_HOST}/auth/login`)
 })
 LoginItem.shouldBeShown = (isLoggedIn: boolean) => !isLoggedIn
 
 export const NAV_ITEMS: INavItem[] = [
+  HomeItem,
   KonziItem,
   new NavItem({
     label: 'Csoportok',
-    path: '/groups'
+    path: PATHS.GROUPS
   }),
   new NavItem({
     label: 'Felhasználók',
-    path: '/users'
+    path: PATHS.USERS
   }),
   SubjectsItem,
   new NavItem({
     label: 'Profil',
-    path: '/profile'
+    path: PATHS.PROFILE
   }),
   LoginItem
 ]

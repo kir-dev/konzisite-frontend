@@ -1,4 +1,4 @@
-import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Heading, Input, useToast, VStack } from '@chakra-ui/react'
+import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, useToast, VStack } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -8,6 +8,7 @@ import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useCreateConsultationMutation, useEditConsultationMutation } from '../../api/hooks/consultationMutationHooks'
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
+import { PageHeading } from '../../components/commons/PageHeading'
 import { MarkdownEditor } from '../../components/editor/MarkdownEditor'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
@@ -134,9 +135,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       ) : (
         <>
           <Helmet title={newConsultation ? 'Új konzultáció' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`} />
-          <Heading size="xl" textAlign="center" mb={3}>
-            {newConsultation ? 'Új konzultáció létrehozása' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`}
-          </Heading>
+          <PageHeading title={newConsultation ? 'Új konzultáció létrehozása' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`} />
           <VStack>
             <FormControl isInvalid={!!errors.name} isRequired>
               <FormLabel>Konzultáció neve</FormLabel>

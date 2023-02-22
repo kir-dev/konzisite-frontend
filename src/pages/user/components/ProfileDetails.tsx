@@ -6,6 +6,7 @@ import {
   Card,
   CardBody,
   Flex,
+  Heading,
   HStack,
   SimpleGrid,
   Stack,
@@ -90,9 +91,9 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
         <HStack flexWrap="wrap" spacing={4} mb={2}>
           <Avatar size={useBreakpointValue({ base: 'lg', md: 'xl' })} name={user.fullName} src={''} />
           <Stack direction={{ base: 'column', md: 'row' }} align="center" alignItems={{ base: 'flex-start', md: 'center' }}>
-            <Box fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={700} wordBreak="break-all">
+            <Heading size={{ base: 'lg', sm: 'xl' }} fontWeight={700} wordBreak="break-all">
               {user.fullName}
-            </Box>
+            </Heading>
             {user.isAdmin && loggedInUser?.isAdmin && (
               <Badge colorScheme="green" ml={1} fontSize="xl">
                 Konzisite admin

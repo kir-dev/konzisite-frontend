@@ -1,21 +1,12 @@
 import { CloseIcon, SearchIcon } from '@chakra-ui/icons'
-import {
-  Flex,
-  Heading,
-  IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  useBreakpointValue,
-  useToast
-} from '@chakra-ui/react'
+import { Flex, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, useBreakpointValue, useToast } from '@chakra-ui/react'
 import debounce from 'lodash.debounce'
 import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { FetchUserListMutationProps, useFecthUserListMutation } from '../../api/hooks/userMutationHooks'
 import { KonziError } from '../../api/model/error.model'
+import { PageHeading } from '../../components/commons/PageHeading'
 import { generateToastParams } from '../../util/generateToastParams'
 import { ErrorPage } from '../error/ErrorPage'
 import { LoadingUserList } from './components/LoadingUserList'
@@ -58,7 +49,7 @@ export const UserBrowserPage = () => {
   return (
     <>
       <Helmet title="Felhasználók" />
-      <Heading textAlign="center">Felhasználók keresése</Heading>
+      <PageHeading title="Felhasználók keresése" />
       <InputGroup my={5}>
         <InputLeftElement h="100%">
           <SearchIcon />
