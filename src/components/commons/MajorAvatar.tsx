@@ -11,7 +11,7 @@ export const MajorAvatar = ({ subject }: Props) => {
   return (
     <Avatar
       size="md"
-      bg={subject.majors.length > 1 ? 'purple.500' : majorColorForIcon[subject.majors[0]]}
+      bg={subject.majors.length > 1 ? 'orange.500' : majorColorForIcon[subject.majors[0]]}
       icon={<MajorIcon majors={subject.majors} />}
       src={''}
     />

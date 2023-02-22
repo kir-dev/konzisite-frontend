@@ -52,18 +52,18 @@ const buttonVariantSolid: SystemStyleFunction = (props) => {
   const hoverBg = `${c}.400`
   const activeBg = `${c}.400`
 
-  const background = mode(bg, `${c}.200`)(props)
+  const background = mode(bg, `${c}.300`)(props)
 
   return {
     bg: background,
-    color: mode(color, `${c}.900`)(props),
+    color: color,
     _hover: {
-      bg: mode(hoverBg, `${c}.300`)(props),
+      bg: hoverBg,
       _disabled: {
         bg: background
       }
     },
-    _active: { bg: mode(activeBg, `${c}.300`)(props) }
+    _active: { bg: activeBg }
   }
 }
 
@@ -77,6 +77,16 @@ const buttonVariantOutline: SystemStyleFunction = (props) => {
     borderColor: c === 'gray' ? borderColor : 'currentColor',
     '.chakra-button__group[data-attached] > &:not(:last-of-type)': {
       marginEnd: '-1px'
+    }
+  }
+}
+
+const tabVariantEnclosed: SystemStyleFunction = (props) => {
+  return {
+    tab: {
+      _selected: {
+        color: mode('brand.300', 'brand.200')(props)
+      }
     }
   }
 }
@@ -122,8 +132,13 @@ const customTheme = extendTheme({
       baseStyle: (props: StyleFunctionProps) => ({
         color: mode('brand.500', 'white')(props)
       })
+    },
+    Tabs: {
+      variants: {
+        enclosed: tabVariantEnclosed
+      }
     }
-  },
+  }, // const tabColor = useColorModeValue(customTheme.colors.brand[600], customTheme.colors.brand[100])
   breakpoints: {
     // sm-2xl are the chakra defaults, added an extra breakpoint for 16+ inch full HD screens
     sm: '30em',

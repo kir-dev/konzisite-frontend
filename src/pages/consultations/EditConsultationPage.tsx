@@ -30,8 +30,8 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const { isLoggedIn, loggedInUser, loggedInUserLoading } = useAuthContext()
   const consultationId = parseInt(useParams<{ consultationId: string }>().consultationId ?? '-1')
 
-  const { mutate: createConsultation } = useCreateConsultationMutation()
-  const { mutate: updateConsultation } = useEditConsultationMutation(consultationId)
+  const { mutate: createConsultation, isLoading: createLoading } = useCreateConsultationMutation()
+  const { mutate: updateConsultation, isLoading: editLoading } = useEditConsultationMutation(consultationId)
 
   const { isLoading, data: consultation, error } = useFetchConsultationbDetailsQuery(consultationId)
 
@@ -175,6 +175,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
               Vissza
             </Button>
             <Button
+              isLoading={createLoading || editLoading}
               colorScheme="brand"
               onClick={() => {
                 onSubmit()
