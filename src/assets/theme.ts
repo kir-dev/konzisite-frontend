@@ -122,6 +122,7 @@ const customTheme = extendTheme({
   breakpoints: {
     // sm-2xl are the chakra defaults, added an extra breakpoint for 16+ inch full HD screens
     sm: '30em',
+    m: '39em',
     md: '48em',
     lg: '62em',
     xl: '80em',
