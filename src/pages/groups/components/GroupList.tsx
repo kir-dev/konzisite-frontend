@@ -57,7 +57,9 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
                   <HStack p={4}>
                     <Avatar size="md" name={g.name} src={''} />
                     <VStack flexGrow={1} align="flex-start">
-                      <Heading size="md">{g.name}</Heading>
+                      <Heading isTruncated maxWidth={{ base: '15rem', sm: '22rem', m: '30rem', md: '40rem', lg: '25rem' }} size="md">
+                        {g.name}
+                      </Heading>
 
                       <HStack justify="space-between" align="center">
                         <Text>{g.memberCount} tag</Text>

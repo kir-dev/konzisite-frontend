@@ -99,7 +99,9 @@ export const ConsultationDetailsPage = () => {
         <VStack alignItems="flex-start" spacing={3} flexGrow={1}>
           <HStack>
             <FaMapMarkerAlt />
-            <Text> {consultation.location} </Text>
+            <Text isTruncated maxWidth={{ base: '18rem', sm: '15rem', m: '25rem', md: '35rem', lg: '48rem' }}>
+              {consultation.location}
+            </Text>
           </HStack>
           <HStack>
             <FaClock />

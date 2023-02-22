@@ -1,4 +1,4 @@
-import { Box, Container, Flex, HStack, Image, Link, Text, useColorModeValue, VStack } from '@chakra-ui/react'
+import { Box, Container, Flex, HStack, Image, Link, Stack, Text, useColorModeValue, VStack } from '@chakra-ui/react'
 import { FC, MouseEvent } from 'react'
 import { FaEnvelope, FaFacebook, FaGithub, FaGlobe, FaHeart, FaInstagram } from 'react-icons/fa'
 import { Link as RRDLink } from 'react-router-dom'
@@ -18,8 +18,8 @@ export const Footer: FC = () => {
 
   return (
     <Box as="footer">
-      <Container py={8} as={Flex} justifyContent="space-evenly" direction={{ base: 'column', sm: 'row' }} maxW="6xl">
-        <HStack justify="center" spacing={5} mb={{ base: 12, sm: 0 }}>
+      <Container py={8} as={Flex} align="center" justifyContent="space-evenly" direction={{ base: 'column', m: 'row' }} maxW="6xl">
+        <HStack justify="center" spacing={{ base: 0, m: 5 }} mb={{ base: 12, m: 0 }}>
           <VStack>
             <ColorfulExternalLink centered url="https://vik.hk/" hoverColor={customTheme.colors.hk}>
               VIK Hallgatói Képviselet
@@ -55,7 +55,7 @@ export const Footer: FC = () => {
           </Link>
 
           <VStack>
-            <HStack spacing={2} justify="center">
+            <Stack direction={{ base: 'column', md: 'row' }} spacing={2} justify="center" align="center">
               <Text textAlign="center">Made with</Text>
               <FaHeart fontSize="1.5rem" color="red" />
               <Text textAlign="center">
@@ -64,7 +64,7 @@ export const Footer: FC = () => {
                   Kir-Dev
                 </ColorfulExternalLink>
               </Text>
-            </HStack>
+            </Stack>
             <Text textAlign="center">
               &copy; {new Date().getFullYear()} •{' '}
               <Link textAlign="center" as={RRDLink} to={PATHS.IMPRESSUM} _hover={{ color: customTheme.colors.kirDev }}>
