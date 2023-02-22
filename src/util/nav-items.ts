@@ -52,7 +52,7 @@ const HomeItem = new NavItem({
   label: 'Kezdőlap',
   path: PATHS.INDEX
 })
-KonziItem.shouldBeShown = (_isLoggedIn: boolean) => true
+HomeItem.shouldBeShown = (_isLoggedIn: boolean) => true
 
 const LoginItem = new NavItem({
   label: 'Belépés',
