@@ -104,7 +104,8 @@ export const ConsultationsCalendarPanel = ({ consultaions, hideCalendar }: Props
           weekends={true}
           nowIndicator={true}
           events={events}
-          buttonHints={{ week: 'Hét nézet', month: 'Hónap nézet', today: 'Ugrás a mai naphoz', next: 'Következő', prev: 'Előző' }}
+          fixedWeekCount={false}
+          buttonHints={{ week: 'Heti nézet', month: 'Hónap nézet', today: 'Ugrás a mai naphoz', next: 'Következő', prev: 'Előző' }}
           eventTimeFormat={{
             hour: '2-digit',
             minute: '2-digit'
