@@ -1,5 +1,6 @@
 import { FormControl, FormErrorMessage, FormLabel, Input, InputGroup, InputLeftAddon, Stack } from '@chakra-ui/react'
 import { useFormContext } from 'react-hook-form'
+import { formatDate, formatTime } from '../../../util/dateHelper'
 import { CreateConsultationForm } from '../types/createConsultation'
 
 type Props = {
@@ -13,27 +14,6 @@ export const ConsultationDateForm = ({ prevStartDate }: Props) => {
     setValue,
     formState: { errors }
   } = useFormContext<CreateConsultationForm>()
-
-  const formatDate = (date: Date) => {
-    let month = '' + (date.getMonth() + 1)
-    let day = '' + date.getDate()
-    const year = date.getFullYear()
-
-    if (month.length < 2) month = '0' + month
-    if (day.length < 2) day = '0' + day
-
-    return [year, month, day].join('-')
-  }
-
-  const formatTime = (date: Date) => {
-    let hour = '' + date.getHours()
-    let minute = '' + date.getMinutes()
-
-    if (hour.length < 2) hour = '0' + hour
-    if (minute.length < 2) minute = '0' + minute
-
-    return [hour, minute].join(':')
-  }
 
   const handleDatechange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = new Date(e.target.value)
