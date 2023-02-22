@@ -1,6 +1,7 @@
 import { Heading, Link, Text, Wrap } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
 import customTheme from '../../assets/theme'
+import { PageHeading } from '../../components/commons/PageHeading'
 import { DeveloperWrapItem } from './components/DeveloperWrapItem'
 import { developers } from './util/developers'
 
@@ -8,9 +9,7 @@ export const ImpressumPage = () => {
   return (
     <>
       <Helmet title="Impresszum" />
-      <Heading size="xl" textAlign="center" mb={3}>
-        Impresszum
-      </Heading>
+      <PageHeading title="Impresszum" />
       <Text textAlign="justify">
         Az alkalmazást a HK felkérésére a Kir-Dev webfejlesztő kör készítette. Mint ahogy az összes többi projektünk, ez is nyílt
         forráskódú. A projekt alapja egy NodeJS REST API, mely egy PostgreSQL adatbázisban tárolja az adatokat. A webes kommunikációt a

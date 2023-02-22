@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
 import { useFecthGroupDetailsQuery } from '../../api/hooks/groupQueryHooks'
 import { GroupRoles } from '../../api/model/group.model'
+import { PageHeading } from '../../components/commons/PageHeading'
 import { isValidId } from '../../util/core-util-functions'
 import { PATHS } from '../../util/paths'
 import { translateGroupRole } from '../../util/translateGroupRole'
@@ -39,9 +40,7 @@ export const GroupDetailsPage = () => {
   return (
     <>
       <Helmet title={group.name} />
-      <Heading textAlign="center" mb={3}>
-        {group.name}
-      </Heading>
+      <PageHeading title={group.name} />
       <Stack direction={['column-reverse', 'row']} justifyContent="space-between" mb={3}>
         <VStack alignItems="flex-start" spacing={3}>
           <Heading size="md">Létrehozva: {new Date(group.createdAt).toLocaleDateString('hu-HU')}</Heading>

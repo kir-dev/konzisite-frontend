@@ -2,7 +2,6 @@ import {
   Button,
   Collapse,
   Flex,
-  Heading,
   Input,
   Select,
   Stack,
@@ -21,6 +20,7 @@ import { Link } from 'react-router-dom'
 import { FetchConsultationsMutationProps, useFetchConsultationListMutation } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { Major } from '../../api/model/subject.model'
+import { PageHeading } from '../../components/commons/PageHeading'
 import { formatDate } from '../../util/dateHelper'
 import { generateToastParams } from '../../util/generateToastParams'
 import { MajorArray, translateMajor } from '../../util/majorHelpers'
@@ -70,10 +70,8 @@ export const ConsultationsPage = () => {
 
   return (
     <>
-      <Helmet title={'Konzultációk'} />
-      <Heading size="xl" textAlign="center" mb={3}>
-        Konzultációk
-      </Heading>
+      <Helmet title="Konzultációk" />
+      <PageHeading title="Konzultációk" />
       <Flex justify="space-between">
         <Button rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} onClick={onToggle}>
           Szűrés

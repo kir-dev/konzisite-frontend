@@ -14,6 +14,7 @@ import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQ
 import { KonziError } from '../../api/model/error.model'
 import { DownloadFileFromServerButton } from '../../components/commons/DownloadFileFromServerButton'
 import Markdown from '../../components/commons/Markdown'
+import { PageHeading } from '../../components/commons/PageHeading'
 import { isValidId } from '../../util/core-util-functions'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
@@ -89,9 +90,7 @@ export const ConsultationDetailsPage = () => {
   return (
     <>
       <Helmet title={consultation.name} />
-      <Heading textAlign="center" mb={3}>
-        {consultation.name}
-      </Heading>
+      <PageHeading title={consultation.name} />
       <Heading size="md" justifyContent="center" textAlign="center" mb={3}>
         {consultation.subject.name} ({consultation.subject.code})
       </Heading>

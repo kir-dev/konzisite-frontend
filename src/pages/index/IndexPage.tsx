@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useFetchHomeDataQuery } from '../../api/hooks/homeQueryHook'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
 import Markdown from '../../components/commons/Markdown'
+import { PageHeading } from '../../components/commons/PageHeading'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 
@@ -29,6 +30,7 @@ export const IndexPage = () => {
 
   return (
     <>
+      <PageHeading title="Üdvözlünk a Konzisite-on!" />
       {data.alert && (
         <Alert rounded="md" my={2} status={data.alert.type}>
           <AlertIcon />
