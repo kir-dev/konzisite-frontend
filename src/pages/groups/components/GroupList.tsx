@@ -57,7 +57,17 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
                   <HStack p={4}>
                     <Avatar size="md" name={g.name} src={''} />
                     <VStack flexGrow={1} align="flex-start">
-                      <Heading isTruncated maxWidth={{ base: '15rem', sm: '22rem', m: '30rem', md: '40rem', lg: '25rem' }} size="md">
+                      <Heading
+                        isTruncated
+                        maxWidth={
+                          g.currentUserRole === GroupRoles.PENDING
+                            ? { base: '15rem', sm: '8rem', m: '17rem', md: '26rem', lg: '10rem' }
+                            : g.currentUserRole == GroupRoles.NONE
+                            ? { base: '15rem', sm: '13rem', m: '22rem', md: '31rem', lg: '14rem' }
+                            : { base: '15rem', sm: '22rem', m: '30rem', md: '40rem', lg: '25rem' }
+                        }
+                        size="md"
+                      >
                         {g.name}
                       </Heading>
 
