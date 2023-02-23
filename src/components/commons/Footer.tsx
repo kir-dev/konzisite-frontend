@@ -44,7 +44,7 @@ export const Footer: FC = () => {
         </HStack>
 
         <HStack justify="center" spacing={5}>
-          <Link href="https:/kir-dev.hu" isExternal>
+          <Link href="https://kir-dev.hu" isExternal>
             <Image
               onMouseOver={mouseEventFn('/img/kirdev-white-alt.svg')}
               onMouseOut={mouseEventFn(kirDevLogo)}
