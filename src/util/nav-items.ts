@@ -70,6 +70,10 @@ export const NAV_ITEMS: INavItem[] = [
     path: PATHS.GROUPS
   }),
   new NavItem({
+    label: 'Konzi kérések',
+    path: '/requests'
+  }),
+  new NavItem({
     label: 'Felhasználók',
     path: PATHS.USERS
   }),

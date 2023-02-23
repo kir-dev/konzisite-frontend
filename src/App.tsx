@@ -13,6 +13,9 @@ import { ImpressumPage } from './pages/impressum/ImpressumPage'
 import { IndexPage } from './pages/index/IndexPage'
 import { LoginPage } from './pages/login/LoginPage'
 import { LogoutPage } from './pages/logout/LogoutPage'
+import { EditRequestPage } from './pages/requests/EditRequestPage'
+import { RequestDetailsPage } from './pages/requests/RequestDetailsPage'
+import { RequestListPage } from './pages/requests/RequestListPage'
 import { SubjectsPage } from './pages/subjects/SubjectsPage'
 import { ProfilePage } from './pages/user/ProfilePage'
 import { UserBrowserPage } from './pages/user/UserBrowserPage'
@@ -50,6 +53,14 @@ export const App = () => {
             <Route index element={<SubjectsPage />} />
           </Route>
           <Route path={PATHS.IMPRESSUM} element={<ImpressumPage />} />
+          <Route path={PATHS.REQUESTS}>
+            <Route path=":requestId">
+              <Route index element={<RequestDetailsPage />} />
+              <Route path="edit" element={<EditRequestPage />} />
+            </Route>
+            <Route path="new" element={<EditRequestPage newRequest={true} />} />
+            <Route index element={<RequestListPage />} />
+          </Route>
           <Route path={PATHS.LOGIN} element={<LoginPage />} />
           <Route path="authorized" element={<AuthorizedPage />} />
           <Route path="logout" element={<LogoutPage />} />

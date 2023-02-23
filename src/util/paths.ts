@@ -7,5 +7,6 @@ export enum PATHS {
   PROFILE = '/profile',
   IMPRESSUM = '/impressum',
   LOGIN = '/login',
-  ERROR = '/error'
+  ERROR = '/error',
+  REQUESTS = '/requests'
 }
