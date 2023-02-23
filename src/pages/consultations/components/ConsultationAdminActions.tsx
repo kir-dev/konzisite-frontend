@@ -34,6 +34,7 @@ export const ConsultationAdminActions = ({ consultation, refetch }: Props) => {
   const navigate = useNavigate()
   const toast = useToast()
   const editTextColor = useColorModeValue('brand.500', 'brand.200')
+  const fileTextColor = useColorModeValue('green', 'green.400')
 
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
@@ -80,7 +81,7 @@ export const ConsultationAdminActions = ({ consultation, refetch }: Props) => {
         >
           <UploadFileModalButton
             initiatorButton={
-              <MenuItem color="green" ref={uploadModalRef} icon={<FaFileUpload />} isDisabled={consultation.archived}>
+              <MenuItem color={fileTextColor} ref={uploadModalRef} icon={<FaFileUpload />} isDisabled={consultation.archived}>
                 {consultation.fileName ? 'Jegyzet módosítása' : 'Jegyzet feltöltése'}
               </MenuItem>
             }

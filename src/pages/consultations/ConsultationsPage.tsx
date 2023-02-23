@@ -50,7 +50,7 @@ export const ConsultationsPage = () => {
   }
 
   const [major, setMajor] = useState<Major>()
-  const [startDate, setStartDate] = useState<Date>(new Date())
+  const [startDate, setStartDate] = useState<Date>()
   const [endDate, setEndDate] = useState<Date>()
   const [hideCalendar, setHideCalendar] = useState<boolean>(false)
 
@@ -61,6 +61,9 @@ export const ConsultationsPage = () => {
   }, [major, startDate, endDate])
 
   useEffect(() => {
+    const date = new Date()
+    date.setHours(0, 0, 0, 0)
+    setStartDate(date)
     setTimeout(() => setHideCalendar(true), 25)
   }, [])
 
@@ -80,7 +83,6 @@ export const ConsultationsPage = () => {
           Új konzultáció
         </Button>
       </Flex>
-      <Flex></Flex>
       <Collapse in={isOpen} animateOpacity>
         <Stack columnGap={5} mt={3} direction={{ base: 'column', md: 'row' }}>
           <Flex direction={{ base: 'column', md: 'row' }} align={{ base: '', md: 'center' }} grow={1}>
