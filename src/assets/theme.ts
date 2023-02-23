@@ -47,19 +47,19 @@ const buttonVariantSolid: SystemStyleFunction = (props) => {
     }
   }
 
-  if (c === 'red') {
-    const bg = mode(`red.500`, `red.500`)(props)
+  if (c === 'red' || c === 'green') {
+    const bg = mode(`${c}.500`, `${c}.500`)(props)
 
     return {
       bg,
       color: 'white',
       _hover: {
-        bg: mode(`red.400`, `red.600`)(props),
+        bg: mode(`${c}.400`, `${c}.600`)(props),
         _disabled: {
           bg
         }
       },
-      _active: { bg: mode(`red.400`, `red.600`)(props) }
+      _active: { bg: mode(`${c}.400`, `${c}.600`)(props) }
     }
   }
 
