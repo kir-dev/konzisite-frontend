@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useQuery } from 'react-query'
 import { RequestDetails } from '../../pages/requests/types/requestDetails'
 import { RequestPreview } from '../../pages/requests/types/requestPreview'
+import { isValidId } from '../../util/core-util-functions'
 import { PATHS } from '../../util/paths'
 import { KonziError } from '../model/error.model'
 
@@ -14,7 +15,8 @@ export const useFecthRequestDetailsQuery = (requestId: number) => {
     ['fetchRequestDetails', requestId],
     async () => (await axios.get(`${PATHS.REQUESTS}/${requestId}`)).data,
     {
-      retry: false
+      retry: false,
+      enabled: isValidId(requestId)
     }
   )
 }

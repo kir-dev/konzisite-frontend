@@ -6,6 +6,6 @@ export type RequestPreview = ConsultationRequestModel & {
   initializer: PublicUser
   subject: SubjectModel
   supporterCount: number
-  consulattionCount: number
+  consultationCount: number
   currentUserSupports: boolean
 }

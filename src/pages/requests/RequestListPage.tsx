@@ -38,7 +38,7 @@ export const RequestListPage = () => {
 
   return (
     <>
-      <Helmet title={'Konzultáció kérések'} />
+      <Helmet title="Konzultáció kérések" />
       <Heading size="xl" textAlign="center" mb={3}>
         Konzultáció kérések
       </Heading>
@@ -59,7 +59,7 @@ export const RequestListPage = () => {
                 user={loggedInUser}
                 request={r}
                 key={r.id}
-                rightSmallText={`${r.supporterCount + 1} ember kérte`}
+                rightSmallText={`${r.supporterCount + 1} ember kérte | ${r.consultationCount} konzi`}
                 support={supportRequest}
                 unsupport={unsupportRequest}
               />
