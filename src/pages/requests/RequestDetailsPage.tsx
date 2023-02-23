@@ -1,13 +1,16 @@
 import { Box, Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
+import { useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FaClock } from 'react-icons/fa'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
-import { useSupportRequestMutation, useUnsupportRequestMutation } from '../../api/hooks/requestMutationHooks'
+import { useDeleteRequestMutation, useSupportRequestMutation, useUnsupportRequestMutation } from '../../api/hooks/requestMutationHooks'
 import { useFecthRequestDetailsQuery } from '../../api/hooks/requestQueryHooks'
 import { KonziError } from '../../api/model/error.model'
+import { ConfirmDialogButton } from '../../components/commons/ConfirmDialogButton'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
 import Markdown from '../../components/commons/Markdown'
+import { PageHeading } from '../../components/commons/PageHeading'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { LoadingConsultationList } from '../consultations/components/LoadingConsultationList'
@@ -19,6 +22,8 @@ export const RequestDetailsPage = () => {
   const { requestId } = useParams()
   const { loggedInUser, loggedInUserLoading } = useAuthContext()
   const toast = useToast()
+  const navigate = useNavigate()
+  const deleteButtonRef = useRef<HTMLButtonElement>(null)
   const { isLoading, data: request, error, refetch } = useFecthRequestDetailsQuery(+requestId!!)
 
   const onError = (e: KonziError) => {
@@ -32,6 +37,10 @@ export const RequestDetailsPage = () => {
 
   const { mutate: supportRequest } = useSupportRequestMutation(generateOnSuccess('Támogatod a kérést!'), onError)
   const { mutate: unsupportRequest } = useUnsupportRequestMutation(generateOnSuccess('Már nem támogatod a kérést!'), onError)
+  const { mutate: deleteRequest } = useDeleteRequestMutation(() => {
+    toast({ title: 'Sikeresen törölted a konzi kérést!', status: 'success' })
+    navigate(PATHS.REQUESTS)
+  }, onError)
 
   if (error) {
     return <ErrorPage status={error.statusCode} title={error.message} />
@@ -61,9 +70,7 @@ export const RequestDetailsPage = () => {
   return (
     <>
       <Helmet title={request.name} />
-      <Heading textAlign="center" mb={3}>
-        {request.name}
-      </Heading>
+      <PageHeading title={request.name} />
       <Heading size="md" justifyContent="center" textAlign="center" mb={3}>
         {request.subject.name} ({request.subject.code})
       </Heading>
@@ -80,7 +87,18 @@ export const RequestDetailsPage = () => {
               <Button as={Link} to={`${PATHS.REQUESTS}/${request.id}/edit`} w="100%" colorScheme="brand">
                 Szerkesztés
               </Button>
-              <Button colorScheme="red">Törlés</Button>
+              <ConfirmDialogButton
+                initiatorButton={
+                  <Button colorScheme="red" ref={deleteButtonRef}>
+                    Törlés
+                  </Button>
+                }
+                initiatorButtonRef={deleteButtonRef}
+                headerText="Konzi kérés törlése"
+                bodyText="Biztos törölni szeretnéd a konzi kérést?"
+                confirmButtonText="Törlés"
+                confirmAction={() => deleteRequest(request.id)}
+              />
             </>
           )}
           {!isOwner && !isSupporter && (
@@ -103,6 +121,11 @@ export const RequestDetailsPage = () => {
               }}
             >
               Nem támogatom
+            </Button>
+          )}
+          {!isOwner && (
+            <Button colorScheme="brand" width="100%" as={Link} to={`${PATHS.CONSULTATIONS}/new?requestId=${request.id}`}>
+              Megtartom
             </Button>
           )}
         </VStack>

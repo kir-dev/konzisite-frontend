@@ -1,10 +1,11 @@
-import { Button, Flex, Heading, Text, useToast, VStack } from '@chakra-ui/react'
+import { Button, Flex, Text, useToast, VStack } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useSupportRequestMutation, useUnsupportRequestMutation } from '../../api/hooks/requestMutationHooks'
 import { useFetchRequestListQuery } from '../../api/hooks/requestQueryHooks'
 import { KonziError } from '../../api/model/error.model'
+import { PageHeading } from '../../components/commons/PageHeading'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { LoadingConsultationList } from '../consultations/components/LoadingConsultationList'
@@ -39,9 +40,7 @@ export const RequestListPage = () => {
   return (
     <>
       <Helmet title="Konzultáció kérések" />
-      <Heading size="xl" textAlign="center" mb={3}>
-        Konzultáció kérések
-      </Heading>
+      <PageHeading title="Konzultáció kérések" />
       <Flex justify="flex-end">
         <Button as={Link} to={`${PATHS.REQUESTS}/new`} colorScheme="brand">
           Új konzi kérés

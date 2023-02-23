@@ -22,7 +22,9 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
           <MajorAvatar subject={request.subject} monochrome />
           <VStack flexGrow={1}>
             <Stack direction={['column', 'row']} justifyContent="space-between" width="100%">
-              <Heading size="md">{request.name}</Heading>
+              <Heading size="md" isTruncated maxWidth={{ base: '16rem', sm: '8rem', m: '12rem', md: '12rem', lg: '26rem' }}>
+                {request.name}
+              </Heading>
               <Heading size={{ base: 'sm', md: 'md' }}>{generateDateText(request.expiryDate)}</Heading>
             </Stack>
             <Stack direction={['column', 'row']} justifyContent="space-between" width="100%">
@@ -34,7 +36,7 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
           </VStack>
         </HStack>
         {user && support && unsupport && user.id !== request.initializer.id && (
-          <VStack p={2} justifyContent="center">
+          <Stack p={2} justifyContent="center" alignItems="center" direction={['column', 'column', 'column', 'row']}>
             {request.currentUserSupports ? (
               <Button
                 colorScheme="red"
@@ -58,7 +60,10 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
                 Támogatom
               </Button>
             )}
-          </VStack>
+            <Button colorScheme="brand" width="100%" as={Link} to={`${PATHS.CONSULTATIONS}/new?requestId=${request.id}`}>
+              Megtartom
+            </Button>
+          </Stack>
         )}
       </Stack>
     </Box>

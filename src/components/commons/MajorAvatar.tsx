@@ -9,7 +9,7 @@ type Props = {
 }
 
 export const MajorAvatar = ({ subject, monochrome = false }: Props) => {
-  let bgcolor = subject.majors.length > 1 ? 'purple.500' : majorColorForIcon[subject.majors[0]]
+  let bgcolor = subject.majors.length > 1 ? 'orange.500' : majorColorForIcon[subject.majors[0]]
 
   if (monochrome) bgcolor = 'gray.500'
 
