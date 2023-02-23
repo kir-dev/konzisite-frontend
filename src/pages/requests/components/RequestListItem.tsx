@@ -9,9 +9,9 @@ import { RequestPreview } from '../types/requestPreview'
 type Props = {
   request: RequestPreview
   rightSmallText?: string
-  user: UserModel
-  support: (requestId: number) => void
-  unsupport: (requestId: number) => void
+  user?: UserModel
+  support?: (requestId: number) => void
+  unsupport?: (requestId: number) => void
 }
 
 export const RequestListItem = ({ request, rightSmallText, user, support, unsupport }: Props) => {
@@ -33,7 +33,7 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
             </Stack>
           </VStack>
         </HStack>
-        {user.id !== request.initializer.id && (
+        {user && support && unsupport && user.id !== request.initializer.id && (
           <VStack p={2} justifyContent="center">
             {request.currentUserSupports ? (
               <Button

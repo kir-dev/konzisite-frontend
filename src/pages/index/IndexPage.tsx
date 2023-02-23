@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, Button, Flex, Heading, Image, Spinner, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Flex, Heading, Image, Spinner, Stack, Text, useColorModeValue, VStack } from '@chakra-ui/react'
 import { FaArrowRight } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useFetchHomeDataQuery } from '../../api/hooks/homeQueryHook'
@@ -7,6 +7,7 @@ import Markdown from '../../components/commons/Markdown'
 import { PageHeading } from '../../components/commons/PageHeading'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
+import { RequestListItem } from '../requests/components/RequestListItem'
 
 export const IndexPage = () => {
   const { error, data, isLoading } = useFetchHomeDataQuery()
@@ -58,38 +59,45 @@ export const IndexPage = () => {
         </Button>
       </Stack>
 
-      {data.consultations.length > 0 ? (
-        data.consultations.map((c) => (
-          <ConsultationListItem
-            consultation={c}
-            key={c.id}
-            rightSmallText={
-              c.presentations.length <= 3
-                ? `Konzitartó${c.presentations.length > 1 ? 'k' : ''}:
+      <VStack alignItems="stretch">
+        {data.consultations.length > 0 ? (
+          data.consultations.map((c) => (
+            <ConsultationListItem
+              consultation={c}
+              key={c.id}
+              rightSmallText={
+                c.presentations.length <= 3
+                  ? `Konzitartó${c.presentations.length > 1 ? 'k' : ''}:
             ${c.presentations.map((p) => p.fullName).join(', ')}`
-                : `${c.presentations.length} konzitartó`
-            }
-          />
-        ))
-      ) : (
-        <Text fontStyle="italic" textAlign="center">
-          Nincs kiírva egy konzi sem
-        </Text>
-      )}
+                  : `${c.presentations.length} konzitartó`
+              }
+            />
+          ))
+        ) : (
+          <Text fontStyle="italic" textAlign="center">
+            Nincs kiírva egy konzi sem
+          </Text>
+        )}
+      </VStack>
+
       <Stack mt={5} mb={2} direction={['column', 'row']} justify="space-between" align="center">
         <Heading size="md">Aktív konzi kérések</Heading>
-        <Button colorScheme="brand" as={Link} to={/*TODO link a kérésekhez */ ''} variant="ghost" rightIcon={<FaArrowRight />}>
+        <Button colorScheme="brand" as={Link} to={PATHS.REQUESTS} variant="ghost" rightIcon={<FaArrowRight />}>
           Összes kérés
         </Button>
       </Stack>
 
-      {data.requests.length > 0 ? (
-        data.requests.map((r) => <Text key={r.id}>{r.name}</Text>)
-      ) : (
-        <Text fontStyle="italic" textAlign="center">
-          Nincs egy aktív kérés se
-        </Text>
-      )}
+      <VStack alignItems="stretch">
+        {data.requests.length > 0 ? (
+          data.requests.map((r) => (
+            <RequestListItem request={r} key={r.id} rightSmallText={`${r.supporterCount + 1} ember kérte | ${r.consultationCount} konzi`} />
+          ))
+        ) : (
+          <Text fontStyle="italic" textAlign="center">
+            Nincs egy aktív kérés se
+          </Text>
+        )}
+      </VStack>
     </>
   )
 }
