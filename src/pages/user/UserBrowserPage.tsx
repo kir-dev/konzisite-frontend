@@ -1,5 +1,15 @@
 import { CloseIcon, SearchIcon } from '@chakra-ui/icons'
-import { Flex, IconButton, Input, InputGroup, InputLeftElement, InputRightElement, useBreakpointValue, useToast } from '@chakra-ui/react'
+import {
+  Flex,
+  IconButton,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  useBreakpointValue,
+  useMediaQuery,
+  useToast
+} from '@chakra-ui/react'
 import debounce from 'lodash.debounce'
 import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
@@ -14,6 +24,7 @@ import { UserListWithPagination } from './components/UserListWithPagination'
 
 export const UserBrowserPage = () => {
   const toast = useToast()
+  const [largeScreen] = useMediaQuery('(min-width: 48em)')
   const {
     isLoading,
     data,
@@ -63,7 +74,7 @@ export const UserBrowserPage = () => {
             debouncedSearch(e.target.value, 0)
           }}
           value={search}
-          autoFocus={true}
+          autoFocus={largeScreen}
         />
         <InputRightElement h="100%">
           <CloseIcon

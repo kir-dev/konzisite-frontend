@@ -1,4 +1,23 @@
-import { Avatar, Badge, Box, Button, Heading, HStack, SimpleGrid, Stack, Text, useToast, VStack } from '@chakra-ui/react'
+import {
+  Avatar,
+  Badge,
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  SimpleGrid,
+  Stack,
+  Text,
+  useMediaQuery,
+  useToast,
+  VStack
+} from '@chakra-ui/react'
+import { useState } from 'react'
+import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useJoinGroupMutation, useLeaveGroupMutation } from '../../../api/hooks/groupMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
@@ -14,11 +33,15 @@ type Props = {
   groups?: GroupPreview[]
   loading?: boolean
   mt?: number
+  searchBar?: boolean
   refetchList: () => void
 }
 
-export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt = 0, refetchList }: Props) => {
+export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt = 0, refetchList, searchBar = false }: Props) => {
   const toast = useToast()
+  const [search, setSearch] = useState('')
+  const [largeScreen] = useMediaQuery('(min-width: 48em)')
+
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
   }
@@ -38,6 +61,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
       }
     })
   }
+  const filteredGroups = groups?.filter((g) => g.name.toLowerCase().includes(search.toLowerCase()))
 
   if (loading) {
     return <GroupListSkeleton title={title} />
@@ -47,11 +71,37 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
         <Heading mb={4} mt={mt} size="lg">
           {title}
         </Heading>
-        {groups && groups.length === 0 ? (
-          <Text>{noGroupsMessage}</Text>
+        {searchBar && (
+          <InputGroup mb={4}>
+            <InputLeftElement h="100%">
+              <FaSearch />
+            </InputLeftElement>
+            <Input
+              autoFocus={largeScreen}
+              placeholder="Keresés..."
+              size="lg"
+              onChange={(e) => {
+                setSearch(e.target.value)
+              }}
+              value={search}
+            />
+            <InputRightElement h="100%">
+              <FaTimes
+                onClick={() => {
+                  setSearch('')
+                }}
+                cursor="pointer"
+              />
+            </InputRightElement>
+          </InputGroup>
+        )}
+        {filteredGroups && filteredGroups.length === 0 ? (
+          <Text textAlign="center" fontStyle="italic">
+            {noGroupsMessage}
+          </Text>
         ) : (
           <SimpleGrid columns={{ sm: 1, lg: 2 }} gap={4}>
-            {groups?.map((g) => (
+            {filteredGroups?.map((g) => (
               <Box key={g.id} shadow="md" borderRadius={8} borderWidth={1}>
                 <Stack as={Link} to={`${PATHS.GROUPS}/${g.id}`} direction={['column', 'row']} justify="space-between">
                   <HStack p={4}>
