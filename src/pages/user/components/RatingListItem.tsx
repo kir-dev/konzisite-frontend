@@ -20,7 +20,7 @@ export const RatingListItem = ({ rating }: Props) => {
           bg={anonymous ? 'brand.500' : undefined}
           icon={anonymous ? <FaUserSecret /> : undefined}
           size="md"
-          name={anonymous ? undefined : rating.rater.fullName}
+          name={anonymous ? undefined : rating.rater.fullName + rating.rater.id}
         />
         <VStack flexGrow={1} alignItems="flex-start">
           <Flex w="100%" justify="space-between">

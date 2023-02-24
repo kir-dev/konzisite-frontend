@@ -68,7 +68,7 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
           <Box key={u.id} shadow="md" borderRadius={8} borderWidth={1}>
             <HStack>
               <HStack flexGrow={1} as={Link} to={`${PATHS.USERS}/${u.id}`} p={4}>
-                <Avatar size="md" name={u.fullName} src="" />
+                <Avatar size="md" name={u.fullName + u.id} src="" />
                 <VStack flexGrow={1}>
                   <Flex width="100%">
                     <Heading size="md">{u.fullName}</Heading>

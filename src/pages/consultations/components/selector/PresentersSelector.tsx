@@ -107,7 +107,7 @@ export const PresentersSelector = () => {
         {watch('presenters').map((p: Presentation) => (
           <Box borderRadius={6} borderWidth={1} mb={2} key={p.id}>
             <HStack flexGrow={1} p={4}>
-              <Avatar size="md" name={p.fullName} src="" />
+              <Avatar size="md" name={p.fullName + p.id} src="" />
               <VStack alignItems="flex-start" flexGrow={1}>
                 <Heading size="md" width="100%">
                   {p.fullName}
@@ -191,7 +191,7 @@ export const PresentersSelector = () => {
                     }}
                   >
                     <HStack flexGrow={1} p={4}>
-                      <Avatar size="md" name={p.fullName} src="" />
+                      <Avatar size="md" name={p.fullName + p.id} src="" />
                       <VStack alignItems="flex-start" flexGrow={1}>
                         <Heading size="md" width="100%">
                           {p.fullName}

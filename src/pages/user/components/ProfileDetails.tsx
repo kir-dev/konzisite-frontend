@@ -89,7 +89,7 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
     <Box>
       <HStack flexWrap="wrap" justifyContent="space-between" alignItems="center" mb={5}>
         <HStack flexWrap="wrap" spacing={4} mb={2}>
-          <Avatar size={useBreakpointValue({ base: 'lg', md: 'xl' })} name={user.fullName} src="" />
+          <Avatar size={useBreakpointValue({ base: 'lg', md: 'xl' })} name={user.fullName + user.id} src="" />
           <Stack direction={{ base: 'column', md: 'row' }} align="center" alignItems={{ base: 'flex-start', md: 'center' }}>
             <Heading size={{ base: 'lg', sm: 'xl' }} fontWeight={700} wordBreak="break-all">
               {user.fullName}
