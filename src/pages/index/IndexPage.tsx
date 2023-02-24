@@ -92,7 +92,11 @@ export const IndexPage = () => {
       <VStack alignItems="stretch">
         {data.requests.length > 0 ? (
           data.requests.map((r) => (
-            <RequestListItem request={r} key={r.id} rightSmallText={`${r.supporterCount + 1} ember kérte | ${r.consultationCount} konzi`} />
+            <RequestListItem
+              request={r}
+              key={r.id}
+              rightSmallText={`${(r.supporterCount || 0) + 1} ember kérte | ${r.consultationCount} konzi`}
+            />
           ))
         ) : (
           <Text fontStyle="italic" textAlign="center">

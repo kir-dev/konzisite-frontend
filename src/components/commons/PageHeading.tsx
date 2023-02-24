@@ -6,7 +6,7 @@ type Props = {
 
 export const PageHeading = ({ title }: Props) => {
   return (
-    <Heading textAlign="center" mb={3}>
+    <Heading textAlign="center" my={3}>
       {title}
     </Heading>
   )

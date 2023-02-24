@@ -1,5 +1,16 @@
 export const generateDateText = (date: string) => new Date(date).toLocaleString('hu-HU', { dateStyle: 'short' })
 
+export const generateDaysLeftText = (date: string) => {
+  const daysLeft = Math.floor((new Date(date).getTime() - new Date().getTime()) / 1000 / 60 / 60 / 24)
+  if (daysLeft > 0) {
+    return `${daysLeft} nap van hátra`
+  } else if (daysLeft === 0) {
+    return 'Ma jár le'
+  } else {
+    return `${-daysLeft} napja járt le`
+  }
+}
+
 export const generateTimeSpanText = (date1: string, date2: string) =>
   new Date(date1).toLocaleString('hu-HU', { timeStyle: 'short' }) + ' - ' + new Date(date2).toLocaleString('hu-HU', { timeStyle: 'short' })
 

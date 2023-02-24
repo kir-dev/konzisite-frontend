@@ -1,7 +1,6 @@
 import {
   Box,
   FormControl,
-  FormErrorMessage,
   FormLabel,
   Input,
   InputGroup,
@@ -23,12 +22,12 @@ import { useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
-import { useFecthSubjectListMutation } from '../../../api/hooks/subjectHooks'
-import { KonziError } from '../../../api/model/error.model'
-import { SubjectModel } from '../../../api/model/subject.model'
-import { generateToastParams } from '../../../util/generateToastParams'
-import { PATHS } from '../../../util/paths'
-import { CreateConsultationForm } from '../types/createConsultation'
+import { useFecthSubjectListMutation } from '../../../../api/hooks/subjectHooks'
+import { KonziError } from '../../../../api/model/error.model'
+import { SubjectModel } from '../../../../api/model/subject.model'
+import { generateToastParams } from '../../../../util/generateToastParams'
+import { PATHS } from '../../../../util/paths'
+import { CreateConsultationForm } from '../../types/createConsultation'
 
 const INITIAL_SUBJECT_COUNT = 5
 
@@ -80,8 +79,6 @@ export const SubjectSelector = () => {
           readOnly
           value={watch('subject') ? `${watch('subject').name} (${watch('subject').code})` : 'Nincs tárgy választva'}
         />
-
-        <FormErrorMessage>Kell tárgyat választani</FormErrorMessage>
       </FormControl>
       <Modal scrollBehavior="inside" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

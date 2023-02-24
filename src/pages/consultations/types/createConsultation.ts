@@ -1,5 +1,6 @@
 import { GroupModel } from '../../../api/model/group.model'
 import { SubjectModel } from '../../../api/model/subject.model'
+import { RequestPreview } from '../../requests/types/requestPreview'
 import { Presentation } from './consultationDetails'
 
 export interface CreateConsultation {
@@ -11,6 +12,7 @@ export interface CreateConsultation {
   subjectId: number
   presenterIds: number[]
   targetGroupIds: number[]
+  requestId?: number
 }
 
 export type CreateConsultationForm = {
@@ -22,4 +24,5 @@ export type CreateConsultationForm = {
   subject: SubjectModel
   presenters: Presentation[]
   targetGroups: GroupModel[]
+  request?: RequestPreview
 }

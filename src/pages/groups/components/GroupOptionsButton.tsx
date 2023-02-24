@@ -62,11 +62,22 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
       }
     })
   }
+  const HoldKonziButton = (
+    <Button
+      colorScheme="brand"
+      onClick={() => {
+        navigate(`${PATHS.CONSULTATIONS}/new`, { state: { group } })
+      }}
+    >
+      Konzi tartása
+    </Button>
+  )
 
   switch (group.currentUserRole) {
     case GroupRoles.OWNER:
       return (
         <>
+          {HoldKonziButton}
           <GroupEditModalButton
             buttonText="Szerkesztés"
             buttonWidth="100%"
@@ -93,30 +104,39 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
     case GroupRoles.ADMIN:
     case GroupRoles.MEMBER:
       return (
-        <ConfirmDialogButton
-          initiatorButton={
-            <Button w="100%" ref={leaveGroupRef} colorScheme="red">
-              Kilépés
-            </Button>
-          }
-          initiatorButtonRef={leaveGroupRef}
-          headerText="Kilépés a csoportból"
-          bodyText="Biztos ki szeretnél lépni a csoportból?"
-          confirmButtonText="Kilépés"
-          confirmAction={leaveGroup}
-        />
+        <>
+          {HoldKonziButton}
+          <ConfirmDialogButton
+            initiatorButton={
+              <Button w="100%" ref={leaveGroupRef} colorScheme="red">
+                Kilépés
+              </Button>
+            }
+            initiatorButtonRef={leaveGroupRef}
+            headerText="Kilépés a csoportból"
+            bodyText="Biztos ki szeretnél lépni a csoportból?"
+            confirmButtonText="Kilépés"
+            confirmAction={leaveGroup}
+          />
+        </>
       )
     case GroupRoles.PENDING:
       return (
-        <Button colorScheme="red" onClick={undoRequest}>
-          Kérelem visszavonása
-        </Button>
+        <>
+          {HoldKonziButton}
+          <Button colorScheme="red" onClick={undoRequest}>
+            Kérelem visszavonása
+          </Button>
+        </>
       )
     default:
       return (
-        <Button colorScheme="brand" onClick={() => joinGroupMutation.mutate(group.id)}>
-          Csatlakozás
-        </Button>
+        <>
+          {HoldKonziButton}
+          <Button colorScheme="brand" onClick={() => joinGroupMutation.mutate(group.id)}>
+            Csatlakozás
+          </Button>
+        </>
       )
   }
 }

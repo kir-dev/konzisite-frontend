@@ -26,12 +26,12 @@ import { useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
-import { useFecthGroupListMutation } from '../../../api/hooks/groupMutationHooks'
-import { KonziError } from '../../../api/model/error.model'
-import { GroupModel } from '../../../api/model/group.model'
-import { generateToastParams } from '../../../util/generateToastParams'
-import { PATHS } from '../../../util/paths'
-import { CreateConsultationForm } from '../types/createConsultation'
+import { useFecthGroupListMutation } from '../../../../api/hooks/groupMutationHooks'
+import { KonziError } from '../../../../api/model/error.model'
+import { GroupModel } from '../../../../api/model/group.model'
+import { generateToastParams } from '../../../../util/generateToastParams'
+import { PATHS } from '../../../../util/paths'
+import { CreateConsultationForm } from '../../types/createConsultation'
 
 const INITIAL_GROUP_COUNT = 5
 
@@ -84,13 +84,13 @@ export const TargetGroupSelector = () => {
         <FormLabel>Célcsoportok</FormLabel>
         {watch('targetGroups').map((g: GroupModel) => (
           <Box borderRadius={6} borderWidth={1} mb={2} key={g.id}>
-            <HStack flexGrow={1} p={4}>
-              <Avatar size="md" name={g.name} src={''} />
-              <VStack flexGrow={1}>
-                <Heading size="md" width="100%">
+            <HStack justify={'space-between'} p={4}>
+              <HStack>
+                <Avatar size="md" name={g.name} src={''} />{' '}
+                <Heading maxWidth={{ base: '9rem', sm: '15rem', m: '24rem', md: '32rem', lg: '45rem' }} isTruncated size="md">
                   {g.name}
                 </Heading>
-              </VStack>
+              </HStack>
               <Button colorScheme="red" onClick={() => removeGroup(g)}>
                 Törlés
               </Button>
@@ -158,8 +158,8 @@ export const TargetGroupSelector = () => {
                   >
                     <HStack flexGrow={1} p={4}>
                       <Avatar size="md" name={g.name} src={''} />
-                      <VStack flexGrow={1}>
-                        <Heading size="md" width="100%">
+                      <VStack>
+                        <Heading maxWidth={{ base: '13rem', sm: '17rem' }} isTruncated size="md" width="100%">
                           {g.name}
                         </Heading>
                       </VStack>
