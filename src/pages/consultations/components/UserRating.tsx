@@ -18,6 +18,7 @@ import {
   Text,
   Textarea,
   Tooltip,
+  useColorModeValue,
   useToast,
   VStack
 } from '@chakra-ui/react'
@@ -44,6 +45,7 @@ type Props = {
 export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: Props) => {
   const toast = useToast()
   const { consultationId } = useParams()
+  const sliderThumbColor = useColorModeValue('brand.500', 'white')
 
   const { mutate: rateConsultation } = useRateConsultationMutation(
     () => {
@@ -127,7 +129,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
                   <SliderTrack>
                     <SliderFilledTrack />
                   </SliderTrack>
-                  <SliderThumb />
+                  <SliderThumb bg={sliderThumbColor} />
                 </Slider>
                 <Text>{value}</Text>
                 <FaStar />

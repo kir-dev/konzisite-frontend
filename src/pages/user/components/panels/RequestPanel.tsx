@@ -1,6 +1,7 @@
 import { TabPanel, Text, VStack } from '@chakra-ui/react'
 import { ConsultationRequestModel } from '../../../../api/model/consultationrequest.model'
 import { SubjectModel } from '../../../../api/model/subject.model'
+import { RequestListItem } from '../../../requests/components/RequestListItem'
 
 type Props = {
   requests: (ConsultationRequestModel & {
@@ -13,11 +14,7 @@ export const RequestPanel = ({ requests }: Props) => {
     <TabPanel px={0}>
       <VStack spacing={4} alignItems="stretch">
         {requests.length > 0 ? (
-          requests.map((p) => (
-            <Text key={p.id}>
-              {p.subject.name} - {p.supporters} támogató
-            </Text>
-          ))
+          requests.map((r) => <RequestListItem request={r} key={r.id} />)
         ) : (
           <Text fontStyle="italic" textAlign="center">
             Még nem kértél konzultációt.

@@ -1,9 +1,9 @@
-import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, useToast, VStack } from '@chakra-ui/react'
-import { useEffect } from 'react'
+import { Button, Checkbox, Flex, FormControl, FormErrorMessage, FormLabel, Input, useToast, VStack } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FormProvider, useForm } from 'react-hook-form'
 import { FaArrowLeft } from 'react-icons/fa'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useCreateConsultationMutation, useEditConsultationMutation } from '../../api/hooks/consultationMutationHooks'
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
@@ -13,27 +13,37 @@ import { MarkdownEditor } from '../../components/editor/MarkdownEditor'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
+import { GroupPreview } from '../groups/types/groupPreview'
+import { RequestPreview } from '../requests/types/requestPreview'
 import { ConsultationDateForm } from './components/ConsultationDateForm'
 import { LoadingEditConsultation } from './components/LoadingEditConsultation'
-import { PresentersSelector } from './components/PresentersSelector'
-import { SubjectSelector } from './components/SubjectSelector'
-import { TargetGroupSelector } from './components/TargetGroupSelector'
+import { PresentersSelector } from './components/selector/PresentersSelector'
+import { RequestSelector } from './components/selector/RequestSelector'
+import { SubjectSelector } from './components/selector/SubjectSelector'
+import { TargetGroupSelector } from './components/selector/TargetGroupSelector'
 import { CreateConsultation, CreateConsultationForm } from './types/createConsultation'
 
 type Props = {
   newConsultation?: boolean
 }
 
+type ConsultationFormState = {
+  request?: RequestPreview
+  group?: GroupPreview
+}
+
 export const EditConsultationPage = ({ newConsultation }: Props) => {
+  const { state } = useLocation()
+  const { request, group } = (state as ConsultationFormState) || {}
   const toast = useToast()
   const navigate = useNavigate()
-  const { isLoggedIn, loggedInUser, loggedInUserLoading } = useAuthContext()
   const consultationId = parseInt(useParams<{ consultationId: string }>().consultationId ?? '-1')
+  const { isLoading, data: consultation, error } = useFetchConsultationbDetailsQuery(consultationId)
+  const [fulfillRequest, setFulfillRequest] = useState<boolean>(!!request || !!consultation?.request) // TODO
+  const { isLoggedIn, loggedInUser, loggedInUserLoading } = useAuthContext()
 
   const { mutate: createConsultation, isLoading: createLoading } = useCreateConsultationMutation()
   const { mutate: updateConsultation, isLoading: editLoading } = useEditConsultationMutation(consultationId)
-
-  const { isLoading, data: consultation, error } = useFetchConsultationbDetailsQuery(consultationId)
 
   const createCons = (formData: CreateConsultation) => {
     createConsultation(formData, {
@@ -69,7 +79,8 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
           endDate: new Date(consultation.endDate),
           subject: consultation.subject,
           presenters: consultation.presentations,
-          targetGroups: consultation.targetGroups
+          targetGroups: consultation.targetGroups,
+          request: { ...consultation.request, subject: consultation.subject }
         }
       : { targetGroups: [], presenters: [], startDate: new Date(), endDate: new Date() },
     mode: 'all'
@@ -80,11 +91,12 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
     handleSubmit,
     setValue,
     watch,
+    resetField,
     formState: { errors, isValid, isSubmitted }
   } = form
 
   const onSubmit = handleSubmit((data) => {
-    const formData = {
+    const formData: CreateConsultation = {
       name: data.name,
       location: data.location,
       startDate: new Date(data.startDate),
@@ -92,7 +104,8 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       descMarkdown: data.descMarkdown,
       subjectId: data.subject.id,
       presenterIds: data.presenters.map((p) => p.id),
-      targetGroupIds: data.targetGroups.map((g) => g.id)
+      targetGroupIds: data.targetGroups.map((g) => g.id),
+      requestId: data.request?.id
     }
     newConsultation ? createCons(formData) : editCons(formData)
   })
@@ -107,8 +120,20 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       setValue('targetGroups', consultation.targetGroups)
       setValue('startDate', new Date(consultation.startDate))
       setValue('endDate', new Date(consultation.endDate))
+      setValue('request', consultation.request ? { ...consultation.request, subject: consultation.subject } : undefined)
+      setFulfillRequest(!!consultation.request)
     }
   }, [consultation])
+
+  useEffect(() => {
+    if (group) {
+      setValue('targetGroups', [group])
+    }
+    if (request) {
+      setValue('subject', request.subject)
+      setValue('request', request)
+    }
+  }, [])
 
   if (error) {
     return <ErrorPage status={error.statusCode} title={error.message} />
@@ -136,7 +161,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
         <>
           <Helmet title={newConsultation ? 'Új konzultáció' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`} />
           <PageHeading title={newConsultation ? 'Új konzultáció létrehozása' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`} />
-          <VStack>
+          <VStack alignItems="flex-start">
             <FormControl isInvalid={!!errors.name} isRequired>
               <FormLabel>Konzultáció neve</FormLabel>
               <Input type="text" {...register('name', { required: true })} placeholder="Digit vizsgára készülés" />
@@ -147,8 +172,20 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
               <Input type="text" {...register('location', { required: true })} placeholder="SCH-1317" width="30%" minWidth="150px" />
               {errors.location && <FormErrorMessage>Helyszín nem lehet üres</FormErrorMessage>}
             </FormControl>
+            <Checkbox
+              isChecked={fulfillRequest}
+              colorScheme="brand"
+              onChange={(e) => {
+                setFulfillRequest(e.target.checked)
+                setValue('request', undefined, { shouldValidate: true })
+                resetField('subject')
+                setValue('subject', watch('subject'), { shouldValidate: true })
+              }}
+            >
+              Kérés teljesítése
+            </Checkbox>
             <FormProvider {...form}>
-              <SubjectSelector />
+              {fulfillRequest ? <RequestSelector isActive={fulfillRequest} /> : <SubjectSelector />}
               <PresentersSelector />
               <ConsultationDateForm prevStartDate={consultation && new Date(consultation.startDate)} />
               <TargetGroupSelector />

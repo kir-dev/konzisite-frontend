@@ -1,6 +1,6 @@
 import '@fontsource/aclonica/400.css'
 import { Route, Routes } from 'react-router-dom'
-import { RLayout } from './components/commons/KLayout'
+import { KLayout } from './components/commons/KLayout'
 import './global.css'
 import { AuthorizedPage } from './pages/authorized/AuthorizedPage'
 import { ConsultationDetailsPage } from './pages/consultations/ConsultationDetailsPage'
@@ -24,7 +24,7 @@ import { PATHS } from './util/paths'
 
 export const App = () => {
   return (
-    <RLayout>
+    <KLayout>
       <Routes>
         <Route path={PATHS.INDEX}>
           <Route index element={<IndexPage />} />
@@ -71,6 +71,6 @@ export const App = () => {
           />
         </Route>
       </Routes>
-    </RLayout>
+    </KLayout>
   )
 }

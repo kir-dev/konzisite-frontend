@@ -58,7 +58,7 @@ export const RequestListPage = () => {
                 user={loggedInUser}
                 request={r}
                 key={r.id}
-                rightSmallText={`${r.supporterCount + 1} ember kérte | ${r.consultationCount} konzi`}
+                rightSmallText={`${(r.supporterCount || 0) + 1} ember kérte | ${r.consultationCount} konzi`}
                 support={supportRequest}
                 unsupport={unsupportRequest}
               />
