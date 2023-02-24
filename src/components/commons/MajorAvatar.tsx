@@ -5,15 +5,13 @@ import { MajorIcon } from './MajorIcon'
 
 type Props = {
   subject: SubjectModel
+  monochrome?: boolean
 }
 
-export const MajorAvatar = ({ subject }: Props) => {
-  return (
-    <Avatar
-      size="md"
-      bg={subject.majors.length > 1 ? 'orange.500' : majorColorForIcon[subject.majors[0]]}
-      icon={<MajorIcon majors={subject.majors} />}
-      src={''}
-    />
-  )
+export const MajorAvatar = ({ subject, monochrome = false }: Props) => {
+  let bgcolor = subject.majors.length > 1 ? 'orange.500' : majorColorForIcon[subject.majors[0]]
+
+  if (monochrome) bgcolor = 'gray.500'
+
+  return <Avatar size="md" bg={bgcolor} icon={<MajorIcon majors={subject.majors} />} src={''} />
 }

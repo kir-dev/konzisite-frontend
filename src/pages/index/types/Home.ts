@@ -1,10 +1,10 @@
 import { AlertModel } from '../../../api/model/alert.model'
-import { ConsultationRequestModel } from '../../../api/model/consultationrequest.model'
 import { ConsultationPreview } from '../../consultations/types/consultationPreview'
+import { RequestPreview } from '../../requests/types/requestPreview'
 
 export interface HomeDto {
   consultations: ConsultationPreview[]
-  requests: ConsultationRequestModel[] // TODO change to dto after #124 is merged
+  requests: RequestPreview[]
   unratedConsultations: ConsultationPreview[]
   alert?: AlertModel
 }
