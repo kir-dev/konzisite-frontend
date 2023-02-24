@@ -1,4 +1,5 @@
 import { Alert, AlertIcon, Box, Button, Flex, Heading, Image, Spinner, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { Helmet } from 'react-helmet-async'
 import { FaArrowRight } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useFetchHomeDataQuery } from '../../api/hooks/homeQueryHook'
@@ -30,6 +31,7 @@ export const IndexPage = () => {
 
   return (
     <>
+      <Helmet />
       <PageHeading title="Üdvözlünk a Konzisite&#8209;on!" />
       {data.alert && (
         <Alert rounded="md" my={2} status={data.alert.type}>
