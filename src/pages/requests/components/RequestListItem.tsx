@@ -1,5 +1,5 @@
 import { Box, Button, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { UserModel } from '../../../api/model/user.model'
 import { MajorAvatar } from '../../../components/commons/MajorAvatar'
 import { generateDateText } from '../../../util/dateHelper'
@@ -15,6 +15,8 @@ type Props = {
 }
 
 export const RequestListItem = ({ request, rightSmallText, user, support, unsupport }: Props) => {
+  const navigate = useNavigate()
+
   return (
     <Box shadow="md" borderRadius={8} borderWidth={1}>
       <Stack as={Link} to={`${PATHS.REQUESTS}/${request.id}`} direction={['column', 'row']} justify="space-between">
@@ -63,8 +65,10 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
             <Button
               colorScheme="brand"
               width={{ base: '100%', md: 'inherit' }}
-              as={Link}
-              to={`${PATHS.CONSULTATIONS}/new?requestId=${request.id}`}
+              onClick={(e) => {
+                e.preventDefault()
+                navigate(`${PATHS.CONSULTATIONS}/new?requestId=${request.id}`)
+              }}
             >
               Megtartom
             </Button>
