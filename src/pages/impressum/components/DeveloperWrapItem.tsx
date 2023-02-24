@@ -16,7 +16,7 @@ export const DeveloperWrapItem = ({ dev: { name, img, tags } }: Props) => {
         <Image src={img} h="15rem" fallbackSrc={useColorModeValue('/img/kirdev.svg', '/img/kirdev-white-alt.svg')} />
         <HStack spacing={2} my={2}>
           {tags.map((tag) => (
-            <Tag bg={customTheme.colors.kirDev} color="white" size={'md'} variant="solid" fontWeight="bold" key={tag}>
+            <Tag bg={customTheme.colors.kirDev} color="white" size="md" variant="solid" fontWeight="bold" key={tag}>
               {tag}
             </Tag>
           ))}

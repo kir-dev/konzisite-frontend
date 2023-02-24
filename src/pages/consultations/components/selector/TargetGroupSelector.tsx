@@ -84,9 +84,9 @@ export const TargetGroupSelector = () => {
         <FormLabel>Célcsoportok</FormLabel>
         {watch('targetGroups').map((g: GroupModel) => (
           <Box borderRadius={6} borderWidth={1} mb={2} key={g.id}>
-            <HStack justify={'space-between'} p={4}>
+            <HStack justify="space-between" p={4}>
               <HStack>
-                <Avatar size="md" name={g.name} src={''} />{' '}
+                <Avatar size="md" name={g.name} src="" />{' '}
                 <Heading maxWidth={{ base: '9rem', sm: '15rem', m: '24rem', md: '32rem', lg: '45rem' }} isTruncated size="md">
                   {g.name}
                 </Heading>
@@ -157,7 +157,7 @@ export const TargetGroupSelector = () => {
                     }}
                   >
                     <HStack flexGrow={1} p={4}>
-                      <Avatar size="md" name={g.name} src={''} />
+                      <Avatar size="md" name={g.name} src="" />
                       <VStack>
                         <Heading maxWidth={{ base: '13rem', sm: '17rem' }} isTruncated size="md" width="100%">
                           {g.name}

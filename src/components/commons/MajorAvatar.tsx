@@ -13,5 +13,5 @@ export const MajorAvatar = ({ subject, monochrome = false }: Props) => {
 
   if (monochrome) bgcolor = 'gray.500'
 
-  return <Avatar size="md" bg={bgcolor} icon={<MajorIcon majors={subject.majors} />} src={''} />
+  return <Avatar size="md" bg={bgcolor} icon={<MajorIcon majors={subject.majors} />} src="" />
 }

@@ -50,7 +50,7 @@ export const ConsultationDetailsPage = () => {
   //const exportKonziMutation = useExportConsultationMutation()
 
   if (!consultationId || !isValidId(consultationId)) {
-    return <ErrorPage backPath={PATHS.CONSULTATIONS} status={404} title={'A konzultáció nem található!'} />
+    return <ErrorPage backPath={PATHS.CONSULTATIONS} status={404} title="A konzultáció nem található!" />
   }
 
   if (error) {

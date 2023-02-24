@@ -47,7 +47,9 @@ export const RequestListPage = () => {
         </Button>
       </Flex>
       {requests && requests.length === 0 ? (
-        <Text>Nincsenek kérések!</Text>
+        <Text fontStyle="italic" textAlign="center">
+          Nincsenek kérések!
+        </Text>
       ) : (
         <VStack alignItems="stretch" mt={3}>
           {isLoading || loggedInUserLoading || !loggedInUser ? (

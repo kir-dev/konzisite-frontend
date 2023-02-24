@@ -17,7 +17,7 @@ export const GroupDetailsPage = () => {
   const { isLoading, data: group, error, refetch } = useFecthGroupDetailsQuery(+groupId!!)
 
   if (!groupId || !isValidId(groupId)) {
-    return <ErrorPage backPath={PATHS.GROUPS} status={404} title={'A csoport nem található!'} />
+    return <ErrorPage backPath={PATHS.GROUPS} status={404} title="A csoport nem található!" />
   }
 
   if (error) {

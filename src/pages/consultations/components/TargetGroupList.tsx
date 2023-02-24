@@ -19,7 +19,7 @@ export const TargetGroupList = ({ groups }: Props) => {
         {groups.map((g) => (
           <Box key={g.id} shadow="md" borderRadius={8} borderWidth={1}>
             <HStack flexGrow={1} as={Link} to={`${PATHS.GROUPS}/${g.id}`} p={4}>
-              <Avatar size="md" name={g.name} src={''} />
+              <Avatar size="md" name={g.name} src="" />
               <VStack flexGrow={1}>
                 <Heading size="md" width="100%">
                   {g.name}

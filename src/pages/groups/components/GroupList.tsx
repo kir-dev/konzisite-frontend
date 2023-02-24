@@ -105,7 +105,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
               <Box key={g.id} shadow="md" borderRadius={8} borderWidth={1}>
                 <Stack as={Link} to={`${PATHS.GROUPS}/${g.id}`} direction={['column', 'row']} justify="space-between">
                   <HStack p={4}>
-                    <Avatar size="md" name={g.name} src={''} />
+                    <Avatar size="md" name={g.name} src="" />
                     <VStack flexGrow={1} align="flex-start">
                       <Heading
                         isTruncated

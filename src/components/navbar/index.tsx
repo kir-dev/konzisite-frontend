@@ -19,7 +19,7 @@ export const Navbar: FC = () => {
       mr={5}
     >
       <Box mx="auto" maxW="6xl" w="full" color={useColorModeValue('brand.500', 'white')}>
-        <Flex h="4rem" w="full" px={4} py={2} align="center" justifyContent={'space-between'}>
+        <Flex h="4rem" w="full" px={4} py={2} align="center" justifyContent="space-between">
           <Flex display={{ base: 'flex', md: 'none' }}>
             <IconButton
               onClick={onToggle}

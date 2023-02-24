@@ -24,7 +24,7 @@ export const UserListWithPagination = ({ data }: Props) => {
         <Box key={user.id} shadow="md" borderRadius={8} borderWidth={1}>
           <VStack spacing={0} as={Link} to={`${PATHS.USERS}/${user.id}`} p={2} w="100%" align="flex-start">
             <HStack p={2}>
-              <Avatar size="md" name={user.fullName + user.id} src={''} />
+              <Avatar size="md" name={user.fullName + user.id} src="" />
               <Flex width="100%">
                 <Heading size="md">{user.fullName}</Heading>
                 {user.id === loggedInUser?.id && (

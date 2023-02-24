@@ -62,94 +62,100 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
   const { mutate: removeFromGroup } = useRemoveUserFromGroupMutation(generateSuccessFn('Felhasználó eltávolítva'), onErrorFn)
 
   return (
-    <SimpleGrid columns={{ sm: 1, md: 2 }} gap={4} mb={3}>
-      {users?.map((u) => (
-        <Box key={u.id} shadow="md" borderRadius={8} borderWidth={1}>
-          <HStack>
-            <HStack flexGrow={1} as={Link} to={`${PATHS.USERS}/${u.id}`} p={4}>
-              <Avatar size="md" name={u.fullName} src={''} />
-              <VStack flexGrow={1}>
-                <Flex width="100%">
-                  <Heading size="md">{u.fullName}</Heading>
-                  <Flex align={'center'}>
-                    {u.id === group.owner.id && (
-                      <Badge colorScheme="brand" ml={1}>
-                        Tulajdonos
-                      </Badge>
-                    )}
-                    {[GroupRoles.ADMIN, GroupRoles.PENDING].includes(u.role) && (
-                      <Badge colorScheme={u.role === GroupRoles.ADMIN ? 'green' : 'red'} ml={1}>
-                        {translateGroupRole[u.role]}
-                      </Badge>
-                    )}
-                    {u.id === currentUser?.id && (
-                      <Badge colorScheme="orange" ml={1}>
-                        Te
-                      </Badge>
-                    )}
+    <>
+      <SimpleGrid columns={{ sm: 1, md: 2 }} gap={4} mb={3}>
+        {users?.map((u) => (
+          <Box key={u.id} shadow="md" borderRadius={8} borderWidth={1}>
+            <HStack>
+              <HStack flexGrow={1} as={Link} to={`${PATHS.USERS}/${u.id}`} p={4}>
+                <Avatar size="md" name={u.fullName} src="" />
+                <VStack flexGrow={1}>
+                  <Flex width="100%">
+                    <Heading size="md">{u.fullName}</Heading>
+                    <Flex align="center">
+                      {u.id === group.owner.id && (
+                        <Badge colorScheme="brand" ml={1}>
+                          Tulajdonos
+                        </Badge>
+                      )}
+                      {[GroupRoles.ADMIN, GroupRoles.PENDING].includes(u.role) && (
+                        <Badge colorScheme={u.role === GroupRoles.ADMIN ? 'green' : 'red'} ml={1}>
+                          {translateGroupRole[u.role]}
+                        </Badge>
+                      )}
+                      {u.id === currentUser?.id && (
+                        <Badge colorScheme="orange" ml={1}>
+                          Te
+                        </Badge>
+                      )}
+                    </Flex>
                   </Flex>
-                </Flex>
-                <HStack justifyContent="space-between" width="100%">
-                  <Text>Csatlakozás: {new Date(u.joinedAt).toLocaleDateString('hu-HU')}</Text>
-                </HStack>
-              </VStack>
-            </HStack>
-            {u.id !== group.owner.id &&
-              u.id !== currentUser?.id &&
-              (group.currentUserRole === GroupRoles.OWNER ||
-                (group.currentUserRole === GroupRoles.ADMIN && u.role !== GroupRoles.ADMIN)) && (
-                <Flex alignItems="center" p={2}>
-                  <Menu>
-                    <MenuButton as={IconButton} colorScheme="brand" icon={<FaChevronDown />} width="100%" />
-                    <MenuList>
-                      {u.role === GroupRoles.PENDING ? (
-                        <>
-                          <MenuItem color="green" icon={<FaUserCheck />} onClick={() => approveUser({ groupId: group.id, userId: u.id })}>
-                            Elfogadás
-                          </MenuItem>
-                          <MenuItem color="red" icon={<FaUserTimes />} onClick={() => declineUser({ groupId: group.id, userId: u.id })}>
-                            Elutasátas
-                          </MenuItem>
-                        </>
-                      ) : (
-                        <>
-                          {group.currentUserRole == GroupRoles.OWNER &&
-                            (u.role === GroupRoles.ADMIN ? (
+                  <HStack justifyContent="space-between" width="100%">
+                    <Text>Csatlakozás: {new Date(u.joinedAt).toLocaleDateString('hu-HU')}</Text>
+                  </HStack>
+                </VStack>
+              </HStack>
+              {u.id !== group.owner.id &&
+                u.id !== currentUser?.id &&
+                (group.currentUserRole === GroupRoles.OWNER ||
+                  (group.currentUserRole === GroupRoles.ADMIN && u.role !== GroupRoles.ADMIN)) && (
+                  <Flex alignItems="center" p={2}>
+                    <Menu>
+                      <MenuButton as={IconButton} colorScheme="brand" icon={<FaChevronDown />} width="100%" />
+                      <MenuList>
+                        {u.role === GroupRoles.PENDING ? (
+                          <>
+                            <MenuItem color="green" icon={<FaUserCheck />} onClick={() => approveUser({ groupId: group.id, userId: u.id })}>
+                              Elfogadás
+                            </MenuItem>
+                            <MenuItem color="red" icon={<FaUserTimes />} onClick={() => declineUser({ groupId: group.id, userId: u.id })}>
+                              Elutasátas
+                            </MenuItem>
+                          </>
+                        ) : (
+                          <>
+                            {group.currentUserRole == GroupRoles.OWNER &&
+                              (u.role === GroupRoles.ADMIN ? (
+                                <MenuItem
+                                  color="red"
+                                  icon={<FaUserInjured />}
+                                  onClick={() => demoteUser({ groupId: group.id, userId: u.id })}
+                                >
+                                  Lefokozás
+                                </MenuItem>
+                              ) : (
+                                <MenuItem
+                                  color="green"
+                                  icon={<FaUserGraduate />}
+                                  onClick={() => promoteUser({ groupId: group.id, userId: u.id })}
+                                >
+                                  Előléptetés
+                                </MenuItem>
+                              ))}
+                            {u.role !== GroupRoles.ADMIN && (
                               <MenuItem
                                 color="red"
-                                icon={<FaUserInjured />}
-                                onClick={() => demoteUser({ groupId: group.id, userId: u.id })}
+                                icon={<FaUserSlash />}
+                                onClick={() => removeFromGroup({ groupId: group.id, userId: u.id })}
                               >
-                                Lefokozás
+                                Eltávolítás
                               </MenuItem>
-                            ) : (
-                              <MenuItem
-                                color="green"
-                                icon={<FaUserGraduate />}
-                                onClick={() => promoteUser({ groupId: group.id, userId: u.id })}
-                              >
-                                Előléptetés
-                              </MenuItem>
-                            ))}
-                          {u.role !== GroupRoles.ADMIN && (
-                            <MenuItem
-                              color="red"
-                              icon={<FaUserSlash />}
-                              onClick={() => removeFromGroup({ groupId: group.id, userId: u.id })}
-                            >
-                              Eltávolítás
-                            </MenuItem>
-                          )}
-                        </>
-                      )}
-                    </MenuList>
-                  </Menu>
-                </Flex>
-              )}
-          </HStack>
-        </Box>
-      ))}
-      {users.length === 0 && <Text>Nincsenek {pending && 'függő '} tagok</Text>}
-    </SimpleGrid>
+                            )}
+                          </>
+                        )}
+                      </MenuList>
+                    </Menu>
+                  </Flex>
+                )}
+            </HStack>
+          </Box>
+        ))}
+      </SimpleGrid>
+      {users.length === 0 && (
+        <Text textAlign="center" fontStyle="italic">
+          Nincsenek {pending && 'függő '} tagok
+        </Text>
+      )}
+    </>
   )
 }

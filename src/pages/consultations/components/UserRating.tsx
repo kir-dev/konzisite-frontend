@@ -73,7 +73,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
   const [anonymous, setAnonymous] = useState<boolean>(!!user.rating?.anonymous)
 
   if (!consultationId || !isValidId(consultationId)) {
-    return <ErrorPage status={404} title={'A konzultáció nem található!'} />
+    return <ErrorPage status={404} title="A konzultáció nem található!" />
   }
 
   return (
@@ -123,7 +123,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
           <ModalHeader>{user.fullName} értékelése</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <VStack align={'flex-start'}>
+            <VStack align="flex-start">
               <HStack width="100%">
                 <Slider colorScheme="brand" min={1} max={5} step={1} value={value} onChange={(e) => setValue(e)} mr={2}>
                   <SliderTrack>

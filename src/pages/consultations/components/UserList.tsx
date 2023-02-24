@@ -35,7 +35,7 @@ export const UserList = ({ users, isParticipant, columns, showRating = true, sho
           <Box key={u.id} shadow="md" borderRadius={8} borderWidth={1}>
             <Stack direction={['column', 'row']} width="100%">
               <HStack flexGrow={1} as={Link} to={`${PATHS.USERS}/${u.id}`} p={4}>
-                <Avatar size="md" name={u.fullName} src={''} />
+                <Avatar size="md" name={u.fullName} src="" />
                 <VStack flexGrow={1}>
                   <Heading size="md" width="100%">
                     {u.fullName}

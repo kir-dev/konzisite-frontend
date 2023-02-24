@@ -105,7 +105,9 @@ export const RequestSelector = ({ isActive }: { isActive: boolean }) => {
             />
             <VStack alignItems="stretch" mb={4}>
               {isLoading || !filteredList || filteredList.length === 0 ? (
-                <Text fontStyle="italic">Nincs találat</Text>
+                <Text textAlign="center" fontStyle="italic">
+                  Nincs találat
+                </Text>
               ) : (
                 filteredList.map((r) => (
                   <Box
