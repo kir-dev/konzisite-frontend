@@ -40,7 +40,7 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
             {request.currentUserSupports ? (
               <Button
                 colorScheme="red"
-                width="100%"
+                width={{ base: '100%', md: 'inherit' }}
                 onClick={(e) => {
                   e.preventDefault()
                   unsupport(request.id)
@@ -51,7 +51,7 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
             ) : (
               <Button
                 colorScheme="brand"
-                width="100%"
+                width={{ base: '100%', md: 'inherit' }}
                 onClick={(e) => {
                   e.preventDefault()
                   support(request.id)
@@ -60,7 +60,12 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
                 Támogatom
               </Button>
             )}
-            <Button colorScheme="brand" width="100%" as={Link} to={`${PATHS.CONSULTATIONS}/new?requestId=${request.id}`}>
+            <Button
+              colorScheme="brand"
+              width={{ base: '100%', md: 'inherit' }}
+              as={Link}
+              to={`${PATHS.CONSULTATIONS}/new?requestId=${request.id}`}
+            >
               Megtartom
             </Button>
           </Stack>
