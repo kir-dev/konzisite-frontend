@@ -13,7 +13,6 @@ import Markdown from '../../components/commons/Markdown'
 import { PageHeading } from '../../components/commons/PageHeading'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
-import { LoadingConsultationList } from '../consultations/components/LoadingConsultationList'
 import { UserList } from '../consultations/components/UserList'
 import { ErrorPage } from '../error/ErrorPage'
 import { LoadingRequestDetails } from './components/LoadingRequestDetails'
@@ -141,22 +140,18 @@ export const RequestDetailsPage = () => {
             Konzultációk ({request.consultations.length})
           </Heading>
           <VStack alignItems="stretch" mb={6}>
-            {isLoading ? (
-              <LoadingConsultationList />
-            ) : (
-              request.consultations.map((c) => (
-                <ConsultationListItem
-                  consultation={c}
-                  key={c.id}
-                  rightSmallText={
-                    c.presentations.length <= 3
-                      ? `Konzitartó${c.presentations.length > 1 ? 'k' : ''}:
+            {request.consultations.map((c) => (
+              <ConsultationListItem
+                consultation={c}
+                key={c.id}
+                rightSmallText={
+                  c.presentations.length <= 3
+                    ? `Konzitartó${c.presentations.length > 1 ? 'k' : ''}:
                 ${c.presentations.map((p) => p.fullName).join(', ')}`
-                      : `${c.presentations.length} konzitartó`
-                  }
-                />
-              ))
-            )}
+                    : `${c.presentations.length} konzitartó`
+                }
+              />
+            ))}
           </VStack>
         </>
       )}
