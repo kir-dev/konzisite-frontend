@@ -10,7 +10,7 @@ const theme: any = {
     const { href, children } = props
     const color = useColorModeValue('brand.200', 'brand.300')
     return (
-      <Link textColor={color} isExternal href={href}>
+      <Link textColor={color} textDecoration="underline" isExternal href={href}>
         {children}
       </Link>
     )
