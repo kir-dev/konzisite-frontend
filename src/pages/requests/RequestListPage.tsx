@@ -46,6 +46,10 @@ export const RequestListPage = () => {
           Új konzi kérés
         </Button>
       </Flex>
+      <Text textAlign="justify">
+        Szükséged lenne segítségre valamelyik tárgyból? Készíts egy konzi kérést, és ha valaki megvalósítja azt, értesítünk emailben! Ha már
+        létezik kérés a tárgyból, elég támogatnod azt, így is meg fogod kapni az értesítést.
+      </Text>
       {requests && requests.length === 0 ? (
         <Text fontStyle="italic" textAlign="center">
           Nincsenek kérések!

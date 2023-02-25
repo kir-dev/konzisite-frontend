@@ -82,6 +82,10 @@ export const TargetGroupSelector = () => {
     <>
       <FormControl>
         <FormLabel>Célcsoportok</FormLabel>
+        <Text mb={2} textAlign="justify">
+          Ha megadsz egy vagy több célcsoportot, akkor csak azok a felhasználók fogják látni a konzit, akik legalább az egyik célcsoportnak
+          tagjai.
+        </Text>
         {watch('targetGroups').map((g: GroupModel) => (
           <Box borderRadius={6} borderWidth={1} mb={2} key={g.id}>
             <HStack justify="space-between" p={4}>
