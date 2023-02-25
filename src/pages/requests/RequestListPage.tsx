@@ -1,4 +1,4 @@
-import { Button, Flex, Text, useToast, VStack } from '@chakra-ui/react'
+import { Button, Text, useToast, VStack } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
@@ -40,12 +40,11 @@ export const RequestListPage = () => {
   return (
     <>
       <Helmet title="Konzultáció kérések" />
-      <PageHeading title="Konzultáció kérések" />
-      <Flex justify="flex-end">
+      <PageHeading title="Konzultáció kérések">
         <Button as={Link} to={`${PATHS.REQUESTS}/new`} colorScheme="brand">
           Új konzi kérés
         </Button>
-      </Flex>
+      </PageHeading>
       <Text textAlign="justify">
         Szükséged lenne segítségre valamelyik tárgyból? Készíts egy konzi kérést, és ha valaki megvalósítja azt, értesítünk emailben! Ha már
         létezik kérés a tárgyból, elég támogatnod azt, így is meg fogod kapni az értesítést.
