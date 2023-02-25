@@ -28,7 +28,7 @@ export const GroupsPage = () => {
           refetch={refetch}
         />
       </PageHeading>
-      <Text textAlign="justify">
+      <Text mb={2} textAlign="justify">
         Ha szeretnél csak bizonyos hallgatóknak (például egy tankörnek) konzultációt tartani, először hozz létre egy csoportot. A
         csoportokba bárki jelentkezhet, de a jelentkezést a csoport tulajdonosának vagy valamelyik adminjának el kell fogadnia, mielőtt
         végleges lesz. Ha konzi létrehozása közben megadsz egy vagy több célcsoportot, akkor csak azok a felhasználók fogják látni a konzit,
