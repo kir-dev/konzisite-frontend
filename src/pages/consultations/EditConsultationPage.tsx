@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FormProvider, useForm } from 'react-hook-form'
 import { FaArrowLeft } from 'react-icons/fa'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useCreateConsultationMutation, useEditConsultationMutation } from '../../api/hooks/consultationMutationHooks'
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
@@ -208,11 +208,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
             </FormProvider>
           </VStack>
           <Flex mt={1} justify="space-between">
-            <Button
-              leftIcon={<FaArrowLeft />}
-              as={Link}
-              to={newConsultation ? PATHS.CONSULTATIONS : `${PATHS.CONSULTATIONS}/${consultationId}`}
-            >
+            <Button leftIcon={<FaArrowLeft />} onClick={() => navigate(-1)}>
               Vissza
             </Button>
             <Button

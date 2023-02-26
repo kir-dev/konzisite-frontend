@@ -9,14 +9,14 @@ export const PageHeading = ({ title, children }: PropsWithChildren<Props>) => {
   const [largeScreen] = useMediaQuery('(min-width: 41em)', { fallback: true })
   if (!children) {
     return (
-      <Heading textAlign="center" my={3}>
+      <Heading textAlign="center" mb={5} mt={1}>
         {title}
       </Heading>
     )
   }
   if (largeScreen) {
     return (
-      <Flex my={3} justify="center" alignItems="center">
+      <Flex mb={5} mt={1} justify="center" alignItems="center">
         <span style={{ visibility: 'hidden', marginRight: 'auto' }}>{children}</span>
 
         <Heading textAlign="center">{title}</Heading>
@@ -25,8 +25,10 @@ export const PageHeading = ({ title, children }: PropsWithChildren<Props>) => {
     )
   }
   return (
-    <VStack my={3} spacing={1} w="100%" alignItems="stretch">
-      <Heading textAlign="center">{title}</Heading>
+    <VStack mb={4} spacing={1} w="100%" alignItems="stretch">
+      <Heading mb={3} textAlign="center">
+        {title}
+      </Heading>
       {children}
     </VStack>
   )
