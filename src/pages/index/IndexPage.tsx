@@ -35,7 +35,7 @@ export const IndexPage = () => {
       <Helmet />
       <PageHeading title="Üdvözlünk a Konzisite&#8209;on!" />
       {data.alert && (
-        <Alert rounded="md" my={2} status={data.alert.type}>
+        <Alert rounded="md" mb={2} status={data.alert.type}>
           <AlertIcon />
           <Box mt={2}>
             <Markdown markdown={data.alert.description} />
@@ -44,7 +44,7 @@ export const IndexPage = () => {
       )}
       {data.unratedConsultations.length > 0 && (
         <Box mb={5}>
-          <Alert rounded="md" my={2} status="warning">
+          <Alert rounded="md" mb={2} status="warning">
             <AlertIcon />
             Az alábbi konzultációkon részt vettél, de még nem értékelted az előadókat! Kérlek tedd meg minél előbb, hogy kapjanak
             visszajelzést!
