@@ -12,7 +12,6 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  useMediaQuery,
   useToast,
   VStack
 } from '@chakra-ui/react'
@@ -40,7 +39,6 @@ type Props = {
 export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt = 0, refetchList, searchBar = false }: Props) => {
   const toast = useToast()
   const [search, setSearch] = useState('')
-  const [largeScreen] = useMediaQuery('(min-width: 48em)')
 
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
@@ -77,7 +75,6 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
               <FaSearch />
             </InputLeftElement>
             <Input
-              autoFocus={largeScreen}
               placeholder="Keresés..."
               size="lg"
               onChange={(e) => {
