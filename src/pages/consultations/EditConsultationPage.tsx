@@ -1,4 +1,4 @@
-import { Button, Checkbox, Flex, FormControl, FormErrorMessage, FormLabel, Input, useToast, VStack } from '@chakra-ui/react'
+import { Button, Checkbox, Flex, FormControl, FormErrorMessage, FormLabel, Input, Text, useToast, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -184,6 +184,10 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
             >
               Kérés teljesítése
             </Checkbox>
+            <Text textAlign="justify">
+              Amennyiben valakinek a konzi kérését valósítod meg, pipáld be a fenti dobozt, majd válaszd ki a kérést. Így értesítést fognak
+              kapni azok a felhasználók, akik támogatták a kérést. Konzi kérés kiválasztása meghatározza a konzi tárgyát is.
+            </Text>
             <FormProvider {...form}>
               {fulfillRequest ? <RequestSelector isActive={fulfillRequest} /> : <SubjectSelector />}
               <PresentersSelector />

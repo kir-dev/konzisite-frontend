@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
 import { useCreateGroupMutation } from '../../api/hooks/groupMutationHooks'
 import { useFecthGroupListQuery } from '../../api/hooks/groupQueryHooks'
@@ -19,8 +19,7 @@ export const GroupsPage = () => {
   return (
     <>
       <Helmet title="Csoportok" />
-      <PageHeading title="Csoportok" />
-      <Flex justify="flex-end">
+      <PageHeading title="Csoportok">
         <GroupEditModalButton
           buttonText="Új csoport"
           modalTitle="Csoport létrehozása"
@@ -28,7 +27,13 @@ export const GroupsPage = () => {
           mutation={createGroupMutation}
           refetch={refetch}
         />
-      </Flex>
+      </PageHeading>
+      <Text mb={2} textAlign="justify">
+        Ha szeretnél csak bizonyos hallgatóknak (például egy tankörnek) konzultációt tartani, először hozz létre egy csoportot. A
+        csoportokba bárki jelentkezhet, de a jelentkezést a csoport tulajdonosának vagy valamelyik adminjának el kell fogadnia, mielőtt
+        végleges lesz. Ha konzi létrehozása közben megadsz egy vagy több célcsoportot, akkor csak azok a felhasználók fogják látni a konzit,
+        akik legalább az egyik célcsoportnak tagjai.
+      </Text>
       <GroupList
         groups={groups?.filter((g) => g.currentUserRole !== GroupRoles.NONE)}
         title="Saját csoportok"
