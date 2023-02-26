@@ -26,7 +26,7 @@ export const Footer: FC = () => {
             </ColorfulExternalLink>
 
             <HStack spacing={2} mt={4} justify="space-evenly">
-              <ColorfulExternalLink url="https:/vik.hk" hoverColor={customTheme.colors.hk}>
+              <ColorfulExternalLink url="https://vik.hk" hoverColor={customTheme.colors.hk}>
                 <FaGlobe size={25} />
               </ColorfulExternalLink>
               <ColorfulExternalLink url="https://www.facebook.com/vik.hk" hoverColor={customTheme.colors.hk}>
