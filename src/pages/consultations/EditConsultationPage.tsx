@@ -1,5 +1,5 @@
 import { Button, Checkbox, Flex, FormControl, FormErrorMessage, FormLabel, Input, Text, useToast, VStack } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FormProvider, useForm } from 'react-hook-form'
 import { FaArrowLeft } from 'react-icons/fa'
@@ -39,7 +39,6 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const navigate = useNavigate()
   const consultationId = parseInt(useParams<{ consultationId: string }>().consultationId ?? '-1')
   const { isLoading, data: consultation, error } = useFetchConsultationbDetailsQuery(consultationId)
-  const [fulfillRequest, setFulfillRequest] = useState<boolean>(!!request || !!consultation?.request) // TODO
   const { isLoggedIn, loggedInUser, loggedInUserLoading } = useAuthContext()
 
   const { mutate: createConsultation, isLoading: createLoading } = useCreateConsultationMutation()
@@ -80,9 +79,10 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
           subject: consultation.subject,
           presenters: consultation.presentations,
           targetGroups: consultation.targetGroups,
-          request: { ...consultation.request, subject: consultation.subject }
+          request: consultation.request ? { ...consultation.request, subject: consultation.subject } : undefined,
+          fulfillRequest: !!consultation?.request
         }
-      : { targetGroups: [], presenters: [], startDate: new Date(), endDate: new Date() },
+      : { targetGroups: [], presenters: [], startDate: new Date(), endDate: new Date(), fulfillRequest: !!request },
     mode: 'all'
   })
 
@@ -105,7 +105,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       subjectId: data.subject.id,
       presenterIds: data.presenters.map((p) => p.id),
       targetGroupIds: data.targetGroups.map((g) => g.id),
-      requestId: data.request?.id
+      requestId: data.fulfillRequest ? data.request?.id : null
     }
     newConsultation ? createCons(formData) : editCons(formData)
   })
@@ -121,7 +121,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       setValue('startDate', new Date(consultation.startDate))
       setValue('endDate', new Date(consultation.endDate))
       setValue('request', consultation.request ? { ...consultation.request, subject: consultation.subject } : undefined)
-      setFulfillRequest(!!consultation.request)
+      setValue('fulfillRequest', !!consultation.request)
     }
   }, [consultation])
 
@@ -172,11 +172,11 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
               <Input type="text" {...register('location', { required: true })} placeholder="SCH-1317" width="30%" minWidth="150px" />
               {errors.location && <FormErrorMessage>Helyszín nem lehet üres</FormErrorMessage>}
             </FormControl>
+            <Checkbox hidden {...register('fulfillRequest')} />
             <Checkbox
-              isChecked={fulfillRequest}
               colorScheme="brand"
               onChange={(e) => {
-                setFulfillRequest(e.target.checked)
+                setValue('fulfillRequest', e.target.checked)
                 setValue('request', undefined, { shouldValidate: true })
                 resetField('subject')
                 setValue('subject', watch('subject'), { shouldValidate: true })
@@ -189,7 +189,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
               kapni azok a felhasználók, akik támogatták a kérést. Konzi kérés kiválasztása meghatározza a konzi tárgyát is.
             </Text>
             <FormProvider {...form}>
-              {fulfillRequest ? <RequestSelector isActive={fulfillRequest} /> : <SubjectSelector />}
+              {watch('fulfillRequest') ? <RequestSelector /> : <SubjectSelector />}
               <PresentersSelector />
               <ConsultationDateForm prevStartDate={consultation && new Date(consultation.startDate)} />
               <TargetGroupSelector />
