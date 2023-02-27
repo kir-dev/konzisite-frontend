@@ -64,6 +64,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
   }
   const HoldKonziButton = (
     <Button
+      w="100%"
       colorScheme="brand"
       onClick={() => {
         navigate(`${PATHS.CONSULTATIONS}/new`, { state: { group } })
