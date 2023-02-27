@@ -33,7 +33,7 @@ type ConsultationFormState = {
 }
 
 export const EditConsultationPage = ({ newConsultation }: Props) => {
-  const { state } = useLocation()
+  const { state, key } = useLocation()
   const { request, group } = (state as ConsultationFormState) || {}
   const toast = useToast()
   const navigate = useNavigate()
@@ -208,7 +208,16 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
             </FormProvider>
           </VStack>
           <Flex mt={1} justify="space-between">
-            <Button leftIcon={<FaArrowLeft />} onClick={() => navigate(-1)}>
+            <Button
+              leftIcon={<FaArrowLeft />}
+              onClick={() => {
+                if (key !== 'default') {
+                  navigate(-1)
+                } else {
+                  navigate(PATHS.CONSULTATIONS)
+                }
+              }}
+            >
               Vissza
             </Button>
             <Button
