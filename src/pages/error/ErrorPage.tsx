@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { FaChevronLeft } from 'react-icons/fa'
 import { To, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
+import { PATHS } from '../../util/paths'
 
 type ErrorPageState = {
   title?: string
@@ -13,7 +14,7 @@ type ErrorPageState = {
 }
 
 export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState) => {
-  const { state } = useLocation()
+  const { state, key } = useLocation()
   const { onLogout } = useAuthContext()
   const navigate = useNavigate()
   const toast = useToast()
@@ -64,7 +65,8 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
           onClick={() => {
             if (backPath) navigate(backPath)
             else if (bp) navigate(bp)
-            else navigate(-1)
+            else if (key !== 'default') navigate(-1)
+            else navigate(PATHS.INDEX)
           }}
         >
           Vissza
