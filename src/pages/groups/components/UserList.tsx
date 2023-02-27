@@ -12,6 +12,7 @@ import {
   MenuList,
   SimpleGrid,
   Text,
+  useColorModeValue,
   useToast,
   VStack
 } from '@chakra-ui/react'
@@ -46,6 +47,7 @@ type Props = {
 export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
   const { loggedInUser: currentUser } = useAuthContext()
   const toast = useToast()
+  const acceptPromoteTextColor = useColorModeValue('green', 'green.400')
 
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
@@ -105,7 +107,11 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
                       <MenuList>
                         {u.role === GroupRoles.PENDING ? (
                           <>
-                            <MenuItem color="green" icon={<FaUserCheck />} onClick={() => approveUser({ groupId: group.id, userId: u.id })}>
+                            <MenuItem
+                              color={acceptPromoteTextColor}
+                              icon={<FaUserCheck />}
+                              onClick={() => approveUser({ groupId: group.id, userId: u.id })}
+                            >
                               Elfogadás
                             </MenuItem>
                             <MenuItem color="red" icon={<FaUserTimes />} onClick={() => declineUser({ groupId: group.id, userId: u.id })}>
@@ -125,7 +131,7 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
                                 </MenuItem>
                               ) : (
                                 <MenuItem
-                                  color="green"
+                                  color={acceptPromoteTextColor}
                                   icon={<FaUserGraduate />}
                                   onClick={() => promoteUser({ groupId: group.id, userId: u.id })}
                                 >
