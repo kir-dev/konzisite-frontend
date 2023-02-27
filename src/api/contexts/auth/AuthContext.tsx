@@ -63,7 +63,7 @@ export const AuthProvider: FC<HasChildren> = ({ children }) => {
     Cookies.remove(CookieKeys.KONZI_JWT_TOKEN)
     setIsLoggedIn(false)
     queryClient.invalidateQueries('currentUser')
-    navigate(path)
+    navigate(path, { replace: true })
   }
 
   const refetchUser = async () => {
