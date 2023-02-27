@@ -21,12 +21,11 @@ import { useFormContext } from 'react-hook-form'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useFetchRequestListQuery } from '../../../../api/hooks/requestQueryHooks'
-import { ConsultationRequestModel } from '../../../../api/model/consultationrequest.model'
 import { PATHS } from '../../../../util/paths'
 import { RequestListItem } from '../../../requests/components/RequestListItem'
 import { CreateConsultationForm } from '../../types/createConsultation'
 
-export const RequestSelector = ({ isActive }: { isActive: boolean }) => {
+export const RequestSelector = () => {
   const {
     register,
     watch,
@@ -99,7 +98,7 @@ export const RequestSelector = ({ isActive }: { isActive: boolean }) => {
             </InputGroup>
             <Input
               {...register('request', {
-                validate: (r?: ConsultationRequestModel) => !!r || !isActive
+                validate: (_, formValues) => !!formValues.request || !formValues.fulfillRequest
               })}
               hidden
             />

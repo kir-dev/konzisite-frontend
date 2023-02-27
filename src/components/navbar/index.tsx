@@ -15,7 +15,7 @@ export const Navbar: FC = () => {
     <Flex
       justifyContent="center"
       w="full"
-      style={{ boxShadow: useColorModeValue('0 0.25rem 0.6rem #062a4c', '0 0.25rem 0.6rem #000') }}
+      style={{ boxShadow: useColorModeValue('0 -0.1rem 1.0rem #062a4c', '0 0.25rem 0.6rem #000') }}
       mr={5}
     >
       <Box mx="auto" maxW="6xl" w="full" color={useColorModeValue('brand.500', 'white')}>

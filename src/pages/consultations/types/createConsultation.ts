@@ -12,7 +12,7 @@ export interface CreateConsultation {
   subjectId: number
   presenterIds: number[]
   targetGroupIds: number[]
-  requestId?: number
+  requestId?: number | null
 }
 
 export type CreateConsultationForm = {
@@ -25,4 +25,5 @@ export type CreateConsultationForm = {
   presenters: Presentation[]
   targetGroups: GroupModel[]
   request?: RequestPreview
+  fulfillRequest: boolean
 }
