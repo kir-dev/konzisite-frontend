@@ -37,9 +37,15 @@ export const Footer: FC = () => {
               </ColorfulExternalLink>
             </HStack>
           </VStack>
-
           <Link href="https://vik.hk/" isExternal>
-            <Image onMouseOver={mouseEventFn('/img/hk-white-alt.svg')} onMouseOut={mouseEventFn(hkLogo)} src={hkLogo} maxW={40} maxH={40} />
+            <Image
+              pl={['1rem', 0]}
+              onMouseOver={mouseEventFn('/img/hk-white-alt.svg')}
+              onMouseOut={mouseEventFn(hkLogo)}
+              src={hkLogo}
+              maxW={40}
+              maxH={40}
+            />
           </Link>
         </HStack>
 
