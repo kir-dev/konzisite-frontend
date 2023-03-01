@@ -1,4 +1,4 @@
-export const generateDateText = (date: string) => new Date(date).toLocaleString('hu-HU', { dateStyle: 'short' })
+export const generateDateText = (date: string) => new Date(date).toLocaleDateString('hu-HU', { dateStyle: 'short' })
 
 export const generateDaysLeftText = (date: string) => {
   const beginningOfToday = new Date()
@@ -14,7 +14,9 @@ export const generateDaysLeftText = (date: string) => {
 }
 
 export const generateTimeSpanText = (date1: string, date2: string) =>
-  new Date(date1).toLocaleString('hu-HU', { timeStyle: 'short' }) + ' - ' + new Date(date2).toLocaleString('hu-HU', { timeStyle: 'short' })
+  new Date(date1).toLocaleTimeString('hu-HU', { timeStyle: 'short' }) +
+  ' - ' +
+  new Date(date2).toLocaleTimeString('hu-HU', { timeStyle: 'short' })
 
 export const formatDate = (date?: Date) => {
   if (!date) {
