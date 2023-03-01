@@ -64,7 +64,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
   }
   const HoldKonziButton = (
     <Button
-      w="100%"
+      w={['100%', 'max']}
       colorScheme="brand"
       onClick={() => {
         navigate(`${PATHS.CONSULTATIONS}/new`, { state: { group } })
@@ -125,7 +125,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
       return (
         <>
           {HoldKonziButton}
-          <Button colorScheme="red" onClick={undoRequest}>
+          <Button w="100%" colorScheme="red" onClick={undoRequest}>
             Kérelem visszavonása
           </Button>
         </>
@@ -134,7 +134,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
       return (
         <>
           {HoldKonziButton}
-          <Button colorScheme="brand" onClick={() => joinGroupMutation.mutate(group.id)}>
+          <Button w="100%" colorScheme="brand" onClick={() => joinGroupMutation.mutate(group.id)}>
             Csatlakozás
           </Button>
         </>
