@@ -134,6 +134,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
     if (request) {
       setValue('subject', request.subject)
       setValue('request', request)
+      setValue('fulfillRequest', true)
     }
   }, [])
 
@@ -199,6 +200,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
             <Checkbox hidden {...register('fulfillRequest')} />
             <Checkbox
               colorScheme="brand"
+              isChecked={watch('fulfillRequest')}
               onChange={(e) => {
                 setValue('fulfillRequest', e.target.checked)
                 setValue('request', undefined, { shouldValidate: true })
