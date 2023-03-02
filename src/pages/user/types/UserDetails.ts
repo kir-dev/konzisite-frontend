@@ -18,5 +18,13 @@ export type UserDetails = PublicUser & {
     subject: SubjectModel
     supporters: number
   })[]
-  averageRating?: number
+  stats?: UserStats
+}
+
+export type UserStats = {
+  presentationCount: number
+  allParticipants: number
+  ratingCount: number
+  averageRating: number
+  participationCount: number
 }
