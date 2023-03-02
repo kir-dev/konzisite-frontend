@@ -9,7 +9,9 @@ import { useCreateConsultationMutation, useEditConsultationMutation } from '../.
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { PageHeading } from '../../components/commons/PageHeading'
+import { getStatusString } from '../../components/editor/editorUtils'
 import { MarkdownEditor } from '../../components/editor/MarkdownEditor'
+import { MAX_DESCRIPTION_LENGTH, MAX_TITLE_LENGTH } from '../../util/constants'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
@@ -164,13 +166,35 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
           <VStack alignItems="flex-start">
             <FormControl isInvalid={!!errors.name} isRequired>
               <FormLabel>Konzultáció neve</FormLabel>
-              <Input type="text" {...register('name', { required: true })} placeholder="Digit vizsgára készülés" />
-              {errors.name && <FormErrorMessage>Név nem lehet üres</FormErrorMessage>}
+              <Input
+                type="text"
+                {...register('name', {
+                  required: { value: true, message: 'Név nem lehet üres!' },
+                  maxLength: {
+                    value: MAX_TITLE_LENGTH,
+                    message: 'Név túl hosszú! ' + getStatusString(watch('name'), MAX_TITLE_LENGTH)
+                  }
+                })}
+                placeholder="Digit vizsgára készülés"
+              />
+              {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
             </FormControl>
             <FormControl isInvalid={!!errors.location} isRequired>
               <FormLabel>Helyszín</FormLabel>
-              <Input type="text" {...register('location', { required: true })} placeholder="SCH-1317" width="30%" minWidth="150px" />
-              {errors.location && <FormErrorMessage>Helyszín nem lehet üres</FormErrorMessage>}
+              <Input
+                type="text"
+                {...register('location', {
+                  required: { value: true, message: 'Helyszín nem lehet üres!' },
+                  maxLength: {
+                    value: MAX_TITLE_LENGTH,
+                    message: 'Helyszín túl hosszú! ' + getStatusString(watch('location'), MAX_TITLE_LENGTH)
+                  }
+                })}
+                placeholder="SCH-1317"
+                width="30%"
+                minWidth="150px"
+              />
+              {errors.location && <FormErrorMessage>{errors.location.message}</FormErrorMessage>}
             </FormControl>
             <Checkbox hidden {...register('fulfillRequest')} />
             <Checkbox
@@ -199,7 +223,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
                   formDetails={{
                     id: 'descMarkdown',
                     promptText: '',
-                    maxChar: 5000
+                    maxChar: MAX_DESCRIPTION_LENGTH
                   }}
                   textAreaHeight="8rem"
                   previewHeight="12rem"
