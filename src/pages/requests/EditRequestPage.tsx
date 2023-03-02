@@ -9,7 +9,9 @@ import { useCreateRequestMutation, useEditRequestMutation } from '../../api/hook
 import { useFecthRequestDetailsQuery } from '../../api/hooks/requestQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { PageHeading } from '../../components/commons/PageHeading'
+import { getStatusString } from '../../components/editor/editorUtils'
 import { MarkdownEditor } from '../../components/editor/MarkdownEditor'
+import { MAX_DESCRIPTION_LENGTH, MAX_TITLE_LENGTH } from '../../util/constants'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { LoadingEditConsultation } from '../consultations/components/LoadingEditConsultation'
@@ -119,8 +121,15 @@ export const EditRequestPage = ({ newRequest }: Props) => {
           <VStack>
             <FormControl isInvalid={!!errors.name} isRequired>
               <FormLabel>Konzi kérés neve</FormLabel>
-              <Input type="text" {...register('name', { required: true })} placeholder="Digit vizsga segítség" />
-              {errors.name && <FormErrorMessage>Név nem lehet üres</FormErrorMessage>}
+              <Input
+                type="text"
+                {...register('name', {
+                  required: { value: true, message: 'Név nem lehet üres!' },
+                  maxLength: { value: MAX_TITLE_LENGTH, message: 'Név túl hosszú! ' + getStatusString(watch('name'), MAX_TITLE_LENGTH) }
+                })}
+                placeholder="Digit vizsga segítség"
+              />
+              {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
             </FormControl>
             <FormProvider {...form}>
               <SubjectSelector />
@@ -131,7 +140,7 @@ export const EditRequestPage = ({ newRequest }: Props) => {
                   formDetails={{
                     id: 'descMarkdown',
                     promptText: '',
-                    maxChar: 5000
+                    maxChar: MAX_DESCRIPTION_LENGTH
                   }}
                   textAreaHeight="8rem"
                   previewHeight="12rem"

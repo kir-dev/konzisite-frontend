@@ -1,6 +1,8 @@
 import {
   Button,
+  Flex,
   FormControl,
+  FormHelperText,
   FormLabel,
   Input,
   Modal,
@@ -18,6 +20,8 @@ import { useRef, useState } from 'react'
 import { UseMutationResult } from 'react-query'
 import { KonziError } from '../../../api/model/error.model'
 import { GroupModel } from '../../../api/model/group.model'
+import { getStatusString } from '../../../components/editor/editorUtils'
+import { MAX_TITLE_LENGTH } from '../../../util/constants'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { CreateGroup } from '../types/createGroup'
 
@@ -64,6 +68,9 @@ export const GroupEditModalButton = ({
       }
     )
   }
+
+  const lenghtError = name.length > MAX_TITLE_LENGTH
+
   return (
     <>
       <Button
@@ -87,6 +94,9 @@ export const GroupEditModalButton = ({
               <FormControl>
                 <FormLabel>Csoport neve</FormLabel>
                 <Input autoFocus ref={initialRef} placeholder="Csoport neve" value={name} onChange={(e) => setName(e.target.value)} />
+                <Flex justifyContent="flex-end">
+                  {lenghtError && <FormHelperText color="red.500">Túl hosszú! {getStatusString(name, MAX_TITLE_LENGTH)}</FormHelperText>}
+                </Flex>
               </FormControl>
             </ModalBody>
 
@@ -94,7 +104,13 @@ export const GroupEditModalButton = ({
               <Button onClick={onClose} mr={3}>
                 Mégse
               </Button>
-              <Button type="submit" isDisabled={!name} isLoading={mutation.isLoading} colorScheme="brand" onClick={(e) => onSave(e)}>
+              <Button
+                type="submit"
+                isDisabled={!name || lenghtError}
+                isLoading={mutation.isLoading}
+                colorScheme="brand"
+                onClick={(e) => onSave(e)}
+              >
                 Mentés
               </Button>
             </ModalFooter>
