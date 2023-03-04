@@ -20,7 +20,7 @@ import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { ConsultationAdminActions } from './components/ConsultationAdminActions'
-import { LoadingConsultation } from './components/LoadingConsultation'
+import { LoadingConsultation } from './components/loading/LoadingConsultation'
 import { TargetGroupList } from './components/TargetGroupList'
 import { UserList } from './components/UserList'
 

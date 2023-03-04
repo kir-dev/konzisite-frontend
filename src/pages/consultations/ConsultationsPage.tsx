@@ -11,6 +11,7 @@ import {
   Tabs,
   Text,
   useDisclosure,
+  useSafeLayoutEffect,
   useToast
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
@@ -26,8 +27,8 @@ import { generateToastParams } from '../../util/generateToastParams'
 import { MajorArray, translateMajor } from '../../util/majorHelpers'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
-import { ConsultationsCalendarPanel } from './components/ConsultationsCalendarPanel'
-import { ConsultationsListPanel } from './components/ConsultationsListPanel'
+import { ConsultationsCalendarPanel } from './components/panel/ConsultationsCalendarPanel'
+import { ConsultationsListPanel } from './components/panel/ConsultationsListPanel'
 
 export const ConsultationsPage = () => {
   const toast = useToast()
@@ -60,11 +61,11 @@ export const ConsultationsPage = () => {
     fetchConsultations(major, startDate, endDate)
   }, [major, startDate, endDate])
 
-  useEffect(() => {
+  useSafeLayoutEffect(() => {
     const date = new Date()
     date.setHours(0, 0, 0, 0)
     setStartDate(date)
-    setTimeout(() => setHideCalendar(true), 25)
+    setHideCalendar(true)
   }, [])
 
   if (error) {
