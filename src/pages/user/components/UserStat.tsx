@@ -2,7 +2,7 @@ import { Stat, StatLabel, StatNumber, Tooltip } from '@chakra-ui/react'
 import { FaQuestionCircle } from 'react-icons/fa'
 
 export type StatData = {
-  value: number | string
+  value?: number | string
   label: string
   explanation?: string
 }
@@ -13,7 +13,7 @@ type Props = {
 
 export const UserStat = ({ data }: Props) => (
   <Stat>
-    <StatNumber>{data.value}</StatNumber>
+    <StatNumber>{data.value || 0}</StatNumber>
     <StatLabel>
       {data.label}&nbsp;
       {data.explanation && (
