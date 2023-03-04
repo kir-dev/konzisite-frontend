@@ -3,6 +3,7 @@ import { FC, MouseEvent } from 'react'
 import { FaEnvelope, FaFacebook, FaGithub, FaGlobe, FaHeart, FaInstagram } from 'react-icons/fa'
 import { Link as RRDLink } from 'react-router-dom'
 import customTheme from '../../assets/theme'
+import { APP_VERSION } from '../../util/environment'
 import { PATHS } from '../../util/paths'
 import { ColorfulExternalLink } from './ColorfulExternalLink'
 
@@ -72,7 +73,7 @@ export const Footer: FC = () => {
               </Text>
             </Stack>
             <Text textAlign="center">
-              &copy; {new Date().getFullYear()} •{' '}
+              &copy; {new Date().getFullYear()} •{` v${APP_VERSION} `}•{' '}
               <Link textAlign="center" as={RRDLink} to={PATHS.IMPRESSUM} _hover={{ color: customTheme.colors.kirDev }}>
                 Impresszum
               </Link>

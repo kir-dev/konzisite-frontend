@@ -1,7 +1,7 @@
 {
   "name": "konzisite-frontend",
   "description": "Konzisite frontend",
-  "version": "0.1.0",
+  "version": "1.0.2",
   "private": true,
   "dependencies": {
     "@chakra-ui/checkbox": "^2.2.10",
