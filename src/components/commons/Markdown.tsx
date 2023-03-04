@@ -1,4 +1,4 @@
-import { Link, useColorModeValue } from '@chakra-ui/react'
+import { Link } from '@chakra-ui/react'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -8,9 +8,8 @@ import remarkGfm from 'remark-gfm'
 const theme: any = {
   a: (props: { href: string; children: ReactNode }) => {
     const { href, children } = props
-    const color = useColorModeValue('brand.200', 'brand.300')
     return (
-      <Link textColor={color} textDecoration="underline" isExternal href={href}>
+      <Link textColor="brand.200" textDecoration="underline" isExternal href={href}>
         {children}
       </Link>
     )

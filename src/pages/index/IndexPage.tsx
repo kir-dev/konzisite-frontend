@@ -1,11 +1,26 @@
-import { Alert, AlertIcon, Box, Button, Flex, Heading, Image, Spinner, Stack, Text, useColorModeValue, VStack } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Link as ChakraLink,
+  Spinner,
+  Stack,
+  Text,
+  useColorModeValue,
+  VStack
+} from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
 import { FaArrowRight } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link as RRDLink } from 'react-router-dom'
 import { useFetchHomeDataQuery } from '../../api/hooks/homeQueryHook'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
 import Markdown from '../../components/commons/Markdown'
 import { PageHeading } from '../../components/commons/PageHeading'
+import { OLD_KONZISITE } from '../../util/environment'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { RequestListItem } from '../requests/components/RequestListItem'
@@ -33,6 +48,7 @@ export const IndexPage = () => {
   return (
     <>
       <Helmet />
+
       <PageHeading title="Üdvözlünk a Konzisite&#8209;on!" />
       {data.alert && (
         <Alert rounded="md" mb={2} status={data.alert.type}>
@@ -42,6 +58,16 @@ export const IndexPage = () => {
           </Box>
         </Alert>
       )}
+      <Alert rounded="md" mb={2} status="info">
+        <AlertIcon />
+        <Box>
+          A&nbsp;
+          <ChakraLink color="brand.200" textDecoration="underline" href={OLD_KONZISITE} isExternal>
+            régi konzisite itt
+          </ChakraLink>
+          &nbsp;elérhető, ha szeretnéd megtekinteni az előző félévben tartott konzijaidat az ösztöndíj leadásához.
+        </Box>
+      </Alert>
       {data.unratedConsultations.length > 0 && (
         <Box mb={5}>
           <Alert rounded="md" mb={2} status="warning">
@@ -56,7 +82,7 @@ export const IndexPage = () => {
       )}
       <Stack mb={2} direction={['column', 'row']} justify="space-between" align="center">
         <Heading size="md">Következő konzik</Heading>
-        <Button colorScheme="brand" as={Link} to={PATHS.CONSULTATIONS} variant="ghost" rightIcon={<FaArrowRight />}>
+        <Button colorScheme="brand" as={RRDLink} to={PATHS.CONSULTATIONS} variant="ghost" rightIcon={<FaArrowRight />}>
           Összes konzi
         </Button>
       </Stack>
@@ -84,7 +110,7 @@ export const IndexPage = () => {
 
       <Stack mt={5} mb={2} direction={['column', 'row']} justify="space-between" align="center">
         <Heading size="md">Aktív konzi kérések</Heading>
-        <Button colorScheme="brand" as={Link} to={PATHS.REQUESTS} variant="ghost" rightIcon={<FaArrowRight />}>
+        <Button colorScheme="brand" as={RRDLink} to={PATHS.REQUESTS} variant="ghost" rightIcon={<FaArrowRight />}>
           Összes kérés
         </Button>
       </Stack>
