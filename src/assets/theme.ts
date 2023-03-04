@@ -154,7 +154,7 @@ const customTheme = extendTheme({
         enclosed: tabVariantEnclosed
       }
     }
-  }, // const tabColor = useColorModeValue(customTheme.colors.brand[600], customTheme.colors.brand[100])
+  },
   breakpoints: {
     // sm-2xl are the chakra defaults, added an extra breakpoint for 16+ inch full HD screens
     sm: '30em',

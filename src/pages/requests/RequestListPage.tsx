@@ -8,7 +8,7 @@ import { KonziError } from '../../api/model/error.model'
 import { PageHeading } from '../../components/commons/PageHeading'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
-import { LoadingConsultationList } from '../consultations/components/LoadingConsultationList'
+import { LoadingConsultationList } from '../consultations/components/loading/LoadingConsultationList'
 import { ErrorPage } from '../error/ErrorPage'
 import { RequestListItem } from './components/RequestListItem'
 

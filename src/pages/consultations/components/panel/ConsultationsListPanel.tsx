@@ -1,7 +1,8 @@
 import { TabPanel, Text, VStack } from '@chakra-ui/react'
-import { ConsultationListItem } from '../../../components/commons/ConsultationListItem'
-import { ConsultationPreview } from '../types/consultationPreview'
-import { LoadingConsultationList } from './LoadingConsultationList'
+import { ConsultationListItem } from '../../../../components/commons/ConsultationListItem'
+import { ConsultationPreview } from '../../types/consultationPreview'
+
+import { LoadingConsultationList } from '../loading/LoadingConsultationList'
 
 type Props = {
   isLoading: boolean

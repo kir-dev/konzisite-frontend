@@ -5,10 +5,10 @@ import interactionPlugin from '@fullcalendar/interaction'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { useNavigate } from 'react-router-dom'
-import customTheme from '../../../assets/theme'
-import { majorColor } from '../../../util/majorHelpers'
-import { PATHS } from '../../../util/paths'
-import { ConsultationPreview } from '../types/consultationPreview'
+import customTheme from '../../../../assets/theme'
+import { majorColor } from '../../../../util/majorHelpers'
+import { PATHS } from '../../../../util/paths'
+import { ConsultationPreview } from '../../types/consultationPreview'
 
 type Props = {
   consultaions: ConsultationPreview[] | undefined
