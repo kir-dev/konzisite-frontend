@@ -3,12 +3,9 @@ import {
   Badge,
   Box,
   Button,
-  Card,
-  CardBody,
   Flex,
   Heading,
   HStack,
-  SimpleGrid,
   Stack,
   Tab,
   TabList,
@@ -30,7 +27,7 @@ import { UserDetails } from '../types/UserDetails'
 import { ParticipationPanel } from './panels/ParticipationPanel'
 import { PresentationPanel } from './panels/PresentationPanel'
 import { RequestPanel } from './panels/RequestPanel'
-import { StatData, UserStat } from './UserStat'
+import { UserStatCard } from './UserStatCard'
 
 type Props = {
   user: UserDetails
@@ -48,42 +45,6 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
     },
     (e: KonziError) => toast(generateToastParams(e))
   )
-
-  const statData: StatData[] = [
-    {
-      value: user.presentations.length,
-      label: 'Tartott konzi',
-      explanation: `A felhasználó ${user.presentations.length} konzultáción volt előadó.`
-    },
-    {
-      value: user.presentations.reduce((acc, cur) => acc + cur.participants, 0),
-      label: 'Konzi résztvevő',
-      explanation: `Azokon a konzikon, ahol a felhasználó előadó volt, összesen ${user.presentations.reduce(
-        (acc, cur) => acc + cur.participants,
-        0
-      )} hallgató vett részt.`
-    },
-    {
-      value: user.presentations.reduce((acc, cur) => acc + cur.ratings.length, 0),
-      label: 'Értékelés',
-      explanation: `A felhasználó előadásaira összesen ${user.presentations.reduce(
-        (acc, cur) => acc + cur.ratings.length,
-        0
-      )} értékelés érkezett.`
-    },
-    {
-      value: user.averageRating?.toFixed(2) || '-',
-      label: 'Átlagos értékelés',
-      explanation: user.averageRating
-        ? `A felhasználó előadásainak átlagértékelése ${user.averageRating?.toFixed(2)}.`
-        : 'A felhasználó előadásaira még nem érkezett értékelés.'
-    },
-    {
-      value: user.participations.length,
-      label: 'Konzi részvétel',
-      explanation: `A felhasználó összesen ${user.participations.length} alkalommal vett részt más konzultációján.`
-    }
-  ]
 
   return (
     <Box>
@@ -125,15 +86,7 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
           )}
         </Flex>
       </HStack>
-      <Card mb={5}>
-        <CardBody>
-          <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacingY={5}>
-            {statData.map((sd) => (
-              <UserStat key={sd.label} data={sd} />
-            ))}
-          </SimpleGrid>
-        </CardBody>
-      </Card>
+      <UserStatCard stats={user.stats} />
       <Tabs isFitted rounded="lg" variant="enclosed" colorScheme="brand">
         <TabList>
           <Tab>Tartott konzik</Tab>
@@ -148,8 +101,8 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
           )}
         </TabList>
         <TabPanels>
-          <PresentationPanel presentations={user.presentations} />
-          <ParticipationPanel participations={user.participations} />
+          <PresentationPanel presentations={user.presentations} allPresentationCount={user.stats?.presentationCount || 0} />
+          <ParticipationPanel participations={user.participations} allParticipationCount={user.stats?.participationCount || 0} />
           {user.consultationRequests && <RequestPanel requests={user.consultationRequests} />}
         </TabPanels>
       </Tabs>

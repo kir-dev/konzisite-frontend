@@ -7,10 +7,16 @@ type Props = {
   participations: (ConsultationModel & {
     subject: SubjectModel
   })[]
+  allParticipationCount: number
 }
-export const ParticipationPanel = ({ participations }: Props) => {
+export const ParticipationPanel = ({ participations, allParticipationCount }: Props) => {
   return (
     <TabPanel px={0}>
+      {participations.length !== allParticipationCount && (
+        <Text mb={4} align="center" fontStyle="italic">
+          Egyes konzik nem jelennek meg, mert a felhasználó egy privát csoport tagjaként vett részt rajtuk.
+        </Text>
+      )}
       <VStack spacing={4} alignItems="stretch">
         {participations.length > 0 ? (
           participations
@@ -18,7 +24,7 @@ export const ParticipationPanel = ({ participations }: Props) => {
             .map((p) => <ConsultationListItem key={p.id} consultation={p} />)
         ) : (
           <Text fontStyle="italic" textAlign="center">
-            A felhasználó még nem vett részt konzultáción.
+            A felhasználó még nem vett részt publikus konzultáción.
           </Text>
         )}
       </VStack>

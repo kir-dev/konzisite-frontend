@@ -14,10 +14,16 @@ type Props = {
     })[]
     participants: number
   })[]
+  allPresentationCount: number
 }
-export const PresentationPanel = ({ presentations }: Props) => {
+export const PresentationPanel = ({ presentations, allPresentationCount }: Props) => {
   return (
     <TabPanel px={0}>
+      {presentations.length !== allPresentationCount && (
+        <Text mb={4} align="center" fontStyle="italic">
+          Egyes konzik nem jelennek meg, mert a felhasználó egy privát csoportnak tartotta őket.
+        </Text>
+      )}
       <VStack spacing={4} alignItems="stretch">
         {presentations.length > 0 ? (
           presentations
@@ -48,7 +54,7 @@ export const PresentationPanel = ({ presentations }: Props) => {
             ))
         ) : (
           <Text fontStyle="italic" textAlign="center">
-            A felhasználó még nem tartott konzultációt.
+            A felhasználó még nem tartott publikus konzultációt.
           </Text>
         )}
       </VStack>
