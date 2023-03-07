@@ -103,7 +103,7 @@ export const useDownloadFileMutation = () => {
 }
 
 export const useExportConsultationMutation = () => {
-  return useMutation<ArrayBuffer, ArrayBuffer, number>( // TODO finalize url when it's done on the backend
-    async (consultationId) => (await axios.get(`${PATHS.CONSULTATIONS}/${consultationId}/export`, { responseType: 'arraybuffer' })).data
+  return useMutation<ArrayBuffer, ArrayBuffer, number>(
+    async (consultationId) => (await axios.get(`${PATHS.CONSULTATIONS}/${consultationId}/ics`, { responseType: 'arraybuffer' })).data
   )
 }
