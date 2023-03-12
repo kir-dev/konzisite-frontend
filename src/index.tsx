@@ -9,7 +9,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './api/contexts/auth/AuthContext'
 import { App } from './App'
 import customTheme from './assets/theme'
-import { API_HOST } from './util/environment'
+import { FRONTEND_HOST } from './util/environment'
 import { initAxios, queryClient } from './util/query-client'
 
 initAxios()
@@ -17,7 +17,7 @@ initAxios()
 const root = createRoot(document.getElementById('root')!)
 
 const { enableAutoPageviews } = Plausible({
-  domain: API_HOST,
+  domain: FRONTEND_HOST,
   apiHost: 'https://visit.kir-dev.hu'
 })
 enableAutoPageviews()
