@@ -33,6 +33,10 @@ export const ImpressumPage = () => {
         <Link color={customTheme.colors.kirDev} href="https://kir-dev.hu/blog" isExternal>
           blogunkba
         </Link>
+        , ahol{' '}
+        <Link color={customTheme.colors.kirDev} href="https://kir-dev.hu/ly/RBoIJ" isExternal>
+          külön posztot írtunk a Konzisite fejlesztésének folyamatáról
+        </Link>
         . Amennyiben hibát találtál az alkalmazás működésében, vagy lenne egy ötleted, hogy mit lehetne fejleszteni rajta, vedd fel velünk a
         kapcsolatot{' '}
         <Link color={customTheme.colors.kirDev} href="mailto:hello@kir-dev.hu" isExternal>
