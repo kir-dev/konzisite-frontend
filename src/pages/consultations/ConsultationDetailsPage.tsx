@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
   useDownloadFileMutation,
-  //useExportConsultationMutation,
+  useExportConsultationMutation,
   useJoinConsultationMutation,
   useLeaveConsultationMutation
 } from '../../api/hooks/consultationMutationHooks'
@@ -30,7 +30,7 @@ export const ConsultationDetailsPage = () => {
   const { isLoading, data: consultation, error, refetch } = useFetchConsultationbDetailsQuery(+consultationId!!)
   const toast = useToast()
   const downloadFileRef = useRef<HTMLButtonElement>(null)
-  //const exportKonziRef = useRef<HTMLButtonElement>(null)
+  const exportKonziRef = useRef<HTMLButtonElement>(null)
 
   const onErrorFn = (e: KonziError) => {
     toast(generateToastParams(e))
@@ -47,7 +47,7 @@ export const ConsultationDetailsPage = () => {
   }, onErrorFn)
 
   const downloadFileMutation = useDownloadFileMutation()
-  //const exportKonziMutation = useExportConsultationMutation()
+  const exportKonziMutation = useExportConsultationMutation()
 
   if (!consultationId || !isValidId(consultationId)) {
     return <ErrorPage backPath={PATHS.CONSULTATIONS} status={404} title="A konzultáció nem található!" />
@@ -164,7 +164,7 @@ export const ConsultationDetailsPage = () => {
                 </Tooltip>
               </DownloadFileFromServerButton>
             )}
-          {/*new Date() < new Date(consultation.startDate) && (   // TODO remove comment when the backend is ready
+          {new Date() < new Date(consultation.startDate) && ( // TODO remove comment when the backend is ready
             <DownloadFileFromServerButton
               buttonRef={exportKonziRef}
               downloadMutation={exportKonziMutation}
@@ -175,7 +175,7 @@ export const ConsultationDetailsPage = () => {
                 Exportálás naptárba
               </Button>
             </DownloadFileFromServerButton>
-          )*/}
+          )}
           {(isOwner || isAdmin || isPresenter) && <ConsultationAdminActions refetch={refetch} consultation={consultation} />}
         </VStack>
       </Stack>
