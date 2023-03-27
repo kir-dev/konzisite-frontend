@@ -17,7 +17,7 @@ export const RequestPanel = ({ requests }: Props) => {
           requests.map((r) => <RequestListItem request={r} key={r.id} />)
         ) : (
           <Text fontStyle="italic" textAlign="center">
-            Még nem kértél konzultációt.
+            A felhasználó még nem kért konzultációt.
           </Text>
         )}
       </VStack>

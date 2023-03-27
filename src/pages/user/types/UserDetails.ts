@@ -14,7 +14,7 @@ export type UserDetails = PublicUser & {
   participations: (ConsultationModel & {
     subject: SubjectModel
   })[]
-  consultationRequests?: (ConsultationRequestModel & {
+  consultationRequests: (ConsultationRequestModel & {
     subject: SubjectModel
     supporters: number
   })[]
@@ -27,4 +27,5 @@ export type UserStats = {
   ratingCount: number
   averageRating: number
   participationCount: number
+  requestCount: number
 }
