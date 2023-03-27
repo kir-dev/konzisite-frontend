@@ -30,12 +30,17 @@ export const UserStatCard = ({ stats }: { stats?: UserStats }) => {
       value: stats?.participationCount,
       label: 'Konzi részvétel',
       explanation: `A felhasználó összesen ${stats?.participationCount} alkalommal vett részt más konzultációján.`
+    },
+    {
+      value: stats?.requestCount,
+      label: 'Kért konzi',
+      explanation: `A felhasználó összesen ${stats?.requestCount} konzi kérést kezdeményezett vagy támogatott.`
     }
   ]
   return (
     <Card mb={5}>
       <CardBody>
-        <SimpleGrid columns={{ base: 2, sm: 3, md: 5 }} spacingY={5}>
+        <SimpleGrid columns={{ base: 2, sm: 3, md: 6 }} spacingY={5}>
           {statData.map((sd) => (
             <UserStat key={sd.label} data={sd} />
           ))}

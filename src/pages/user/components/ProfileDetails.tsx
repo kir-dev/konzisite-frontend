@@ -11,12 +11,11 @@ import {
   TabList,
   TabPanels,
   Tabs,
-  Tooltip,
   useBreakpointValue,
   useToast
 } from '@chakra-ui/react'
 import { useRef } from 'react'
-import { FaLock, FaSignOutAlt } from 'react-icons/fa'
+import { FaSignOutAlt } from 'react-icons/fa'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { usePromoteUserMutation } from '../../../api/hooks/userMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
@@ -91,19 +90,12 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
         <TabList>
           <Tab>Tartott konzik</Tab>
           <Tab>Konzi részvételek</Tab>
-          {user.consultationRequests && (
-            <Tab>
-              Konzi kérések &nbsp;
-              <Tooltip label="Más felhasználó nem látja, hogy milyen konzikat kértél." shouldWrapChildren hasArrow>
-                <FaLock />
-              </Tooltip>
-            </Tab>
-          )}
+          <Tab>Konzi kérések</Tab>
         </TabList>
         <TabPanels>
           <PresentationPanel presentations={user.presentations} allPresentationCount={user.stats?.presentationCount || 0} />
           <ParticipationPanel participations={user.participations} allParticipationCount={user.stats?.participationCount || 0} />
-          {user.consultationRequests && <RequestPanel requests={user.consultationRequests} />}
+          <RequestPanel requests={user.consultationRequests} />
         </TabPanels>
       </Tabs>
     </Box>
