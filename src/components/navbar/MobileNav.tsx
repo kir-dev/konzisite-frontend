@@ -17,7 +17,7 @@ const MobileNav: FC<Props> = ({ onNavigate }) => {
   }, [isLoggedIn, loggedInUser])
 
   return (
-    <Stack display={{ md: 'none' }} fontWeight={700} fontSize="xl" ml={6} mb={6}>
+    <Stack display={{ lg: 'none' }} fontWeight={700} fontSize="xl" ml={6} mb={6}>
       {navItems.map((item) => (
         <HStack
           key={item.label}
