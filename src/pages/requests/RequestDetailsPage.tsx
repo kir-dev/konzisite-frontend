@@ -1,7 +1,21 @@
-import { Box, Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Stack,
+  Text,
+  useColorModeValue,
+  useToast,
+  VStack
+} from '@chakra-ui/react'
 import { useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { FaClock } from 'react-icons/fa'
+import { FaChevronDown, FaClock, FaEdit, FaTrash } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useDeleteRequestMutation, useSupportRequestMutation, useUnsupportRequestMutation } from '../../api/hooks/requestMutationHooks'
@@ -63,8 +77,11 @@ export const RequestDetailsPage = () => {
     return <ErrorPage status={401} />
   }
 
+  const isAdmin = loggedInUser.isAdmin
   const isOwner = request.initializer.id === loggedInUser.id
   const isSupporter = request.supporters.some((s) => s.id === loggedInUser.id)
+
+  const editTextColor = useColorModeValue('brand.500', 'brand.200')
 
   return (
     <>
@@ -81,25 +98,6 @@ export const RequestDetailsPage = () => {
           </HStack>
         </VStack>
         <VStack align="stretch">
-          {isOwner && (
-            <>
-              <Button as={Link} to={`${PATHS.REQUESTS}/${request.id}/edit`} w="100%" colorScheme="brand">
-                Szerkesztés
-              </Button>
-              <ConfirmDialogButton
-                initiatorButton={
-                  <Button colorScheme="red" ref={deleteButtonRef}>
-                    Törlés
-                  </Button>
-                }
-                initiatorButtonRef={deleteButtonRef}
-                headerText="Konzi kérés törlése"
-                bodyText="Biztos törölni szeretnéd a konzi kérést?"
-                confirmButtonText="Törlés"
-                confirmAction={() => deleteRequest(request.id)}
-              />
-            </>
-          )}
           {!isOwner && !isSupporter && (
             <Button
               w="100%"
@@ -126,6 +124,32 @@ export const RequestDetailsPage = () => {
             <Button colorScheme="brand" width="100%" as={Link} to={`${PATHS.CONSULTATIONS}/new?requestId=${request.id}`}>
               Megtartom
             </Button>
+          )}
+          {(isOwner || isAdmin) && (
+            <>
+              <Menu>
+                <MenuButton as={Button} w="100%" colorScheme="brand" rightIcon={<FaChevronDown />}>
+                  Műveletek
+                </MenuButton>
+                <MenuList>
+                  <MenuItem color={editTextColor} as={Link} to={`${PATHS.REQUESTS}/${request.id}/edit`} icon={<FaEdit />}>
+                    Szerkesztés
+                  </MenuItem>
+                  <ConfirmDialogButton
+                    initiatorButton={
+                      <MenuItem color="red" ref={deleteButtonRef} icon={<FaTrash />}>
+                        Törlés
+                      </MenuItem>
+                    }
+                    initiatorButtonRef={deleteButtonRef}
+                    headerText="Konzi kérés törlése"
+                    bodyText="Biztos törölni szeretnéd a konzi kérést?"
+                    confirmButtonText="Törlés"
+                    confirmAction={() => deleteRequest(request.id)}
+                  />
+                </MenuList>
+              </Menu>
+            </>
           )}
         </VStack>
       </Stack>
