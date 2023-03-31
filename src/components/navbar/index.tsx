@@ -20,7 +20,7 @@ export const Navbar: FC = () => {
     >
       <Box mx="auto" maxW="6xl" w="full" color={useColorModeValue('brand.500', 'white')}>
         <Flex h="4rem" w="full" px={4} py={2} align="center" justifyContent="space-between">
-          <Flex display={{ base: 'flex', md: 'none' }}>
+          <Flex display={{ base: 'flex', lg: 'none' }}>
             <IconButton
               onClick={onToggle}
               icon={isOpen ? <FaTimes size="1.5rem" /> : <FaBars size="1.5rem" />}
@@ -31,7 +31,7 @@ export const Navbar: FC = () => {
           <Heading fontFamily="title" as={Link} to={PATHS.INDEX} _hover={{ textDecoration: 'none' }}>
             Konzisite
           </Heading>
-          <Flex display={{ base: 'none', md: 'flex' }} flex={1} justifyContent="center">
+          <Flex display={{ base: 'none', lg: 'flex' }} flex={1} justifyContent="center">
             <DesktopNav />
           </Flex>
           <HStack ml={{ base: 0, md: 6 }}>
