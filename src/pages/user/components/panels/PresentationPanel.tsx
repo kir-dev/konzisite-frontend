@@ -1,4 +1,4 @@
-import { TabPanel, Text, VStack } from '@chakra-ui/react'
+import { Flex, TabPanel, Text, VStack } from '@chakra-ui/react'
 import { ConsultationModel } from '../../../../api/model/consultation.model'
 import { RatingModel } from '../../../../api/model/rating.model'
 import { SubjectModel } from '../../../../api/model/subject.model'
@@ -37,13 +37,13 @@ export const PresentationPanel = ({ presentations, allPresentationCount }: Props
                   p.ratings.length === 0 ? '-' : (p.ratings.reduce((acc, val) => acc + val.value, 0) / p.ratings.length).toFixed(2)
                 }`}
               >
-                <VStack p={4} pt={0} align="flex-start">
+                <Flex w="100%" p={4} pt={0} justify="center">
                   {p.ratings.length > 0 ? (
                     <PresentationRatings ratings={p.ratings} first={idx === 0} />
                   ) : (
                     <Text fontStyle="italic">Ezt a konzit még nem értékelte senki.</Text>
                   )}
-                </VStack>
+                </Flex>
               </ConsultationListItem>
             ))
         ) : (
