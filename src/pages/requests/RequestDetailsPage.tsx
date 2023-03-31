@@ -1,27 +1,11 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Stack,
-  Text,
-  useColorModeValue,
-  useToast,
-  VStack
-} from '@chakra-ui/react'
-import { useRef } from 'react'
+import { Box, Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
-import { FaChevronDown, FaClock, FaEdit, FaTrash } from 'react-icons/fa'
+import { FaClock } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useDeleteRequestMutation, useSupportRequestMutation, useUnsupportRequestMutation } from '../../api/hooks/requestMutationHooks'
 import { useFecthRequestDetailsQuery } from '../../api/hooks/requestQueryHooks'
 import { KonziError } from '../../api/model/error.model'
-import { ConfirmDialogButton } from '../../components/commons/ConfirmDialogButton'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
 import Markdown from '../../components/commons/Markdown'
 import { PageHeading } from '../../components/commons/PageHeading'
@@ -30,13 +14,14 @@ import { PATHS } from '../../util/paths'
 import { UserList } from '../consultations/components/UserList'
 import { ErrorPage } from '../error/ErrorPage'
 import { LoadingRequestDetails } from './components/LoadingRequestDetails'
+import { RequestActions } from './components/RequestActions'
 
 export const RequestDetailsPage = () => {
   const { requestId } = useParams()
   const { loggedInUser, loggedInUserLoading } = useAuthContext()
   const toast = useToast()
   const navigate = useNavigate()
-  const deleteButtonRef = useRef<HTMLButtonElement>(null)
+
   const { isLoading, data: request, error, refetch } = useFecthRequestDetailsQuery(+requestId!!)
 
   const onError = (e: KonziError) => {
@@ -81,8 +66,6 @@ export const RequestDetailsPage = () => {
   const isOwner = request.initializer.id === loggedInUser.id
   const isSupporter = request.supporters.some((s) => s.id === loggedInUser.id)
 
-  const editTextColor = useColorModeValue('brand.500', 'brand.200')
-
   return (
     <>
       <Helmet title={request.name} />
@@ -125,32 +108,7 @@ export const RequestDetailsPage = () => {
               Megtartom
             </Button>
           )}
-          {(isOwner || isAdmin) && (
-            <>
-              <Menu>
-                <MenuButton as={Button} w="100%" colorScheme="brand" rightIcon={<FaChevronDown />}>
-                  Műveletek
-                </MenuButton>
-                <MenuList>
-                  <MenuItem color={editTextColor} as={Link} to={`${PATHS.REQUESTS}/${request.id}/edit`} icon={<FaEdit />}>
-                    Szerkesztés
-                  </MenuItem>
-                  <ConfirmDialogButton
-                    initiatorButton={
-                      <MenuItem color="red" ref={deleteButtonRef} icon={<FaTrash />}>
-                        Törlés
-                      </MenuItem>
-                    }
-                    initiatorButtonRef={deleteButtonRef}
-                    headerText="Konzi kérés törlése"
-                    bodyText="Biztos törölni szeretnéd a konzi kérést?"
-                    confirmButtonText="Törlés"
-                    confirmAction={() => deleteRequest(request.id)}
-                  />
-                </MenuList>
-              </Menu>
-            </>
-          )}
+          {(isOwner || isAdmin) && <RequestActions requestId={request.id} deleteRequest={deleteRequest} />}
         </VStack>
       </Stack>
       {request.descMarkdown && (
