@@ -16,5 +16,6 @@
     "source.organizeImports": true,
     "source.formatDocument": true,
     "source.fixAll.eslint": true
-  }
+  },
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
