@@ -1,10 +1,10 @@
-import { Heading, SimpleGrid, TabPanel, Text, VStack } from '@chakra-ui/react'
+import { Flex, TabPanel, Text, VStack } from '@chakra-ui/react'
 import { ConsultationModel } from '../../../../api/model/consultation.model'
 import { RatingModel } from '../../../../api/model/rating.model'
 import { SubjectModel } from '../../../../api/model/subject.model'
 import { ConsultationListItem } from '../../../../components/commons/ConsultationListItem'
 import { PublicUser } from '../../types/PublicUser'
-import { RatingListItem } from '../RatingListItem'
+import { PresentationRatings } from './PresentationRatings'
 
 type Props = {
   presentations: (ConsultationModel & {
@@ -16,6 +16,7 @@ type Props = {
   })[]
   allPresentationCount: number
 }
+
 export const PresentationPanel = ({ presentations, allPresentationCount }: Props) => {
   return (
     <TabPanel px={0}>
@@ -28,7 +29,7 @@ export const PresentationPanel = ({ presentations, allPresentationCount }: Props
         {presentations.length > 0 ? (
           presentations
             .sort((c1, c2) => new Date(c2.startDate).getTime() - new Date(c1.startDate).getTime())
-            .map((p) => (
+            .map((p, idx) => (
               <ConsultationListItem
                 key={p.id}
                 consultation={p}
@@ -36,20 +37,13 @@ export const PresentationPanel = ({ presentations, allPresentationCount }: Props
                   p.ratings.length === 0 ? '-' : (p.ratings.reduce((acc, val) => acc + val.value, 0) / p.ratings.length).toFixed(2)
                 }`}
               >
-                <VStack p={4} pt={0} align="flex-start">
+                <Flex w="100%" p={4} pt={0} justify="center">
                   {p.ratings.length > 0 ? (
-                    <>
-                      <Heading size="md">Értékelések</Heading>
-                      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2} w="100%">
-                        {p.ratings.map((r) => (
-                          <RatingListItem key={r.id} rating={r} />
-                        ))}
-                      </SimpleGrid>
-                    </>
+                    <PresentationRatings ratings={p.ratings} first={idx === 0} />
                   ) : (
                     <Text fontStyle="italic">Ezt a konzit még nem értékelte senki.</Text>
                   )}
-                </VStack>
+                </Flex>
               </ConsultationListItem>
             ))
         ) : (
