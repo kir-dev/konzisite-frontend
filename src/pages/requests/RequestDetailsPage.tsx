@@ -1,9 +1,9 @@
 import { Box, Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
 import { FaClock } from 'react-icons/fa'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
-import { useDeleteRequestMutation, useSupportRequestMutation, useUnsupportRequestMutation } from '../../api/hooks/requestMutationHooks'
+import { useSupportRequestMutation, useUnsupportRequestMutation } from '../../api/hooks/requestMutationHooks'
 import { useFecthRequestDetailsQuery } from '../../api/hooks/requestQueryHooks'
 import { KonziError } from '../../api/model/error.model'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
@@ -20,7 +20,6 @@ export const RequestDetailsPage = () => {
   const { requestId } = useParams()
   const { loggedInUser, loggedInUserLoading } = useAuthContext()
   const toast = useToast()
-  const navigate = useNavigate()
 
   const { isLoading, data: request, error, refetch } = useFecthRequestDetailsQuery(+requestId!!)
 
@@ -35,10 +34,6 @@ export const RequestDetailsPage = () => {
 
   const { mutate: supportRequest } = useSupportRequestMutation(generateOnSuccess('Támogatod a kérést!'), onError)
   const { mutate: unsupportRequest } = useUnsupportRequestMutation(generateOnSuccess('Már nem támogatod a kérést!'), onError)
-  const { mutate: deleteRequest } = useDeleteRequestMutation(() => {
-    toast({ title: 'Sikeresen törölted a konzi kérést!', status: 'success' })
-    navigate(PATHS.REQUESTS)
-  }, onError)
 
   if (error) {
     return <ErrorPage status={error.statusCode} title={error.message} />
@@ -108,7 +103,7 @@ export const RequestDetailsPage = () => {
               Megtartom
             </Button>
           )}
-          {(isOwner || isAdmin) && <RequestActions requestId={request.id} deleteRequest={deleteRequest} />}
+          {(isOwner || isAdmin) && <RequestActions requestId={request.id} />}
         </VStack>
       </Stack>
       {request.descMarkdown && (

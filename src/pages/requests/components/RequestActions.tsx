@@ -1,16 +1,29 @@
-import { Button, Menu, MenuButton, MenuItem, MenuList, useColorModeValue } from '@chakra-ui/react'
+import { Button, Menu, MenuButton, MenuItem, MenuList, useColorModeValue, useToast } from '@chakra-ui/react'
 import { useRef } from 'react'
 import { FaChevronDown, FaEdit, FaTrash } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDeleteRequestMutation } from '../../../api/hooks/requestMutationHooks'
+import { KonziError } from '../../../api/model/error.model'
 import { ConfirmDialogButton } from '../../../components/commons/ConfirmDialogButton'
+import { generateToastParams } from '../../../util/generateToastParams'
 import { PATHS } from '../../../util/paths'
 
 type Props = {
   requestId: number
-  deleteRequest: (id: number) => void
 }
 
-export const RequestActions = ({ requestId, deleteRequest }: Props) => {
+export const RequestActions = ({ requestId }: Props) => {
+  const toast = useToast()
+  const navigate = useNavigate()
+
+  const { mutate: deleteRequest } = useDeleteRequestMutation(
+    () => {
+      toast({ title: 'Sikeresen törölted a konzi kérést!', status: 'success' })
+      navigate(PATHS.REQUESTS)
+    },
+    (e: KonziError) => toast(generateToastParams(e))
+  )
+
   const editTextColor = useColorModeValue('brand.500', 'brand.200')
   const deleteButtonRef = useRef<HTMLButtonElement>(null)
 
