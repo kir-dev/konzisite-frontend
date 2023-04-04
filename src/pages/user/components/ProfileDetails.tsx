@@ -12,10 +12,11 @@ import {
   TabPanels,
   Tabs,
   useBreakpointValue,
-  useToast
+  useToast,
+  VStack
 } from '@chakra-ui/react'
 import { useRef } from 'react'
-import { FaSignOutAlt } from 'react-icons/fa'
+import { FaAt, FaSignOutAlt } from 'react-icons/fa'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { usePromoteUserMutation } from '../../../api/hooks/userMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
@@ -51,14 +52,22 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
         <HStack flexWrap="wrap" spacing={4} mb={2}>
           <Avatar size={useBreakpointValue({ base: 'lg', md: 'xl' })} name={user.fullName + user.id} src="" />
           <Stack direction={{ base: 'column', md: 'row' }} align="center" alignItems={{ base: 'flex-start', md: 'center' }}>
-            <Heading size={{ base: 'lg', sm: 'xl' }} fontWeight={700} wordBreak="break-all">
-              {user.fullName}
-            </Heading>
-            {user.isAdmin && loggedInUser?.isAdmin && (
-              <Badge colorScheme="green" ml={1} fontSize="xl">
-                Konzisite admin
-              </Badge>
-            )}
+            <VStack alignItems="flex-start">
+              <Heading size={{ base: 'lg', sm: 'xl' }} fontWeight={700} wordBreak="break-all">
+                {user.fullName}
+              </Heading>
+              {user.isAdmin && loggedInUser?.isAdmin && (
+                <Badge colorScheme="green" ml={1} fontSize="xl">
+                  Konzisite admin
+                </Badge>
+              )}
+              {user.id === loggedInUser?.id && (
+                <HStack>
+                  <FaAt />
+                  <Box>{loggedInUser.email}</Box>
+                </HStack>
+              )}
+            </VStack>
           </Stack>
         </HStack>
         <Flex flex={1} justifyContent="end">
