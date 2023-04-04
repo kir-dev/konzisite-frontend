@@ -3,19 +3,20 @@ import {
   AlertIcon,
   Box,
   Button,
+  Link as ChakraLink,
   Flex,
   Heading,
   Image,
-  Link as ChakraLink,
   Spinner,
   Stack,
   Text,
-  useColorModeValue,
-  VStack
+  VStack,
+  useColorModeValue
 } from '@chakra-ui/react'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FaArrowRight } from 'react-icons/fa'
-import { Link as RRDLink } from 'react-router-dom'
+import { Link as RRDLink, useNavigate } from 'react-router-dom'
 import { useFetchHomeDataQuery } from '../../api/hooks/homeQueryHook'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
 import Markdown from '../../components/commons/Markdown'
@@ -29,6 +30,16 @@ export const IndexPage = () => {
   const { error, data, isLoading } = useFetchHomeDataQuery()
   const kirDevLogo = useColorModeValue('/img/kirdev.svg', '/img/kirdev-white.svg')
   const spinnerColor = useColorModeValue('brand.500', 'white')
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const savedPath = localStorage.getItem('path')
+    if (savedPath) {
+      localStorage.removeItem('path')
+      navigate(savedPath)
+    }
+  }, [])
+
   if (error) {
     return <ErrorPage status={error.statusCode} title={error.message} />
   }
