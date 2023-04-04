@@ -30,6 +30,9 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
   useEffect(() => {
     if (status === 401 || s === 401) {
       toast({ title: 'Nem vagy bejelentkezve', status: 'error' })
+      if (window.location.pathname !== '/login') {
+        localStorage.setItem('path', window.location.pathname)
+      }
       onLogout('/login')
     }
   }, [status, s])
