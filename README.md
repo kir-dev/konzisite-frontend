@@ -1,5 +1,3 @@
-This project was bootstrapped with
-
 <p align="center">
   <a href="http://konzi.kir-dev.hu/" target="_blank"><img src="https://warp.sch.bme.hu/images/konzisite_email_header" alt="Konzisite header" /></a>
 </p>
