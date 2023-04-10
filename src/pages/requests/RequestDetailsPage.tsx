@@ -1,4 +1,4 @@
-import { Box, Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
+import { Badge, Box, Button, Heading, HStack, Stack, Text, useToast, VStack } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
 import { FaClock } from 'react-icons/fa'
 import { Link, useParams } from 'react-router-dom'
@@ -73,35 +73,40 @@ export const RequestDetailsPage = () => {
           <HStack>
             <FaClock />
             <Text>{new Date(request.expiryDate).toLocaleDateString('hu-HU', { dateStyle: 'short' })}</Text>
+            {new Date() > new Date(request.expiryDate) && <Badge colorScheme="red">Lejárt</Badge>}
           </HStack>
         </VStack>
         <VStack align="stretch">
-          {!isOwner && !isSupporter && (
-            <Button
-              w="100%"
-              colorScheme="brand"
-              onClick={() => {
-                supportRequest(request.id)
-              }}
-            >
-              Támogatom
-            </Button>
-          )}
-          {!isOwner && isSupporter && (
-            <Button
-              w="100%"
-              colorScheme="red"
-              onClick={() => {
-                unsupportRequest(request.id)
-              }}
-            >
-              Nem támogatom
-            </Button>
-          )}
-          {!isOwner && (
-            <Button colorScheme="brand" width="100%" as={Link} to={`${PATHS.CONSULTATIONS}/new?requestId=${request.id}`}>
-              Megtartom
-            </Button>
+          {new Date() < new Date(request.expiryDate) && (
+            <>
+              {!isOwner && !isSupporter && (
+                <Button
+                  w="100%"
+                  colorScheme="brand"
+                  onClick={() => {
+                    supportRequest(request.id)
+                  }}
+                >
+                  Támogatom
+                </Button>
+              )}
+              {!isOwner && isSupporter && (
+                <Button
+                  w="100%"
+                  colorScheme="red"
+                  onClick={() => {
+                    unsupportRequest(request.id)
+                  }}
+                >
+                  Nem támogatom
+                </Button>
+              )}
+              {!isOwner && (
+                <Button colorScheme="brand" width="100%" as={Link} to={`${PATHS.CONSULTATIONS}/new?requestId=${request.id}`}>
+                  Megtartom
+                </Button>
+              )}
+            </>
           )}
           {(isOwner || isAdmin) && <RequestActions requestId={request.id} />}
         </VStack>
