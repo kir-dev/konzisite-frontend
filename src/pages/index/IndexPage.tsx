@@ -36,9 +36,11 @@ export const IndexPage = () => {
 
   useEffect(() => {
     const savedPath = localStorage.getItem('path')
-    if (savedPath && isLoggedIn) {
+    if (savedPath) {
       localStorage.removeItem('path')
-      navigate(savedPath)
+      if (isLoggedIn) {
+        navigate(savedPath)
+      }
     }
   }, [isLoggedIn])
 
