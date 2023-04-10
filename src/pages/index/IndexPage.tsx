@@ -17,6 +17,7 @@ import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FaArrowRight } from 'react-icons/fa'
 import { Link as RRDLink, useNavigate } from 'react-router-dom'
+import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useFetchHomeDataQuery } from '../../api/hooks/homeQueryHook'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
 import Markdown from '../../components/commons/Markdown'
@@ -28,17 +29,18 @@ import { RequestListItem } from '../requests/components/RequestListItem'
 
 export const IndexPage = () => {
   const { error, data, isLoading } = useFetchHomeDataQuery()
+  const { isLoggedIn } = useAuthContext()
   const kirDevLogo = useColorModeValue('/img/kirdev.svg', '/img/kirdev-white.svg')
   const spinnerColor = useColorModeValue('brand.500', 'white')
   const navigate = useNavigate()
 
   useEffect(() => {
     const savedPath = localStorage.getItem('path')
-    if (savedPath) {
+    if (savedPath && isLoggedIn) {
       localStorage.removeItem('path')
       navigate(savedPath)
     }
-  }, [])
+  }, [isLoggedIn])
 
   if (error) {
     return <ErrorPage status={error.statusCode} title={error.message} />
