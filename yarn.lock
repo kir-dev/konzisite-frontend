@@ -9710,10 +9710,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-cookie@npm:3.0.1":
-  version: 3.0.1
-  resolution: "js-cookie@npm:3.0.1"
-  checksum: bb48de67e2a6bd1ae3dfd6b2d5a167c33dd0c5a37e909206161eb0358c98f17cb55acd55827a58e9eea3630d89444e7479f7938ef4420dda443218b8c434a4c3
+"js-cookie@npm:3.0.4":
+  version: 3.0.4
+  resolution: "js-cookie@npm:3.0.4"
+  checksum: 93678ee0d1d15db84926dcc69f453255323128c9e7182e3b43baa29c337dd304606ad3c82cb2ef0d83a165709f6612fb9566bbbadf03c381039b3a786be1d20d
   languageName: node
   linkType: hard
 
@@ -9977,7 +9977,7 @@ __metadata:
     eslint-plugin-prettier: 4.2.1
     eslint-plugin-react-hooks: 4.6.0
     framer-motion: 10.11.2
-    js-cookie: 3.0.1
+    js-cookie: 3.0.4
     lodash.debounce: ^4.0.8
     npm-run-all: 4.1.5
     plausible-tracker: ^0.3.8
