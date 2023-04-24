@@ -3044,51 +3044,51 @@ __metadata:
   linkType: hard
 
 "@fullcalendar/core@npm:^6.1.4":
-  version: 6.1.5
-  resolution: "@fullcalendar/core@npm:6.1.5"
+  version: 6.1.6
+  resolution: "@fullcalendar/core@npm:6.1.6"
   dependencies:
     preact: ~10.12.1
-  checksum: 6892c11c40899fc986edc3d36b8e764c8e78f1c53df2c6e23d418d0191fc0bd1562bd0d9cfc74fd986d02ac1e18c8a4a9d34a40b8329964cc9fb9f8ab8367635
+  checksum: 72ec698bd226ea76cef106b9eecd4391a0434b13f9f02f663a84720d5b1e0ca8db21f1ace72278d22814cc4d1dfb1374f17532abde0ae99210bfd5ad7468e17f
   languageName: node
   linkType: hard
 
-"@fullcalendar/daygrid@npm:^6.1.4, @fullcalendar/daygrid@npm:~6.1.5":
-  version: 6.1.5
-  resolution: "@fullcalendar/daygrid@npm:6.1.5"
+"@fullcalendar/daygrid@npm:^6.1.4, @fullcalendar/daygrid@npm:~6.1.6":
+  version: 6.1.6
+  resolution: "@fullcalendar/daygrid@npm:6.1.6"
   peerDependencies:
-    "@fullcalendar/core": ~6.1.5
-  checksum: f62aa7364d0c51bb8121da988ba5784dc0ce775e15d87bfa7b4f52f0f0d12fd338aa634de93b43332167c105b6848dba47d184f23d12572235ebd16101f2b109
+    "@fullcalendar/core": ~6.1.6
+  checksum: e7b60e359b620091c834fe3472761b9f4ebf3cd8d65a2ae56ead10dcb65a898c4c86770046dc3addff86002df9972a58395b7916502e8a4ec8d7b83a74b150b9
   languageName: node
   linkType: hard
 
 "@fullcalendar/interaction@npm:^6.1.4":
-  version: 6.1.5
-  resolution: "@fullcalendar/interaction@npm:6.1.5"
+  version: 6.1.6
+  resolution: "@fullcalendar/interaction@npm:6.1.6"
   peerDependencies:
-    "@fullcalendar/core": ~6.1.5
-  checksum: dd3d7fb8ba33b13b79ee0788f81fd6831f90d3663e04467fd4b72f1c82af6d6e7d1a91ea8ea8c2c203c39d7f6a388d1bbfd501f79f7198629da03c9c9385588d
+    "@fullcalendar/core": ~6.1.6
+  checksum: b7dea490592cdaf902788825ebea122816185657bb37f82dd78ba8129d10fff0c1c45a70d819dd44b5b7088d8b51588899e8e2332652fd939e263160912940dd
   languageName: node
   linkType: hard
 
 "@fullcalendar/react@npm:^6.1.4":
-  version: 6.1.5
-  resolution: "@fullcalendar/react@npm:6.1.5"
+  version: 6.1.6
+  resolution: "@fullcalendar/react@npm:6.1.6"
   peerDependencies:
-    "@fullcalendar/core": ~6.1.5
+    "@fullcalendar/core": ~6.1.6
     react: ^16.7.0 || ^17 || ^18
     react-dom: ^16.7.0 || ^17 || ^18
-  checksum: ce4482a0e526808ea9e491fc8c5ff185e42c7cb719f795a6ec183807240a38086ae57f36d614b826ce7cd6cd24ea8582cb4e0e0755fd9bd6e6ec8392e7ca03d2
+  checksum: 06d729e240eb5a9bbd4159bec538396ceda58961dca7a3770c2f594b382c3b90cfb0f668e9329e8a89435faef8d412d29d20ff46cd08d8111313d361be54c861
   languageName: node
   linkType: hard
 
 "@fullcalendar/timegrid@npm:^6.1.4":
-  version: 6.1.5
-  resolution: "@fullcalendar/timegrid@npm:6.1.5"
+  version: 6.1.6
+  resolution: "@fullcalendar/timegrid@npm:6.1.6"
   dependencies:
-    "@fullcalendar/daygrid": ~6.1.5
+    "@fullcalendar/daygrid": ~6.1.6
   peerDependencies:
-    "@fullcalendar/core": ~6.1.5
-  checksum: 236aabb57a3a8e8f41c43bf3a76b074731fee8a4e815b3c32a3532a7503678d488bbc1b2c74c270580ef37fb2d9ed9edf0b4646943812a5c238cd1cd7104e5f8
+    "@fullcalendar/core": ~6.1.6
+  checksum: ef79183dad0a49f86f43b3eb58fabfd48312ec0abf03b690094be72c3d8821a488038f8308cb0e136c0f716648409dc33c8a5fc77192c7c0d93cd9962cb4c814
   languageName: node
   linkType: hard
 
