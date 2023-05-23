@@ -23,7 +23,7 @@
     "axios": "1.4.0",
     "chakra-ui-markdown-renderer": "4.1.0",
     "date-fns": "2.30.0",
-    "framer-motion": "10.12.12",
+    "framer-motion": "10.12.14",
     "js-cookie": "3.0.5",
     "lodash.debounce": "^4.0.8",
     "plausible-tracker": "^0.3.8",
