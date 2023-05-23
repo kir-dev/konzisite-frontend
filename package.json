@@ -14,7 +14,7 @@
     "@chakra-ui/theme-tools": "2.0.16",
     "@emotion/react": "11.11.0",
     "@emotion/styled": "11.11.0",
-    "@fontsource/aclonica": "^4.5.9",
+    "@fontsource/aclonica": "^5.0.0",
     "@fullcalendar/core": "^6.1.4",
     "@fullcalendar/daygrid": "^6.1.4",
     "@fullcalendar/interaction": "^6.1.4",
