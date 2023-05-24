@@ -8164,9 +8164,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:10.12.14":
-  version: 10.12.14
-  resolution: "framer-motion@npm:10.12.14"
+"framer-motion@npm:10.12.16":
+  version: 10.12.16
+  resolution: "framer-motion@npm:10.12.16"
   dependencies:
     "@emotion/is-prop-valid": ^0.8.2
     tslib: ^2.4.0
@@ -8181,7 +8181,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: f59ad15cd1de257f1ae6c431b801716774397331a8b5b0105cba8abfb06f1b4e6fb96e4706c0b43c434e939ce91607d99ecdbd20f7c658dda9a901ca6bdc75ef
+  checksum: 0ba346fd6e64688ea5e64f9e353af6202b42d59e309ac32daca7fc07dc1dad9136dd2c18017a85ac76d01becb7f4683fc92dedbfce3e44831ea0c47bdc73e812
   languageName: node
   linkType: hard
 
@@ -10375,7 +10375,7 @@ __metadata:
     eslint-config-prettier: 8.8.0
     eslint-plugin-prettier: 4.2.1
     eslint-plugin-react-hooks: 4.6.0
-    framer-motion: 10.12.14
+    framer-motion: 10.12.16
     js-cookie: 3.0.5
     lodash.debounce: ^4.0.8
     npm-run-all: 4.1.5
