@@ -3140,10 +3140,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/aclonica@npm:^4.5.9":
-  version: 4.5.9
-  resolution: "@fontsource/aclonica@npm:4.5.9"
-  checksum: 8c9c1029b549ef55967a6547bb868fdbc25b51d8aa28a7fee6a28f2bc50151db8f52083e341aaec32eee03147f3b10fe43654ac0fd1d68ad5c7147edffb98971
+"@fontsource/aclonica@npm:^5.0.0":
+  version: 5.0.1
+  resolution: "@fontsource/aclonica@npm:5.0.1"
+  checksum: 6cba075dd56ada9805d4d076efa5525a7bccc0c6db82b454d17f1bbd9264ef0267c3713505e9ac5830f96163a4e96485633035dd5fb4c476423753c59d2b918c
   languageName: node
   linkType: hard
 
@@ -10354,7 +10354,7 @@ __metadata:
     "@chakra-ui/theme-tools": 2.0.16
     "@emotion/react": 11.11.0
     "@emotion/styled": 11.11.0
-    "@fontsource/aclonica": ^4.5.9
+    "@fontsource/aclonica": ^5.0.0
     "@fullcalendar/core": ^6.1.4
     "@fullcalendar/daygrid": ^6.1.4
     "@fullcalendar/interaction": ^6.1.4
