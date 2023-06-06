@@ -18,10 +18,11 @@ import {
 import { useRef } from 'react'
 import { FaAt, FaSignOutAlt } from 'react-icons/fa'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
-import { usePromoteUserMutation } from '../../../api/hooks/userMutationHooks'
+import { usePromoteUserMutation, useUserReportMutation } from '../../../api/hooks/userMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { UserModel } from '../../../api/model/user.model'
 import { ConfirmDialogButton } from '../../../components/commons/ConfirmDialogButton'
+import { DownloadFileFromServerButton } from '../../../components/commons/DownloadFileFromServerButton'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { UserDetails } from '../types/UserDetails'
 import { ParticipationPanel } from './panels/ParticipationPanel'
@@ -45,6 +46,8 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
     },
     (e: KonziError) => toast(generateToastParams(e))
   )
+  const getUserReportMutation = useUserReportMutation()
+  const userReportRef = useRef<HTMLButtonElement>(null)
 
   return (
     <Box>
@@ -92,6 +95,16 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
               Kijelentkezés
             </Button>
           )}
+          <DownloadFileFromServerButton<void>
+            buttonRef={userReportRef}
+            downloadMutation={getUserReportMutation}
+            fileName={`report.pdf`}
+            params={undefined}
+          >
+            <Button ref={userReportRef} w="100%" colorScheme="green">
+              Report
+            </Button>
+          </DownloadFileFromServerButton>
         </Flex>
       </HStack>
       <UserStatCard stats={user.stats} />

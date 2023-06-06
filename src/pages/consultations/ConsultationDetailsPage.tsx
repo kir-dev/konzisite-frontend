@@ -136,9 +136,9 @@ export const ConsultationDetailsPage = () => {
           )}
           {((new Date() > new Date(consultation.startDate) && isParticipant) || isPresenter || isOwner || isAdmin) &&
             consultation.fileName && (
-              <DownloadFileFromServerButton
+              <DownloadFileFromServerButton<number>
                 buttonRef={downloadFileRef}
-                entityId={consultation.id}
+                params={consultation.id}
                 fileName={consultation.fileName}
                 downloadMutation={downloadFileMutation}
               >
@@ -164,12 +164,12 @@ export const ConsultationDetailsPage = () => {
                 </Tooltip>
               </DownloadFileFromServerButton>
             )}
-          {new Date() < new Date(consultation.startDate) && ( // TODO remove comment when the backend is ready
-            <DownloadFileFromServerButton
+          {new Date() < new Date(consultation.startDate) && (
+            <DownloadFileFromServerButton<number>
               buttonRef={exportKonziRef}
               downloadMutation={exportKonziMutation}
               fileName={`konzultacio_${consultation.id}.ics`}
-              entityId={consultation.id}
+              params={consultation.id}
             >
               <Button ref={exportKonziRef} w="100%" colorScheme="green">
                 Exportálás naptárba

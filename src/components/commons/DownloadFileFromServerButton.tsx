@@ -3,21 +3,21 @@ import { RefObject, useEffect, useRef } from 'react'
 import { UseMutationResult } from 'react-query'
 import { HasChildren } from '../../util/react-types.util'
 
-type Props = {
+type Props<T> = {
   buttonRef: RefObject<HTMLButtonElement>
-  downloadMutation: UseMutationResult<ArrayBuffer, ArrayBuffer, number, unknown>
-  entityId: number
+  downloadMutation: UseMutationResult<ArrayBuffer, ArrayBuffer, T, unknown>
+  params: T
   fileName: string
 } & HasChildren
 
-export const DownloadFileFromServerButton = ({ buttonRef, downloadMutation, entityId, children, fileName }: Props) => {
+export const DownloadFileFromServerButton = <T,>({ buttonRef, downloadMutation, params, children, fileName }: Props<T>) => {
   const anchorRef = useRef<HTMLAnchorElement>(null)
   const toast = useToast()
 
   useEffect(() => {
     if (buttonRef?.current) {
       buttonRef.current.onclick = () => {
-        downloadMutation.mutate(entityId, {
+        downloadMutation.mutate(params, {
           onSuccess: (rawFile: ArrayBuffer) => {
             const blob = new Blob([rawFile])
             if (anchorRef.current) {
