@@ -36,6 +36,13 @@ export const usePromoteUserMutation = (onSuccess: (data: UserModel) => void, onE
 export const useUserReportMutation = () => {
   return useMutation<ArrayBuffer, ArrayBuffer>(
     async () =>
-      (await axios.get(`${PATHS.USERS}/report?startDate=1654540715000&endDate=1717699115000`, { responseType: 'arraybuffer' })).data
+      (await axios.get(`${PATHS.USERS}/report?startDate=1654540715000&endDate=1686323100000`, { responseType: 'arraybuffer' })).data
+  )
+}
+
+export const useAdminReportMutation = () => {
+  return useMutation<ArrayBuffer, ArrayBuffer>(
+    async () =>
+      (await axios.get(`${PATHS.USERS}/admin-report?startDate=1654540715000&endDate=1686323100000`, { responseType: 'arraybuffer' })).data
   )
 }

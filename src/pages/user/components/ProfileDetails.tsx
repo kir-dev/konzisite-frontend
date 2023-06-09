@@ -18,7 +18,7 @@ import {
 import { useRef } from 'react'
 import { FaAt, FaSignOutAlt } from 'react-icons/fa'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
-import { usePromoteUserMutation, useUserReportMutation } from '../../../api/hooks/userMutationHooks'
+import { useAdminReportMutation, usePromoteUserMutation, useUserReportMutation } from '../../../api/hooks/userMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { UserModel } from '../../../api/model/user.model'
 import { ConfirmDialogButton } from '../../../components/commons/ConfirmDialogButton'
@@ -48,6 +48,8 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
   )
   const getUserReportMutation = useUserReportMutation()
   const userReportRef = useRef<HTMLButtonElement>(null)
+  const getAdminReportMutation = useAdminReportMutation()
+  const adminReportRef = useRef<HTMLButtonElement>(null)
 
   return (
     <Box>
@@ -101,8 +103,19 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
             fileName={`report.pdf`}
             params={undefined}
           >
-            <Button ref={userReportRef} w="100%" colorScheme="green">
+            <Button isLoading={getUserReportMutation.isLoading} ref={userReportRef} w="100%" colorScheme="green">
               Report
+            </Button>
+          </DownloadFileFromServerButton>
+
+          <DownloadFileFromServerButton<void>
+            buttonRef={adminReportRef}
+            downloadMutation={getAdminReportMutation}
+            fileName={`admin_report.pdf`}
+            params={undefined}
+          >
+            <Button isLoading={getAdminReportMutation.isLoading} ref={adminReportRef} w="100%" colorScheme="green">
+              Admin Report
             </Button>
           </DownloadFileFromServerButton>
         </Flex>
