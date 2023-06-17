@@ -12,6 +12,11 @@ export type FetchUserListMutationProps = {
   pageSize?: number
 }
 
+export type ReportDateRange = {
+  startDate: Date
+  endDate: Date
+}
+
 export const useFecthUserListMutation = (onError: (e: KonziError) => void) => {
   return useMutation<UserList, KonziError, FetchUserListMutationProps>(
     'fetchUsersMuatation',
@@ -34,15 +39,23 @@ export const usePromoteUserMutation = (onSuccess: (data: UserModel) => void, onE
 }
 
 export const useUserReportMutation = () => {
-  return useMutation<ArrayBuffer, ArrayBuffer>(
-    async () =>
-      (await axios.get(`${PATHS.USERS}/report?startDate=1654540715000&endDate=1686323100000`, { responseType: 'arraybuffer' })).data
+  return useMutation<ArrayBuffer, ArrayBuffer, ReportDateRange>(
+    async (dr: ReportDateRange) =>
+      (
+        await axios.get(`reports/user-report?startDate=${dr.startDate.getTime()}&endDate=${dr.endDate.getTime()}`, {
+          responseType: 'arraybuffer'
+        })
+      ).data
   )
 }
 
 export const useAdminReportMutation = () => {
-  return useMutation<ArrayBuffer, ArrayBuffer>(
-    async () =>
-      (await axios.get(`${PATHS.USERS}/admin-report?startDate=1654540715000&endDate=1686323100000`, { responseType: 'arraybuffer' })).data
+  return useMutation<ArrayBuffer, ArrayBuffer, ReportDateRange>(
+    async (dr: ReportDateRange) =>
+      (
+        await axios.get(`reports/admin-report?startDate=${dr.startDate.getTime()}&endDate=${dr.endDate.getTime()}`, {
+          responseType: 'arraybuffer'
+        })
+      ).data
   )
 }

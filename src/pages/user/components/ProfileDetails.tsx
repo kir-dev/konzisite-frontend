@@ -18,16 +18,16 @@ import {
 import { useRef } from 'react'
 import { FaAt, FaSignOutAlt } from 'react-icons/fa'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
-import { useAdminReportMutation, usePromoteUserMutation, useUserReportMutation } from '../../../api/hooks/userMutationHooks'
+import { usePromoteUserMutation } from '../../../api/hooks/userMutationHooks'
 import { KonziError } from '../../../api/model/error.model'
 import { UserModel } from '../../../api/model/user.model'
 import { ConfirmDialogButton } from '../../../components/commons/ConfirmDialogButton'
-import { DownloadFileFromServerButton } from '../../../components/commons/DownloadFileFromServerButton'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { UserDetails } from '../types/UserDetails'
 import { ParticipationPanel } from './panels/ParticipationPanel'
 import { PresentationPanel } from './panels/PresentationPanel'
 import { RequestPanel } from './panels/RequestPanel'
+import { ReportModal } from './ReportModal'
 import { UserStatCard } from './UserStatCard'
 
 type Props = {
@@ -46,10 +46,6 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
     },
     (e: KonziError) => toast(generateToastParams(e))
   )
-  const getUserReportMutation = useUserReportMutation()
-  const userReportRef = useRef<HTMLButtonElement>(null)
-  const getAdminReportMutation = useAdminReportMutation()
-  const adminReportRef = useRef<HTMLButtonElement>(null)
 
   return (
     <Box>
@@ -75,7 +71,7 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
             </VStack>
           </Stack>
         </HStack>
-        <Flex flex={1} justifyContent="end">
+        <Flex flex={1} justifyContent={['center', 'center', 'end']}>
           {loggedInUser?.isAdmin && !user.isAdmin && (
             <ConfirmDialogButton
               initiatorButton={
@@ -93,31 +89,13 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
             />
           )}
           {onLogoutPressed && (
-            <Button colorScheme="brand" rightIcon={<FaSignOutAlt />} onClick={() => onLogoutPressed()}>
-              Kijelentkezés
-            </Button>
+            <Stack direction={['column', 'column', 'row']} w={['100%', 'inherit']}>
+              <ReportModal />
+              <Button w={['100%', 'inherit']} colorScheme="brand" rightIcon={<FaSignOutAlt />} onClick={() => onLogoutPressed()}>
+                Kijelentkezés
+              </Button>
+            </Stack>
           )}
-          <DownloadFileFromServerButton<void>
-            buttonRef={userReportRef}
-            downloadMutation={getUserReportMutation}
-            fileName={`report.pdf`}
-            params={undefined}
-          >
-            <Button isLoading={getUserReportMutation.isLoading} ref={userReportRef} w="100%" colorScheme="green">
-              Report
-            </Button>
-          </DownloadFileFromServerButton>
-
-          <DownloadFileFromServerButton<void>
-            buttonRef={adminReportRef}
-            downloadMutation={getAdminReportMutation}
-            fileName={`admin_report.pdf`}
-            params={undefined}
-          >
-            <Button isLoading={getAdminReportMutation.isLoading} ref={adminReportRef} w="100%" colorScheme="green">
-              Admin Report
-            </Button>
-          </DownloadFileFromServerButton>
         </Flex>
       </HStack>
       <UserStatCard stats={user.stats} />

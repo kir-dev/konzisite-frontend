@@ -35,7 +35,8 @@ export const DownloadFileFromServerButton = <T,>({ buttonRef, downloadMutation, 
         })
       }
     }
-  }, [])
+  }, [downloadMutation])
+
   return (
     <>
       <a ref={anchorRef} download={fileName} hidden />
