@@ -38,24 +38,26 @@ export const usePromoteUserMutation = (onSuccess: (data: UserModel) => void, onE
   })
 }
 
-export const useUserReportMutation = () => {
+export const useUserReportMutation = (onSuccess: () => void) => {
   return useMutation<ArrayBuffer, ArrayBuffer, ReportDateRange>(
     async (dr: ReportDateRange) =>
       (
         await axios.get(`reports/user-report?startDate=${dr.startDate.getTime()}&endDate=${dr.endDate.getTime()}`, {
           responseType: 'arraybuffer'
         })
-      ).data
+      ).data,
+    { onSuccess }
   )
 }
 
-export const useAdminReportMutation = () => {
+export const useAdminReportMutation = (onSuccess: () => void) => {
   return useMutation<ArrayBuffer, ArrayBuffer, ReportDateRange>(
     async (dr: ReportDateRange) =>
       (
         await axios.get(`reports/admin-report?startDate=${dr.startDate.getTime()}&endDate=${dr.endDate.getTime()}`, {
           responseType: 'arraybuffer'
         })
-      ).data
+      ).data,
+    { onSuccess }
   )
 }

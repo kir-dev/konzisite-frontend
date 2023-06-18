@@ -26,15 +26,16 @@ import { formatDate, getEndOfSemester, getStartOfSemester } from '../../../util/
 
 export const ReportModal = () => {
   const { loggedInUser } = useAuthContext()
+  const isAdmin = loggedInUser?.isAdmin
   const [largeScreen] = useMediaQuery('(min-width: 48em)')
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [startDate, setStartDate] = useState(getStartOfSemester())
   const [endDate, setEndDate] = useState(getEndOfSemester())
   const [adminReport, setAdminReport] = useState(false)
 
-  const getUserReportMutation = useUserReportMutation()
+  const getUserReportMutation = useUserReportMutation(onClose)
   const userReportRef = useRef<HTMLButtonElement>(null)
-  const getAdminReportMutation = useAdminReportMutation()
+  const getAdminReportMutation = useAdminReportMutation(onClose)
   const adminReportRef = useRef<HTMLButtonElement>(null)
 
   const startDateError = startDate >= endDate
@@ -59,7 +60,7 @@ export const ReportModal = () => {
           <ModalBody pb={6}>
             <VStack alignItems="flex-start">
               <Text>HK-s ösztöndíjakhoz itt tudsz riport generálni az általad tartott konzultációkról.</Text>
-              {loggedInUser?.isAdmin && (
+              {isAdmin && (
                 <Text textAlign="justify">
                   Adminként van lehetőséged olyan riport generálására, melyen az összes konzi szereplni fog, amit az adott időtartamban
                   tartottak.
@@ -86,7 +87,7 @@ export const ReportModal = () => {
                   {endDateError && <FormHelperText color="red.500">Csak múltbeli konzikról lehet riportot generálni!</FormHelperText>}
                 </Flex>
               </FormControl>
-              {loggedInUser?.isAdmin && (
+              {isAdmin && (
                 <Checkbox colorScheme="green" isChecked={adminReport} onChange={(e) => setAdminReport(e.target.checked)}>
                   Admin riport
                 </Checkbox>
@@ -107,7 +108,7 @@ export const ReportModal = () => {
               >
                 <Button
                   isLoading={getAdminReportMutation.isLoading}
-                  isDisabled={startDateError || endDateError || !loggedInUser?.isAdmin}
+                  isDisabled={startDateError || endDateError || !isAdmin}
                   ref={adminReportRef}
                   colorScheme="green"
                 >
