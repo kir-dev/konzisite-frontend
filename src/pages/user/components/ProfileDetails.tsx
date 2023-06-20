@@ -89,9 +89,9 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
             />
           )}
           {onLogoutPressed && (
-            <Stack direction={['column', 'column', 'row']} w={['100%', 'inherit']}>
+            <Stack direction="column" w={['100%', '100%', 'inherit']}>
               <ReportModal />
-              <Button w={['100%', 'inherit']} colorScheme="brand" rightIcon={<FaSignOutAlt />} onClick={() => onLogoutPressed()}>
+              <Button w={['100%', '100%', 'inherit']} colorScheme="brand" rightIcon={<FaSignOutAlt />} onClick={() => onLogoutPressed()}>
                 Kijelentkezés
               </Button>
             </Stack>
