@@ -12,6 +12,11 @@ export type FetchUserListMutationProps = {
   pageSize?: number
 }
 
+export type ReportDateRange = {
+  startDate: Date
+  endDate: Date
+}
+
 export const useFecthUserListMutation = (onError: (e: KonziError) => void) => {
   return useMutation<UserList, KonziError, FetchUserListMutationProps>(
     'fetchUsersMuatation',
@@ -31,4 +36,28 @@ export const usePromoteUserMutation = (onSuccess: (data: UserModel) => void, onE
     onSuccess,
     onError
   })
+}
+
+export const useUserReportMutation = (onSuccess: () => void) => {
+  return useMutation<ArrayBuffer, ArrayBuffer, ReportDateRange>(
+    async (dr: ReportDateRange) =>
+      (
+        await axios.get(`reports/user-report?startDate=${dr.startDate.getTime()}&endDate=${dr.endDate.getTime()}`, {
+          responseType: 'arraybuffer'
+        })
+      ).data,
+    { onSuccess }
+  )
+}
+
+export const useAdminReportMutation = (onSuccess: () => void) => {
+  return useMutation<ArrayBuffer, ArrayBuffer, ReportDateRange>(
+    async (dr: ReportDateRange) =>
+      (
+        await axios.get(`reports/admin-report?startDate=${dr.startDate.getTime()}&endDate=${dr.endDate.getTime()}`, {
+          responseType: 'arraybuffer'
+        })
+      ).data,
+    { onSuccess }
+  )
 }

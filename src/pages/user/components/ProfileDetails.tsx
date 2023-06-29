@@ -27,6 +27,7 @@ import { UserDetails } from '../types/UserDetails'
 import { ParticipationPanel } from './panels/ParticipationPanel'
 import { PresentationPanel } from './panels/PresentationPanel'
 import { RequestPanel } from './panels/RequestPanel'
+import { ReportModal } from './ReportModal'
 import { UserStatCard } from './UserStatCard'
 
 type Props = {
@@ -70,7 +71,7 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
             </VStack>
           </Stack>
         </HStack>
-        <Flex flex={1} justifyContent="end">
+        <Flex flex={1} justifyContent={['center', 'center', 'end']}>
           {loggedInUser?.isAdmin && !user.isAdmin && (
             <ConfirmDialogButton
               initiatorButton={
@@ -88,9 +89,12 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
             />
           )}
           {onLogoutPressed && (
-            <Button colorScheme="brand" rightIcon={<FaSignOutAlt />} onClick={() => onLogoutPressed()}>
-              Kijelentkezés
-            </Button>
+            <Stack direction="column" w={['100%', '100%', 'inherit']}>
+              <ReportModal />
+              <Button w={['100%', '100%', 'inherit']} colorScheme="brand" rightIcon={<FaSignOutAlt />} onClick={() => onLogoutPressed()}>
+                Kijelentkezés
+              </Button>
+            </Stack>
           )}
         </Flex>
       </HStack>
