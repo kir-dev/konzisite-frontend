@@ -59,7 +59,7 @@ export const ReportModal = () => {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <VStack alignItems="flex-start">
-              <Text>HK-s ösztöndíjakhoz itt tudsz riport generálni az általad tartott konzultációkról.</Text>
+              <Text>HK-s ösztöndíjakhoz itt tudsz riportot generálni az általad tartott konzultációkról.</Text>
               {isAdmin && (
                 <Text textAlign="justify">
                   Adminként van lehetőséged olyan riport generálására, melyen az összes konzi szereplni fog, amit az adott időtartamban
