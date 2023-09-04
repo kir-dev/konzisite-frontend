@@ -44,11 +44,11 @@ export const formatTime = (date: Date) => {
 
 export const getStartOfSemester = (): Date => {
   const date = new Date()
-  // If it's not July yet, the user is probably interested in the fall semester
-  if (date.getMonth() < 6) {
-    // 1st of July of the previous year
+  // If it's not August yet, the user is probably interested in the fall semester
+  if (date.getMonth() < 7) {
+    // 1st of September of the previous year
     date.setFullYear(date.getFullYear() - 1)
-    date.setMonth(6)
+    date.setMonth(8)
     date.setDate(1)
     date.setHours(0, 0, 0, 0)
   } else {
@@ -62,16 +62,16 @@ export const getStartOfSemester = (): Date => {
 
 export const getEndOfSemester = (): Date => {
   const date = new Date()
-  // If it's not July yet, the user is probably interested in the fall semester
-  if (date.getMonth() < 6) {
+  // If it's not August yet, the user is probably interested in the fall semester
+  if (date.getMonth() < 7) {
     // 31st of January of the same year
     date.setMonth(0)
     date.setDate(31)
     date.setHours(23, 59, 59, 999)
   } else {
-    // 30th of June of the same year
-    date.setMonth(5)
-    date.setDate(30)
+    // 31st of August of the same year
+    date.setMonth(7)
+    date.setDate(31)
     date.setHours(23, 59, 59, 999)
   }
   return date
