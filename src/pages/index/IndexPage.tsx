@@ -1,18 +1,4 @@
-import {
-  Alert,
-  AlertIcon,
-  Box,
-  Button,
-  Link as ChakraLink,
-  Flex,
-  Heading,
-  Image,
-  Spinner,
-  Stack,
-  Text,
-  VStack,
-  useColorModeValue
-} from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Button, Flex, Heading, Image, Spinner, Stack, Text, VStack, useColorModeValue } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FaArrowRight } from 'react-icons/fa'
@@ -22,7 +8,6 @@ import { useFetchHomeDataQuery } from '../../api/hooks/homeQueryHook'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
 import Markdown from '../../components/commons/Markdown'
 import { PageHeading } from '../../components/commons/PageHeading'
-import { OLD_KONZISITE } from '../../util/environment'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { RequestListItem } from '../requests/components/RequestListItem'
@@ -73,16 +58,6 @@ export const IndexPage = () => {
           </Box>
         </Alert>
       )}
-      <Alert rounded="md" mb={2} status="info">
-        <AlertIcon />
-        <Box>
-          A&nbsp;
-          <ChakraLink color="brand.200" textDecoration="underline" href={OLD_KONZISITE} isExternal>
-            régi konzisite itt
-          </ChakraLink>
-          &nbsp;elérhető, ha szeretnéd megtekinteni az előző félévben tartott konzijaidat az ösztöndíj leadásához.
-        </Box>
-      </Alert>
       {data.unratedConsultations.length > 0 && (
         <Box mb={5}>
           <Alert rounded="md" mb={2} status="warning">
