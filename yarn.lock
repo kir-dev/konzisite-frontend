@@ -3140,9 +3140,9 @@ __metadata:
   linkType: hard
 
 "@fontsource/aclonica@npm:^5.0.0":
-  version: 5.0.15
-  resolution: "@fontsource/aclonica@npm:5.0.15"
-  checksum: 2cd03c89685dccb3815992790b69cb99047392e67308455bca6e78ac8ae11c48771d26b0857c7f3c46c2e30c45d26b1fd84d115599c3ae77ad77d93adcd6fdeb
+  version: 5.0.16
+  resolution: "@fontsource/aclonica@npm:5.0.16"
+  checksum: 4e5536170e852c042593bac3475abc9e3ce2b12089a319cb5d3912a6af09b4337833a7ba909324d3385bb2f851887300c85005867c4a7e721275c559b90af780
   languageName: node
   linkType: hard
 
