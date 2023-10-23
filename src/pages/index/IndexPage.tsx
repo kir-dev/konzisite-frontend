@@ -1,6 +1,7 @@
 import { Alert, AlertIcon, Box, Button, Flex, Heading, Image, Spinner, Stack, Text, VStack, useColorModeValue } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { FaArrowRight } from 'react-icons/fa'
 import { Link as RRDLink, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
@@ -18,6 +19,7 @@ export const IndexPage = () => {
   const kirDevLogo = useColorModeValue('/img/kirdev.svg', '/img/kirdev-white.svg')
   const spinnerColor = useColorModeValue('brand.500', 'white')
   const navigate = useNavigate()
+  const {t} = useTranslation()
 
   useEffect(() => {
     const savedPath = localStorage.getItem('path')
@@ -48,8 +50,7 @@ export const IndexPage = () => {
   return (
     <>
       <Helmet />
-
-      <PageHeading title="Üdvözlünk a Konzisite&#8209;on!" />
+      <PageHeading title={t('WelcomeToKonzisite')} />
       {data.alert && (
         <Alert rounded="md" mb={2} status={data.alert.type}>
           <AlertIcon />
