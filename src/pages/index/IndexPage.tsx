@@ -19,7 +19,7 @@ export const IndexPage = () => {
   const kirDevLogo = useColorModeValue('/img/kirdev.svg', '/img/kirdev-white.svg')
   const spinnerColor = useColorModeValue('brand.500', 'white')
   const navigate = useNavigate()
-  const {t} = useTranslation()
+  const { t } = useTranslation()
 
   useEffect(() => {
     const savedPath = localStorage.getItem('path')

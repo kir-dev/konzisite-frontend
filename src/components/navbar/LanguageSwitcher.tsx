@@ -1,10 +1,8 @@
-import { IconButton, useColorModeValue } from "@chakra-ui/react"
-import { changeLanguage } from "i18next"
-import { FaLanguage } from "react-icons/fa"
-
+import { IconButton, useColorModeValue } from '@chakra-ui/react'
+import { changeLanguage } from 'i18next'
+import { FaLanguage } from 'react-icons/fa'
 
 export const LanguageSwitcher = () => {
-
   const changeLang = () => {
     const localLang = localStorage.getItem('language')
     if (!localLang || localLang === 'hu') {
@@ -13,8 +11,8 @@ export const LanguageSwitcher = () => {
       return
     }
 
-      changeLanguage('hu')
-      localStorage.setItem('language', 'hu')
+    changeLanguage('hu')
+    localStorage.setItem('language', 'hu')
   }
 
   return (
