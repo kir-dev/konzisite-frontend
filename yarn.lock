@@ -4273,6 +4273,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mdast@npm:^4.0.0":
+  version: 4.0.3
+  resolution: "@types/mdast@npm:4.0.3"
+  dependencies:
+    "@types/unist": "*"
+  checksum: 345c5a22fccf05f35239ea6313ee4aaf6ebed5927c03ac79744abccb69b9ba5e692f9b771e36a012b79e17429082cada30f579e9c43b8a54e0ffb365431498b6
+  languageName: node
+  linkType: hard
+
 "@types/mime@npm:*":
   version: 3.0.1
   resolution: "@types/mime@npm:3.0.1"
@@ -4459,6 +4468,13 @@ __metadata:
   version: 2.0.6
   resolution: "@types/unist@npm:2.0.6"
   checksum: 25cb860ff10dde48b54622d58b23e66214211a61c84c0f15f88d38b61aa1b53d4d46e42b557924a93178c501c166aa37e28d7f6d994aba13d24685326272d5db
+  languageName: node
+  linkType: hard
+
+"@types/unist@npm:^3.0.0":
+  version: 3.0.2
+  resolution: "@types/unist@npm:3.0.2"
+  checksum: 3d04d0be69316e5f14599a0d993a208606c12818cf631fd399243d1dc7a9bd8a3917d6066baa6abc290814afbd744621484756803c80cba892c39cd4b4a85616
   languageName: node
   linkType: hard
 
@@ -8489,10 +8505,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gemoji@npm:^7.0.0":
-  version: 7.1.0
-  resolution: "gemoji@npm:7.1.0"
-  checksum: aa7302de49fd5c7cbbc1c62b38f00fe3603433931bfc809b1ea8cf54180ecfbba31471e16a89c65c1ba066c00ebe76428563f8a16515f776e2e38f2b5a9630ad
+"gemoji@npm:^8.0.0":
+  version: 8.1.0
+  resolution: "gemoji@npm:8.1.0"
+  checksum: 89ef0708e77bbb938c3f87af8263e9e42891fb15b0f5d78e5d3b204a3430e82f8931a2459c912562f46cacb2addc9e8570857f1a3304d4307ebff7c32b126373
   languageName: node
   linkType: hard
 
@@ -10605,7 +10621,7 @@ __metadata:
     react-query: 3.39.3
     react-router-dom: 6.18.0
     react-scripts: 5.0.1
-    remark-gemoji: ^7.0.1
+    remark-gemoji: ^8.0.0
     remark-gfm: ^3.0.1
     typescript: 5.2.2
     web-vitals: 3.5.0
@@ -10933,6 +10949,18 @@ __metadata:
     unist-util-is: ^5.0.0
     unist-util-visit-parents: ^5.0.0
   checksum: b4ce463c43fe6e1c38a53a89703f755c84ab5437f49bff9a0ac751279733332ca11c85ed0262aa6c17481f77b555d26ca6d64e70d6814f5b8d12d34a3e53a60b
+  languageName: node
+  linkType: hard
+
+"mdast-util-find-and-replace@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "mdast-util-find-and-replace@npm:3.0.1"
+  dependencies:
+    "@types/mdast": ^4.0.0
+    escape-string-regexp: ^5.0.0
+    unist-util-is: ^6.0.0
+    unist-util-visit-parents: ^6.0.0
+  checksum: 05d5c4ff02e31db2f8a685a13bcb6c3f44e040bd9dfa54c19a232af8de5268334c8755d79cb456ed4cced1300c4fb83e88444c7ae8ee9ff16869a580f29d08cd
   languageName: node
   linkType: hard
 
@@ -14074,15 +14102,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remark-gemoji@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "remark-gemoji@npm:7.0.1"
+"remark-gemoji@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "remark-gemoji@npm:8.0.0"
   dependencies:
-    "@types/mdast": ^3.0.0
-    gemoji: ^7.0.0
-    unified: ^10.0.0
-    unist-util-visit: ^4.0.0
-  checksum: a19a24fc06904db6ff0bce806b97d492ed03be1ea5d5d212f4985ca706de27623adb0d08144aa84aa8328397cbc192b42696436db3f835ed13959123f6b48515
+    "@types/mdast": ^4.0.0
+    gemoji: ^8.0.0
+    mdast-util-find-and-replace: ^3.0.0
+  checksum: 244689a678f1e06e1306620b85e3029beccc659df6c966084da70bdbc09988013357ed04e5b38ce21c316cd5b8b01420fa38ac9be62f943ab3bb532372cdc8dc
   languageName: node
   linkType: hard
 
@@ -15872,6 +15899,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"unist-util-is@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "unist-util-is@npm:6.0.0"
+  dependencies:
+    "@types/unist": ^3.0.0
+  checksum: f630a925126594af9993b091cf807b86811371e465b5049a6283e08537d3e6ba0f7e248e1e7dab52cfe33f9002606acef093441137181b327f6fe504884b20e2
+  languageName: node
+  linkType: hard
+
 "unist-util-position@npm:^4.0.0":
   version: 4.0.4
   resolution: "unist-util-position@npm:4.0.4"
@@ -15897,6 +15933,16 @@ __metadata:
     "@types/unist": ^2.0.0
     unist-util-is: ^5.0.0
   checksum: 8ecada5978994f846b64658cf13b4092cd78dea39e1ba2f5090a5de842ba4852712c02351a8ae95250c64f864635e7b02aedf3b4a093552bb30cf1bd160efbaa
+  languageName: node
+  linkType: hard
+
+"unist-util-visit-parents@npm:^6.0.0":
+  version: 6.0.1
+  resolution: "unist-util-visit-parents@npm:6.0.1"
+  dependencies:
+    "@types/unist": ^3.0.0
+    unist-util-is: ^6.0.0
+  checksum: 08927647c579f63b91aafcbec9966dc4a7d0af1e5e26fc69f4e3e6a01215084835a2321b06f3cbe7bf7914a852830fc1439f0fc3d7153d8804ac3ef851ddfa20
   languageName: node
   linkType: hard
 
