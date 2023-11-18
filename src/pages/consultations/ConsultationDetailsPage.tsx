@@ -147,8 +147,8 @@ export const ConsultationDetailsPage = () => {
                     consultation.archived
                       ? 'A konzi archiválva lett, már nem lehet letölteni a fájlt.'
                       : isParticipant && !ratedConsultation && !isAdmin
-                      ? 'Akkor tudod letölteni a fájlt, ha már értékelted az előadókat!'
-                      : ''
+                        ? 'Akkor tudod letölteni a fájlt, ha már értékelted az előadókat!'
+                        : ''
                   }
                   placement="left"
                   hasArrow
