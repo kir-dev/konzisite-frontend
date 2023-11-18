@@ -36,7 +36,7 @@
     "react-query": "3.39.3",
     "react-router-dom": "6.18.0",
     "react-scripts": "5.0.1",
-    "remark-gemoji": "^7.0.1",
+    "remark-gemoji": "^8.0.0",
     "remark-gfm": "^3.0.1",
     "web-vitals": "3.5.0"
   },
