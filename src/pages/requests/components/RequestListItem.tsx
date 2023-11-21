@@ -1,7 +1,9 @@
 import { Box, Button, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserModel } from '../../../api/model/user.model'
 import { MajorAvatar } from '../../../components/commons/MajorAvatar'
+import { SubjectName } from '../../../components/commons/SubjectName'
 import { generateDaysLeftText } from '../../../util/dateHelper'
 import { PATHS } from '../../../util/paths'
 import { RequestPreview } from '../types/requestPreview'
@@ -18,6 +20,7 @@ type Props = {
 
 export const RequestListItem = ({ request, rightSmallText, user, support, unsupport, allowNavigate = true, wide = true }: Props) => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const canSupport = user && support && unsupport && user.id !== request.initializer?.id
 
@@ -35,10 +38,10 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
               >
                 {request.name}
               </Heading>
-              <Heading size="sm">{generateDaysLeftText(request.expiryDate)}</Heading>
+              <Heading size="sm">{generateDaysLeftText(request.expiryDate, t)}</Heading>
             </VStack>
             <Text>
-              {request.subject.name} ({request.subject.code})
+              <SubjectName subject={request.subject} />
             </Text>
           </VStack>
         </HStack>

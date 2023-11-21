@@ -1,8 +1,10 @@
 import '@fontsource/aclonica/400.css'
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Route, Routes } from 'react-router-dom'
 import { KLayout } from './components/commons/KLayout'
 import './global.css'
-import './i18n'
+import './i18n_config'
 import { AuthorizedPage } from './pages/authorized/AuthorizedPage'
 import { ConsultationDetailsPage } from './pages/consultations/ConsultationDetailsPage'
 import { ConsultationsPage } from './pages/consultations/ConsultationsPage'
@@ -24,6 +26,14 @@ import { UserPage } from './pages/user/UserPage'
 import { PATHS } from './util/paths'
 
 export const App = () => {
+  const { i18n } = useTranslation()
+  useEffect(() => {
+    const localLang = localStorage.getItem('language')
+    if (localLang) {
+      i18n.changeLanguage(localLang)
+    }
+  }, [])
+
   return (
     <KLayout>
       <Routes>

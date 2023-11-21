@@ -13,5 +13,6 @@ export interface SubjectModel {
   id: number
   code: string
   name: string
+  englishName: string
   majors: Major[]
 }

@@ -9,6 +9,7 @@ import { SubjectModel } from '../model/subject.model'
 
 type FetchSubjectListMutationProps = {
   search: string
+  locale?: string
   limit?: number
 }
 
@@ -19,9 +20,10 @@ export const useFetchSubjectsQuery = () => {
 export const useFecthSubjectListMutation = (onError: (e: KonziError) => void) => {
   return useMutation<SubjectModel[], KonziError, FetchSubjectListMutationProps>(
     'fetchSubjectsMuatation',
-    async ({ search, limit }) => {
+    async ({ search, limit, locale }) => {
       const url = new URL(PATHS.SUBJECTS, API_HOST)
       url.searchParams.append('search', search)
+      if (locale) url.searchParams.append('locale', locale)
       if (limit) url.searchParams.append('limit', limit.toString())
       return (await axios.get(url.toString())).data
     },

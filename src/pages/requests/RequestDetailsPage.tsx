@@ -9,6 +9,7 @@ import { KonziError } from '../../api/model/error.model'
 import { ConsultationListItem } from '../../components/commons/ConsultationListItem'
 import Markdown from '../../components/commons/Markdown'
 import { PageHeading } from '../../components/commons/PageHeading'
+import { SubjectName } from '../../components/commons/SubjectName'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
 import { UserList } from '../consultations/components/UserList'
@@ -66,7 +67,7 @@ export const RequestDetailsPage = () => {
       <Helmet title={request.name} />
       <PageHeading title={request.name} />
       <Heading size="md" justifyContent="center" textAlign="center" mb={3}>
-        {request.subject.name} ({request.subject.code})
+        <SubjectName subject={request.subject} />
       </Heading>
       <Stack direction={['column-reverse', 'row']} justifyContent="space-between" mb={3}>
         <VStack alignItems="flex-start" spacing={3} flexGrow={1}>

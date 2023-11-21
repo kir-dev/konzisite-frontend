@@ -105,10 +105,10 @@ export const SubjectsPage = () => {
               használni kiindulási alapnak, hiszen ez már tartalmazza a kötelező fejlécet és egy minta tárgyat.
             </Text>
             <Text align="justify" mb={2}>
-              A feltöltött fájl első sorának kötelezően a következőnek kell lennie: <Code>code;name;majors</Code>. Ezt követően minden
-              tárgynak egy új sorban kell szerepelnie, az adatai <b>pontosvesszővel (;)</b> elválasztva. Az adatok sorban: tárgykód, tárgy
-              neve, a szakok, ahol szerepel a tárgy. A szakokat egymástól <b>vesszővel (,)</b> kell elválasztani. A szakok megnevezéséhez az
-              alábbi karakterláncokat használd:
+              A feltöltött fájl első sorának kötelezően a következőnek kell lennie: <Code>code;name;englishName;majors</Code>. Ezt követően
+              minden tárgynak egy új sorban kell szerepelnie, az adatai <b>pontosvesszővel (;)</b> elválasztva. Az adatok sorban: tárgykód,
+              tárgy neve, tárgy angol neve, a szakok, ahol szerepel a tárgy. A szakokat egymástól <b>vesszővel (,)</b> kell elválasztani. A
+              szakok megnevezéséhez az alábbi karakterláncokat használd:
             </Text>
             <UnorderedList ml={6} mb={2}>
               <SimpleGrid columns={{ sm: 1, md: 2 }}>
@@ -123,9 +123,8 @@ export const SubjectsPage = () => {
             </UnorderedList>
 
             <Text align="justify" mb={2}>
-              Az adatbázisban a tárgykódoknak egyedieknek kell lenniük, ezért ha az importált tárgykódok közül csak egy is szerepel már az
-              adatbázisban, hibát fogsz kapni, és egy új tárgy sem kerül létrehozásra. Ha valami probléma lenne az importálással, keresd a
-              fejlesztőket a{' '}
+              Az adatbázisban a tárgykódoknak egyedieknek kell lenniük, ezért ha az importált tárgykódok közül valamelyik szerepel már az
+              adatbázisban, az felül lesz írva az új értékkel. Ha valami probléma lenne az importálással, keresd a fejlesztőket a{' '}
               <Link color="brand.200" href="mailto://kir-dev@sch.bme.hu">
                 kir-dev@sch.bme.hu
               </Link>{' '}
@@ -150,6 +149,7 @@ export const SubjectsPage = () => {
                   <Heading size="md">
                     {s.name} ({s.code})
                   </Heading>
+                  {s.englishName && <Text fontStyle="italic">{s.englishName}</Text>}
                   <HStack spacing={0} wrap="wrap" alignContent="space-between" justify="flex-start">
                     {s.majors.map((m) => (
                       <MajorBadge major={m} key={m} />
