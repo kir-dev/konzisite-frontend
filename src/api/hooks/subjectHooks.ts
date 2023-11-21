@@ -3,7 +3,6 @@ import { useMutation, useQuery } from 'react-query'
 import { CreateSubject } from '../../pages/subjects/types/CreateSubject'
 import { API_HOST } from '../../util/environment'
 import { PATHS } from '../../util/paths'
-import { CreateManyResponse } from '../model/createManyResponse'
 import { KonziError } from '../model/error.model'
 import { SubjectModel } from '../model/subject.model'
 
@@ -52,8 +51,8 @@ export const useDeleteSubjectMutation = (onError: (e: KonziError) => void) => {
   )
 }
 
-export const useImportSubjectsMutation = (onError: (e: KonziError) => void, onSuccess: (data: CreateManyResponse) => void) => {
-  return useMutation<CreateManyResponse, KonziError, FormData>(async (data: FormData) => (await axios.post('subjects/import', data)).data, {
+export const useImportSubjectsMutation = (onError: (e: KonziError) => void, onSuccess: (data: SubjectModel[]) => void) => {
+  return useMutation<SubjectModel[], KonziError, FormData>(async (data: FormData) => (await axios.post('subjects/import', data)).data, {
     onError,
     onSuccess
   })

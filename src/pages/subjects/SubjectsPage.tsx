@@ -46,7 +46,7 @@ export const SubjectsPage = () => {
   const importSubjectsmutation = useImportSubjectsMutation(
     (e) => toast(generateToastParams(e)),
     (data) => {
-      toast({ title: `${data.count} darab tárgy importálva.`, status: 'success' })
+      toast({ title: `${data.length} darab tárgy importálva.`, status: 'success' })
       refetch()
     }
   )
