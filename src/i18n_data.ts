@@ -1,6 +1,24 @@
 export const resources = {
   en: {
     translation: {
+      CE_BSC: 'Computer eng. BSc',
+      EE_BSC: 'Electrical eng. BSc',
+      BPROF: 'Computer eng. Bprof',
+      CE_MSC: 'Computer eng. MSc',
+      EE_MSC: 'Electrical eng. MSc',
+      BI_MSC: 'Business info. MSc',
+      HI_MSC: 'Healthcare eng. MSc',
+      SE_MSC: 'Space eng. MSc',
+      navbar: {
+        homePage: 'Home',
+        consultations: 'Consultations',
+        groups: 'Groups',
+        requests: 'Requests',
+        users: 'Users',
+        subjects: 'Subjects',
+        profile: 'Profile',
+        login: 'Login'
+      },
       home: {
         welcome: 'Welcome to Konzisite!',
         unratedConsultations: `You took part in these consultations but haven't rated the presenters.
@@ -32,6 +50,24 @@ export const resources = {
   },
   hu: {
     translation: {
+      CE_BSC: 'Mérnökinfó BSc',
+      EE_BSC: 'Villany BSc',
+      BPROF: 'Üzemmérnök',
+      CE_MSC: 'Mérnökinfó MSc',
+      EE_MSC: 'Villany MSc',
+      BI_MSC: 'Gazdinfó MSc',
+      HI_MSC: 'Eü mérnök MSc',
+      SE_MSC: 'Űrmérnök MSc',
+      navbar: {
+        homePage: 'Kezdőlap',
+        consultations: 'Konzultációk',
+        groups: 'Csoportok',
+        requests: 'Konzi kérések',
+        users: 'Felhasználók',
+        subjects: 'Tárgyak',
+        profile: 'Profil',
+        login: 'Bejelentkezés'
+      },
       home: {
         welcome: 'Üdvözlünk a Konzisite-on!',
         unratedConsultations: `Az alábbi konzultációkon részt vettél, de még nem értékelted az előadókat! Kérlek tedd meg minél előbb,

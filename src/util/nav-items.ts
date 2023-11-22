@@ -37,25 +37,25 @@ export class NavItem implements INavItem {
 }
 
 const SubjectsItem = new NavItem({
-  label: 'Tárgyak',
+  label: 'navbar.subjects',
   path: PATHS.SUBJECTS
 })
 SubjectsItem.shouldBeShown = (isLoggedIn: boolean, loggedInUser: UserModel | undefined) => isLoggedIn && (loggedInUser?.isAdmin || false)
 
 const KonziItem = new NavItem({
-  label: 'Konzultációk',
+  label: 'navbar.consultations',
   path: PATHS.CONSULTATIONS
 })
 KonziItem.shouldBeShown = (_isLoggedIn: boolean) => true
 
 const HomeItem = new NavItem({
-  label: 'Kezdőlap',
+  label: 'navbar.homePage',
   path: PATHS.INDEX
 })
 HomeItem.shouldBeShown = (_isLoggedIn: boolean) => true
 
 const LoginItem = new NavItem({
-  label: 'Belépés',
+  label: 'navbar.login',
   path: PATHS.LOGIN,
   external: true,
   onClick: () => (window.location.href = `${API_HOST}/auth/login`)
@@ -66,20 +66,20 @@ export const NAV_ITEMS: INavItem[] = [
   HomeItem,
   KonziItem,
   new NavItem({
-    label: 'Csoportok',
+    label: 'navbar.groups',
     path: PATHS.GROUPS
   }),
   new NavItem({
-    label: 'Konzi kérések',
-    path: '/requests'
+    label: 'navbar.requests',
+    path: PATHS.REQUESTS
   }),
   new NavItem({
-    label: 'Felhasználók',
+    label: 'navbar.users',
     path: PATHS.USERS
   }),
   SubjectsItem,
   new NavItem({
-    label: 'Profil',
+    label: 'navbar.profile',
     path: PATHS.PROFILE
   }),
   LoginItem

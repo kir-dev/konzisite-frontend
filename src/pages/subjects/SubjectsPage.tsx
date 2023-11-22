@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { FaEdit, FaFileCsv } from 'react-icons/fa'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
@@ -29,12 +30,13 @@ import { KonziError } from '../../api/model/error.model'
 import { PageHeading } from '../../components/commons/PageHeading'
 import { UploadFileModalButton } from '../../components/commons/UploadFileModalButton'
 import { generateToastParams } from '../../util/generateToastParams'
-import { MajorArray, translateMajor } from '../../util/majorHelpers'
+import { MajorArray } from '../../util/majorHelpers'
 import { ErrorPage } from '../error/ErrorPage'
 import { MajorBadge } from './components/MajorBadge'
 import { SubjectEditModalButton } from './components/SubjectEditModalButton'
 
 export const SubjectsPage = () => {
+  const { t } = useTranslation()
   const { error, data: subjects, refetch } = useFetchSubjectsQuery()
   const [selectedMajor, setSelectedMajor] = useState<string>('all')
   const toast = useToast()
@@ -73,7 +75,7 @@ export const SubjectsPage = () => {
             <option value="all">Minden szak</option>
             {MajorArray.map((m) => (
               <option key={m} value={m}>
-                {translateMajor[m]}
+                {t(m)}
               </option>
             ))}
           </Select>
@@ -115,7 +117,7 @@ export const SubjectsPage = () => {
                 {[
                   MajorArray.map((m) => (
                     <ListItem key={m}>
-                      {translateMajor[m]}: <Code>{m}</Code>
+                      {t(m)}: <Code>{m}</Code>
                     </ListItem>
                   ))
                 ]}

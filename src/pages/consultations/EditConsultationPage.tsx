@@ -1,4 +1,17 @@
-import { Button, Checkbox, Flex, FormControl, FormErrorMessage, FormLabel, Input, Text, useToast, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Select,
+  Stack,
+  Text,
+  useToast,
+  VStack
+} from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -7,6 +20,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useCreateConsultationMutation, useEditConsultationMutation } from '../../api/hooks/consultationMutationHooks'
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
+import { Language } from '../../api/model/consultation.model'
 import { KonziError } from '../../api/model/error.model'
 import { PageHeading } from '../../components/commons/PageHeading'
 import { getStatusString } from '../../components/editor/editorUtils'
@@ -82,9 +96,10 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
           presenters: consultation.presentations,
           targetGroups: consultation.targetGroups,
           request: consultation.request ? { ...consultation.request, subject: consultation.subject } : undefined,
-          fulfillRequest: !!consultation?.request
+          fulfillRequest: !!consultation?.request,
+          language: consultation.language
         }
-      : { targetGroups: [], presenters: [], startDate: new Date(), endDate: new Date(), fulfillRequest: !!request },
+      : { targetGroups: [], presenters: [], startDate: new Date(), endDate: new Date(), fulfillRequest: !!request, language: Language.hu },
     mode: 'all'
   })
 
@@ -107,7 +122,8 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       subjectId: data.subject.id,
       presenterIds: data.presenters.map((p) => p.id),
       targetGroupIds: data.targetGroups.map((g) => g.id),
-      requestId: data.fulfillRequest ? data.request?.id : null
+      requestId: data.fulfillRequest ? data.request?.id : null,
+      language: data.language
     }
     newConsultation ? createCons(formData) : editCons(formData)
   })
@@ -124,6 +140,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       setValue('endDate', new Date(consultation.endDate))
       setValue('request', consultation.request ? { ...consultation.request, subject: consultation.subject } : undefined)
       setValue('fulfillRequest', !!consultation.request)
+      setValue('language', consultation.language)
     }
   }, [consultation])
 
@@ -180,23 +197,32 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
               />
               {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
             </FormControl>
-            <FormControl isInvalid={!!errors.location} isRequired>
-              <FormLabel>Helyszín</FormLabel>
-              <Input
-                type="text"
-                {...register('location', {
-                  required: { value: true, message: 'Helyszín nem lehet üres!' },
-                  maxLength: {
-                    value: MAX_TITLE_LENGTH,
-                    message: 'Helyszín túl hosszú! ' + getStatusString(watch('location'), MAX_TITLE_LENGTH)
-                  }
-                })}
-                placeholder="SCH-1317"
-                width="30%"
-                minWidth="150px"
-              />
-              {errors.location && <FormErrorMessage>{errors.location.message}</FormErrorMessage>}
-            </FormControl>
+            <Stack direction={['column', 'row']} width="100%">
+              <FormControl width={['100%', '30%']} isInvalid={!!errors.location} isRequired>
+                <FormLabel>Helyszín</FormLabel>
+                <Input
+                  type="text"
+                  {...register('location', {
+                    required: { value: true, message: 'Helyszín nem lehet üres!' },
+                    maxLength: {
+                      value: MAX_TITLE_LENGTH,
+                      message: 'Helyszín túl hosszú! ' + getStatusString(watch('location'), MAX_TITLE_LENGTH)
+                    }
+                  })}
+                  placeholder="SCH-1317"
+                  minWidth="150px"
+                />
+                {errors.location && <FormErrorMessage>{errors.location.message}</FormErrorMessage>}
+              </FormControl>
+              <FormControl width="30%" isRequired>
+                <FormLabel>Nyelv</FormLabel>
+                <Select {...register('language')}>
+                  <option value={Language.hu}>Magyar</option>
+                  <option value={Language.en}>Angol</option>
+                </Select>
+              </FormControl>
+            </Stack>
+
             <Checkbox hidden {...register('fulfillRequest')} />
             <Checkbox
               colorScheme="brand"

@@ -1,5 +1,6 @@
 import { HStack, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 import { FC, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { NAV_ITEMS } from '../../util/nav-items'
@@ -11,6 +12,7 @@ type Props = {
 const MobileNav: FC<Props> = ({ onNavigate }) => {
   const { isLoggedIn, loggedInUser } = useAuthContext()
   const [navItems, setNavItems] = useState(NAV_ITEMS)
+  const { t } = useTranslation()
 
   useEffect(() => {
     setNavItems(NAV_ITEMS.filter((item) => item.shouldBeShown(isLoggedIn, loggedInUser)))
@@ -29,7 +31,7 @@ const MobileNav: FC<Props> = ({ onNavigate }) => {
           }}
         >
           <Text textAlign="center" color={useColorModeValue('brand.700', 'white')}>
-            {item.label}
+            {t(item.label)}
           </Text>
         </HStack>
       ))}
