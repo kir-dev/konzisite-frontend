@@ -41,7 +41,7 @@
     "web-vitals": "3.5.0"
   },
   "devDependencies": {
-    "@types/jest": "29.5.8",
+    "@types/jest": "29.5.10",
     "@types/js-cookie": "3.0.6",
     "@types/lodash.debounce": "^4.0.7",
     "@types/node": "20.9.2",
