@@ -1,7 +1,8 @@
 import { Box, Button, Heading, HStack, Stack, Text, Tooltip, useToast, VStack } from '@chakra-ui/react'
+import { t } from 'i18next'
 import { useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { FaClock, FaMapMarkerAlt } from 'react-icons/fa'
+import { FaClock, FaLanguage, FaMapMarkerAlt } from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
@@ -97,17 +98,21 @@ export const ConsultationDetailsPage = () => {
       <Stack direction={['column-reverse', 'row']} justifyContent="space-between" mb={3}>
         <VStack alignItems="flex-start" spacing={3} flexGrow={1}>
           <HStack>
-            <FaMapMarkerAlt />
+            <FaMapMarkerAlt fontSize={20} />
             <Text isTruncated maxWidth={{ base: '18rem', sm: '15rem', m: '25rem', md: '35rem', lg: '48rem' }}>
               {consultation.location}
             </Text>
           </HStack>
           <HStack>
-            <FaClock />
+            <FaClock fontSize={20} />
             <Text>
               {new Date(consultation.startDate).toLocaleString('hu-HU', { timeStyle: 'short', dateStyle: 'short' })} -{' '}
               {new Date(consultation.endDate).toLocaleTimeString('hu-HU', { timeStyle: 'short' })}
             </Text>
+          </HStack>
+          <HStack>
+            <FaLanguage fontSize={30} />
+            <Text>{t(consultation.language)}</Text>
           </HStack>
         </VStack>
 

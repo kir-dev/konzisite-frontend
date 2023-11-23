@@ -9,6 +9,8 @@ export const resources = {
       BI_MSC: 'Business info. MSc',
       HI_MSC: 'Healthcare eng. MSc',
       SE_MSC: 'Space eng. MSc',
+      en: 'In English',
+      hu: 'In Hungarian',
       navbar: {
         homePage: 'Home',
         consultations: 'Consultations',
@@ -58,6 +60,8 @@ export const resources = {
       BI_MSC: 'Gazdinfó MSc',
       HI_MSC: 'Eü mérnök MSc',
       SE_MSC: 'Űrmérnök MSc',
+      en: 'Angol nyelvű',
+      hu: 'Magyar nyelvű',
       navbar: {
         homePage: 'Kezdőlap',
         consultations: 'Konzultációk',
