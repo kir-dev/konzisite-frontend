@@ -23,6 +23,7 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FaStar } from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
 import { useRateConsultationMutation, useUpdateRatingConsultationMutation } from '../../../api/hooks/consultationMutationHooks'
@@ -44,12 +45,13 @@ type Props = {
 
 export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: Props) => {
   const toast = useToast()
+  const { t } = useTranslation()
   const { consultationId } = useParams()
   const sliderThumbColor = useColorModeValue('brand.500', 'white')
 
   const { mutate: rateConsultation } = useRateConsultationMutation(
     () => {
-      toast({ title: 'Sikeresen értékeltél!', status: 'success' })
+      toast({ title: t('userRating.ratingSuccess'), status: 'success' })
       refetch()
     },
     (e: KonziError) => {
@@ -59,7 +61,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
 
   const { mutate: updateRatingConsultation } = useUpdateRatingConsultationMutation(
     () => {
-      toast({ title: 'Sikeresen frissítetted az értékelést!', status: 'success' })
+      toast({ title: t('userRating.ratingUpdateSuccess'), status: 'success' })
       refetch()
     },
     (e: KonziError) => {
@@ -73,7 +75,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
   const [anonymous, setAnonymous] = useState<boolean>(!!user.rating?.anonymous)
 
   if (!consultationId || !isValidId(consultationId)) {
-    return <ErrorPage status={404} title="A konzultáció nem található!" />
+    return <ErrorPage status={404} title={t('userRating.konziNotFound')} />
   }
 
   return (
@@ -82,7 +84,9 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
         {isParticipant && user.rating && (
           <>
             <HStack>
-              <Text>Te értékelésed: {user.rating?.value}</Text>
+              <Text>
+                {t('userRating.yourRating')} {user.rating?.value}
+              </Text>
               <FaStar />
             </HStack>
             <Button
@@ -95,12 +99,12 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
                 setOpen(true)
               }}
             >
-              Módosítás
+              {t('userRating.edit')}
             </Button>
           </>
         )}
         {isParticipant && !user.rating && (
-          <Tooltip label={showRatingButton ? '' : 'A konzi kezdete után tudod értékelni az előadót.'} placement="left" hasArrow>
+          <Tooltip label={showRatingButton ? '' : t('userRating.rateAfterStart')} placement="left" hasArrow>
             <Button
               width="100%"
               colorScheme="brand"
@@ -112,7 +116,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
                 setOpen(true)
               }}
             >
-              Értékelés
+              {t('userRating.rate')}
             </Button>
           </Tooltip>
         )}
@@ -120,7 +124,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
       <Modal isCentered motionPreset="slideInBottom" isOpen={open} onClose={() => setOpen(false)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{user.fullName} értékelése</ModalHeader>
+          <ModalHeader>{t('userRating.ratingOf', { user: user.fullName })}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <VStack align="flex-start">
@@ -134,15 +138,16 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
                 <Text>{value}</Text>
                 <FaStar />
               </HStack>
-              <FormLabel>Megjegyzés (opcionális)</FormLabel>
-              <Textarea placeholder="Értékelés..." value={text} onChange={(e) => setText(e.target.value)} />
+              <FormLabel>{t('userRating.comment')}Megjegyzés (opcionális)</FormLabel>
+              <Textarea placeholder={t('userRating.rating')} value={text} onChange={(e) => setText(e.target.value)} />
               <Checkbox colorScheme="brand" isChecked={anonymous} onChange={(e) => setAnonymous(e.target.checked)}>
-                Értékelés névtelenül
+                {t('userRating.anonymus')} Értékelés névtelenül
               </Checkbox>
               {anonymous && (
                 <Alert rounded="md" status="info">
                   <AlertIcon />
-                  Attól még, hogy név nélkül értékelsz, az oldal adminjai továbbra is látni fogják a neved. Kérlek értelmes kritikát írj!
+                  {t('userRating.anonymusMessage')}Attól még, hogy név nélkül értékelsz, az oldal adminjai továbbra is látni fogják a neved.
+                  Kérlek értelmes kritikát írj!
                 </Alert>
               )}
               <Button
@@ -161,7 +166,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
                   setOpen(false)
                 }}
               >
-                Mentés
+                {t('userRating.save')}
               </Button>
             </VStack>
           </ModalBody>

@@ -79,23 +79,23 @@ export const ConsultationsPage = () => {
 
   return (
     <>
-      <Helmet title="Konzultációk" />
-      <PageHeading title="Konzultációk" />
+      <Helmet title={t('consultationListPage.title')} />
+      <PageHeading title={t('consultationListPage.title')} />
       <Flex justify="space-between">
         <Button rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} onClick={onToggle}>
-          Szűrés
+          {t('consultationListPage.filter')}
         </Button>
         <Button as={Link} to={`${PATHS.CONSULTATIONS}/new`} colorScheme="brand">
-          Új konzultáció
+          {t('consultationListPage.newKonzi')}
         </Button>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
         <Stack columnGap={5} mt={3} direction={{ base: 'column', md: 'row' }}>
           <Flex direction="column" grow={1}>
             <Text mb={1} fontWeight="bold">
-              Szak
+              {t('consultationListPage.major')}
             </Text>
-            <Select placeholder="Minden szak" onChange={(e) => setMajor(e.target.value as Major)}>
+            <Select placeholder={t('consultationListPage.allMajors')} onChange={(e) => setMajor(e.target.value as Major)}>
               {MajorArray.map((m) => (
                 <option value={m} key={m}>
                   {t(m)}
@@ -105,26 +105,26 @@ export const ConsultationsPage = () => {
           </Flex>
           <Flex direction="column" grow={1}>
             <Text mb={1} fontWeight="bold">
-              Nyelv
+              {t('consultationListPage.language')}
             </Text>
-            <Select placeholder="Minden nyelv" onChange={(e) => setLanguage(e.target.value as Language)}>
+            <Select placeholder={t('consultationListPage.allLanguages')} onChange={(e) => setLanguage(e.target.value as Language)}>
               <option value={Language.hu} key={Language.hu}>
-                Magyar
+                {t('consultationListPage.hungarian')}
               </option>
               <option value={Language.en} key={Language.en}>
-                Angol
+                {t('consultationListPage.english')}
               </option>
             </Select>
           </Flex>
           <Flex direction="column" grow={1}>
             <Text mb={1} fontWeight="bold">
-              Kezdés
+              {t('consultationListPage.from')}
             </Text>
             <Input value={formatDate(startDate)} type="date" onChange={(e) => setStartDate(new Date(e.target.value))} />
           </Flex>
           <Flex direction="column" grow={1}>
             <Text mb={1} fontWeight="bold">
-              Befejezés
+              {t('consultationListPage.to')}
             </Text>
             <Input value={formatDate(endDate)} type="date" onChange={(e) => setEndDate(new Date(e.target.value))} />
           </Flex>
@@ -132,8 +132,8 @@ export const ConsultationsPage = () => {
       </Collapse>
       <Tabs mt={8} isFitted rounded="lg" variant="enclosed" colorScheme="brand">
         <TabList>
-          <Tab onFocus={() => setHideCalendar(true)}>Lista</Tab>
-          <Tab onFocus={() => setHideCalendar(false)}>Naptár</Tab>
+          <Tab onFocus={() => setHideCalendar(true)}>{t('consultationListPage.list')}</Tab>
+          <Tab onFocus={() => setHideCalendar(false)}>{t('consultationListPage.calendar')}</Tab>
         </TabList>
         <TabPanels>
           <ConsultationsListPanel isLoading={isLoading} consultaions={consultaions} />

@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import customTheme from '../../../../assets/theme'
 import { majorColor } from '../../../../util/majorHelpers'
@@ -61,7 +62,7 @@ export const ConsultationsCalendarPanel = ({ consultaions, hideCalendar }: Props
   const navigate = useNavigate()
   const [largeScreen] = useMediaQuery('(min-width: 48em)')
   const colorMode = useColorMode()
-
+  const { t, i18n } = useTranslation()
   const events: eventProps[] | undefined = consultaions?.map((c) => {
     return {
       id: c.id.toString(),
@@ -93,16 +94,16 @@ export const ConsultationsCalendarPanel = ({ consultaions, hideCalendar }: Props
           footerToolbar={largeScreen ? {} : { left: 'prev', center: 'today', right: 'next' }}
           aspectRatio={largeScreen ? 1.5 : 0.9}
           buttonText={{
-            today: 'ma',
-            month: 'hónap',
-            week: 'hét'
+            today: t('calendar.todayButton'),
+            week: t('calendar.weekButton'),
+            month: t('calendar.monthButton')
           }}
           views={{
             timeGridWeek: {
               titleFormat: { year: 'numeric', month: '2-digit', day: 'numeric' }
             }
           }}
-          locale="hu"
+          locale={i18n.language}
           firstDay={1}
           allDaySlot={false}
           dayMaxEvents={true}
@@ -110,7 +111,13 @@ export const ConsultationsCalendarPanel = ({ consultaions, hideCalendar }: Props
           nowIndicator={true}
           events={events}
           fixedWeekCount={false}
-          buttonHints={{ week: 'Heti nézet', month: 'Hónap nézet', today: 'Ugrás a mai naphoz', next: 'Következő', prev: 'Előző' }}
+          buttonHints={{
+            week: t('calendar.week'),
+            month: t('calendar.month'),
+            today: t('calendar.today'),
+            next: t('calendar.next'),
+            prev: t('calendar.prev')
+          }}
           eventTimeFormat={{
             hour: '2-digit',
             minute: '2-digit'

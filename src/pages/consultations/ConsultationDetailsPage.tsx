@@ -1,7 +1,7 @@
 import { Box, Button, Heading, HStack, Stack, Text, Tooltip, useToast, VStack } from '@chakra-ui/react'
-import { t } from 'i18next'
 import { useRef } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { FaClock, FaLanguage, FaMapMarkerAlt } from 'react-icons/fa'
 import { useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
@@ -16,6 +16,7 @@ import { KonziError } from '../../api/model/error.model'
 import { DownloadFileFromServerButton } from '../../components/commons/DownloadFileFromServerButton'
 import Markdown from '../../components/commons/Markdown'
 import { PageHeading } from '../../components/commons/PageHeading'
+import { SubjectName } from '../../components/commons/SubjectName'
 import { isValidId } from '../../util/core-util-functions'
 import { generateToastParams } from '../../util/generateToastParams'
 import { PATHS } from '../../util/paths'
@@ -30,6 +31,7 @@ export const ConsultationDetailsPage = () => {
   const { loggedInUser, loggedInUserLoading } = useAuthContext()
   const { isLoading, data: consultation, error, refetch } = useFetchConsultationbDetailsQuery(+consultationId!!)
   const toast = useToast()
+  const { t, i18n } = useTranslation()
   const downloadFileRef = useRef<HTMLButtonElement>(null)
   const exportKonziRef = useRef<HTMLButtonElement>(null)
 
@@ -93,7 +95,7 @@ export const ConsultationDetailsPage = () => {
       <Helmet title={consultation.name} />
       <PageHeading title={consultation.name} />
       <Heading size="md" justifyContent="center" textAlign="center" mb={3}>
-        {consultation.subject.name} ({consultation.subject.code})
+        <SubjectName subject={consultation.subject} />
       </Heading>
       <Stack direction={['column-reverse', 'row']} justifyContent="space-between" mb={3}>
         <VStack alignItems="flex-start" spacing={3} flexGrow={1}>
@@ -106,8 +108,8 @@ export const ConsultationDetailsPage = () => {
           <HStack>
             <FaClock fontSize={20} />
             <Text>
-              {new Date(consultation.startDate).toLocaleString('hu-HU', { timeStyle: 'short', dateStyle: 'short' })} -{' '}
-              {new Date(consultation.endDate).toLocaleTimeString('hu-HU', { timeStyle: 'short' })}
+              {new Date(consultation.startDate).toLocaleString(i18n.language, { timeStyle: 'short', dateStyle: 'short' })} -{' '}
+              {new Date(consultation.endDate).toLocaleTimeString(i18n.language, { timeStyle: 'short' })}
             </Text>
           </HStack>
           <HStack>
@@ -125,7 +127,9 @@ export const ConsultationDetailsPage = () => {
               w="100%"
               colorScheme="brand"
             >
-              {new Date() < new Date(consultation.startDate) ? 'Részt veszek' : 'Részt vettem'}
+              {new Date() < new Date(consultation.startDate)
+                ? t('consultationDetailsPage.takePart')
+                : t('consultationDetailsPage.tookPart')}
             </Button>
           )}
           {isParticipant && !ratedConsultation && (
@@ -136,7 +140,9 @@ export const ConsultationDetailsPage = () => {
                 leaveConsultation(consultation.id)
               }}
             >
-              {new Date() < new Date(consultation.startDate) ? 'Nem veszek részt' : 'Nem vettem részt'}
+              {new Date() < new Date(consultation.startDate)
+                ? t('consultationDetailsPage.dontTakePart')
+                : t('consultationDetailsPage.didntTakePart')}
             </Button>
           )}
           {((new Date() > new Date(consultation.startDate) && isParticipant) || isPresenter || isOwner || isAdmin) &&
@@ -150,9 +156,9 @@ export const ConsultationDetailsPage = () => {
                 <Tooltip
                   label={
                     consultation.archived
-                      ? 'A konzi archiválva lett, már nem lehet letölteni a fájlt.'
+                      ? t('consultationDetailsPage.achivedNoDownload')
                       : isParticipant && !ratedConsultation && !isAdmin
-                        ? 'Akkor tudod letölteni a fájlt, ha már értékelted az előadókat!'
+                        ? t('consultationDetailsPage.unratedNoDownload')
                         : ''
                   }
                   placement="left"
@@ -164,7 +170,7 @@ export const ConsultationDetailsPage = () => {
                     isDisabled={consultation.archived || (isParticipant && !ratedConsultation && !isAdmin)}
                     colorScheme="green"
                   >
-                    Jegyzet letöltése
+                    {t('consultationDetailsPage.downloadAttachment')}
                   </Button>
                 </Tooltip>
               </DownloadFileFromServerButton>
@@ -173,11 +179,11 @@ export const ConsultationDetailsPage = () => {
             <DownloadFileFromServerButton<number>
               buttonRef={exportKonziRef}
               downloadMutation={exportKonziMutation}
-              fileName={`konzultacio_${consultation.id}.ics`}
+              fileName={`consultation_${consultation.id}.ics`}
               params={consultation.id}
             >
               <Button ref={exportKonziRef} w="100%" colorScheme="green">
-                Exportálás naptárba
+                {t('consultationDetailsPage.exportToCalndar')}
               </Button>
             </DownloadFileFromServerButton>
           )}
@@ -190,7 +196,7 @@ export const ConsultationDetailsPage = () => {
         </Box>
       )}
       <Heading size="lg" mb={2}>
-        Konzitartók ({consultation.presentations.length})
+        {t('consultationDetailsPage.presenters')} ({consultation.presentations.length})
       </Heading>
       <UserList
         columns={1}
@@ -201,13 +207,13 @@ export const ConsultationDetailsPage = () => {
       />
       <TargetGroupList groups={consultation.targetGroups} />
       <Heading size="lg" mt={2} mb={2}>
-        Résztvevők ({consultation.participants.length})
+        {t('consultationDetailsPage.participants')} ({consultation.participants.length})
       </Heading>
       {consultation.participants.length > 0 ? (
         <UserList columns={2} users={consultation.participants} isParticipant={isParticipant} showRating={false} refetch={refetch} />
       ) : (
         <Text textAlign="center" fontStyle="italic">
-          Még nincs egy résztvevő se.
+          {t('consultationDetailsPage.noParticipants')}
         </Text>
       )}
     </>

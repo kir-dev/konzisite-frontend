@@ -88,6 +88,66 @@ export const resources = {
         requestors: '{{count}} ember kérte',
         consultationsForRequest: '{{count}} konzi'
       },
+      consultationListPage: {
+        title: 'Konzultációk',
+        filter: 'Szűrés',
+        newKonzi: 'Új konzultáció',
+        major: 'Szak',
+        allMajors: 'Minden szak',
+        language: 'Nyelv',
+        allLanguages: 'Bármely',
+        hungarian: 'Magyar',
+        english: 'Angol',
+        from: 'Kezdés',
+        to: 'Befejezés',
+        list: 'Lista',
+        calendar: 'Naptár',
+        noKonzi: 'Nincsenek konzultációk!'
+      },
+      calendar: {
+        todayButton: 'ma',
+        weekButton: 'hét',
+        monthButton: 'hónap',
+        week: 'Heti nézet',
+        month: 'Havi nézet',
+        today: 'Ugrás a mai naphoz',
+        next: 'Következő',
+        prev: 'Előző'
+      },
+      consultationDetailsPage: {
+        takePart: 'Részt veszek',
+        tookPart: 'Részt vettem',
+        dontTakePart: 'Nem veszek részt',
+        didntTakePart: 'Nem vettem részt',
+        achivedNoDownload: 'A konzi archiválva lett, már nem lehet letölteni a fájlt.',
+        unratedNoDownload: 'Akkor tudod letölteni a fájlt, ha már értékelted az előadókat!',
+        downloadAttachment: 'Jegyzet letöltése',
+        exportToCalndar: 'Exportálás naptárba',
+        presenters: 'Konzitartók',
+        participants: 'Résztvevők',
+        noParticipants: 'Még nincs egy résztvevő se.'
+      },
+      userList: {
+        allRating: 'Összesített értékelés',
+        ratingsForKonzi: 'Értékelés erre a konzira',
+        rating: 'Értékelés: '
+      },
+      userRating: {
+        ratingSuccess: 'Sikeresen értékeltél!',
+        ratingUpdateSuccess: 'Sikeresen frissítetted az értékelést!',
+        konziNotFound: 'Te értékelésed:',
+        yourRating: 'Te értékelésed:',
+        edit: 'Módosítás',
+        rateAfterStart: 'A konzi kezdete után tudod értékelni az előadót.',
+        rate: 'Értékelés',
+        ratingOf: '{{user}} értékelése',
+        comment: 'Megjegyzés (opcionális)',
+        rating: 'Értékelés...',
+        anonymus: 'Értékelés névtelenül',
+        anonymusMessage:
+          'Attól még, hogy név nélkül értékelsz, az oldal adminjai továbbra is látni fogják a neved. Kérlek értelmes kritikát írj!',
+        save: 'Mentés'
+      },
       errors: {
         unknown: 'Ismeretlen hiba, kérjük próbáld újra'
       },
