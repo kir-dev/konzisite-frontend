@@ -35,6 +35,7 @@ import { generateToastParams } from '../../../../util/generateToastParams'
 import { PATHS } from '../../../../util/paths'
 import { ErrorPage } from '../../../error/ErrorPage'
 
+import { useTranslation } from 'react-i18next'
 import { Presentation } from '../../types/consultationDetails'
 import { CreateConsultationForm } from '../../types/createConsultation'
 import { Rating } from '../Rating'
@@ -48,6 +49,7 @@ export const PresentersSelector = () => {
     setValue,
     formState: { errors }
   } = useFormContext<CreateConsultationForm>()
+  const { t } = useTranslation()
 
   const { loggedInUser } = useAuthContext()
   const toast = useToast()
@@ -103,7 +105,7 @@ export const PresentersSelector = () => {
   return (
     <>
       <FormControl isInvalid={!!errors.presenters} isRequired>
-        <FormLabel>Előadók</FormLabel>
+        <FormLabel>{t('selectors.presenters')}</FormLabel>
         {watch('presenters').map((p: Presentation) => (
           <Box borderRadius={6} borderWidth={1} mb={2} key={p.id}>
             <HStack flexGrow={1} p={4}>
@@ -113,19 +115,19 @@ export const PresentersSelector = () => {
                   {p.fullName}
                   {p.id === loggedInUser.id && (
                     <Badge colorScheme="brand" ml={1}>
-                      Te
+                      {t('selectors.you')}
                     </Badge>
                   )}
                 </Heading>
                 <Rating rating={p.averageRating} />
               </VStack>
               <Button colorScheme="red" onClick={() => removePresenter(p)}>
-                Törlés
+                {t('selectors.delete')}
               </Button>
             </HStack>
           </Box>
         ))}
-        <FormErrorMessage>Legalább egy előadónak kell lennie</FormErrorMessage>
+        <FormErrorMessage>{t('selectors.atLeastOnePresenter')}</FormErrorMessage>
         <Button
           onClick={() => {
             onOpen()
@@ -135,13 +137,13 @@ export const PresentersSelector = () => {
           }}
           mt={watch('presenters').length > 0 || !!errors.presenters ? 2 : 0}
         >
-          Előadó hozzáadása
+          {t('selectors.addPresenter')}
         </Button>
       </FormControl>
       <Modal scrollBehavior="inside" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Előadó hozzáadása</ModalHeader>
+          <ModalHeader>{t('selectors.addPresenter')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <InputGroup my={5}>
@@ -150,7 +152,7 @@ export const PresentersSelector = () => {
               </InputLeftElement>
               <Input
                 autoFocus
-                placeholder="Keresés..."
+                placeholder={t('selectors.searching')}
                 size="lg"
                 onChange={(e) => {
                   setSearch(e.target.value)
@@ -176,7 +178,7 @@ export const PresentersSelector = () => {
             />
             <VStack mb={2} maxHeight="500px" overflowY="auto">
               {isLoading || !filteredUserList || filteredUserList.length === 0 ? (
-                <Text fontStyle="italic">Nincs találat</Text>
+                <Text fontStyle="italic">{t('selectors.noResult')}</Text>
               ) : (
                 filteredUserList.map((p) => (
                   <Box
@@ -197,7 +199,7 @@ export const PresentersSelector = () => {
                           {p.fullName}
                           {p.id === loggedInUser.id && (
                             <Badge colorScheme="brand" ml={1}>
-                              Te
+                              {t('selectors.you')}
                             </Badge>
                           )}
                         </Heading>

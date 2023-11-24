@@ -127,6 +127,92 @@ export const resources = {
         participants: 'Résztvevők',
         noParticipants: 'Még nincs egy résztvevő se.'
       },
+      editKonziPage: {
+        createdSuccess: 'Konzultáció sikeresen létrehozva!',
+        updatedSuccess: 'Konzultáció sikeresen módosítva!',
+        noAccess: 'Nincs jogod',
+        authorEditOnly: 'A konzit csak a tulajdonosa szerkesztheti',
+        newKonzi: 'Új konzultáció',
+        editKonzi: '{{title}} szerkesztése',
+        untitledKonzi: 'Névtelen konzi',
+        createNewKonzi: 'Új konzultáció létrehozása',
+        konziTitle: 'Konzultáció neve',
+        nameEmpty: 'Név nem lehet üres!',
+        nameTooLong: 'Név túl hosszú!',
+        namePlaceholder: 'Digit vizsgára készülés',
+        location: 'Helyszín',
+        locationEmpty: 'Helyszín nem lehet üres!',
+        locationTooLong: 'Helyszín túl hosszú!',
+        language: 'Nyelv',
+        hungarian: 'Magyar',
+        english: 'Angol',
+        fullfillRequest: 'Kérés teljesítése',
+        requestDesc: `Amennyiben valakinek a konzi kérését valósítod meg, pipáld be a fenti dobozt, majd válaszd ki a kérést. Így
+        értesítést fognak kapni azok a felhasználók, akik támogatták a kérést. Konzi kérés kiválasztása meghatározza a konzi tárgyát is.`,
+        desc: 'Leírás',
+        back: 'Vissza',
+        create: 'Létrehozás',
+        save: 'Mentés'
+      },
+      selectors: {
+        request: 'Konzi kérés',
+        subject: 'Tárgy',
+        presenters: 'Előadók',
+        groups: 'Célcsoportok',
+        groupDesc: `Ha megadsz egy vagy több célcsoportot, akkor csak azok a felhasználók fogják látni a konzit, akik legalább
+        az egyik célcsoportnaktagjai.`,
+        addGroup: 'Célcsoport hozzáadása',
+        you: 'Te',
+        delete: 'Törlés',
+        atLeastOnePresenter: 'Legalább egy előadónak kell lennie',
+        addPresenter: 'Előadó hozzáadása',
+        noneSelectedRequest: 'Nincs kérés kiválasztva',
+        noneSelectedSubject: 'Nincs tárgy kiválasztva',
+        subjectSelector: 'Tárgy választás',
+        requestSelector: 'Konzi kérés választás',
+        searching: 'Keresés...',
+        noResult: 'Nincs találat'
+      },
+      markdown: {
+        edit: 'Szerkesztés',
+        preview: 'Előnézet',
+        help: 'Markdown útmutató itt.',
+        placeholder: 'Add meg a markdown formátumú szöveged itt...',
+        noEmpty: 'Szöveg nem lehet üres!',
+        tooLong: 'Szöveg túl hosszú!'
+      },
+      konziDateForm: {
+        date: 'Időpont',
+        start: 'Kezdés',
+        end: 'Vége',
+        noPastStart: 'Nem lehet múltbeli kezdés',
+        noEndBeforeStart: 'Befejezés nem lehet korábban, mint kezdés'
+      },
+      groupListPage: {
+        title: 'Csoportok',
+        newGroup: 'Új csoport',
+        createGroup: 'Csoport létrehozása',
+        groupCreated: 'Csoport sikeresen létrehozva',
+        groupDesc: ` Ha szeretnél csak bizonyos hallgatóknak (például egy tankörnek) konzultációt tartani, először hozz létre egy
+        csoportot. A csoportokba bárki jelentkezhet, de a jelentkezést a csoport tulajdonosának vagy valamelyik adminjának el kell fogadnia,
+         mielőtt végleges lesz. Ha konzi létrehozása közben megadsz egy vagy több célcsoportot, akkor csak azok a felhasználók fogják látni
+          a konzit, akik legalább az egyik célcsoportnak tagjai.`,
+        ownGroups: 'Saját csoportok',
+        noOwnGroups: 'Még nem vagy egy csoport tagja sem!',
+        otherGroups: 'Többi csoport',
+        noOtherGroups: 'Nincs több csoport',
+        groupName: 'Csoport neve',
+        cancel: 'Mégse',
+        save: 'Mentés',
+        tooLong: 'Túl hosszú!'
+      },
+      groupList: {
+        joined: 'Csatlakoztál a csoporthoz!',
+        withdrawn: 'Visszavontad a jelentkezésed!',
+        pending: 'Függőben',
+        withdraw: 'Kérelem visszavonása',
+        join: 'Csatlakozás'
+      },
       userList: {
         allRating: 'Összesített értékelés',
         ratingsForKonzi: 'Értékelés erre a konzira',

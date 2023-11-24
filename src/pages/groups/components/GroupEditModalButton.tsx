@@ -17,6 +17,7 @@ import {
   useToast
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { UseMutationResult } from 'react-query'
 import { KonziError } from '../../../api/model/error.model'
 import { GroupModel } from '../../../api/model/group.model'
@@ -47,7 +48,7 @@ export const GroupEditModalButton = ({
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [name, setName] = useState<string>(previousName)
   const toast = useToast()
-
+  const { t } = useTranslation()
   const [largeScreen] = useMediaQuery('(min-width: 48em)')
 
   const initialRef = useRef<HTMLInputElement>(null)
@@ -92,17 +93,27 @@ export const GroupEditModalButton = ({
             <ModalCloseButton />
             <ModalBody pb={6}>
               <FormControl>
-                <FormLabel>Csoport neve</FormLabel>
-                <Input autoFocus ref={initialRef} placeholder="Csoport neve" value={name} onChange={(e) => setName(e.target.value)} />
+                <FormLabel>{t('groupListPage.groupName')}</FormLabel>
+                <Input
+                  autoFocus
+                  ref={initialRef}
+                  placeholder={t('groupListPage.groupName')}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
                 <Flex justifyContent="flex-end">
-                  {lenghtError && <FormHelperText color="red.500">Túl hosszú! {getStatusString(name, MAX_TITLE_LENGTH)}</FormHelperText>}
+                  {lenghtError && (
+                    <FormHelperText color="red.500">
+                      {t('groupListPage.tooLong')} {getStatusString(name, MAX_TITLE_LENGTH)}
+                    </FormHelperText>
+                  )}
                 </Flex>
               </FormControl>
             </ModalBody>
 
             <ModalFooter>
               <Button onClick={onClose} mr={3}>
-                Mégse
+                {t('groupListPage.cancel')}
               </Button>
               <Button
                 type="submit"
@@ -111,7 +122,7 @@ export const GroupEditModalButton = ({
                 colorScheme="brand"
                 onClick={(e) => onSave(e)}
               >
-                Mentés
+                {t('groupListPage.save')}
               </Button>
             </ModalFooter>
           </form>

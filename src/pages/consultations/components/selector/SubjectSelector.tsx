@@ -51,7 +51,7 @@ export const SubjectSelector = () => {
   } = useFecthSubjectListMutation((e: KonziError) => {
     toast(generateToastParams(e))
   })
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [search, setSearch] = useState('')
 
@@ -68,7 +68,7 @@ export const SubjectSelector = () => {
   return (
     <>
       <FormControl isInvalid={!!errors.subject} isRequired>
-        <FormLabel>Tárgy</FormLabel>
+        <FormLabel> {t('selectors.subject')}</FormLabel>
 
         <Input
           cursor="pointer"
@@ -79,13 +79,13 @@ export const SubjectSelector = () => {
             fetchSubjects({ search: '', limit: INITIAL_SUBJECT_COUNT })
           }}
           readOnly
-          value={watch('subject') ? generateSubjectName(watch('subject'), i18n.language) : 'Nincs tárgy választva'}
+          value={watch('subject') ? generateSubjectName(watch('subject'), i18n.language) : t('selectors.noneSelectedSubject')}
         />
       </FormControl>
       <Modal scrollBehavior="inside" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Tárgy választás</ModalHeader>
+          <ModalHeader> {t('selectors.subjectSelector')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <InputGroup my={5}>
@@ -94,7 +94,7 @@ export const SubjectSelector = () => {
               </InputLeftElement>
               <Input
                 autoFocus
-                placeholder="Keresés..."
+                placeholder={t('selectors.searching')}
                 size="lg"
                 onChange={(e) => {
                   setSearch(e.target.value)
@@ -120,7 +120,7 @@ export const SubjectSelector = () => {
             />
             <VStack mb={4} maxHeight="600px" overflowY="auto">
               {isLoading || !subjectList || subjectList.length === 0 ? (
-                <Text fontStyle="italic">Nincs találat</Text>
+                <Text fontStyle="italic"> {t('selectors.noResult')}</Text>
               ) : (
                 subjectList.map((s) => (
                   <Box

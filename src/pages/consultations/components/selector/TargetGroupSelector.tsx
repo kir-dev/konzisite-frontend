@@ -24,6 +24,7 @@ import {
 import debounce from 'lodash.debounce'
 import { useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useFecthGroupListMutation } from '../../../../api/hooks/groupMutationHooks'
@@ -39,6 +40,7 @@ export const TargetGroupSelector = () => {
   const { register, watch, setValue } = useFormContext<CreateConsultationForm>()
 
   const toast = useToast()
+  const { t } = useTranslation()
   const {
     isLoading,
     data: groupList,
@@ -81,10 +83,9 @@ export const TargetGroupSelector = () => {
   return (
     <>
       <FormControl>
-        <FormLabel>Célcsoportok</FormLabel>
+        <FormLabel>{t('selectors.groups')}</FormLabel>
         <Text mb={2} textAlign="justify">
-          Ha megadsz egy vagy több célcsoportot, akkor csak azok a felhasználók fogják látni a konzit, akik legalább az egyik célcsoportnak
-          tagjai.
+          {t('selectors.groupDesc')}
         </Text>
         {watch('targetGroups').map((g: GroupModel) => (
           <Box borderRadius={6} borderWidth={1} mb={2} key={g.id}>
@@ -96,7 +97,7 @@ export const TargetGroupSelector = () => {
                 </Heading>
               </HStack>
               <Button colorScheme="red" onClick={() => removeGroup(g)}>
-                Törlés
+                {t('selectors.delete')}
               </Button>
             </HStack>
           </Box>
@@ -110,13 +111,13 @@ export const TargetGroupSelector = () => {
           }}
           mt={watch('targetGroups').length > 0 ? 2 : 0}
         >
-          Célcsoport hozzáadása
+          {t('selectors.addGroup')}
         </Button>
       </FormControl>
       <Modal scrollBehavior="inside" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Célcsoport hozzáadása</ModalHeader>
+          <ModalHeader>{t('selectors.addGroup')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <InputGroup my={5}>
@@ -125,7 +126,7 @@ export const TargetGroupSelector = () => {
               </InputLeftElement>
               <Input
                 autoFocus
-                placeholder="Keresés..."
+                placeholder={t('selectors.searching')}
                 size="lg"
                 onChange={(e) => {
                   setSearch(e.target.value)
@@ -146,7 +147,7 @@ export const TargetGroupSelector = () => {
             <Input {...register('targetGroups')} hidden />
             <VStack pr={0} mb={2} maxHeight="500px" overflowY="auto">
               {isLoading || !filteredGroupList || filteredGroupList.length === 0 ? (
-                <Text fontStyle="italic">Nincs találat</Text>
+                <Text fontStyle="italic">{t('selectors.noResult')}</Text>
               ) : (
                 filteredGroupList.map((g) => (
                   <Box

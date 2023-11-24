@@ -15,6 +15,7 @@ import {
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { FaArrowLeft } from 'react-icons/fa'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
@@ -50,6 +51,7 @@ type ConsultationFormState = {
 
 export const EditConsultationPage = ({ newConsultation }: Props) => {
   const { state, key } = useLocation()
+  const { t } = useTranslation()
   const { request, group } = (state as ConsultationFormState) || {}
   const toast = useToast()
   const navigate = useNavigate()
@@ -63,7 +65,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const createCons = (formData: CreateConsultation) => {
     createConsultation(formData, {
       onSuccess: (consultation) => {
-        toast({ title: 'Konzultáció sikeresen létrehozva!', status: 'success' })
+        toast({ title: t('editKonziPage.createdSuccess'), status: 'success' })
         navigate(`${PATHS.CONSULTATIONS}/${consultation.id}`)
       },
       onError: (e: KonziError) => {
@@ -75,7 +77,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const editCons = (formData: CreateConsultation) => {
     updateConsultation(formData, {
       onSuccess: (consultation) => {
-        toast({ title: 'Konzultáció sikeresen módosítva!', status: 'success' })
+        toast({ title: t('editKonziPage.updatedSuccess'), status: 'success' })
         navigate(`${PATHS.CONSULTATIONS}/${consultation.id}`)
       },
       onError: (e: KonziError) => {
@@ -176,37 +178,49 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
           consultation.presentations.some((p) => p.id === loggedInUser.id)
         )) &&
       !newConsultation ? (
-        <ErrorPage status={403} title="Nincs jogod" messages={['A konzit csak a tulajdonosa szerkesztheti']} />
+        <ErrorPage status={403} title={t('editKonziPage.')} messages={[t('editKonziPage.authorEditOnly')]} />
       ) : (
         <>
-          <Helmet title={newConsultation ? 'Új konzultáció' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`} />
-          <PageHeading title={newConsultation ? 'Új konzultáció létrehozása' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`} />
+          <Helmet
+            title={
+              newConsultation
+                ? t('editKonziPage.newKonzi')
+                : t('editKonziPage.editKonzi', { title: consultation?.name ?? t('editKonziPage.untitledKonzi') })
+            }
+          />
+          <PageHeading
+            title={
+              newConsultation
+                ? t('editKonziPage.createNewKonzi')
+                : t('editKonziPage.editKonzi', { title: consultation?.name ?? t('editKonziPage.untitledKonzi') })
+            }
+          />
           <VStack alignItems="flex-start">
             <FormControl isInvalid={!!errors.name} isRequired>
-              <FormLabel>Konzultáció neve</FormLabel>
+              <FormLabel>{t('editKonziPage.konziTitle')}</FormLabel>
               <Input
                 type="text"
                 {...register('name', {
-                  required: { value: true, message: 'Név nem lehet üres!' },
+                  required: { value: true, message: t('editKonziPage.nameEmpty') },
                   maxLength: {
                     value: MAX_TITLE_LENGTH,
-                    message: 'Név túl hosszú! ' + getStatusString(watch('name'), MAX_TITLE_LENGTH)
+                    message: t('editKonziPage.nameTooLong') + getStatusString(watch('name'), MAX_TITLE_LENGTH)
                   }
                 })}
-                placeholder="Digit vizsgára készülés"
+                placeholder={t('editKonziPage.namePlaceholder')}
               />
               {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
             </FormControl>
             <Stack direction={['column', 'row']} width="100%">
               <FormControl width={['100%', '30%']} isInvalid={!!errors.location} isRequired>
-                <FormLabel>Helyszín</FormLabel>
+                <FormLabel> {t('editKonziPage.location')}</FormLabel>
                 <Input
                   type="text"
                   {...register('location', {
-                    required: { value: true, message: 'Helyszín nem lehet üres!' },
+                    required: { value: true, message: t('editKonziPage.locationEmpty') },
                     maxLength: {
                       value: MAX_TITLE_LENGTH,
-                      message: 'Helyszín túl hosszú! ' + getStatusString(watch('location'), MAX_TITLE_LENGTH)
+                      message: t('editKonziPage.locationTooLong') + getStatusString(watch('location'), MAX_TITLE_LENGTH)
                     }
                   })}
                   placeholder="SCH-1317"
@@ -215,10 +229,10 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
                 {errors.location && <FormErrorMessage>{errors.location.message}</FormErrorMessage>}
               </FormControl>
               <FormControl width="30%" isRequired>
-                <FormLabel>Nyelv</FormLabel>
+                <FormLabel> {t('editKonziPage.language')}</FormLabel>
                 <Select {...register('language')}>
-                  <option value={Language.hu}>Magyar</option>
-                  <option value={Language.en}>Angol</option>
+                  <option value={Language.hu}> {t('editKonziPage.hungarian')}</option>
+                  <option value={Language.en}> {t('editKonziPage.english')}</option>
                 </Select>
               </FormControl>
             </Stack>
@@ -234,19 +248,16 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
                 setValue('subject', watch('subject'), { shouldValidate: true })
               }}
             >
-              Kérés teljesítése
+              {t('editKonziPage.fullfillRequest')}
             </Checkbox>
-            <Text textAlign="justify">
-              Amennyiben valakinek a konzi kérését valósítod meg, pipáld be a fenti dobozt, majd válaszd ki a kérést. Így értesítést fognak
-              kapni azok a felhasználók, akik támogatták a kérést. Konzi kérés kiválasztása meghatározza a konzi tárgyát is.
-            </Text>
+            <Text textAlign="justify">{t('editKonziPage.requestDesc')}</Text>
             <FormProvider {...form}>
               {watch('fulfillRequest') ? <RequestSelector /> : <SubjectSelector />}
               <PresentersSelector />
               <ConsultationDateForm prevStartDate={consultation && new Date(consultation.startDate)} />
               <TargetGroupSelector />
               <FormControl>
-                <FormLabel>Leírás</FormLabel>
+                <FormLabel> {t('editKonziPage.desc')}</FormLabel>
                 <MarkdownEditor
                   formDetails={{
                     id: 'descMarkdown',
@@ -270,7 +281,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
                 }
               }}
             >
-              Vissza
+              {t('editKonziPage.back')}
             </Button>
             <Button
               isLoading={createLoading || editLoading}
@@ -280,7 +291,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
               }}
               isDisabled={!isValid && isSubmitted}
             >
-              {newConsultation ? 'Létrehozás' : 'Mentés'}
+              {newConsultation ? t('editKonziPage.create') : t('editKonziPage.save')}
             </Button>
           </Flex>
         </>

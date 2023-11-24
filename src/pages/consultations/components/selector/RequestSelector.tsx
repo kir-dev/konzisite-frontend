@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useFetchRequestListQuery } from '../../../../api/hooks/requestQueryHooks'
@@ -32,6 +33,7 @@ export const RequestSelector = () => {
     setValue,
     formState: { errors }
   } = useFormContext<CreateConsultationForm>()
+  const { t } = useTranslation()
 
   const { isLoading, data: requests, error } = useFetchRequestListQuery()
 
@@ -46,7 +48,7 @@ export const RequestSelector = () => {
   return (
     <>
       <FormControl isInvalid={!!errors.request} isRequired>
-        <FormLabel>Konzi kérés</FormLabel>
+        <FormLabel>{t('selectors.request')}</FormLabel>
         {watch('request') ? (
           <Box
             onClick={() => {
@@ -64,14 +66,14 @@ export const RequestSelector = () => {
               setSearch('')
             }}
             readOnly
-            value={watch('request')?.name || 'Nincs kérés kiválasztva'}
+            value={watch('request')?.name || t('selectors.noneSelected')}
           />
         )}
       </FormControl>
       <Modal scrollBehavior="inside" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Konzi kérés választás</ModalHeader>
+          <ModalHeader>{t('selectors.requestSelector')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <InputGroup my={5}>
@@ -80,7 +82,7 @@ export const RequestSelector = () => {
               </InputLeftElement>
               <Input
                 autoFocus
-                placeholder="Keresés..."
+                placeholder={t('selectors.searching')}
                 size="lg"
                 onChange={(e) => {
                   setSearch(e.target.value)
@@ -105,7 +107,7 @@ export const RequestSelector = () => {
             <VStack alignItems="stretch" mb={4}>
               {isLoading || !filteredList || filteredList.length === 0 ? (
                 <Text textAlign="center" fontStyle="italic">
-                  Nincs találat
+                  {t('selectors.noResult')}
                 </Text>
               ) : (
                 filteredList.map((r) => (
