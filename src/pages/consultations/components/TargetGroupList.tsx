@@ -1,4 +1,5 @@
 import { Avatar, Box, Heading, HStack, VStack } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { GroupModel } from '../../../api/model/group.model'
 import { PATHS } from '../../../util/paths'
@@ -8,12 +9,13 @@ type Props = {
 }
 
 export const TargetGroupList = ({ groups }: Props) => {
+  const { t } = useTranslation()
   if (groups.length === 0) return null
 
   return (
     <>
       <Heading size="lg" mb={2} mt={2}>
-        Célcsoport{groups.length === 1 ? '' : `ok (${groups.length})`}
+        {t('consultationDetailsPage.targetGroups', { count: groups.length })}
       </Heading>
       <VStack alignItems="stretch">
         {groups.map((g) => (

@@ -49,7 +49,7 @@ export const SubjectSelector = () => {
     reset,
     error
   } = useFecthSubjectListMutation((e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   })
   const { i18n, t } = useTranslation()
   const { isOpen, onOpen, onClose } = useDisclosure()

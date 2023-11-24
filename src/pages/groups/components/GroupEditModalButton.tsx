@@ -64,7 +64,7 @@ export const GroupEditModalButton = ({
           onClose()
         },
         onError: (e: KonziError) => {
-          toast(generateToastParams(e))
+          toast(generateToastParams(e, t))
         }
       }
     )

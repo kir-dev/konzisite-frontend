@@ -1,5 +1,6 @@
 import { FormControl, FormErrorMessage, FormLabel, Input, Stack } from '@chakra-ui/react'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { formatDate } from '../../../util/dateHelper'
 import { CreateRequestForm } from '../types/createRequest'
 
@@ -10,6 +11,7 @@ export const RequestDateForm = () => {
     setValue,
     formState: { errors }
   } = useFormContext<CreateRequestForm>()
+  const { t } = useTranslation()
 
   const handleDatechange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = new Date(e.target.value)
@@ -19,7 +21,7 @@ export const RequestDateForm = () => {
 
   return (
     <FormControl isInvalid={!!errors.expiryDate} isRequired>
-      <FormLabel>Határidő</FormLabel>
+      <FormLabel>{t('requestEditPage.deadline')}</FormLabel>
       <Stack direction={['column', 'row']}>
         <Input type="date" onChange={handleDatechange} value={formatDate(watch('expiryDate'))} />
         <Input
@@ -29,7 +31,7 @@ export const RequestDateForm = () => {
           hidden
         />
       </Stack>
-      {!!errors.expiryDate && <FormErrorMessage>Nem lehet múltbeli határidő</FormErrorMessage>}
+      {!!errors.expiryDate && <FormErrorMessage>{t('requestEditPage.pastDeadline')}</FormErrorMessage>}
     </FormControl>
   )
 }

@@ -1,4 +1,5 @@
 import { Box, Button, Collapse, SimpleGrid, useDisclosure, VStack } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import { RatingModel } from '../../../../api/model/rating.model'
 import { PublicUser } from '../../types/PublicUser'
@@ -13,6 +14,7 @@ type Props = {
 
 export const PresentationRatings = ({ ratings, first }: Props) => {
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: first })
+  const { t } = useTranslation()
 
   return (
     <VStack width="100%">
@@ -26,7 +28,7 @@ export const PresentationRatings = ({ ratings, first }: Props) => {
         </Collapse>
       </Box>
       <Button width="100%" alignSelf="center" onClick={onToggle}>
-        Értékelések&nbsp;{isOpen ? <FaChevronUp /> : <FaChevronDown />}
+        {t('profilePage.ratings')}&nbsp;{isOpen ? <FaChevronUp /> : <FaChevronDown />}
       </Button>
     </VStack>
   )

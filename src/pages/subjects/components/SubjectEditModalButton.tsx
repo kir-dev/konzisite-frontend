@@ -20,6 +20,7 @@ import {
 } from '@chakra-ui/react'
 import { ReactElement, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { UseMutationResult } from 'react-query'
 import { KonziError } from '../../../api/model/error.model'
 import { Major, SubjectModel } from '../../../api/model/subject.model'
@@ -54,6 +55,7 @@ export const SubjectEditModalButton = ({
   const { value: selectedMajors, getCheckboxProps, setValue: setSelectedMajors } = useCheckboxGroup()
   const toast = useToast()
   const deleteSubjectRef = useRef<HTMLButtonElement>(null)
+  const { t } = useTranslation()
 
   const {
     register,
@@ -101,7 +103,7 @@ export const SubjectEditModalButton = ({
           onClose()
         },
         onError: (e: KonziError) => {
-          toast(generateToastParams(e))
+          toast(generateToastParams(e, t))
         }
       }
     )

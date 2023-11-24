@@ -26,7 +26,7 @@ import { UserPage } from './pages/user/UserPage'
 import { PATHS } from './util/paths'
 
 export const App = () => {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation()
   useEffect(() => {
     const localLang = localStorage.getItem('language')
     if (localLang) {
@@ -76,10 +76,7 @@ export const App = () => {
           <Route path="authorized" element={<AuthorizedPage />} />
           <Route path="logout" element={<LogoutPage />} />
           <Route path={PATHS.ERROR} element={<ErrorPage />} />
-          <Route
-            path="*"
-            element={<ErrorPage title="Az oldal nem található" messages={['Hupsz, olyan oldalra kerültél, ami nem létezik!']} />}
-          />
+          <Route path="*" element={<ErrorPage title={t('errors.pageNotFound')} messages={[t('errors.notFoundMsg')]} />} />
         </Route>
       </Routes>
     </KLayout>

@@ -60,7 +60,7 @@ export const PresentersSelector = () => {
     reset,
     error
   } = useFecthUserListMutation((e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   })
 
   const { isOpen, onOpen, onClose } = useDisclosure()

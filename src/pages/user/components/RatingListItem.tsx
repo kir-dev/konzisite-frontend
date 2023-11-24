@@ -1,4 +1,5 @@
 import { Avatar, Box, Flex, Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { FaStar, FaUserSecret } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { RatingModel } from '../../../api/model/rating.model'
@@ -13,6 +14,7 @@ type Props = {
 
 export const RatingListItem = ({ rating }: Props) => {
   const anonymous = rating.rater.id === -1
+  const { t } = useTranslation()
   return (
     <Box shadow="md" borderRadius={8} borderWidth={1}>
       <HStack flexGrow={1} as={!anonymous ? Link : undefined} to={`${PATHS.USERS}/${rating.rater.id}`} p={4} align="flex-start">
@@ -32,7 +34,7 @@ export const RatingListItem = ({ rating }: Props) => {
           </Flex>
           <HStack justifyContent="space-between" width="100%">
             <Text fontSize={rating.text ? 'md' : 'sm'} fontStyle={rating.text ? undefined : 'italic'}>
-              {rating.text || 'A felhasználó nem adott szöveges értékelést'}
+              {rating.text || t('profilePage.noTextRating')}
             </Text>
           </HStack>
         </VStack>

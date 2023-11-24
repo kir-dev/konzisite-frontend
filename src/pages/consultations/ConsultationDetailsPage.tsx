@@ -36,7 +36,7 @@ export const ConsultationDetailsPage = () => {
   const exportKonziRef = useRef<HTMLButtonElement>(null)
 
   const onErrorFn = (e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   }
 
   const { mutate: joinConsultation } = useJoinConsultationMutation(() => {

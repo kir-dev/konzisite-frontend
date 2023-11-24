@@ -41,7 +41,7 @@ export const ConsultationsPage = () => {
     mutate: mutateConsultations,
     error
   } = useFetchConsultationListMutation((e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   })
 
   const fetchConsultations = (major?: Major, language?: Language, startDate?: Date, endDate?: Date) => {

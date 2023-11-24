@@ -1,7 +1,9 @@
 import { Box, Heading, HStack, Skeleton, SkeletonCircle, Stack, VStack } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { FaClock, FaMapMarkerAlt } from 'react-icons/fa'
 
 export const LoadingConsultation = () => {
+  const { t } = useTranslation()
   return (
     <>
       <VStack mb={3} alignItems="flex-start">
@@ -26,7 +28,7 @@ export const LoadingConsultation = () => {
         </VStack>
       </Box>
       <Heading size="lg" mb={2}>
-        Konzitartók
+        {t('consultationDetailsPage.presenters')}
       </Heading>
       <VStack alignItems="stretch">
         <Box shadow="md" borderRadius={8} borderWidth={1}>

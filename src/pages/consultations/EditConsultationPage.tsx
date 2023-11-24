@@ -69,7 +69,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
         navigate(`${PATHS.CONSULTATIONS}/${consultation.id}`)
       },
       onError: (e: KonziError) => {
-        toast(generateToastParams(e))
+        toast(generateToastParams(e, t))
       }
     })
   }
@@ -81,7 +81,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
         navigate(`${PATHS.CONSULTATIONS}/${consultation.id}`)
       },
       onError: (e: KonziError) => {
-        toast(generateToastParams(e))
+        toast(generateToastParams(e, t))
       }
     })
   }

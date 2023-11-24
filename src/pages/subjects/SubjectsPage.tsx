@@ -46,14 +46,14 @@ export const SubjectsPage = () => {
   const createSubjectMutation = useCreateSubjectMutation()
   const updateSubjectMutation = useUpdateSubjectMutation()
   const importSubjectsmutation = useImportSubjectsMutation(
-    (e) => toast(generateToastParams(e)),
+    (e) => toast(generateToastParams(e, t)),
     (data) => {
       toast({ title: `${data.length} darab tárgy importálva.`, status: 'success' })
       refetch()
     }
   )
   const { mutate: deleteSubject } = useDeleteSubjectMutation((e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   })
 
   if (error) {

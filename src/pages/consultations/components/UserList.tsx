@@ -43,7 +43,7 @@ export const UserList = ({ users, isParticipant, columns, showRating = true, sho
                     {u.fullName}
                     {u.id === loggedInUser.id && (
                       <Badge colorScheme="brand" ml={1} mb={1}>
-                        Te
+                        {t('selectors.you')}
                       </Badge>
                     )}
                   </Heading>

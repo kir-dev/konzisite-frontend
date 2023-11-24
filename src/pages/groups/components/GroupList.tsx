@@ -43,7 +43,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
   const [search, setSearch] = useState('')
 
   const onErrorFn = (e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   }
   const generateSuccessFn = (successMessage: string) => () => {
     toast({ title: successMessage, status: 'success' })

@@ -48,7 +48,7 @@ export const TargetGroupSelector = () => {
     reset,
     error
   } = useFecthGroupListMutation((e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   })
 
   const { isOpen, onOpen, onClose } = useDisclosure()

@@ -55,7 +55,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
       refetch()
     },
     (e: KonziError) => {
-      toast(generateToastParams(e))
+      toast(generateToastParams(e, t))
     }
   )
 
@@ -65,7 +65,7 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
       refetch()
     },
     (e: KonziError) => {
-      toast(generateToastParams(e))
+      toast(generateToastParams(e, t))
     }
   )
 
@@ -138,16 +138,15 @@ export const UserRating = ({ isParticipant, user, showRatingButton, refetch }: P
                 <Text>{value}</Text>
                 <FaStar />
               </HStack>
-              <FormLabel>{t('userRating.comment')}Megjegyzés (opcionális)</FormLabel>
+              <FormLabel>{t('userRating.comment')}</FormLabel>
               <Textarea placeholder={t('userRating.rating')} value={text} onChange={(e) => setText(e.target.value)} />
               <Checkbox colorScheme="brand" isChecked={anonymous} onChange={(e) => setAnonymous(e.target.checked)}>
-                {t('userRating.anonymus')} Értékelés névtelenül
+                {t('userRating.anonymus')}
               </Checkbox>
               {anonymous && (
                 <Alert rounded="md" status="info">
                   <AlertIcon />
-                  {t('userRating.anonymusMessage')}Attól még, hogy név nélkül értékelsz, az oldal adminjai továbbra is látni fogják a neved.
-                  Kérlek értelmes kritikát írj!
+                  {t('userRating.anonymusMessage')}
                 </Alert>
               )}
               <Button

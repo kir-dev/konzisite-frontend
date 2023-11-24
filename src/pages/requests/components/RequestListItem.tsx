@@ -68,7 +68,7 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
                     unsupport(request.id)
                   }}
                 >
-                  Nem támogatom
+                  {t('requestListPage.unsupport')}
                 </Button>
               ) : (
                 <Button
@@ -79,7 +79,7 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
                     support(request.id)
                   }}
                 >
-                  Támogatom
+                  {t('requestListPage.support')}
                 </Button>
               )}
               <Button
@@ -90,7 +90,7 @@ export const RequestListItem = ({ request, rightSmallText, user, support, unsupp
                   navigate(`${PATHS.CONSULTATIONS}/new`, { state: { request } })
                 }}
               >
-                Megtartom
+                {t('requestListPage.fulfill')}
               </Button>
             </Stack>
           )}
