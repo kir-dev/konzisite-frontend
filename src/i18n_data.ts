@@ -68,7 +68,23 @@ export const resources = {
       userBrowserPage: {},
       profilePage: {},
       errors: {},
-      misc: {}
+      misc: {
+        impressum1: `The application was developed by the Kir-Dev team. As all our other projects, this one is also open-source.
+        A NodeJS REST API is the foundation of the project, which stores the data in a PostgreSQL database.
+        The NestJS framework is used for HTTP communication, while the Prisma framework helps with database communication.`,
+        impressum2: 'The codebase of the backend can be browsed here.',
+        impressum3: `The User Interface is made with React. The unified look was achieved with Chakra UI.`,
+        impressum4: ' You can check out the frontend codebase here.',
+        impressum5: "If you're interested in web development or want to learn more, visit our",
+        impressum6: 'website',
+        impressum7: ' or read our',
+        impressum8: 'blog',
+        impressum9: ' where',
+        impressum10: 'we wrote a dedicated article about the development of Konzisite.',
+        impressum11: `If you find any bugs with the application or have suggestions for improvments, don't hesitate to contact us via`,
+        impressum12: 'email.',
+        developers: 'Developers'
+      }
     }
   },
   hu: {
@@ -99,8 +115,8 @@ export const resources = {
         login: 'Bejelentkezés'
       },
       home: {
-        welcome: 'Üdvözlünk a Konzisite-on!',
-        unratedConsultations: `Az alábbi konzultációkon részt vettél, de még nem értékelted az előadókat! Kérlek tedd meg minél előbb,
+        welcome: 'Üdvözlünk a Konzisite‑on!',
+        unratedConsultations: `Az alábbi konzultációkon részt vettél, de még nem értékelted az előadókat! Kérlek, tedd meg minél előbb,
           hogy kapjanak visszajelzést!`,
         unratedPresenter: 'Még nem értékelted valamelyik előadót!',
         nextConsultations: 'Következő konzik',
@@ -207,7 +223,7 @@ export const resources = {
         presenters: 'Előadók',
         groups: 'Célcsoportok',
         groupDesc: `Ha megadsz egy vagy több célcsoportot, akkor csak azok a felhasználók fogják látni a konzit, akik legalább
-        az egyik célcsoportnaktagjai.`,
+        az egyik célcsoportnak tagjai.`,
         addGroup: 'Célcsoport hozzáadása',
         you: 'Te',
         delete: 'Törlés',
@@ -262,7 +278,7 @@ export const resources = {
       },
       groupDetailsPage: {
         notFound: 'A csoport nem található!',
-        notFound2: 'Nincs ilyen cspoort',
+        notFound2: 'Nincs ilyen csoport',
         notFound2Message: 'A csoport amit keresel már nem létezik, vagy nem is létezett',
         created: 'Létrehozva',
         role: 'Szerepköröd',
@@ -318,7 +334,7 @@ export const resources = {
         rating: 'Értékelés...',
         anonymus: 'Értékelés névtelenül',
         anonymusMessage:
-          'Attól még, hogy név nélkül értékelsz, az oldal adminjai továbbra is látni fogják a neved. Kérlek értelmes kritikát írj!',
+          'Attól még, hogy név nélkül értékelsz, az oldal adminjai továbbra is látni fogják a neved. Kérlek, értelmes kritikát írj!',
         save: 'Mentés'
       },
       requestListPage: {
@@ -327,7 +343,7 @@ export const resources = {
         requests: 'Konzultáció kérések',
         newRequest: 'Új konzi kérés',
         requestDesc: `Szükséged lenne segítségre valamelyik tárgyból? Készíts egy konzi kérést, és ha valaki megvalósítja azt,
-        értesítünk emailben! Ha márlétezik kérés a tárgyból, elég támogatnod azt, így is meg fogod kapni az értesítést.`,
+        értesítünk emailben! Ha már létezik kérés a tárgyból, elég támogatnod azt, így is meg fogod kapni az értesítést.`,
         noRequests: 'Nincsenek kérések!',
         unsupport: 'Nem támogatom',
         support: 'Támogatom',
@@ -445,6 +461,23 @@ export const resources = {
       misc: {
         vikhk: 'VIK Hallgatói Képviselet',
         impressum: 'Impresszum',
+        impressum1: `Az alkalmazást a HK felkérésére a Kir-Dev webfejlesztő kör készítette. Mint ahogy az összes többi projektünk,
+        ez is nyílt forráskódú. A projekt alapja egy NodeJS REST API, mely egy PostgreSQL adatbázisban tárolja az adatokat.
+        A webes kommunikációt a NestJS, az adatbázissal való kapcsolatot pedig a Prisma keretrendszer egyszerűsíti. A backend kódbázisa`,
+        impressum2: 'itt böngészhető.',
+        impressum3: `A felhasználói felület pedig React-tal készült, az egységes megjelenés a Chakra UI-nak köszönhető.
+        A frontend kódbázisát `,
+        impressum4: 'itt tudod megnézni.',
+        impressum5: 'Ha érdekel a webfejlesztés és szeretnél többet megtudni rólunk, látogass el a',
+        impressum6: 'weboldalunkra',
+        impressum7: ', vagy olvass bele a',
+        impressum8: 'blogunkba',
+        impressum9: ', ahol',
+        impressum10: 'külön posztot írtunk a Konzisite fejlesztésének folyamatáról.',
+        impressum11: `Amennyiben hibát találtál az alkalmazás működésében, vagy lenne egy ötleted, hogy mit lehetne fejleszteni rajta,
+        vedd fel velünk a kapcsolatot`,
+        impressum12: 'emailben.',
+        developers: 'Fejlesztők',
         min1file: 'Legalább egy fájl feltöltése szükséges!',
         max1File: 'Csak egy fájl feltöltése lehetséges!',
         maxSize: 'Maximális megengedett méret: {{size}} MB',
