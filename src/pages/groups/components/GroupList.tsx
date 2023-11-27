@@ -16,6 +16,7 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useJoinGroupMutation, useLeaveGroupMutation } from '../../../api/hooks/groupMutationHooks'
@@ -38,23 +39,24 @@ type Props = {
 
 export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt = 0, refetchList, searchBar = false }: Props) => {
   const toast = useToast()
+  const { t } = useTranslation()
   const [search, setSearch] = useState('')
 
   const onErrorFn = (e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   }
   const generateSuccessFn = (successMessage: string) => () => {
     toast({ title: successMessage, status: 'success' })
     refetchList()
   }
 
-  const { mutate: joinGroup } = useJoinGroupMutation(generateSuccessFn('Csatlakoztál a csoporthoz!'), onErrorFn)
+  const { mutate: joinGroup } = useJoinGroupMutation(generateSuccessFn(t('groupList.joined')), onErrorFn)
   const { mutate: leaveGroup } = useLeaveGroupMutation(onErrorFn)
 
   const undoJoin = (group: GroupModel) => {
     leaveGroup(group.id, {
       onSuccess: () => {
-        toast({ title: 'Visszavontad a jelentkezésed!', status: 'success' })
+        toast({ title: t('groupList.withdrawn'), status: 'success' })
         refetchList()
       }
     })
@@ -75,7 +77,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
               <FaSearch />
             </InputLeftElement>
             <Input
-              placeholder="Keresés..."
+              placeholder={t('selectors.searching')}
               size="lg"
               onChange={(e) => {
                 setSearch(e.target.value)
@@ -120,7 +122,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
 
                       <HStack justify="space-between" align="center">
                         <Text>{g.memberCount} tag</Text>
-                        {g.currentUserRole === GroupRoles.PENDING && <Badge colorScheme="red">Függőben</Badge>}
+                        {g.currentUserRole === GroupRoles.PENDING && <Badge colorScheme="red">{t('groupList.pending')}</Badge>}
                       </HStack>
                     </VStack>
                   </HStack>
@@ -135,7 +137,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
                           }}
                           width="100%"
                         >
-                          Kérelem visszavonása
+                          {t('groupList.withdraw')}
                         </Button>
                       )}
                       {g.currentUserRole == GroupRoles.NONE && (
@@ -147,7 +149,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
                           }}
                           width="100%"
                         >
-                          Csatlakozás
+                          {t('groupList.join')}
                         </Button>
                       )}
                     </VStack>

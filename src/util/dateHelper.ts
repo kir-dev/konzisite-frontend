@@ -1,22 +1,22 @@
-export const generateDateText = (date: string) => new Date(date).toLocaleDateString('hu-HU', { dateStyle: 'short' })
+import { TFunction, i18n } from 'i18next'
 
-export const generateDaysLeftText = (date: string) => {
+export const generateDateText = (date: string, i18n: i18n) => new Date(date).toLocaleDateString(i18n.language, { dateStyle: 'short' })
+
+export const generateDaysLeftText = (date: string, t: TFunction) => {
   const beginningOfToday = new Date()
   beginningOfToday.setHours(0, 0, 0, 0)
   const daysLeft = Math.floor((new Date(date).getTime() - beginningOfToday.getTime()) / 1000 / 60 / 60 / 24)
-  if (daysLeft > 1) {
-    return `${daysLeft} nap van hátra`
-  } else if (daysLeft === 1) {
-    return 'Ma jár le'
+  if (daysLeft > 0) {
+    return t('requests.untilDeadline', { count: daysLeft })
   } else {
-    return `${-daysLeft + 1} napja járt le`
+    return t('requests.sinceDeadline', { count: -daysLeft + 1 })
   }
 }
 
-export const generateTimeSpanText = (date1: string, date2: string) =>
-  new Date(date1).toLocaleTimeString('hu-HU', { timeStyle: 'short' }) +
+export const generateTimeSpanText = (date1: string, date2: string, i18n: i18n) =>
+  new Date(date1).toLocaleTimeString(i18n.language, { timeStyle: 'short' }) +
   ' - ' +
-  new Date(date2).toLocaleTimeString('hu-HU', { timeStyle: 'short' })
+  new Date(date2).toLocaleTimeString(i18n.language, { timeStyle: 'short' })
 
 export const formatDate = (date?: Date) => {
   if (!date) {

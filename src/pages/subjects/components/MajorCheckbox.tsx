@@ -1,7 +1,7 @@
 import { Checkbox } from '@chakra-ui/react'
 import { ChangeEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Major } from '../../../api/model/subject.model'
-import { translateMajor } from '../../../util/majorHelpers'
 
 type Props = {
   getCheckboxProps: (props?: Record<string, any> | undefined) => {
@@ -11,8 +11,11 @@ type Props = {
   major: Major
 }
 
-export const MajorCheckbox = ({ getCheckboxProps, major }: Props) => (
-  <Checkbox colorScheme="brand" {...getCheckboxProps({ value: major })}>
-    {translateMajor[major]}
-  </Checkbox>
-)
+export const MajorCheckbox = ({ getCheckboxProps, major }: Props) => {
+  const { t } = useTranslation()
+  return (
+    <Checkbox colorScheme="brand" {...getCheckboxProps({ value: major })}>
+      {t(major)}
+    </Checkbox>
+  )
+}

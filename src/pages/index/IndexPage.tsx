@@ -1,6 +1,7 @@
 import { Alert, AlertIcon, Box, Button, Flex, Heading, Image, Spinner, Stack, Text, VStack, useColorModeValue } from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { FaArrowRight } from 'react-icons/fa'
 import { Link as RRDLink, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
@@ -18,6 +19,7 @@ export const IndexPage = () => {
   const kirDevLogo = useColorModeValue('/img/kirdev.svg', '/img/kirdev-white.svg')
   const spinnerColor = useColorModeValue('brand.500', 'white')
   const navigate = useNavigate()
+  const { t, i18n } = useTranslation()
 
   useEffect(() => {
     const savedPath = localStorage.getItem('path')
@@ -42,14 +44,13 @@ export const IndexPage = () => {
   }
 
   if (!data) {
-    return <ErrorPage title="Ismeretlen hiba, kérjük próbáld újra" />
+    return <ErrorPage title={t('errors.unkown')} />
   }
 
   return (
     <>
       <Helmet />
-
-      <PageHeading title="Üdvözlünk a Konzisite&#8209;on!" />
+      <PageHeading title={t('home.welcome')} />
       {data.alert && (
         <Alert rounded="md" mb={2} status={data.alert.type}>
           <AlertIcon />
@@ -62,18 +63,17 @@ export const IndexPage = () => {
         <Box mb={5}>
           <Alert rounded="md" mb={2} status="warning">
             <AlertIcon />
-            Az alábbi konzultációkon részt vettél, de még nem értékelted az előadókat! Kérlek tedd meg minél előbb, hogy kapjanak
-            visszajelzést!
+            {t('home.unratedConsultations')}
           </Alert>
           {data.unratedConsultations.map((c) => (
-            <ConsultationListItem consultation={c} key={c.id} rightSmallText="Még nem értékelted valamelyik előadót!" />
+            <ConsultationListItem consultation={c} key={c.id} rightSmallText={t('home.unratedPresenter')} />
           ))}
         </Box>
       )}
       <Stack mb={2} direction={['column', 'row']} justify="space-between" align="center">
-        <Heading size="md">Következő konzik</Heading>
+        <Heading size="md">{t('home.nextConsultations')}</Heading>
         <Button colorScheme="brand" as={RRDLink} to={PATHS.CONSULTATIONS} variant="ghost" rightIcon={<FaArrowRight />}>
-          Összes konzi
+          {t('home.allConsultations')}
         </Button>
       </Stack>
 
@@ -83,25 +83,23 @@ export const IndexPage = () => {
             <ConsultationListItem
               consultation={c}
               key={c.id}
-              rightSmallText={
-                c.presentations.length <= 3
-                  ? `Konzitartó${c.presentations.length > 1 ? 'k' : ''}:
-            ${c.presentations.map((p) => p.fullName).join(', ')}`
-                  : `${c.presentations.length} konzitartó`
-              }
+              rightSmallText={t('home.presenters', {
+                count: c.presentations.length,
+                names: c.presentations.map((p) => p.fullName).join(', ')
+              })}
             />
           ))
         ) : (
           <Text fontStyle="italic" textAlign="center">
-            Nincs kiírva egy konzi sem
+            {t('home.noConsultations')}
           </Text>
         )}
       </VStack>
 
       <Stack mt={5} mb={2} direction={['column', 'row']} justify="space-between" align="center">
-        <Heading size="md">Aktív konzi kérések</Heading>
+        <Heading size="md">{t('home.activeConsultationRequests')}</Heading>
         <Button colorScheme="brand" as={RRDLink} to={PATHS.REQUESTS} variant="ghost" rightIcon={<FaArrowRight />}>
-          Összes kérés
+          {t('home.allConsultationRequests')}
         </Button>
       </Stack>
 
@@ -111,12 +109,14 @@ export const IndexPage = () => {
             <RequestListItem
               request={r}
               key={r.id}
-              rightSmallText={`${(r.supporterCount || 0) + 1} ember kérte | ${r.consultationCount} konzi`}
+              rightSmallText={`${t('home.requestors', { count: r.supporterCount || 0 })} | ${t('home.consultationsForRequest', {
+                count: r.consultationCount
+              })}`}
             />
           ))
         ) : (
           <Text fontStyle="italic" textAlign="center">
-            Nincs egy aktív kérés se
+            {t('home.noRequests')}
           </Text>
         )}
       </VStack>

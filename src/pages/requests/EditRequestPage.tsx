@@ -2,6 +2,7 @@ import { Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, useToast
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { FaArrowLeft } from 'react-icons/fa'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
@@ -26,6 +27,7 @@ type Props = {
 
 export const EditRequestPage = ({ newRequest }: Props) => {
   const toast = useToast()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { isLoggedIn, loggedInUser, loggedInUserLoading } = useAuthContext()
   const requestId = parseInt(useParams<{ requestId: string }>().requestId ?? '-1')
@@ -38,11 +40,11 @@ export const EditRequestPage = ({ newRequest }: Props) => {
   const createRequestFromForm = (formData: CreateRequest) => {
     createRequest(formData, {
       onSuccess: (request) => {
-        toast({ title: 'Konzi kérés sikeresen létrehozva!', status: 'success' })
+        toast({ title: t('requestEditPage.createdSuccess'), status: 'success' })
         navigate(`${PATHS.REQUESTS}/${request.id}`)
       },
       onError: (e: KonziError) => {
-        toast(generateToastParams(e))
+        toast(generateToastParams(e, t))
       }
     })
   }
@@ -50,11 +52,11 @@ export const EditRequestPage = ({ newRequest }: Props) => {
   const updateRequestFromForm = (formData: CreateRequest) => {
     updateRequest(formData, {
       onSuccess: (request) => {
-        toast({ title: 'Konzi kérés sikeresen módosítva!', status: 'success' })
+        toast({ title: t('requestEditPage.createdSuccess'), status: 'success' })
         navigate(`${PATHS.REQUESTS}/${request.id}`)
       },
       onError: (e: KonziError) => {
-        toast(generateToastParams(e))
+        toast(generateToastParams(e, t))
       }
     })
   }
@@ -113,21 +115,32 @@ export const EditRequestPage = ({ newRequest }: Props) => {
   return (
     <>
       {(!request || !(loggedInUser.isAdmin || request.initializer.id === loggedInUser.id)) && !newRequest ? (
-        <ErrorPage status={403} title="Nincs jogod" messages={['A konzi kérést csak a kezdeményezője szerkesztheti']} />
+        <ErrorPage status={403} title={t('requestEditPage.noAccess')} messages={[t('requestEditPage.onlyAuthor')]} />
       ) : (
         <>
-          <Helmet title={newRequest ? 'Új konzi kérés' : `${request?.name ?? 'Névtelen konzi kérés'} szerkesztése`} />
-          <PageHeading title={newRequest ? 'Új konzi kérés létrehozása' : `${request?.name ?? 'Névtelen konzi kérés'} szerkesztése`} />
+          <Helmet
+            title={
+              newRequest
+                ? t('requestEditPage.newRequest')
+                : t('requestEditPage.editRequest', { name: request?.name ?? t('requestEditPage.untitledRequest') })
+            }
+          />
+          <PageHeading
+            title={newRequest ? t('requestEditPage.createNewRequest') : `${request?.name ?? 'Névtelen konzi kérés'} szerkesztése`}
+          />
           <VStack>
             <FormControl isInvalid={!!errors.name} isRequired>
-              <FormLabel>Konzi kérés neve</FormLabel>
+              <FormLabel>{t('requestEditPage.title')}</FormLabel>
               <Input
                 type="text"
                 {...register('name', {
-                  required: { value: true, message: 'Név nem lehet üres!' },
-                  maxLength: { value: MAX_TITLE_LENGTH, message: 'Név túl hosszú! ' + getStatusString(watch('name'), MAX_TITLE_LENGTH) }
+                  required: { value: true, message: t('requestEditPage.titleNotEmpty') },
+                  maxLength: {
+                    value: MAX_TITLE_LENGTH,
+                    message: t('requestEditPage.titleTooLong') + getStatusString(watch('name'), MAX_TITLE_LENGTH)
+                  }
                 })}
-                placeholder="Digit vizsga segítség"
+                placeholder={t('requestEditPage.titlePlaceholder')}
               />
               {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
             </FormControl>
@@ -135,7 +148,7 @@ export const EditRequestPage = ({ newRequest }: Props) => {
               <SubjectSelector />
               <RequestDateForm />
               <FormControl>
-                <FormLabel>Leírás</FormLabel>
+                <FormLabel>{t('requestEditPage.desc')}</FormLabel>
                 <MarkdownEditor
                   formDetails={{
                     id: 'descMarkdown',
@@ -150,7 +163,7 @@ export const EditRequestPage = ({ newRequest }: Props) => {
           </VStack>
           <Flex mt={1} justify="space-between">
             <Button leftIcon={<FaArrowLeft />} as={Link} to={newRequest ? PATHS.REQUESTS : `${PATHS.REQUESTS}/${requestId}`}>
-              Vissza
+              {t('requestEditPage.back')}
             </Button>
             <Button
               isLoading={createLoading || editLoading}
@@ -160,7 +173,7 @@ export const EditRequestPage = ({ newRequest }: Props) => {
               }}
               isDisabled={!isValid && isSubmitted}
             >
-              {newRequest ? 'Létrehozás' : 'Mentés'}
+              {newRequest ? t('requestEditPage.create') : t('requestEditPage.save')}
             </Button>
           </Flex>
         </>

@@ -1,5 +1,6 @@
 import { Button, Stack } from '@chakra-ui/react'
 import { FC, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { NAV_ITEMS } from '../../util/nav-items'
@@ -7,7 +8,7 @@ import { NAV_ITEMS } from '../../util/nav-items'
 const DesktopNav: FC = () => {
   const { isLoggedIn, loggedInUser } = useAuthContext()
   const [navItems, setNavItems] = useState(NAV_ITEMS)
-
+  const { t } = useTranslation()
   useEffect(() => {
     setNavItems(NAV_ITEMS.filter((item) => item.shouldBeShown(isLoggedIn, loggedInUser)))
   }, [isLoggedIn, loggedInUser])
@@ -27,7 +28,7 @@ const DesktopNav: FC = () => {
           variant="ghost"
           colorScheme="brand"
         >
-          {item.label}
+          {t(item.label)}
         </Button>
       ))}
     </Stack>

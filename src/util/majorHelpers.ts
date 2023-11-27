@@ -8,17 +8,6 @@ export const isMajor = (key: PropertyKey): key is keyof typeof Major => {
   return key in Major
 }
 
-export const translateMajor: MajorDictionary = {
-  [Major.CE_BSC]: 'Mérnökinfó BSc',
-  [Major.EE_BSC]: 'Villany BSc',
-  [Major.BPROF]: 'Üzemmérnök',
-  [Major.CE_MSC]: 'Mérnökinfó MSc',
-  [Major.EE_MSC]: 'Villany MSc',
-  [Major.BI_MSC]: 'Gazdinfó MSc',
-  [Major.HI_MSC]: 'Eü mérnök MSc',
-  [Major.SE_MSC]: 'Űrmérnök MSc'
-}
-
 export const majorColor: MajorDictionary = {
   [Major.CE_BSC]: 'blue',
   [Major.EE_BSC]: 'green',

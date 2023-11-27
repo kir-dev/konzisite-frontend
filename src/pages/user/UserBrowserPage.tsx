@@ -13,6 +13,7 @@ import {
 import debounce from 'lodash.debounce'
 import { useEffect, useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { FetchUserListMutationProps, useFecthUserListMutation } from '../../api/hooks/userMutationHooks'
 import { KonziError } from '../../api/model/error.model'
@@ -24,6 +25,7 @@ import { UserListWithPagination } from './components/UserListWithPagination'
 
 export const UserBrowserPage = () => {
   const toast = useToast()
+  const { t } = useTranslation()
   const [largeScreen] = useMediaQuery('(min-width: 48em)')
   const {
     isLoading,
@@ -31,7 +33,7 @@ export const UserBrowserPage = () => {
     mutate: fetchUsers,
     error
   } = useFecthUserListMutation((e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   })
 
   const resultCount = useBreakpointValue({ base: 4, lg: 6, '3xl': 8 }, { ssr: false }) || 4
@@ -59,14 +61,14 @@ export const UserBrowserPage = () => {
 
   return (
     <>
-      <Helmet title="Felhasználók" />
-      <PageHeading title="Felhasználók keresése" />
+      <Helmet title={t('userBrowserPage.users')} />
+      <PageHeading title={t('userBrowserPage.searchUsers')} />
       <InputGroup my={5}>
         <InputLeftElement h="100%">
           <SearchIcon />
         </InputLeftElement>
         <Input
-          placeholder="Keresés..."
+          placeholder={t('userBrowserPage.searching')}
           size="lg"
           onChange={(e) => {
             setSearch(e.target.value)
@@ -96,7 +98,7 @@ export const UserBrowserPage = () => {
           my={3}
           isDisabled={!data || page === 0}
           colorScheme="brand"
-          aria-label="Előző oldal"
+          aria-label={t('userBrowserPage.prevPage')}
           onClick={() => {
             searchUsers(search, page - 1)
             setPage(page - 1)
@@ -108,7 +110,7 @@ export const UserBrowserPage = () => {
           my={3}
           isDisabled={!data || (page + 1) * resultCount >= data.userCount}
           colorScheme="brand"
-          aria-label="Következő oldal"
+          aria-label={t('userBrowserPage.nextPage')}
           onClick={() => {
             searchUsers(search, page + 1)
             setPage(page + 1)

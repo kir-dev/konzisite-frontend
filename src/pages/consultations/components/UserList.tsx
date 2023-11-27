@@ -1,4 +1,5 @@
 import { Avatar, Badge, Box, Heading, HStack, SimpleGrid, Stack, VStack } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { RatingModel } from '../../../api/model/rating.model'
@@ -23,6 +24,7 @@ type Props = {
 
 export const UserList = ({ users, isParticipant, columns, showRating = true, showRatingButton = false, refetch }: Props) => {
   const { loggedInUser } = useAuthContext()
+  const { t } = useTranslation()
 
   if (!loggedInUser) {
     return <ErrorPage status={401} />
@@ -41,14 +43,14 @@ export const UserList = ({ users, isParticipant, columns, showRating = true, sho
                     {u.fullName}
                     {u.id === loggedInUser.id && (
                       <Badge colorScheme="brand" ml={1} mb={1}>
-                        Te
+                        {t('selectors.you')}
                       </Badge>
                     )}
                   </Heading>
                   {showRating && (
                     <Stack spacing={[0, 4]} justify="flex-start" width="100%" direction={['column', 'row']}>
-                      <Rating label="Összesített értékelés:" rating={u.averageRating} />
-                      <Rating label="Értékelés erre a konzira:" rating={u.averageRatingForConsultation} />
+                      <Rating label={t('userList.allRating')} rating={u.averageRating} />
+                      <Rating label={t('userList.allRratingsForKonziating')} rating={u.averageRatingForConsultation} />
                     </Stack>
                   )}
                 </VStack>

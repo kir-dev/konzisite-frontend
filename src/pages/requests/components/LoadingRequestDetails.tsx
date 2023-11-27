@@ -1,7 +1,9 @@
 import { Box, Heading, HStack, Skeleton, SkeletonCircle, Stack, VStack } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { FaClock } from 'react-icons/fa'
 
 export const LoadingRequestDetails = () => {
+  const { t } = useTranslation()
   return (
     <>
       <VStack mb={3} alignItems="flex-start">
@@ -22,7 +24,7 @@ export const LoadingRequestDetails = () => {
         </VStack>
       </Box>
       <Heading size="lg" mb={2}>
-        Kezdeményező
+        {t('requestDetailsPage.initiator')}
       </Heading>
       <VStack alignItems="stretch">
         <Box shadow="md" borderRadius={8} borderWidth={1}>
@@ -38,7 +40,7 @@ export const LoadingRequestDetails = () => {
         </Box>
       </VStack>
       <Heading size="lg" mb={2}>
-        Támogatók
+        {t('requestDetailsPage.supporters')}
       </Heading>
       <VStack alignItems="stretch">
         <Box shadow="md" borderRadius={8} borderWidth={1}>

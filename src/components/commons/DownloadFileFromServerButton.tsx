@@ -1,5 +1,6 @@
 import { useToast } from '@chakra-ui/react'
 import { RefObject, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { UseMutationResult } from 'react-query'
 import { HasChildren } from '../../util/react-types.util'
 
@@ -13,7 +14,7 @@ type Props<T> = {
 export const DownloadFileFromServerButton = <T,>({ buttonRef, downloadMutation, params, children, fileName }: Props<T>) => {
   const anchorRef = useRef<HTMLAnchorElement>(null)
   const toast = useToast()
-
+  const { t } = useTranslation()
   useEffect(() => {
     if (buttonRef?.current) {
       buttonRef.current.onclick = () => {
@@ -27,8 +28,8 @@ export const DownloadFileFromServerButton = <T,>({ buttonRef, downloadMutation, 
           },
           onError: () => {
             toast({
-              title: 'Hiba a fájl letöltése közben',
-              description: 'Lehet hogy már törlésre került, vagy nincs jogod megtekinteni.',
+              title: t('errors.downloadError'),
+              description: t('errors.downloadErrorDesc'),
               status: 'error'
             })
           }

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { PATHS } from '../../util/paths'
 import { ColorModeSwitcher } from './ColorModeSwitcher'
 import DesktopNav from './DesktopNav'
+import { LanguageSwitcher } from './LanguageSwitcher'
 import MobileNav from './MobileNav'
 
 export const Navbar: FC = () => {
@@ -35,6 +36,7 @@ export const Navbar: FC = () => {
             <DesktopNav />
           </Flex>
           <HStack ml={{ base: 0, md: 6 }}>
+            <LanguageSwitcher />
             <ColorModeSwitcher />
           </HStack>
         </Flex>

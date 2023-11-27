@@ -20,11 +20,13 @@ import {
 import debounce from 'lodash.debounce'
 import { useRef, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { FaSearch, FaTimes } from 'react-icons/fa'
 import { Navigate } from 'react-router-dom'
 import { useFecthSubjectListMutation } from '../../../../api/hooks/subjectHooks'
 import { KonziError } from '../../../../api/model/error.model'
 import { SubjectModel } from '../../../../api/model/subject.model'
+import { generateSubjectName, SubjectName } from '../../../../components/commons/SubjectName'
 import { generateToastParams } from '../../../../util/generateToastParams'
 import { PATHS } from '../../../../util/paths'
 import { CreateConsultationForm } from '../../types/createConsultation'
@@ -47,15 +49,15 @@ export const SubjectSelector = () => {
     reset,
     error
   } = useFecthSubjectListMutation((e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   })
-
+  const { i18n, t } = useTranslation()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [search, setSearch] = useState('')
 
   const debouncedSearch = useRef(
     debounce((search: string) => {
-      fetchSubjects({ search, limit: search ? undefined : INITIAL_SUBJECT_COUNT })
+      fetchSubjects({ search, limit: search ? undefined : INITIAL_SUBJECT_COUNT, locale: i18n.language })
     }, 400)
   ).current
 
@@ -66,7 +68,7 @@ export const SubjectSelector = () => {
   return (
     <>
       <FormControl isInvalid={!!errors.subject} isRequired>
-        <FormLabel>Tárgy</FormLabel>
+        <FormLabel> {t('selectors.subject')}</FormLabel>
 
         <Input
           cursor="pointer"
@@ -77,13 +79,13 @@ export const SubjectSelector = () => {
             fetchSubjects({ search: '', limit: INITIAL_SUBJECT_COUNT })
           }}
           readOnly
-          value={watch('subject') ? `${watch('subject').name} (${watch('subject').code})` : 'Nincs tárgy választva'}
+          value={watch('subject') ? generateSubjectName(watch('subject'), i18n.language) : t('selectors.noneSelectedSubject')}
         />
       </FormControl>
       <Modal scrollBehavior="inside" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Tárgy választás</ModalHeader>
+          <ModalHeader> {t('selectors.subjectSelector')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <InputGroup my={5}>
@@ -92,7 +94,7 @@ export const SubjectSelector = () => {
               </InputLeftElement>
               <Input
                 autoFocus
-                placeholder="Keresés..."
+                placeholder={t('selectors.searching')}
                 size="lg"
                 onChange={(e) => {
                   setSearch(e.target.value)
@@ -118,7 +120,7 @@ export const SubjectSelector = () => {
             />
             <VStack mb={4} maxHeight="600px" overflowY="auto">
               {isLoading || !subjectList || subjectList.length === 0 ? (
-                <Text fontStyle="italic">Nincs találat</Text>
+                <Text fontStyle="italic"> {t('selectors.noResult')}</Text>
               ) : (
                 subjectList.map((s) => (
                   <Box
@@ -136,7 +138,7 @@ export const SubjectSelector = () => {
                     }}
                   >
                     <Text>
-                      {s.name} ({s.code})
+                      <SubjectName subject={s} />
                     </Text>
                   </Box>
                 ))

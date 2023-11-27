@@ -3,12 +3,12 @@ import { useMutation, useQuery } from 'react-query'
 import { CreateSubject } from '../../pages/subjects/types/CreateSubject'
 import { API_HOST } from '../../util/environment'
 import { PATHS } from '../../util/paths'
-import { CreateManyResponse } from '../model/createManyResponse'
 import { KonziError } from '../model/error.model'
 import { SubjectModel } from '../model/subject.model'
 
 type FetchSubjectListMutationProps = {
   search: string
+  locale?: string
   limit?: number
 }
 
@@ -19,9 +19,10 @@ export const useFetchSubjectsQuery = () => {
 export const useFecthSubjectListMutation = (onError: (e: KonziError) => void) => {
   return useMutation<SubjectModel[], KonziError, FetchSubjectListMutationProps>(
     'fetchSubjectsMuatation',
-    async ({ search, limit }) => {
+    async ({ search, limit, locale }) => {
       const url = new URL(PATHS.SUBJECTS, API_HOST)
       url.searchParams.append('search', search)
+      if (locale) url.searchParams.append('locale', locale)
       if (limit) url.searchParams.append('limit', limit.toString())
       return (await axios.get(url.toString())).data
     },
@@ -50,8 +51,8 @@ export const useDeleteSubjectMutation = (onError: (e: KonziError) => void) => {
   )
 }
 
-export const useImportSubjectsMutation = (onError: (e: KonziError) => void, onSuccess: (data: CreateManyResponse) => void) => {
-  return useMutation<CreateManyResponse, KonziError, FormData>(async (data: FormData) => (await axios.post('subjects/import', data)).data, {
+export const useImportSubjectsMutation = (onError: (e: KonziError) => void, onSuccess: (data: SubjectModel[]) => void) => {
+  return useMutation<SubjectModel[], KonziError, FormData>(async (data: FormData) => (await axios.post('subjects/import', data)).data, {
     onError,
     onSuccess
   })

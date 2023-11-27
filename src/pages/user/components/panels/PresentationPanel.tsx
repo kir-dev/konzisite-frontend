@@ -1,4 +1,5 @@
 import { Flex, TabPanel, Text, VStack } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { ConsultationModel } from '../../../../api/model/consultation.model'
 import { RatingModel } from '../../../../api/model/rating.model'
 import { SubjectModel } from '../../../../api/model/subject.model'
@@ -18,11 +19,12 @@ type Props = {
 }
 
 export const PresentationPanel = ({ presentations, allPresentationCount }: Props) => {
+  const { t } = useTranslation()
   return (
     <TabPanel px={0}>
       {presentations.length !== allPresentationCount && (
         <Text mb={4} align="center" fontStyle="italic">
-          Egyes konzik nem jelennek meg, mert a felhasználó egy privát csoportnak tartotta őket.
+          {t('profilePage.privatePresDisclaimer')}
         </Text>
       )}
       <VStack spacing={4} alignItems="stretch">
@@ -33,22 +35,23 @@ export const PresentationPanel = ({ presentations, allPresentationCount }: Props
               <ConsultationListItem
                 key={p.id}
                 consultation={p}
-                rightSmallText={`${p.participants} résztvevő, értékelés: ${
-                  p.ratings.length === 0 ? '-' : (p.ratings.reduce((acc, val) => acc + val.value, 0) / p.ratings.length).toFixed(2)
-                }`}
+                rightSmallText={t('profilePage.presentationText', {
+                  count: p.participants,
+                  rating: p.ratings.length === 0 ? '-' : (p.ratings.reduce((acc, val) => acc + val.value, 0) / p.ratings.length).toFixed(2)
+                })}
               >
                 <Flex w="100%" p={4} pt={0} justify="center">
                   {p.ratings.length > 0 ? (
                     <PresentationRatings ratings={p.ratings} first={idx === 0} />
                   ) : (
-                    <Text fontStyle="italic">Ezt a konzit még nem értékelte senki.</Text>
+                    <Text fontStyle="italic">{t('profilePage.notRated')}</Text>
                   )}
                 </Flex>
               </ConsultationListItem>
             ))
         ) : (
           <Text fontStyle="italic" textAlign="center">
-            A felhasználó még nem tartott publikus konzultációt.
+            {t('profilePage.noPres')}
           </Text>
         )}
       </VStack>

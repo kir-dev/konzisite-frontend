@@ -5,6 +5,7 @@ import { ConsultationPreview } from '../../pages/consultations/types/consultatio
 import { isValidId } from '../../util/core-util-functions'
 import { API_HOST } from '../../util/environment'
 import { PATHS } from '../../util/paths'
+import { Language } from '../model/consultation.model'
 import { KonziError } from '../model/error.model'
 import { Major } from '../model/subject.model'
 
@@ -16,6 +17,7 @@ export const useFetchConsultationListQuery = () => {
 
 export type FetchConsultationsMutationProps = {
   major?: Major
+  language?: Language
   startDate?: Date
   endDate?: Date
 }
@@ -23,9 +25,10 @@ export type FetchConsultationsMutationProps = {
 export const useFetchConsultationListMutation = (onError: (e: KonziError) => void) => {
   return useMutation<ConsultationPreview[], KonziError, FetchConsultationsMutationProps>(
     'fetchConsultationsMuatation',
-    async ({ major, startDate, endDate }: FetchConsultationsMutationProps) => {
+    async ({ major, language, startDate, endDate }: FetchConsultationsMutationProps) => {
       const url = new URL(PATHS.CONSULTATIONS, API_HOST)
       if (major) url.searchParams.append('major', major.toString())
+      if (language) url.searchParams.append('language', language.toString())
       if (startDate) url.searchParams.append('startDate', startDate.getTime().toString())
       if (endDate) url.searchParams.append('endDate', endDate.getTime().toString())
       return (await axios.get(url.toString())).data

@@ -19,6 +19,7 @@ import {
   useMediaQuery
 } from '@chakra-ui/react'
 import { ChangeEvent, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { ReportDateRange, useAdminReportMutation, useUserReportMutation } from '../../../api/hooks/userMutationHooks'
 import { DownloadFileFromServerButton } from '../../../components/commons/DownloadFileFromServerButton'
@@ -26,6 +27,7 @@ import { formatDate, getEndOfSemester, getStartOfSemester } from '../../../util/
 
 export const ReportModal = () => {
   const { loggedInUser } = useAuthContext()
+  const { t } = useTranslation()
   const isAdmin = loggedInUser?.isAdmin
   const [largeScreen] = useMediaQuery('(min-width: 48em)')
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -50,16 +52,16 @@ export const ReportModal = () => {
   return (
     <>
       <Button colorScheme="green" onClick={onOpen}>
-        Riport generálása
+        {t('profilePage.generateReport')}
       </Button>
       <Modal isCentered={largeScreen} motionPreset="slideInBottom" isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Riport generálása</ModalHeader>
+          <ModalHeader> {t('profilePage.generateReport')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <VStack alignItems="flex-start">
-              <Text>HK-s ösztöndíjakhoz itt tudsz riportot generálni az általad tartott konzultációkról.</Text>
+              <Text> {t('profilePage.reportDesc')}</Text>
               {isAdmin && (
                 <Text textAlign="justify">
                   Adminként van lehetőséged olyan riport generálására, melyen az összes konzi szereplni fog, amit az adott időtartamban
@@ -67,7 +69,7 @@ export const ReportModal = () => {
                 </Text>
               )}
               <FormControl>
-                <FormLabel>Időtartam kezdete</FormLabel>
+                <FormLabel> {t('profilePage.start')}</FormLabel>
                 <Input
                   type="date"
                   onChange={(e) => setStartDate(new Date(e.target.value))}
@@ -76,15 +78,15 @@ export const ReportModal = () => {
                 />
 
                 <Flex justifyContent="flex-end">
-                  {startDateError && <FormHelperText color="red.500">Érvénytelen időtartam!</FormHelperText>}
+                  {startDateError && <FormHelperText color="red.500"> {t('profilePage.invalidRange')}</FormHelperText>}
                 </Flex>
               </FormControl>
               <FormControl>
-                <FormLabel>Időtartam vége</FormLabel>
+                <FormLabel> {t('profilePage.end')}</FormLabel>
                 <Input type="date" onChange={onEndDateChange} value={formatDate(endDate)} max={formatDate(new Date())} />
 
                 <Flex justifyContent="flex-end">
-                  {endDateError && <FormHelperText color="red.500">Csak múltbeli konzikról lehet riportot generálni!</FormHelperText>}
+                  {endDateError && <FormHelperText color="red.500"> {t('profilePage.onlyFromPast')}</FormHelperText>}
                 </Flex>
               </FormControl>
               {isAdmin && (
@@ -97,7 +99,7 @@ export const ReportModal = () => {
 
           <ModalFooter>
             <Button onClick={onClose} mr={3}>
-              Mégse
+              {t('profilePage.cancel')}
             </Button>
             {adminReport ? (
               <DownloadFileFromServerButton<ReportDateRange>
@@ -112,7 +114,7 @@ export const ReportModal = () => {
                   ref={adminReportRef}
                   colorScheme="green"
                 >
-                  Generálás
+                  {t('profilePage.generate')}
                 </Button>
               </DownloadFileFromServerButton>
             ) : (
@@ -128,7 +130,7 @@ export const ReportModal = () => {
                   ref={userReportRef}
                   colorScheme="green"
                 >
-                  Generálás
+                  {t('profilePage.generate')}
                 </Button>
               </DownloadFileFromServerButton>
             )}

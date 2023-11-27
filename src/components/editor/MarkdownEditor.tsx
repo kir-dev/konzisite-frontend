@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { FC } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { KLink } from '../commons/KLink'
 import Markdown from '../commons/Markdown'
 import { getStatusString } from './editorUtils'
@@ -36,12 +37,13 @@ export const MarkdownEditor: FC<Props> = ({ textAreaHeight = '22rem', previewHei
     watch,
     formState: { errors }
   } = useFormContext()
+  const { t } = useTranslation()
 
   return (
     <Tabs variant="enclosed">
       <TabList>
-        <Tab>Szerkesztés</Tab>
-        <Tab>Előnézet</Tab>
+        <Tab>{t('markdown.edit')}</Tab>
+        <Tab>{t('markdown.preview')}</Tab>
       </TabList>
       <TabPanels>
         <TabPanel>
@@ -49,17 +51,17 @@ export const MarkdownEditor: FC<Props> = ({ textAreaHeight = '22rem', previewHei
             <FormLabel htmlFor={formDetails.id}>
               {`${formDetails.promptText} `}
               <KLink to="https://www.markdownguide.org/cheat-sheet/" isExternal>
-                Markdown útmutató itt.
+                {t('markdown.help')}
               </KLink>
             </FormLabel>
             <Textarea
               id={formDetails.id}
-              placeholder="Add meg a markdown formátumú szöveged itt..."
+              placeholder={t('markdown.placeholder')}
               height={textAreaHeight}
               defaultValue={defaultValue}
               {...register(formDetails.id, {
-                minLength: formDetails.minChar ? { value: formDetails.minChar, message: 'Szöveg nem lehet üres!' } : undefined,
-                maxLength: { value: formDetails.maxChar, message: 'Szöveg túl hosszú!' }
+                minLength: formDetails.minChar ? { value: formDetails.minChar, message: t('markdown.noEmpty') } : undefined,
+                maxLength: { value: formDetails.maxChar, message: t('markdown.tooLong') }
               })}
               isInvalid={!!errors[formDetails.id]}
             />

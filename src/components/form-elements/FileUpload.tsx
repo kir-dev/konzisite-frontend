@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { FC, ReactElement, useRef } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { FaTimes } from 'react-icons/fa'
 
 type Props = {
@@ -42,23 +43,24 @@ export const FileUpload: FC<Props> = ({
     watch,
     setValue
   } = useFormContext()
+  const { t } = useTranslation()
 
   const validateFiles = (value: FileList | undefined) => {
     if (!value) {
-      return 'Legalább egy fájl feltöltése szükséges!'
+      return t('misc.min1file')
     }
     if (required && value.length < 1) {
-      return 'Legalább egy fájl feltöltése szükséges!'
+      return t('misc.min1file')
     }
     if (value.length > 1) {
-      return 'Csak egy fájl feltöltése lehetséges!'
+      return t('misc.max1File')
     }
     const fsMb = value[0].size / (1024 * 1024)
-    if (fsMb > maxFileSizeMB) return `Maximális megengedett méret: ${maxFileSizeMB} MB`
+    if (fsMb > maxFileSizeMB) return t('misc.maxSize', { size: maxFileSizeMB })
     return true
   }
 
-  const registerProps = { ...register(fieldName, { required: 'Kötelező mező', validate: validateFiles }) }
+  const registerProps = { ...register(fieldName, { required: t('misc.requiredField'), validate: validateFiles }) }
   const onUploadPressed = () => inputRef.current?.click()
   const onRemovePressed = () => setValue(fieldName, undefined)
 
@@ -79,8 +81,8 @@ export const FileUpload: FC<Props> = ({
         <InputLeftAddon as={Button} leftIcon={buttonIcon} onClick={onUploadPressed}>
           {uploadButtonText}
         </InputLeftAddon>
-        <Input value={watch(fieldName)?.item(0)?.name || 'Nincs fájl kiválasztva'} readOnly onClick={onUploadPressed} cursor="pointer" />
-        <InputRightAddon as={IconButton} aria-label="Választott fájl visszavonása" icon={<FaTimes />} onClick={onRemovePressed} />
+        <Input value={watch(fieldName)?.item(0)?.name || t('misc.noFile')} readOnly onClick={onUploadPressed} cursor="pointer" />
+        <InputRightAddon as={IconButton} aria-label={t('misc.undoSelection')} icon={<FaTimes />} onClick={onRemovePressed} />
       </InputGroup>
       {errors?.[fieldName] ? (
         <FormErrorMessage>{errors[fieldName]?.message?.toString()}</FormErrorMessage>

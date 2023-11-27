@@ -1,4 +1,5 @@
 import { TabPanel, Text, VStack } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { ConsultationModel } from '../../../../api/model/consultation.model'
 import { SubjectModel } from '../../../../api/model/subject.model'
 import { ConsultationListItem } from '../../../../components/commons/ConsultationListItem'
@@ -10,11 +11,12 @@ type Props = {
   allParticipationCount: number
 }
 export const ParticipationPanel = ({ participations, allParticipationCount }: Props) => {
+  const { t } = useTranslation()
   return (
     <TabPanel px={0}>
       {participations.length !== allParticipationCount && (
         <Text mb={4} align="center" fontStyle="italic">
-          Egyes konzik nem jelennek meg, mert a felhasználó egy privát csoport tagjaként vett részt rajtuk.
+          {t('profilePage.privateParDisclaimer')}
         </Text>
       )}
       <VStack spacing={4} alignItems="stretch">
@@ -24,7 +26,7 @@ export const ParticipationPanel = ({ participations, allParticipationCount }: Pr
             .map((p) => <ConsultationListItem key={p.id} consultation={p} />)
         ) : (
           <Text fontStyle="italic" textAlign="center">
-            A felhasználó még nem vett részt publikus konzultáción.
+            {t('profilePage.noPar')}
           </Text>
         )}
       </VStack>

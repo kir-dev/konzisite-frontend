@@ -12,6 +12,7 @@ import {
   useToast
 } from '@chakra-ui/react'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FaChevronDown, FaEdit, FaFileUpload, FaTrash } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDeleteConsultationMutation, useDeleteFileMutation, useUploadFileMutation } from '../../../api/hooks/consultationMutationHooks'
@@ -33,22 +34,23 @@ export const ConsultationAdminActions = ({ consultation, refetch }: Props) => {
   const deleteFileFromKonziRef = useRef<HTMLButtonElement>(null)
   const navigate = useNavigate()
   const toast = useToast()
+  const { t } = useTranslation()
   const editTextColor = useColorModeValue('brand.500', 'brand.200')
   const fileTextColor = useColorModeValue('green', 'green.400')
 
   const onErrorFn = (e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   }
 
   const { mutate: deleteConsultation } = useDeleteConsultationMutation(() => {
-    toast({ title: 'Törölted a konzultációt!', status: 'success' })
+    toast({ title: t('consultationDetailsPage.konziDeleted'), status: 'success' })
     navigate(PATHS.CONSULTATIONS)
   }, onErrorFn)
 
   const uploadFileMutation = useUploadFileMutation(
     consultation.id,
     () => {
-      toast({ title: 'Jegyzet feltöltve!', status: 'success' })
+      toast({ title: t('consultationDetailsPage.attachmentUploaded'), status: 'success' })
       refetch()
     },
     onErrorFn
@@ -57,7 +59,7 @@ export const ConsultationAdminActions = ({ consultation, refetch }: Props) => {
   const { mutate: deleteFileFromConsultation } = useDeleteFileMutation(
     consultation.id,
     () => {
-      toast({ title: 'Törölted a jegyzetet!', status: 'success' })
+      toast({ title: t('consultationDetailsPage.attachmentDeleted'), status: 'success' })
       refetch()
     },
     onErrorFn
@@ -66,15 +68,15 @@ export const ConsultationAdminActions = ({ consultation, refetch }: Props) => {
   return (
     <Menu>
       <MenuButton as={Button} w="100%" colorScheme="brand" rightIcon={<FaChevronDown />}>
-        Műveletek
+        {t('consultationDetailsPage.operations')}
       </MenuButton>
       <MenuList>
         <MenuItem color={editTextColor} as={Link} to={`${PATHS.CONSULTATIONS}/${consultation.id}/edit`} icon={<FaEdit />}>
-          Szerkesztés
+          {t('consultationDetailsPage.edit')}
         </MenuItem>
 
         <Tooltip
-          label={consultation.archived ? 'A konzi archiválva lett, már nem lehet feltölteni fájlt.' : ''}
+          label={consultation.archived ? t('consultationDetailsPage.archivedMesage') : ''}
           placement="left"
           hasArrow
           shouldWrapChildren
@@ -82,12 +84,12 @@ export const ConsultationAdminActions = ({ consultation, refetch }: Props) => {
           <UploadFileModalButton
             initiatorButton={
               <MenuItem color={fileTextColor} ref={uploadModalRef} icon={<FaFileUpload />} isDisabled={consultation.archived}>
-                {consultation.fileName ? 'Jegyzet módosítása' : 'Jegyzet feltöltése'}
+                {consultation.fileName ? t('consultationDetailsPage.editAttachment') : t('consultationDetailsPage.uploadAttachment')}
               </MenuItem>
             }
             initiatorButtonRef={uploadModalRef}
-            modalTitle={consultation.fileName ? 'Jegyzet módosítása' : 'Jegyzet feltöltése'}
-            confirmButtonText="Mentés"
+            modalTitle={consultation.fileName ? t('consultationDetailsPage.editAttachment') : t('consultationDetailsPage.uploadAttachment')}
+            confirmButtonText={t('consultationDetailsPage.save')}
             mutation={uploadFileMutation}
             accept=".jpg,.jpeg,.png,.pdf,.docx,.pptx,.zip,.txt"
             fileIcon={<FaFileUpload />}
@@ -96,40 +98,38 @@ export const ConsultationAdminActions = ({ consultation, refetch }: Props) => {
                 <ConfirmDialogButton
                   initiatorButton={
                     <Button ref={deleteFileFromKonziRef} colorScheme="red">
-                      Jegyzet törlése
+                      {t('consultationDetailsPage.deleteAttachment')}
                     </Button>
                   }
                   initiatorButtonRef={deleteFileFromKonziRef}
-                  bodyText="Biztosan törlöd a feltöltött fájlt? A résztvevők ezentúl nem fogják tudni letölteni."
+                  bodyText={t('consultationDetailsPage.deleteConfirm')}
                   confirmAction={() => deleteFileFromConsultation()}
-                  headerText="Jegyzet törlése"
-                  confirmButtonText="Törlés"
+                  headerText={t('consultationDetailsPage.deleteAttachment')}
+                  confirmButtonText={t('consultationDetailsPage.delete')}
                 />
               )
             }
           >
-            <Text textAlign="justify">
-              Előadóként vagy létrehozóként van lehetőséged egy fájl feltöltésére a konzihoz. Ezt a fájlt a konzi résztvevői a konzi kezdete
-              után tudják letölteni, ha már értékelték az előadókat.
-            </Text>
-            <Text as="b">Megengedett fájlformátumok: .jpg, .png, .pdf, .docx, .pptx, .zip</Text>
+            <Text textAlign="justify">{t('consultationDetailsPage.attachmentMessage')}</Text>
+            <Text as="b">{t('consultationDetailsPage.extensions')}</Text>
             <br />
-            <Text as="b">Maximális fájlméret: 10 MB</Text>
+            <Text as="b">{t('consultationDetailsPage.maxSize')}</Text>
             <Alert rounded="md" my={2} status="warning">
-              <AlertIcon />A fájl a konzi vége után 30 nappal törlődik a szerverről, és nem lesz többé letölthető!
+              <AlertIcon />
+              {t('consultationDetailsPage.autoDeleteAlert')}
             </Alert>
           </UploadFileModalButton>
         </Tooltip>
         <ConfirmDialogButton
           initiatorButton={
             <MenuItem color="red" ref={deleteKonziRef} icon={<FaTrash />}>
-              Törlés
+              {t('consultationDetailsPage.delete')}
             </MenuItem>
           }
           initiatorButtonRef={deleteKonziRef}
-          headerText="Konzultáció törlése"
-          bodyText="Biztos törölni szeretnéd a konzultációt?"
-          confirmButtonText="Törlés"
+          headerText={t('consultationDetailsPage.deleteKonzi')}
+          bodyText={t('consultationDetailsPage.confirmDeleteKonzi')}
+          confirmButtonText={t('consultationDetailsPage.delete')}
           confirmAction={() => deleteConsultation(consultation.id)}
         />
       </MenuList>

@@ -1,5 +1,6 @@
 import { Button, Menu, MenuButton, MenuItem, MenuList, useColorModeValue, useToast } from '@chakra-ui/react'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FaChevronDown, FaEdit, FaTrash } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDeleteRequestMutation } from '../../../api/hooks/requestMutationHooks'
@@ -15,13 +16,14 @@ type Props = {
 export const RequestActions = ({ requestId }: Props) => {
   const toast = useToast()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const { mutate: deleteRequest } = useDeleteRequestMutation(
     () => {
-      toast({ title: 'Sikeresen törölted a konzi kérést!', status: 'success' })
+      toast({ title: t('requestDetailsPage.deleteSuccess'), status: 'success' })
       navigate(PATHS.REQUESTS)
     },
-    (e: KonziError) => toast(generateToastParams(e))
+    (e: KonziError) => toast(generateToastParams(e, t))
   )
 
   const editTextColor = useColorModeValue('brand.500', 'brand.200')
@@ -30,22 +32,22 @@ export const RequestActions = ({ requestId }: Props) => {
   return (
     <Menu>
       <MenuButton as={Button} w="100%" colorScheme="brand" rightIcon={<FaChevronDown />}>
-        Műveletek
+        {t('requestDetailsPage.operations')}
       </MenuButton>
       <MenuList>
         <MenuItem color={editTextColor} as={Link} to={`${PATHS.REQUESTS}/${requestId}/edit`} icon={<FaEdit />}>
-          Szerkesztés
+          {t('requestDetailsPage.edit')}
         </MenuItem>
         <ConfirmDialogButton
           initiatorButton={
             <MenuItem color="red" ref={deleteButtonRef} icon={<FaTrash />}>
-              Törlés
+              {t('requestDetailsPage.delete')}
             </MenuItem>
           }
           initiatorButtonRef={deleteButtonRef}
-          headerText="Konzi kérés törlése"
-          bodyText="Biztos törölni szeretnéd a konzi kérést?"
-          confirmButtonText="Törlés"
+          headerText={t('requestDetailsPage.deleteModalHeader')}
+          bodyText={t('requestDetailsPage.deleteModalBody')}
+          confirmButtonText={t('requestDetailsPage.delete')}
           confirmAction={() => deleteRequest(requestId)}
         />
       </MenuList>

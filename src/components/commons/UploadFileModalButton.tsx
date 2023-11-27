@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { ReactElement, ReactNode, RefObject, useEffect } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { UseMutationResult } from 'react-query'
 import { KonziError } from '../../api/model/error.model'
 import { FileUpload } from '../form-elements/FileUpload'
@@ -46,6 +47,7 @@ export const UploadFileModalButton = ({
     formState: { isValid },
     reset
   } = methods
+  const { t } = useTranslation()
 
   const onSubmitFile: SubmitHandler<{ files: FileList | undefined }> = async (values) => {
     if (values.files) {
@@ -90,7 +92,7 @@ export const UploadFileModalButton = ({
 
                 <Spacer />
                 <Button mr={3} onClick={onCancelPressed} type="button">
-                  Mégse
+                  {t('profilePage.cancel')}
                 </Button>
                 <Button colorScheme="brand" isDisabled={!isValid} isLoading={mutation.isLoading} type="submit">
                   {confirmButtonText}

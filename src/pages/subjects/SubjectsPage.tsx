@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { useRef, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { FaEdit, FaFileCsv } from 'react-icons/fa'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import {
@@ -29,12 +30,13 @@ import { KonziError } from '../../api/model/error.model'
 import { PageHeading } from '../../components/commons/PageHeading'
 import { UploadFileModalButton } from '../../components/commons/UploadFileModalButton'
 import { generateToastParams } from '../../util/generateToastParams'
-import { MajorArray, translateMajor } from '../../util/majorHelpers'
+import { MajorArray } from '../../util/majorHelpers'
 import { ErrorPage } from '../error/ErrorPage'
 import { MajorBadge } from './components/MajorBadge'
 import { SubjectEditModalButton } from './components/SubjectEditModalButton'
 
 export const SubjectsPage = () => {
+  const { t } = useTranslation()
   const { error, data: subjects, refetch } = useFetchSubjectsQuery()
   const [selectedMajor, setSelectedMajor] = useState<string>('all')
   const toast = useToast()
@@ -44,14 +46,14 @@ export const SubjectsPage = () => {
   const createSubjectMutation = useCreateSubjectMutation()
   const updateSubjectMutation = useUpdateSubjectMutation()
   const importSubjectsmutation = useImportSubjectsMutation(
-    (e) => toast(generateToastParams(e)),
+    (e) => toast(generateToastParams(e, t)),
     (data) => {
-      toast({ title: `${data.count} darab tárgy importálva.`, status: 'success' })
+      toast({ title: `${data.length} darab tárgy importálva.`, status: 'success' })
       refetch()
     }
   )
   const { mutate: deleteSubject } = useDeleteSubjectMutation((e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   })
 
   if (error) {
@@ -73,7 +75,7 @@ export const SubjectsPage = () => {
             <option value="all">Minden szak</option>
             {MajorArray.map((m) => (
               <option key={m} value={m}>
-                {translateMajor[m]}
+                {t(m)}
               </option>
             ))}
           </Select>
@@ -105,17 +107,17 @@ export const SubjectsPage = () => {
               használni kiindulási alapnak, hiszen ez már tartalmazza a kötelező fejlécet és egy minta tárgyat.
             </Text>
             <Text align="justify" mb={2}>
-              A feltöltött fájl első sorának kötelezően a következőnek kell lennie: <Code>code;name;majors</Code>. Ezt követően minden
-              tárgynak egy új sorban kell szerepelnie, az adatai <b>pontosvesszővel (;)</b> elválasztva. Az adatok sorban: tárgykód, tárgy
-              neve, a szakok, ahol szerepel a tárgy. A szakokat egymástól <b>vesszővel (,)</b> kell elválasztani. A szakok megnevezéséhez az
-              alábbi karakterláncokat használd:
+              A feltöltött fájl első sorának kötelezően a következőnek kell lennie: <Code>code;name;englishName;majors</Code>. Ezt követően
+              minden tárgynak egy új sorban kell szerepelnie, az adatai <b>pontosvesszővel (;)</b> elválasztva. Az adatok sorban: tárgykód,
+              tárgy neve, tárgy angol neve, a szakok, ahol szerepel a tárgy. A szakokat egymástól <b>vesszővel (,)</b> kell elválasztani. A
+              szakok megnevezéséhez az alábbi karakterláncokat használd:
             </Text>
             <UnorderedList ml={6} mb={2}>
               <SimpleGrid columns={{ sm: 1, md: 2 }}>
                 {[
                   MajorArray.map((m) => (
                     <ListItem key={m}>
-                      {translateMajor[m]}: <Code>{m}</Code>
+                      {t(m)}: <Code>{m}</Code>
                     </ListItem>
                   ))
                 ]}
@@ -123,9 +125,8 @@ export const SubjectsPage = () => {
             </UnorderedList>
 
             <Text align="justify" mb={2}>
-              Az adatbázisban a tárgykódoknak egyedieknek kell lenniük, ezért ha az importált tárgykódok közül csak egy is szerepel már az
-              adatbázisban, hibát fogsz kapni, és egy új tárgy sem kerül létrehozásra. Ha valami probléma lenne az importálással, keresd a
-              fejlesztőket a{' '}
+              Az adatbázisban a tárgykódoknak egyedieknek kell lenniük, ezért ha az importált tárgykódok közül valamelyik szerepel már az
+              adatbázisban, az felül lesz írva az új értékkel. Ha valami probléma lenne az importálással, keresd a fejlesztőket a{' '}
               <Link color="brand.200" href="mailto://kir-dev@sch.bme.hu">
                 kir-dev@sch.bme.hu
               </Link>{' '}
@@ -150,6 +151,7 @@ export const SubjectsPage = () => {
                   <Heading size="md">
                     {s.name} ({s.code})
                   </Heading>
+                  {s.englishName && <Text fontStyle="italic">{s.englishName}</Text>}
                   <HStack spacing={0} wrap="wrap" alignContent="space-between" justify="flex-start">
                     {s.majors.map((m) => (
                       <MajorBadge major={m} key={m} />
