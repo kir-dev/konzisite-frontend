@@ -1,40 +1,42 @@
 import { Card, CardBody, SimpleGrid } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { UserStats } from '../types/UserDetails'
 import { StatData, UserStat } from './UserStat'
 
 export const UserStatCard = ({ stats }: { stats?: UserStats }) => {
+  const { t } = useTranslation()
   const statData: StatData[] = [
     {
       value: stats?.presentationCount,
-      label: 'Tartott konzi',
-      explanation: `A felhasználó ${stats?.presentationCount} konzultáción volt előadó.`
+      label: t('profilePage.presLabel'),
+      explanation: t('profilePage.presExpl', { data: stats?.presentationCount })
     },
     {
       value: stats?.allParticipants,
-      label: 'Konzi résztvevő',
-      explanation: `Azokon a konzikon, ahol a felhasználó előadó volt, összesen ${stats?.allParticipants} hallgató vett részt.`
+      label: t('profilePage.allParLabel'),
+      explanation: t('profilePage.allParExpl', { data: stats?.allParticipants })
     },
     {
       value: stats?.ratingCount,
-      label: 'Értékelés',
-      explanation: `A felhasználó előadásaira összesen ${stats?.ratingCount} értékelés érkezett.`
+      label: t('profilePage.ratingCountLabel'),
+      explanation: t('profilePage.ratingCountExpl', { data: stats?.ratingCount })
     },
     {
       value: stats?.averageRating?.toFixed(2) || '-',
-      label: 'Átlagos értékelés',
+      label: t('profilePage.avgRatingLabel'),
       explanation: stats?.averageRating
-        ? `A felhasználó előadásainak átlagértékelése ${stats?.averageRating?.toFixed(2)}.`
-        : 'A felhasználó előadásaira még nem érkezett értékelés.'
+        ? t('profilePage.avgRatingExpl', { data: stats?.averageRating?.toFixed(2) })
+        : t('profilePage.avgRatingExplNoRating')
     },
     {
       value: stats?.participationCount,
-      label: 'Konzi részvétel',
-      explanation: `A felhasználó összesen ${stats?.participationCount} alkalommal vett részt más konzultációján.`
+      label: t('profilePage.parCountLabel'),
+      explanation: t('profilePage.parCountExpl', { data: stats?.participationCount })
     },
     {
       value: stats?.requestCount,
-      label: 'Kért konzi',
-      explanation: `A felhasználó összesen ${stats?.requestCount} konzi kérést kezdeményezett vagy támogatott.`
+      label: t('profilePage.reqCountLabel'),
+      explanation: t('profilePage.reqCountExpl', { data: stats?.requestCount })
     }
   ]
   return (

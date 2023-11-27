@@ -20,12 +20,13 @@ import {
 } from '@chakra-ui/react'
 import { ReactElement, useRef } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { UseMutationResult } from 'react-query'
 import { KonziError } from '../../../api/model/error.model'
 import { Major, SubjectModel } from '../../../api/model/subject.model'
 import { ConfirmDialogButton } from '../../../components/commons/ConfirmDialogButton'
 import { generateToastParams } from '../../../util/generateToastParams'
-import { isMajor, MajorArray } from '../../../util/majorHelpers'
+import { MajorArray, isMajor } from '../../../util/majorHelpers'
 import { CreateSubject } from '../types/CreateSubject'
 import { MajorCheckbox } from './MajorCheckbox'
 
@@ -54,6 +55,7 @@ export const SubjectEditModalButton = ({
   const { value: selectedMajors, getCheckboxProps, setValue: setSelectedMajors } = useCheckboxGroup()
   const toast = useToast()
   const deleteSubjectRef = useRef<HTMLButtonElement>(null)
+  const { t } = useTranslation()
 
   const {
     register,
@@ -69,6 +71,7 @@ export const SubjectEditModalButton = ({
     setSelectedMajors([])
     if (previousData) {
       setValue('name', previousData.name)
+      setValue('englishName', previousData.englishName)
       setValue('code', previousData.code)
       setSelectedMajors(previousData.majors)
     }
@@ -100,7 +103,7 @@ export const SubjectEditModalButton = ({
           onClose()
         },
         onError: (e: KonziError) => {
-          toast(generateToastParams(e))
+          toast(generateToastParams(e, t))
         }
       }
     )
@@ -132,6 +135,10 @@ export const SubjectEditModalButton = ({
                 <FormLabel>Tárgy neve</FormLabel>
                 <Input placeholder="Programozás alapjai 1" {...register('name', { required: true })} />
                 {errors.name && <FormErrorMessage>A tárgynév kötelező!</FormErrorMessage>}
+              </FormControl>
+              <FormControl mb={3}>
+                <FormLabel>Tárgy angol neve</FormLabel>
+                <Input placeholder="Basics of programming 1" {...register('englishName')} />
               </FormControl>
               <FormControl isInvalid={selectedMajors.length === 0 && isSubmitted} isRequired>
                 <FormLabel>Szak(ok)</FormLabel>

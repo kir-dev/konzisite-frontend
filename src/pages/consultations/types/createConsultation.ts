@@ -1,3 +1,4 @@
+import { Language } from '../../../api/model/consultation.model'
 import { GroupModel } from '../../../api/model/group.model'
 import { SubjectModel } from '../../../api/model/subject.model'
 import { RequestPreview } from '../../requests/types/requestPreview'
@@ -13,6 +14,7 @@ export interface CreateConsultation {
   presenterIds: number[]
   targetGroupIds: number[]
   requestId?: number | null
+  language: Language
 }
 
 export type CreateConsultationForm = {
@@ -26,4 +28,5 @@ export type CreateConsultationForm = {
   targetGroups: GroupModel[]
   request?: RequestPreview
   fulfillRequest: boolean
+  language: Language
 }

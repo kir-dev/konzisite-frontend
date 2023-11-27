@@ -16,21 +16,24 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { FetchConsultationsMutationProps, useFetchConsultationListMutation } from '../../api/hooks/consultationQueryHooks'
+import { Language } from '../../api/model/consultation.model'
 import { KonziError } from '../../api/model/error.model'
 import { Major } from '../../api/model/subject.model'
 import { PageHeading } from '../../components/commons/PageHeading'
 import { formatDate } from '../../util/dateHelper'
 import { generateToastParams } from '../../util/generateToastParams'
-import { MajorArray, translateMajor } from '../../util/majorHelpers'
+import { MajorArray } from '../../util/majorHelpers'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { ConsultationsCalendarPanel } from './components/panel/ConsultationsCalendarPanel'
 import { ConsultationsListPanel } from './components/panel/ConsultationsListPanel'
 
 export const ConsultationsPage = () => {
+  const { t } = useTranslation()
   const toast = useToast()
   const {
     isLoading,
@@ -38,12 +41,13 @@ export const ConsultationsPage = () => {
     mutate: mutateConsultations,
     error
   } = useFetchConsultationListMutation((e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   })
 
-  const fetchConsultations = (major?: Major, startDate?: Date, endDate?: Date) => {
+  const fetchConsultations = (major?: Major, language?: Language, startDate?: Date, endDate?: Date) => {
     const props: FetchConsultationsMutationProps = {
       major,
+      language,
       startDate,
       endDate
     }
@@ -51,6 +55,7 @@ export const ConsultationsPage = () => {
   }
 
   const [major, setMajor] = useState<Major>()
+  const [language, setLanguage] = useState<Language>()
   const [startDate, setStartDate] = useState<Date>()
   const [endDate, setEndDate] = useState<Date>()
   const [hideCalendar, setHideCalendar] = useState<boolean>(false)
@@ -58,8 +63,8 @@ export const ConsultationsPage = () => {
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true })
 
   useEffect(() => {
-    fetchConsultations(major, startDate, endDate)
-  }, [major, startDate, endDate])
+    fetchConsultations(major, language, startDate, endDate)
+  }, [major, language, startDate, endDate])
 
   useSafeLayoutEffect(() => {
     const date = new Date()
@@ -74,39 +79,52 @@ export const ConsultationsPage = () => {
 
   return (
     <>
-      <Helmet title="Konzultációk" />
-      <PageHeading title="Konzultációk" />
+      <Helmet title={t('consultationListPage.title')} />
+      <PageHeading title={t('consultationListPage.title')} />
       <Flex justify="space-between">
         <Button rightIcon={isOpen ? <FaChevronUp /> : <FaChevronDown />} onClick={onToggle}>
-          Szűrés
+          {t('consultationListPage.filter')}
         </Button>
         <Button as={Link} to={`${PATHS.CONSULTATIONS}/new`} colorScheme="brand">
-          Új konzultáció
+          {t('consultationListPage.newKonzi')}
         </Button>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
         <Stack columnGap={5} mt={3} direction={{ base: 'column', md: 'row' }}>
-          <Flex direction={{ base: 'column', md: 'row' }} align={{ base: '', md: 'center' }} grow={1}>
-            <Text mr={2} fontWeight="bold">
-              Szak
+          <Flex direction="column" grow={1}>
+            <Text mb={1} fontWeight="bold">
+              {t('consultationListPage.major')}
             </Text>
-            <Select placeholder="Minden szak" onChange={(e) => setMajor(e.target.value as Major)}>
+            <Select placeholder={t('consultationListPage.allMajors')} onChange={(e) => setMajor(e.target.value as Major)}>
               {MajorArray.map((m) => (
                 <option value={m} key={m}>
-                  {translateMajor[m]}
+                  {t(m)}
                 </option>
               ))}
             </Select>
           </Flex>
-          <Flex direction={{ base: 'column', md: 'row' }} align={{ base: '', md: 'center' }} grow={1}>
-            <Text mr={2} fontWeight="bold">
-              Kezdés
+          <Flex direction="column" grow={1}>
+            <Text mb={1} fontWeight="bold">
+              {t('consultationListPage.language')}
+            </Text>
+            <Select placeholder={t('consultationListPage.allLanguages')} onChange={(e) => setLanguage(e.target.value as Language)}>
+              <option value={Language.hu} key={Language.hu}>
+                {t('consultationListPage.hungarian')}
+              </option>
+              <option value={Language.en} key={Language.en}>
+                {t('consultationListPage.english')}
+              </option>
+            </Select>
+          </Flex>
+          <Flex direction="column" grow={1}>
+            <Text mb={1} fontWeight="bold">
+              {t('consultationListPage.from')}
             </Text>
             <Input value={formatDate(startDate)} type="date" onChange={(e) => setStartDate(new Date(e.target.value))} />
           </Flex>
-          <Flex direction={{ base: 'column', md: 'row' }} align={{ base: '', md: 'center' }} grow={1}>
-            <Text mr={2} fontWeight="bold">
-              Befejezés
+          <Flex direction="column" grow={1}>
+            <Text mb={1} fontWeight="bold">
+              {t('consultationListPage.to')}
             </Text>
             <Input value={formatDate(endDate)} type="date" onChange={(e) => setEndDate(new Date(e.target.value))} />
           </Flex>
@@ -114,8 +132,8 @@ export const ConsultationsPage = () => {
       </Collapse>
       <Tabs mt={8} isFitted rounded="lg" variant="enclosed" colorScheme="brand">
         <TabList>
-          <Tab onFocus={() => setHideCalendar(true)}>Lista</Tab>
-          <Tab onFocus={() => setHideCalendar(false)}>Naptár</Tab>
+          <Tab onFocus={() => setHideCalendar(true)}>{t('consultationListPage.list')}</Tab>
+          <Tab onFocus={() => setHideCalendar(false)}>{t('consultationListPage.calendar')}</Tab>
         </TabList>
         <TabPanels>
           <ConsultationsListPanel isLoading={isLoading} consultaions={consultaions} />

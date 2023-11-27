@@ -1,5 +1,6 @@
 import { Button, Text, useToast, VStack } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useSupportRequestMutation, useUnsupportRequestMutation } from '../../api/hooks/requestMutationHooks'
@@ -16,9 +17,10 @@ export const RequestListPage = () => {
   const { isLoading, data: requests, error, refetch } = useFetchRequestListQuery()
   const { loggedInUser, loggedInUserLoading } = useAuthContext()
   const toast = useToast()
+  const { t } = useTranslation()
 
   const onError = (e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   }
 
   const generateOnSuccess = (message: string) => () => {
@@ -26,8 +28,8 @@ export const RequestListPage = () => {
     refetch()
   }
 
-  const { mutate: supportRequest } = useSupportRequestMutation(generateOnSuccess('Támogatod a kérést!'), onError)
-  const { mutate: unsupportRequest } = useUnsupportRequestMutation(generateOnSuccess('Már nem támogatod a kérést!'), onError)
+  const { mutate: supportRequest } = useSupportRequestMutation(generateOnSuccess(t('requestListPage.supportSuccess')), onError)
+  const { mutate: unsupportRequest } = useUnsupportRequestMutation(generateOnSuccess(t('requestListPage.unsupportSuccess')), onError)
 
   if (error) {
     return <ErrorPage status={error.statusCode} title={error.message} />
@@ -39,19 +41,18 @@ export const RequestListPage = () => {
 
   return (
     <>
-      <Helmet title="Konzultáció kérések" />
-      <PageHeading title="Konzultáció kérések">
+      <Helmet title={t('requestListPage.requests')} />
+      <PageHeading title={t('requestListPage.requests')}>
         <Button as={Link} to={`${PATHS.REQUESTS}/new`} colorScheme="brand">
-          Új konzi kérés
+          {t('requestListPage.newRequest')}
         </Button>
       </PageHeading>
       <Text mb={2} textAlign="justify">
-        Szükséged lenne segítségre valamelyik tárgyból? Készíts egy konzi kérést, és ha valaki megvalósítja azt, értesítünk emailben! Ha már
-        létezik kérés a tárgyból, elég támogatnod azt, így is meg fogod kapni az értesítést.
+        {t('requestListPage.requestDesc')}
       </Text>
       {requests && requests.length === 0 ? (
         <Text mt={3} fontStyle="italic" textAlign="center">
-          Nincsenek kérések!
+          {t('requestListPage.noRequests')}
         </Text>
       ) : (
         <VStack alignItems="stretch" mt={3}>
@@ -63,7 +64,9 @@ export const RequestListPage = () => {
                 user={loggedInUser}
                 request={r}
                 key={r.id}
-                rightSmallText={`${(r.supporterCount || 0) + 1} ember kérte | ${r.consultationCount} konzi`}
+                rightSmallText={`${t('home.requestors', { count: r.supporterCount || 0 })} | ${t('home.consultationsForRequest', {
+                  count: r.consultationCount
+                })}`}
                 support={supportRequest}
                 unsupport={unsupportRequest}
               />

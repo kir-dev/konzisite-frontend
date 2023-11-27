@@ -1,51 +1,48 @@
 import { Heading, Link, Text, Wrap } from '@chakra-ui/react'
 import { Helmet } from 'react-helmet-async'
+import { useTranslation } from 'react-i18next'
 import customTheme from '../../assets/theme'
 import { PageHeading } from '../../components/commons/PageHeading'
 import { DeveloperWrapItem } from './components/DeveloperWrapItem'
 import { developers } from './util/developers'
 
 export const ImpressumPage = () => {
+  const { i18n, t } = useTranslation()
   return (
     <>
-      <Helmet title="Impresszum" />
-      <PageHeading title="Impresszum" />
+      <Helmet title={t('misc.impressum')} />
+      <PageHeading title={t('misc.impressum')} />
       <Text textAlign="justify">
-        Az alkalmazást a HK felkérésére a Kir-Dev webfejlesztő kör készítette. Mint ahogy az összes többi projektünk, ez is nyílt
-        forráskódú. A projekt alapja egy NodeJS REST API, mely egy PostgreSQL adatbázisban tárolja az adatokat. A webes kommunikációt a
-        NestJS, az adatbázissal való kapcsolatot pedig a Prisma keretrendszer egyszerűsíti. A backend kódbázisa{' '}
+        {t('misc.impressum1')}{' '}
         <Link color={customTheme.colors.kirDev} href="https://github.com/kir-dev/konzisite-api" isExternal>
-          itt böngészhető
-        </Link>
-        . A felhasználói felület pedig React-tal készült, az egységes megjelenés a Chakra UI-nak köszönhető. A frontend kódbázisát{' '}
+          {t('misc.impressum2')}
+        </Link>{' '}
+        {t('misc.impressum3')}{' '}
         <Link color={customTheme.colors.kirDev} href="https://github.com/kir-dev/konzisite-frontend" isExternal>
-          itt tudod megnézni
+          {t('misc.impressum4')}
         </Link>
-        .
       </Text>
 
       <Text mt={4} textAlign="justify">
-        Ha érdekel a webfejlesztés és szeretnél többet megtudni rólunk, látogass el a{' '}
+        {t('misc.impressum5')}{' '}
         <Link color={customTheme.colors.kirDev} href="https://kir-dev.hu" isExternal>
-          weboldalunkra
+          {t('misc.impressum6')}
         </Link>
-        , vagy olvass bele a{' '}
+        {t('misc.impressum7')}{' '}
         <Link color={customTheme.colors.kirDev} href="https://kir-dev.hu/blog" isExternal>
-          blogunkba
+          {t('misc.impressum8')}
         </Link>
-        , ahol{' '}
+        {t('misc.impressum9')}{' '}
         <Link color={customTheme.colors.kirDev} href="https://kir-dev.hu/ly/RBoIJ" isExternal>
-          külön posztot írtunk a Konzisite fejlesztésének folyamatáról
-        </Link>
-        . Amennyiben hibát találtál az alkalmazás működésében, vagy lenne egy ötleted, hogy mit lehetne fejleszteni rajta, vedd fel velünk a
-        kapcsolatot{' '}
+          {t('misc.impressum10')}
+        </Link>{' '}
+        {t('misc.impressum11')}{' '}
         <Link color={customTheme.colors.kirDev} href="mailto:hello@kir-dev.hu" isExternal>
-          emailen
+          {t('misc.impressum12')}
         </Link>
-        .
       </Text>
       <Heading as="h2" size="lg" my="5" textAlign="center">
-        Fejlesztők
+        {t('misc.developers')}
       </Heading>
       <Wrap mb={5} justify="center">
         {developers.map((dev) => (

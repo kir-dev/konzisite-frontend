@@ -1,5 +1,6 @@
 import { Box, Container, Flex, HStack, Image, Link, Stack, Text, useColorModeValue, VStack } from '@chakra-ui/react'
 import { FC, MouseEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FaEnvelope, FaFacebook, FaGithub, FaGlobe, FaHeart, FaInstagram } from 'react-icons/fa'
 import { Link as RRDLink } from 'react-router-dom'
 import customTheme from '../../assets/theme'
@@ -9,6 +10,7 @@ import { ColorfulExternalLink } from './ColorfulExternalLink'
 export const Footer: FC = () => {
   const kirDevLogo = useColorModeValue('/img/kirdev.svg', '/img/kirdev-white.svg')
   const hkLogo = useColorModeValue('/img/hk.svg', '/img/hk-white.svg')
+  const { t } = useTranslation()
 
   const mouseEventFn = (logoPath: string) =>
     useColorModeValue(
@@ -22,7 +24,7 @@ export const Footer: FC = () => {
         <HStack justify="center" spacing={{ base: 0, m: 5 }} mb={{ base: 12, m: 0 }}>
           <VStack>
             <ColorfulExternalLink centered url="https://vik.hk/" hoverColor={customTheme.colors.hk}>
-              VIK Hallgatói Képviselet
+              {t('misc.vikhk')}
             </ColorfulExternalLink>
 
             <HStack spacing={2} mt={4} justify="space-evenly">
@@ -74,7 +76,7 @@ export const Footer: FC = () => {
             <Text textAlign="center">
               &copy; {new Date().getFullYear()} •{' '}
               <Link textAlign="center" as={RRDLink} to={PATHS.IMPRESSUM} _hover={{ color: customTheme.colors.kirDev }}>
-                Impresszum
+                {t('misc.impressum')}
               </Link>
             </Text>
 

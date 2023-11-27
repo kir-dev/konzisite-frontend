@@ -1,7 +1,10 @@
 import '@fontsource/aclonica/400.css'
+import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Route, Routes } from 'react-router-dom'
 import { KLayout } from './components/commons/KLayout'
 import './global.css'
+import './i18n_config'
 import { AuthorizedPage } from './pages/authorized/AuthorizedPage'
 import { ConsultationDetailsPage } from './pages/consultations/ConsultationDetailsPage'
 import { ConsultationsPage } from './pages/consultations/ConsultationsPage'
@@ -23,6 +26,14 @@ import { UserPage } from './pages/user/UserPage'
 import { PATHS } from './util/paths'
 
 export const App = () => {
+  const { i18n, t } = useTranslation()
+  useEffect(() => {
+    const localLang = localStorage.getItem('language')
+    if (localLang) {
+      i18n.changeLanguage(localLang)
+    }
+  }, [])
+
   return (
     <KLayout>
       <Routes>
@@ -65,10 +76,7 @@ export const App = () => {
           <Route path="authorized" element={<AuthorizedPage />} />
           <Route path="logout" element={<LogoutPage />} />
           <Route path={PATHS.ERROR} element={<ErrorPage />} />
-          <Route
-            path="*"
-            element={<ErrorPage title="Az oldal nem található" messages={['Hupsz, olyan oldalra kerültél, ami nem létezik!']} />}
-          />
+          <Route path="*" element={<ErrorPage title={t('errors.pageNotFound')} messages={[t('errors.notFoundMsg')]} />} />
         </Route>
       </Routes>
     </KLayout>

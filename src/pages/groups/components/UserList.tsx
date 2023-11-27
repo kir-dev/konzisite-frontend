@@ -16,6 +16,7 @@ import {
   useToast,
   VStack
 } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { FaChevronDown, FaUserCheck, FaUserGraduate, FaUserInjured, FaUserSlash, FaUserTimes } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
@@ -30,7 +31,6 @@ import { KonziError } from '../../../api/model/error.model'
 import { GroupRoles } from '../../../api/model/group.model'
 import { generateToastParams } from '../../../util/generateToastParams'
 import { PATHS } from '../../../util/paths'
-import { translateGroupRole } from '../../../util/translateGroupRole'
 import { PublicUser } from '../../user/types/PublicUser'
 import { GroupDetails } from '../types/groupDetails'
 
@@ -47,21 +47,22 @@ type Props = {
 export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
   const { loggedInUser: currentUser } = useAuthContext()
   const toast = useToast()
+  const { t, i18n } = useTranslation()
   const acceptPromoteTextColor = useColorModeValue('green', 'green.400')
 
   const onErrorFn = (e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   }
   const generateSuccessFn = (successMessage: string) => () => {
     toast({ title: successMessage, status: 'success' })
     refetchDetails()
   }
 
-  const { mutate: approveUser } = useApproveUserMutation(generateSuccessFn('Felhasználó elfogadva'), onErrorFn)
-  const { mutate: declineUser } = useDeclineUserMutation(generateSuccessFn('Felhasználó visszautasítva'), onErrorFn)
-  const { mutate: promoteUser } = usePromoteUserInGroupMutation(generateSuccessFn('Felhasználó előléptetve'), onErrorFn)
-  const { mutate: demoteUser } = useDemoteUserInGroupMutation(generateSuccessFn('Felhasználó visszaléptetve'), onErrorFn)
-  const { mutate: removeFromGroup } = useRemoveUserFromGroupMutation(generateSuccessFn('Felhasználó eltávolítva'), onErrorFn)
+  const { mutate: approveUser } = useApproveUserMutation(generateSuccessFn(t('groupDetailsPage.userAccpeted')), onErrorFn)
+  const { mutate: declineUser } = useDeclineUserMutation(generateSuccessFn(t('groupDetailsPage.userRejected')), onErrorFn)
+  const { mutate: promoteUser } = usePromoteUserInGroupMutation(generateSuccessFn(t('groupDetailsPage.userPromoted')), onErrorFn)
+  const { mutate: demoteUser } = useDemoteUserInGroupMutation(generateSuccessFn(t('groupDetailsPage.userDemoted')), onErrorFn)
+  const { mutate: removeFromGroup } = useRemoveUserFromGroupMutation(generateSuccessFn(t('groupDetailsPage.userKicked')), onErrorFn)
 
   return (
     <>
@@ -77,23 +78,25 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
                     <Flex align="center">
                       {u.id === group.owner.id && (
                         <Badge colorScheme="brand" ml={1}>
-                          Tulajdonos
+                          {t('groupDetailsPage.owner')}
                         </Badge>
                       )}
                       {[GroupRoles.ADMIN, GroupRoles.PENDING].includes(u.role) && (
                         <Badge colorScheme={u.role === GroupRoles.ADMIN ? 'green' : 'red'} ml={1}>
-                          {translateGroupRole[u.role]}
+                          {t(u.role)}
                         </Badge>
                       )}
                       {u.id === currentUser?.id && (
                         <Badge colorScheme="orange" ml={1}>
-                          Te
+                          {t('groupDetailsPage.you')}
                         </Badge>
                       )}
                     </Flex>
                   </Flex>
                   <HStack justifyContent="space-between" width="100%">
-                    <Text>Csatlakozás: {new Date(u.joinedAt).toLocaleDateString('hu-HU')}</Text>
+                    <Text>
+                      {t('groupDetailsPage.joined')}: {new Date(u.joinedAt).toLocaleDateString(i18n.language)}
+                    </Text>
                   </HStack>
                 </VStack>
               </HStack>
@@ -112,10 +115,10 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
                               icon={<FaUserCheck />}
                               onClick={() => approveUser({ groupId: group.id, userId: u.id })}
                             >
-                              Elfogadás
+                              {t('groupDetailsPage.accept')}
                             </MenuItem>
                             <MenuItem color="red" icon={<FaUserTimes />} onClick={() => declineUser({ groupId: group.id, userId: u.id })}>
-                              Elutasátas
+                              {t('groupDetailsPage.reject')}
                             </MenuItem>
                           </>
                         ) : (
@@ -127,7 +130,7 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
                                   icon={<FaUserInjured />}
                                   onClick={() => demoteUser({ groupId: group.id, userId: u.id })}
                                 >
-                                  Lefokozás
+                                  {t('groupDetailsPage.demote')}
                                 </MenuItem>
                               ) : (
                                 <MenuItem
@@ -135,7 +138,7 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
                                   icon={<FaUserGraduate />}
                                   onClick={() => promoteUser({ groupId: group.id, userId: u.id })}
                                 >
-                                  Előléptetés
+                                  {t('groupDetailsPage.promote')}
                                 </MenuItem>
                               ))}
                             {u.role !== GroupRoles.ADMIN && (
@@ -144,7 +147,7 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
                                 icon={<FaUserSlash />}
                                 onClick={() => removeFromGroup({ groupId: group.id, userId: u.id })}
                               >
-                                Eltávolítás
+                                {t('groupDetailsPage.kick')}
                               </MenuItem>
                             )}
                           </>
@@ -159,7 +162,7 @@ export const UserList = ({ users, group, refetchDetails, pending }: Props) => {
       </SimpleGrid>
       {users.length === 0 && (
         <Text textAlign="center" fontStyle="italic">
-          Nincsenek {pending && 'függő '} tagok
+          {pending ? t('groupDetailsPage.noPendingMembers') : t('groupDetailsPage.noMembers')}
         </Text>
       )}
     </>

@@ -1,12 +1,27 @@
-import { Button, Checkbox, Flex, FormControl, FormErrorMessage, FormLabel, Input, Text, useToast, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Select,
+  Stack,
+  Text,
+  useToast,
+  VStack
+} from '@chakra-ui/react'
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { FaArrowLeft } from 'react-icons/fa'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../api/contexts/auth/useAuthContext'
 import { useCreateConsultationMutation, useEditConsultationMutation } from '../../api/hooks/consultationMutationHooks'
 import { useFetchConsultationbDetailsQuery } from '../../api/hooks/consultationQueryHooks'
+import { Language } from '../../api/model/consultation.model'
 import { KonziError } from '../../api/model/error.model'
 import { PageHeading } from '../../components/commons/PageHeading'
 import { getStatusString } from '../../components/editor/editorUtils'
@@ -36,6 +51,7 @@ type ConsultationFormState = {
 
 export const EditConsultationPage = ({ newConsultation }: Props) => {
   const { state, key } = useLocation()
+  const { t } = useTranslation()
   const { request, group } = (state as ConsultationFormState) || {}
   const toast = useToast()
   const navigate = useNavigate()
@@ -49,11 +65,11 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const createCons = (formData: CreateConsultation) => {
     createConsultation(formData, {
       onSuccess: (consultation) => {
-        toast({ title: 'Konzultáció sikeresen létrehozva!', status: 'success' })
+        toast({ title: t('editKonziPage.createdSuccess'), status: 'success' })
         navigate(`${PATHS.CONSULTATIONS}/${consultation.id}`)
       },
       onError: (e: KonziError) => {
-        toast(generateToastParams(e))
+        toast(generateToastParams(e, t))
       }
     })
   }
@@ -61,11 +77,11 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const editCons = (formData: CreateConsultation) => {
     updateConsultation(formData, {
       onSuccess: (consultation) => {
-        toast({ title: 'Konzultáció sikeresen módosítva!', status: 'success' })
+        toast({ title: t('editKonziPage.updatedSuccess'), status: 'success' })
         navigate(`${PATHS.CONSULTATIONS}/${consultation.id}`)
       },
       onError: (e: KonziError) => {
-        toast(generateToastParams(e))
+        toast(generateToastParams(e, t))
       }
     })
   }
@@ -82,9 +98,10 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
           presenters: consultation.presentations,
           targetGroups: consultation.targetGroups,
           request: consultation.request ? { ...consultation.request, subject: consultation.subject } : undefined,
-          fulfillRequest: !!consultation?.request
+          fulfillRequest: !!consultation?.request,
+          language: consultation.language
         }
-      : { targetGroups: [], presenters: [], startDate: new Date(), endDate: new Date(), fulfillRequest: !!request },
+      : { targetGroups: [], presenters: [], startDate: new Date(), endDate: new Date(), fulfillRequest: !!request, language: Language.hu },
     mode: 'all'
   })
 
@@ -107,7 +124,8 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       subjectId: data.subject.id,
       presenterIds: data.presenters.map((p) => p.id),
       targetGroupIds: data.targetGroups.map((g) => g.id),
-      requestId: data.fulfillRequest ? data.request?.id : null
+      requestId: data.fulfillRequest ? data.request?.id : null,
+      language: data.language
     }
     newConsultation ? createCons(formData) : editCons(formData)
   })
@@ -124,6 +142,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
       setValue('endDate', new Date(consultation.endDate))
       setValue('request', consultation.request ? { ...consultation.request, subject: consultation.subject } : undefined)
       setValue('fulfillRequest', !!consultation.request)
+      setValue('language', consultation.language)
     }
   }, [consultation])
 
@@ -159,44 +178,65 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
           consultation.presentations.some((p) => p.id === loggedInUser.id)
         )) &&
       !newConsultation ? (
-        <ErrorPage status={403} title="Nincs jogod" messages={['A konzit csak a tulajdonosa szerkesztheti']} />
+        <ErrorPage status={403} title={t('editKonziPage.')} messages={[t('editKonziPage.authorEditOnly')]} />
       ) : (
         <>
-          <Helmet title={newConsultation ? 'Új konzultáció' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`} />
-          <PageHeading title={newConsultation ? 'Új konzultáció létrehozása' : `${consultation?.name ?? 'Névtelen konzi'} szerkesztése`} />
+          <Helmet
+            title={
+              newConsultation
+                ? t('editKonziPage.newKonzi')
+                : t('editKonziPage.editKonzi', { title: consultation?.name ?? t('editKonziPage.untitledKonzi') })
+            }
+          />
+          <PageHeading
+            title={
+              newConsultation
+                ? t('editKonziPage.createNewKonzi')
+                : t('editKonziPage.editKonzi', { title: consultation?.name ?? t('editKonziPage.untitledKonzi') })
+            }
+          />
           <VStack alignItems="flex-start">
             <FormControl isInvalid={!!errors.name} isRequired>
-              <FormLabel>Konzultáció neve</FormLabel>
+              <FormLabel>{t('editKonziPage.konziTitle')}</FormLabel>
               <Input
                 type="text"
                 {...register('name', {
-                  required: { value: true, message: 'Név nem lehet üres!' },
+                  required: { value: true, message: t('editKonziPage.nameEmpty') },
                   maxLength: {
                     value: MAX_TITLE_LENGTH,
-                    message: 'Név túl hosszú! ' + getStatusString(watch('name'), MAX_TITLE_LENGTH)
+                    message: t('editKonziPage.nameTooLong') + getStatusString(watch('name'), MAX_TITLE_LENGTH)
                   }
                 })}
-                placeholder="Digit vizsgára készülés"
+                placeholder={t('editKonziPage.namePlaceholder')}
               />
               {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
             </FormControl>
-            <FormControl isInvalid={!!errors.location} isRequired>
-              <FormLabel>Helyszín</FormLabel>
-              <Input
-                type="text"
-                {...register('location', {
-                  required: { value: true, message: 'Helyszín nem lehet üres!' },
-                  maxLength: {
-                    value: MAX_TITLE_LENGTH,
-                    message: 'Helyszín túl hosszú! ' + getStatusString(watch('location'), MAX_TITLE_LENGTH)
-                  }
-                })}
-                placeholder="SCH-1317"
-                width="30%"
-                minWidth="150px"
-              />
-              {errors.location && <FormErrorMessage>{errors.location.message}</FormErrorMessage>}
-            </FormControl>
+            <Stack direction={['column', 'row']} width="100%">
+              <FormControl width={['100%', '30%']} isInvalid={!!errors.location} isRequired>
+                <FormLabel> {t('editKonziPage.location')}</FormLabel>
+                <Input
+                  type="text"
+                  {...register('location', {
+                    required: { value: true, message: t('editKonziPage.locationEmpty') },
+                    maxLength: {
+                      value: MAX_TITLE_LENGTH,
+                      message: t('editKonziPage.locationTooLong') + getStatusString(watch('location'), MAX_TITLE_LENGTH)
+                    }
+                  })}
+                  placeholder="SCH-1317"
+                  minWidth="150px"
+                />
+                {errors.location && <FormErrorMessage>{errors.location.message}</FormErrorMessage>}
+              </FormControl>
+              <FormControl width="30%" isRequired>
+                <FormLabel> {t('editKonziPage.language')}</FormLabel>
+                <Select {...register('language')}>
+                  <option value={Language.hu}> {t('editKonziPage.hungarian')}</option>
+                  <option value={Language.en}> {t('editKonziPage.english')}</option>
+                </Select>
+              </FormControl>
+            </Stack>
+
             <Checkbox hidden {...register('fulfillRequest')} />
             <Checkbox
               colorScheme="brand"
@@ -208,19 +248,16 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
                 setValue('subject', watch('subject'), { shouldValidate: true })
               }}
             >
-              Kérés teljesítése
+              {t('editKonziPage.fullfillRequest')}
             </Checkbox>
-            <Text textAlign="justify">
-              Amennyiben valakinek a konzi kérését valósítod meg, pipáld be a fenti dobozt, majd válaszd ki a kérést. Így értesítést fognak
-              kapni azok a felhasználók, akik támogatták a kérést. Konzi kérés kiválasztása meghatározza a konzi tárgyát is.
-            </Text>
+            <Text textAlign="justify">{t('editKonziPage.requestDesc')}</Text>
             <FormProvider {...form}>
               {watch('fulfillRequest') ? <RequestSelector /> : <SubjectSelector />}
               <PresentersSelector />
               <ConsultationDateForm prevStartDate={consultation && new Date(consultation.startDate)} />
               <TargetGroupSelector />
               <FormControl>
-                <FormLabel>Leírás</FormLabel>
+                <FormLabel> {t('editKonziPage.desc')}</FormLabel>
                 <MarkdownEditor
                   formDetails={{
                     id: 'descMarkdown',
@@ -244,7 +281,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
                 }
               }}
             >
-              Vissza
+              {t('editKonziPage.back')}
             </Button>
             <Button
               isLoading={createLoading || editLoading}
@@ -254,7 +291,7 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
               }}
               isDisabled={!isValid && isSubmitted}
             >
-              {newConsultation ? 'Létrehozás' : 'Mentés'}
+              {newConsultation ? t('editKonziPage.create') : t('editKonziPage.save')}
             </Button>
           </Flex>
         </>

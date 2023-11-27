@@ -16,6 +16,7 @@ import {
   VStack
 } from '@chakra-ui/react'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FaAt, FaSignOutAlt } from 'react-icons/fa'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { usePromoteUserMutation } from '../../../api/hooks/userMutationHooks'
@@ -38,13 +39,14 @@ type Props = {
 export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
   const { loggedInUser } = useAuthContext()
   const toast = useToast()
+  const { t } = useTranslation()
   const promoteUserRef = useRef<HTMLButtonElement>(null)
   const { mutate: promoteUser } = usePromoteUserMutation(
     (data: UserModel) => {
       toast({ title: 'Felhasználó adminnak kinevezve!', status: 'success' })
       user.isAdmin = data.isAdmin
     },
-    (e: KonziError) => toast(generateToastParams(e))
+    (e: KonziError) => toast(generateToastParams(e, t))
   )
 
   return (
@@ -92,7 +94,7 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
             <Stack direction="column" w={['100%', '100%', 'inherit']}>
               <ReportModal />
               <Button w={['100%', '100%', 'inherit']} colorScheme="brand" rightIcon={<FaSignOutAlt />} onClick={() => onLogoutPressed()}>
-                Kijelentkezés
+                {t('profilePage.signOut')}
               </Button>
             </Stack>
           )}
@@ -101,9 +103,9 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
       <UserStatCard stats={user.stats} />
       <Tabs isFitted rounded="lg" variant="enclosed" colorScheme="brand">
         <TabList>
-          <Tab>Tartott konzik</Tab>
-          <Tab>Konzi részvételek</Tab>
-          <Tab>Konzi kérések</Tab>
+          <Tab>{t('profilePage.presenationsTab')}</Tab>
+          <Tab>{t('profilePage.requestsTab')}</Tab>
+          <Tab>{t('profilePage.participationsTab')}</Tab>
         </TabList>
         <TabPanels>
           <PresentationPanel presentations={user.presentations} allPresentationCount={user.stats?.presentationCount || 0} />

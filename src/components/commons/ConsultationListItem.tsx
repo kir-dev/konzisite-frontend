@@ -1,5 +1,6 @@
 import { Box, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react'
 import { ReactElement } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { ConsultationModel } from '../../api/model/consultation.model'
 import { RatingModel } from '../../api/model/rating.model'
@@ -8,6 +9,7 @@ import { PublicUser } from '../../pages/user/types/PublicUser'
 import { generateDateText, generateTimeSpanText } from '../../util/dateHelper'
 import { PATHS } from '../../util/paths'
 import { MajorAvatar } from './MajorAvatar'
+import { SubjectName } from './SubjectName'
 
 type Props = {
   consultation: ConsultationModel & {
@@ -24,6 +26,7 @@ type Props = {
 }
 
 export const ConsultationListItem = ({ consultation, children, rightSmallText }: Props) => {
+  const { i18n } = useTranslation()
   return (
     <Box shadow="md" borderRadius={8} borderWidth={1}>
       <HStack flexGrow={1} as={Link} to={`${PATHS.CONSULTATIONS}/${consultation.id}`} p={4} align="flex-start">
@@ -34,12 +37,12 @@ export const ConsultationListItem = ({ consultation, children, rightSmallText }:
               {consultation.name}
             </Heading>
             <Heading size={{ base: 'sm', md: 'md' }}>
-              {generateDateText(consultation.startDate)} {generateTimeSpanText(consultation.startDate, consultation.endDate)}
+              {generateDateText(consultation.startDate, i18n)} {generateTimeSpanText(consultation.startDate, consultation.endDate, i18n)}
             </Heading>
           </Stack>
           <Stack direction={['column', 'row']} justifyContent="space-between" width="100%">
             <Text>
-              {consultation.subject.name} ({consultation.subject.code})
+              <SubjectName subject={consultation.subject} />
             </Text>
             {rightSmallText && <Text>{rightSmallText}</Text>}
           </Stack>

@@ -1,4 +1,5 @@
 import { Avatar, Badge, Box, Flex, Heading, HStack, SimpleGrid, Stat, StatLabel, StatNumber, Text, VStack } from '@chakra-ui/react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../../../api/contexts/auth/useAuthContext'
 import { PATHS } from '../../../util/paths'
@@ -10,11 +11,12 @@ type Props = {
 
 export const UserListWithPagination = ({ data }: Props) => {
   const { loggedInUser } = useAuthContext()
+  const { t } = useTranslation()
 
   if (data.userList.length === 0) {
     return (
       <Text textAlign="center" fontStyle="italic">
-        Nem található felhasználó ilyen névvel
+        {t('userBrowserPage.noUser')}
       </Text>
     )
   }
@@ -30,7 +32,7 @@ export const UserListWithPagination = ({ data }: Props) => {
                 {user.id === loggedInUser?.id && (
                   <Flex align="center">
                     <Badge colorScheme="brand" ml={2}>
-                      Te
+                      {t('userBrowserPage.you')}
                     </Badge>
                   </Flex>
                 )}
@@ -39,15 +41,15 @@ export const UserListWithPagination = ({ data }: Props) => {
             <HStack p={2} w="100%">
               <Stat size="sm">
                 <StatNumber>{user.presentations}</StatNumber>
-                <StatLabel>Tartott konzi</StatLabel>
+                <StatLabel> {t('userBrowserPage.presenations')}</StatLabel>
               </Stat>
               <Stat size="sm">
                 <StatNumber>{user.averageRating?.toFixed(2) || '-'}</StatNumber>
-                <StatLabel>Átlagos értékelés</StatLabel>
+                <StatLabel> {t('userBrowserPage.avgRating')}</StatLabel>
               </Stat>
               <Stat size="sm">
                 <StatNumber>{user.attendances}</StatNumber>
-                <StatLabel>Konzi részvétel</StatLabel>
+                <StatLabel> {t('userBrowserPage.participations')}</StatLabel>
               </Stat>
             </HStack>
           </VStack>

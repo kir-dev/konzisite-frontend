@@ -2,6 +2,7 @@ import { TabPanel, Text, VStack } from '@chakra-ui/react'
 import { ConsultationListItem } from '../../../../components/commons/ConsultationListItem'
 import { ConsultationPreview } from '../../types/consultationPreview'
 
+import { useTranslation } from 'react-i18next'
 import { LoadingConsultationList } from '../loading/LoadingConsultationList'
 
 type Props = {
@@ -10,11 +11,12 @@ type Props = {
 }
 
 export const ConsultationsListPanel = ({ isLoading, consultaions }: Props) => {
+  const { t } = useTranslation()
   return (
     <TabPanel px={0}>
       {consultaions && consultaions.length === 0 ? (
         <Text mt={3} textAlign="center" fontStyle="italic">
-          Nincsenek konzultációk!
+          {t('consultationListPage.noKonzi')}
         </Text>
       ) : (
         <VStack alignItems="stretch" mt={3}>
@@ -26,12 +28,10 @@ export const ConsultationsListPanel = ({ isLoading, consultaions }: Props) => {
                 <ConsultationListItem
                   consultation={c}
                   key={c.id}
-                  rightSmallText={
-                    c.presentations.length <= 3
-                      ? `Konzitartó${c.presentations.length > 1 ? 'k' : ''}:
-              ${c.presentations.map((p) => p.fullName).join(', ')}`
-                      : `${c.presentations.length} konzitartó`
-                  }
+                  rightSmallText={t('home.presenters', {
+                    count: c.presentations.length,
+                    names: c.presentations.map((p) => p.fullName).join(', ')
+                  })}
                 />
               ))}
             </>

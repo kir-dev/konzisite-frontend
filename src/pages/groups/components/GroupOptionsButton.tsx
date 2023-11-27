@@ -1,5 +1,6 @@
 import { Button, useToast } from '@chakra-ui/react'
 import { useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import {
   useDeleteGroupMutation,
@@ -22,23 +23,24 @@ type props = {
 
 export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
   const toast = useToast()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const deleteGroupRef = useRef<HTMLButtonElement>(null)
   const leaveGroupRef = useRef<HTMLButtonElement>(null)
 
   const onErrorFn = (e: KonziError) => {
-    toast(generateToastParams(e))
+    toast(generateToastParams(e, t))
   }
 
   const joinGroupMutation = useJoinGroupMutation(() => {
-    toast({ title: 'Csatlakoztál a csoporthoz!', status: 'success' })
+    toast({ title: t('groupDetailsPage.groupJoined'), status: 'success' })
     refetchDetails()
   }, onErrorFn)
 
   const leaveGroupMutation = useLeaveGroupMutation(onErrorFn)
 
   const deleteGroupMutation = useDeleteGroupMutation(() => {
-    toast({ title: 'Törölted a csoportot!', status: 'success' })
+    toast({ title: t('groupDetailsPage.groupDeleted'), status: 'success' })
     navigate(PATHS.GROUPS)
   }, onErrorFn)
 
@@ -49,7 +51,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
   const undoRequest = () => {
     leaveGroupMutation.mutate(group.id, {
       onSuccess: () => {
-        toast({ title: 'Visszavontad a csatlakozási kérelmed!', status: 'success' })
+        toast({ title: t('groupDetailsPage.requestWithdrawn'), status: 'success' })
         refetchDetails()
       }
     })
@@ -57,7 +59,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
   const leaveGroup = () => {
     leaveGroupMutation.mutate(group.id, {
       onSuccess: () => {
-        toast({ title: 'Kiléptél a csoportból!', status: 'success' })
+        toast({ title: t('groupDetailsPage.leftGroup'), status: 'success' })
         refetchDetails()
       }
     })
@@ -70,7 +72,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
         navigate(`${PATHS.CONSULTATIONS}/new`, { state: { group } })
       }}
     >
-      Konzi tartása
+      {t('groupDetailsPage.makeKonzi')}
     </Button>
   )
 
@@ -80,10 +82,10 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
         <>
           {HoldKonziButton}
           <GroupEditModalButton
-            buttonText="Szerkesztés"
+            buttonText={t('groupDetailsPage.edit')}
             buttonWidth="100%"
-            modalTitle="Csoport szerkesztése"
-            successMessage="Csoport sikeresen szerkesztve"
+            modalTitle={t('groupDetailsPage.editGroup')}
+            successMessage={t('groupDetailsPage.groupEdited')}
             mutation={useEditGroupMutation(group.id)}
             refetch={refetchDetails}
             previousName={group.name}
@@ -91,13 +93,13 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
           <ConfirmDialogButton
             initiatorButton={
               <Button w="100%" ref={deleteGroupRef} colorScheme="red">
-                Törlés
+                {t('groupDetailsPage.delete')}
               </Button>
             }
             initiatorButtonRef={deleteGroupRef}
-            headerText="Csoport törlése"
-            bodyText="Biztos törölni szeretnéd a csoportot?"
-            confirmButtonText="Törlés"
+            headerText={t('groupDetailsPage.deleteGroup')}
+            bodyText={t('groupDetailsPage.confirmDelete')}
+            confirmButtonText={t('groupDetailsPage.delete')}
             confirmAction={deleteGroup}
           />
         </>
@@ -110,13 +112,13 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
           <ConfirmDialogButton
             initiatorButton={
               <Button w="100%" ref={leaveGroupRef} colorScheme="red">
-                Kilépés
+                {t('groupDetailsPage.leave')}
               </Button>
             }
             initiatorButtonRef={leaveGroupRef}
-            headerText="Kilépés a csoportból"
-            bodyText="Biztos ki szeretnél lépni a csoportból?"
-            confirmButtonText="Kilépés"
+            headerText={t('groupDetailsPage.leaveGroup')}
+            bodyText={t('groupDetailsPage.confirmLeave')}
+            confirmButtonText={t('groupDetailsPage.leave')}
             confirmAction={leaveGroup}
           />
         </>
@@ -126,7 +128,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
         <>
           {HoldKonziButton}
           <Button w="100%" colorScheme="red" onClick={undoRequest}>
-            Kérelem visszavonása
+            {t('groupDetailsPage.withdrawReq')}
           </Button>
         </>
       )
@@ -135,7 +137,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
         <>
           {HoldKonziButton}
           <Button w="100%" colorScheme="brand" onClick={() => joinGroupMutation.mutate(group.id)}>
-            Csatlakozás
+            {t('groupDetailsPage.join')}
           </Button>
         </>
       )
