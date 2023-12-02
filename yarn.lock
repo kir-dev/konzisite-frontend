@@ -8363,9 +8363,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:10.16.9":
-  version: 10.16.9
-  resolution: "framer-motion@npm:10.16.9"
+"framer-motion@npm:10.16.12":
+  version: 10.16.12
+  resolution: "framer-motion@npm:10.16.12"
   dependencies:
     "@emotion/is-prop-valid": "npm:^0.8.2"
     tslib: "npm:^2.4.0"
@@ -8380,7 +8380,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 3328390bcf028945af7d23b25cbe152e8beb84f58f62c23ae22ba2c716f0a196fd9875e77516b640c9e9c56edf69c135ee7a75b0a70869fdd0f47f5acfe27a7c
+  checksum: cf3ea802530661096c3a9eeaf40b563bb08f3a16cf733a3e6a911029e99ac1478ea6564a70336ed850c19d62680974b7994b50b93851a4102591eb817602bf36
   languageName: node
   linkType: hard
 
@@ -10638,7 +10638,7 @@ __metadata:
     eslint-config-prettier: "npm:9.0.0"
     eslint-plugin-prettier: "npm:5.0.1"
     eslint-plugin-react-hooks: "npm:4.6.0"
-    framer-motion: "npm:10.16.9"
+    framer-motion: "npm:10.16.12"
     i18next: "npm:^23.7.6"
     js-cookie: "npm:3.0.5"
     lodash.debounce: "npm:^4.0.8"
