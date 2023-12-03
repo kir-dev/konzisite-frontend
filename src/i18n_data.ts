@@ -9,11 +9,11 @@ export const resources = {
       BI_MSC: 'Business info. MSc',
       HI_MSC: 'Healthcare eng. MSc',
       SE_MSC: 'Space eng. MSc',
-      PENDING: '',
-      MEMBER: '',
-      ADMIN: '',
-      OWNER: '',
-      NONE: '',
+      PENDING: 'PENDING',
+      MEMBER: 'MEMBER',
+      ADMIN: 'ADMIN',
+      OWNER: 'OWNER',
+      NONE: 'NONE',
       en: 'In English',
       hu: 'In Hungarian',
       navbar: {
@@ -130,9 +130,9 @@ export const resources = {
         hungarian: 'Hungarian',
         english: 'English',
         fullfillRequest: 'Fulfill request',
-        requestDesc: `If you're fulfilling the consultation request of someone else, tick the box above. 
-        Users who endorsed this request will recieve a notification. 
-        Picking a request for the consultation will also determine it's subject.`, //
+        requestDesc: `If you're fulfilling the consultation request of someone else, tick the box above.
+        Users who endorsed this request will recieve a notification.
+        Picking a request for the consultation will also determine it's subject.`,
         desc: 'Description',
         back: 'Back',
         create: 'Create',
@@ -261,20 +261,20 @@ export const resources = {
         unsupportSuccess: 'You no longer endorse this request!', //
         requests: 'Consultation requests',
         newRequest: 'Request new consultation',
-        requestDesc: `Do you need help in a subject? Create a consultation request, and if someone 
-        responds to it, you will be notified via email. If a request already exists from the subject, you may 
+        requestDesc: `Do you need help in a subject? Create a consultation request, and if someone
+        responds to it, you will be notified via email. If a request already exists from the subject, you may
         endorse that request; you will still recieve an email notification.`, //
         noRequests: 'There are no requests!',
-        unsupport: 'Un-endorse', //
-        support: 'Endorse', //
+        unsupport: 'Undo endorsement',
+        support: 'Endorse',
         fulfill: 'Fulfill request'
       },
       requestDetailsPage: {
         notFound: 'Request not found',
         notFoundDesc: 'The request you searched for does not exist, or you do not have permission to view it.',
         expired: 'Expired',
-        unsupport: 'Un-endorse', //
-        support: 'Endorse', //
+        unsupport: 'Undo endorsement',
+        support: 'Endorse',
         fulfill: 'Fulfill',
         consultations: 'Consultations',
         initiator: 'Initiator',
@@ -325,7 +325,7 @@ export const resources = {
         signOut: 'Sign out',
         presenationsTab: 'Held consultations',
         requestsTab: 'Consultation requests',
-        participationsTab: 'Participated consultations',
+        participationsTab: 'Consultation participations',
         privatePresDisclaimer: `Certain consultations aren't showing, because they were held for a private group`,
         privateParDisclaimer: `Certain consultations aren't showing, because they were held for a private group`,
         presentationText: '{{count}} participants, rating: {{rating}}',
@@ -333,21 +333,21 @@ export const resources = {
         noPres: 'This user has not held a public consultation yet.',
         noPar: 'This user has not participated in a public consultation yet.',
         noReq: 'This user has not requested a consultation yet.',
-        presLabel: 'Held consultation',
+        presLabel: 'Held consultations',
         presExpl: 'This user was a tutor on {{data}} consultation(s).',
-        allParLabel: 'Consultation participant',
+        allParLabel: 'Consultation participants',
         allParExpl: 'The cumulative number of participants in the consultations this user held was {{data}}.',
         ratingCountLabel: 'Rating',
         ratingCountExpl: 'This user recieved {{data}} ratings in total for the consultations he held.',
         avgRatingLabel: 'Average rating',
         avgRatingExpl: `The average rating of this user's held consultations`,
         avgRatingExplNoRating: `This user's held consultations did not recieve ratings yet`,
-        parCountLabel: 'Consultation participation',
+        parCountLabel: 'Consultation participations',
         parCountExpl: `This user participated {{data}} times on someone's consultation`,
         reqCountLabel: 'Requests',
         reqCountExpl: 'The user requested or endorsed a request {{data}} times.',
         generateReport: 'Generate report',
-        reportDesc: `For the HK's scholarship, you may generate a report for your held consultations here.`, //
+        reportDesc: `You may generate a report here about your held consultations for the Student Council's scholarship.`,
         start: 'Start date',
         end: 'End date',
         invalidRange: 'Invalid date period!',
@@ -374,6 +374,8 @@ export const resources = {
         notFoundMsg: `Whoops, you have reached a page that doesn't exist`
       },
       misc: {
+        vikhk: 'VIK Student Council',
+        impressum: 'Impressum',
         impressum1: `The application was developed by the Kir-Dev team. As all our other projects, this one is also open-source.
         A NodeJS REST API is the foundation of the project, which stores the data in a PostgreSQL database.
         The NestJS framework is used for HTTP communication, while the Prisma framework helps with database communication.`,
