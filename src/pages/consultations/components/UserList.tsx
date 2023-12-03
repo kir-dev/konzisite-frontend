@@ -50,7 +50,7 @@ export const UserList = ({ users, isParticipant, columns, showRating = true, sho
                   {showRating && (
                     <Stack spacing={[0, 4]} justify="flex-start" width="100%" direction={['column', 'row']}>
                       <Rating label={t('userList.allRating')} rating={u.averageRating} />
-                      <Rating label={t('userList.allRratingsForKonziating')} rating={u.averageRatingForConsultation} />
+                      <Rating label={t('userList.ratingsForKonzi')} rating={u.averageRatingForConsultation} />
                     </Stack>
                   )}
                 </VStack>

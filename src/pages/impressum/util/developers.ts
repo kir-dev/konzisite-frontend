@@ -35,5 +35,10 @@ export const developers: Dev[] = [
     name: 'Trisz',
     img: 'https://warp.sch.bme.hu/images/triszt4n1',
     tags: ['Backend', 'Frontend']
+  },
+  {
+    name: 'Bors',
+    img: 'https://warp.sch.bme.hu/images/pear', // TODO
+    tags: ['Translations']
   }
 ]

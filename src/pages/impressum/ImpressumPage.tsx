@@ -7,7 +7,7 @@ import { DeveloperWrapItem } from './components/DeveloperWrapItem'
 import { developers } from './util/developers'
 
 export const ImpressumPage = () => {
-  const { i18n, t } = useTranslation()
+  const { t } = useTranslation()
   return (
     <>
       <Helmet title={t('misc.impressum')} />

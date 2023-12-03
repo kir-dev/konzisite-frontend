@@ -51,7 +51,7 @@ type ConsultationFormState = {
 
 export const EditConsultationPage = ({ newConsultation }: Props) => {
   const { state, key } = useLocation()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { request, group } = (state as ConsultationFormState) || {}
   const toast = useToast()
   const navigate = useNavigate()
@@ -101,7 +101,14 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
           fulfillRequest: !!consultation?.request,
           language: consultation.language
         }
-      : { targetGroups: [], presenters: [], startDate: new Date(), endDate: new Date(), fulfillRequest: !!request, language: Language.hu },
+      : {
+          targetGroups: [],
+          presenters: [],
+          startDate: new Date(),
+          endDate: new Date(),
+          fulfillRequest: !!request,
+          language: i18n.language as Language
+        },
     mode: 'all'
   })
 
