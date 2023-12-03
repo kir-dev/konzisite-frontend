@@ -130,8 +130,9 @@ export const resources = {
         hungarian: 'Hungarian',
         english: 'English',
         fullfillRequest: 'Fulfill request',
-        requestDesc: `If you're fulfilling the consultation request of someone else, tick the box above. Users who endorsed this request will
-        recieve a notification. Picking a request for the consultation will also determine it's subject.`, //
+        requestDesc: `If you're fulfilling the consultation request of someone else, tick the box above. 
+        Users who endorsed this request will recieve a notification. 
+        Picking a request for the consultation will also determine it's subject.`, //
         desc: 'Description',
         back: 'Back',
         create: 'Create',
@@ -260,8 +261,9 @@ export const resources = {
         unsupportSuccess: 'You no longer endorse this request!', //
         requests: 'Consultation requests',
         newRequest: 'Request new consultation',
-        requestDesc: `Do you need help in a subject? Create a consultation request, and if someone responds to it, you will be notified via email.
-        If a request already exists from the subject, you may endorse that request; you will still recieve an email notification.`, //
+        requestDesc: `Do you need help in a subject? Create a consultation request, and if someone 
+        responds to it, you will be notified via email. If a request already exists from the subject, you may 
+        endorse that request; you will still recieve an email notification.`, //
         noRequests: 'There are no requests!',
         unsupport: 'Un-endorse', //
         support: 'Endorse', //
