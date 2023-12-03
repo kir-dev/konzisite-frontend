@@ -52,7 +52,7 @@ export const resources = {
       },
       consultationListPage: {
         title: 'Consultations',
-        filter: 'Sort',
+        filter: 'Filter',
         newKonzi: 'New consultation',
         major: 'Major',
         allMajors: 'All majors',
@@ -74,7 +74,7 @@ export const resources = {
         month: 'Monthly view',
         today: 'Jump to current date',
         next: 'Next',
-        prev: 'Back'
+        prev: 'Previous'
       },
       consultationDetailsPage: {
         takePart: "I'll take part",
@@ -91,7 +91,7 @@ export const resources = {
         konziDeleted: 'Consultation deleted!',
         attachmentUploaded: 'Attachment uploaded!',
         attachmentDeleted: 'Attachment deleted!',
-        operations: 'Operations',
+        operations: 'Actions',
         edit: 'Edit',
         archivedMesage: 'The consultation has been archived, files cannot be uploaded anymore.',
         editAttachment: 'Edit attachment',
@@ -101,10 +101,10 @@ export const resources = {
         deleteConfirm: 'Are you sure you want to delete the uploaded file? Participants will not be able to view it anymore',
         delete: 'Delete',
         attachmentMessage: `The tutor or the creator of the consultation may upload a file to the consultation.
-        This file can be downloaded by the participants, after rating the tutor`,
+        This file can be downloaded by the participants after rating the tutor`,
         extensions: 'Allowed file formats: .jpg, .png, .pdf, .docx, .pptx, .zip',
         maxSize: 'Max file size: 10 MB',
-        autoDeleteAlert: 'The file will be deleted 30 days after the end of the consultation, and will not be available afterwards!',
+        autoDeleteAlert: 'The file will be deleted 30 days after the end of the consultation and will not be available afterwards!',
         deleteKonzi: 'Delete consultation',
         confirmDeleteKonzi: 'Are you sure you want to delete this consultation?',
         targetGroups_one: 'Target group',
@@ -114,7 +114,7 @@ export const resources = {
         createdSuccess: 'Consultation successfully created!',
         updatedSuccess: 'Consultation successfully updated!',
         noAccess: 'Access denied',
-        authorEditOnly: "The consultation can only be edited by it's owner",
+        authorEditOnly: 'The consultation can only be edited by its owner',
         newKonzi: 'New consultation',
         editKonzi: 'Edit {{title}}',
         untitledKonzi: 'Unnamed consultation',
@@ -122,15 +122,15 @@ export const resources = {
         konziTitle: 'Consultation name',
         nameEmpty: 'Name cannot be empty!',
         nameTooLong: 'The name is too long!',
-        namePlaceholder: 'Analysis exam preperation',
+        namePlaceholder: 'Calculus exam preparation',
         location: 'Location',
-        locationEmpty: 'Location name cannot be empty!',
-        locationTooLong: 'Location name too long!',
+        locationEmpty: 'Location cannot be empty!',
+        locationTooLong: 'Location too long!',
         language: 'Language',
         hungarian: 'Hungarian',
         english: 'English',
         fullfillRequest: 'Fulfill request',
-        requestDesc: `If you've fulfilled the consultation request of someone else, tick the box above. Users who endorsed this request will
+        requestDesc: `If you're fulfilling the consultation request of someone else, tick the box above. Users who endorsed this request will
         recieve a notification. Picking a request for the consultation will also determine it's subject.`, //
         desc: 'Description',
         back: 'Back',
@@ -138,12 +138,12 @@ export const resources = {
         save: 'Save'
       },
       selectors: {
-        request: 'Request consultation',
+        request: 'Consultation request',
         subject: 'Subject',
         presenters: 'Tutors',
         groups: 'Groups',
         groupDesc: `If you provide one or more groups, only people who are part of the selected groups can view this consultation`,
-        addGroup: 'Célcsoport hozzáadása',
+        addGroup: 'Add group',
         you: 'You',
         delete: 'Delete',
         atLeastOnePresenter: 'There must be at least one tutor',
@@ -159,7 +159,7 @@ export const resources = {
         edit: 'Edit',
         preview: 'Preview',
         help: 'Markdown help.',
-        placeholder: 'Type your markdown text here...',
+        placeholder: 'Type your Markdown text here...',
         noEmpty: 'Text cannot be empty!',
         tooLong: 'Text too long!'
       },
@@ -175,7 +175,7 @@ export const resources = {
         newGroup: 'New group',
         createGroup: 'Create new group',
         groupCreated: 'Group successfully created',
-        groupDesc: `If you wish to hold a consultation for certain students (e.g. for a studygroup) you may create a group first.
+        groupDesc: `If you wish to hold a consultation for certain students (e.g., for a studygroup) you may create a group first.
         Anyone can request to join your group, but the request must be approved by the owner or an admin of the group, before they are
         admitted. If you provide one or more groups when creating your consultation, it will only be visible to the people who are part of
         any of the given groups.`, //
@@ -209,7 +209,7 @@ export const resources = {
         leftGroup: 'Group left!',
         makeKonzi: 'Make a consultation',
         edit: 'Edit',
-        editGroup: '"Edit group',
+        editGroup: 'Edit group',
         groupEdited: 'Group successfully edited',
         delete: 'Delete',
         deleteGroup: 'Delete group',
@@ -260,7 +260,7 @@ export const resources = {
         unsupportSuccess: 'You no longer endorse this request!', //
         requests: 'Consultation requests',
         newRequest: 'Request new consultation',
-        requestDesc: `Do you need help in a subject? Create a consultation request, and if responds to it, you will be notified via email.
+        requestDesc: `Do you need help in a subject? Create a consultation request, and if someone responds to it, you will be notified via email.
         If a request already exists from the subject, you may endorse that request; you will still recieve an email notification.`, //
         noRequests: 'There are no requests!',
         unsupport: 'Un-endorse', //
@@ -286,24 +286,24 @@ export const resources = {
         deleteModalBody: 'Are you sure you want to delete the consultation request?'
       },
       requestEditPage: {
-        createdSuccess: 'Consultation created successfully!',
-        updatedSuccess: 'Consultation edited successfully!',
+        createdSuccess: 'Consultation request created successfully!',
+        updatedSuccess: 'Consultation request edited successfully!',
         noAccess: 'You do not have permission',
         onlyAuthor: `The consultation request may only be edited by it's author`,
         newRequest: 'New request',
         untitledRequest: 'Untitled consultation request',
-        editRequest: 'edit {{name}}',
+        editRequest: 'Edit {{name}}',
         createNewRequest: 'Create new request',
         title: 'Consultation request name',
         titleNotEmpty: 'Name cannot be empty!',
         titleTooLong: 'Name too long! ',
-        titlePlaceholder: 'Analysis exam help',
+        titlePlaceholder: 'Calculus exam help',
         desc: 'Description',
         back: 'Back',
         create: 'Create',
         save: 'Save',
         deadline: 'Deadline',
-        pastDeadline: 'Deadline cannot be before the present'
+        pastDeadline: 'Deadline cannot be in the past'
       },
       userBrowserPage: {
         users: 'Users',
@@ -315,7 +315,7 @@ export const resources = {
         you: 'You',
         presenations: 'Held consultations',
         avgRating: 'Average rating',
-        participations: 'Participated consultations '
+        participations: 'Consultations participations'
       },
       profilePage: {
         unauth: 'You are not logged in!',
@@ -325,12 +325,12 @@ export const resources = {
         requestsTab: 'Consultation requests',
         participationsTab: 'Participated consultations',
         privatePresDisclaimer: `Certain consultations aren't showing, because they were held for a private group`,
-        privateParDisclaimer: `Certain consultations aren't showing, because they were participated within a private group`,
+        privateParDisclaimer: `Certain consultations aren't showing, because they were held for a private group`,
         presentationText: '{{count}} participants, rating: {{rating}}',
         notRated: 'This consultation was not rated by any participants yet.',
         noPres: 'This user has not held a public consultation yet.',
         noPar: 'This user has not participated in a public consultation yet.',
-        noReq: 'This user has not request a consultation yet.',
+        noReq: 'This user has not requested a consultation yet.',
         presLabel: 'Held consultation',
         presExpl: 'This user was a tutor on {{data}} consultation(s).',
         allParLabel: 'Consultation participant',
@@ -349,7 +349,7 @@ export const resources = {
         start: 'Start date',
         end: 'End date',
         invalidRange: 'Invalid date period!',
-        onlyFromPast: 'You can only generate report from past consultations!',
+        onlyFromPast: 'You can only generate a report from past consultations!',
         cancel: 'Cancel',
         generate: 'Generate',
         ratings: 'Ratings',
@@ -363,9 +363,9 @@ export const resources = {
         unauth: 'You are not signed in',
         back: 'Back',
         invalid: 'Invalid parameter',
-        noUser: 'No user can be found with given identifier!', //
+        noUser: 'No user can be found with the given identifier!', //
         401: 'You are not signed in',
-        403: 'You do not have permission for this operations',
+        403: 'You do not have permission for this operation',
         500: 'Unknown error',
         desc500: 'Please notify the developer',
         pageNotFound: 'Page not found',
@@ -636,7 +636,7 @@ export const resources = {
         comment: 'Megjegyzés (opcionális)',
         rating: 'Értékelés...',
         anonymus: 'Értékelés névtelenül',
-        anonymusMessage: `Attól még, hogy név nélkül értékelsz, az oldal adminjai továbbra is látni fogják a neved. 
+        anonymusMessage: `Attól még, hogy név nélkül értékelsz, az oldal adminjai továbbra is látni fogják a neved.
             Kérlek, értelmes kritikát írj`,
         save: 'Mentés'
       },
