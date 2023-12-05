@@ -108,7 +108,11 @@ export const resources = {
         deleteKonzi: 'Delete consultation',
         confirmDeleteKonzi: 'Are you sure you want to delete this consultation?',
         targetGroups_one: 'Target group',
-        tergetGroups_other: 'Target groups'
+        tergetGroups_other: 'Target groups',
+        joinedKonzi: 'You joined the consultation!',
+        leftKonzi: 'You left the consultation!',
+        konziNotFound: 'The consultation cannot be found!',
+        konziNotFound2: "The consultation you searched for doesn't exist or you don't have the permission to view it!"
       },
       editKonziPage: {
         createdSuccess: 'Consultation successfully created!',
@@ -495,7 +499,11 @@ export const resources = {
         deleteKonzi: 'Konzultáció törlése',
         confirmDeleteKonzi: 'Biztos törölni szeretnéd a konzultációt?',
         targetGroups_one: 'Célcsoport',
-        tergetGroups_other: 'Célcsoportok'
+        tergetGroups_other: 'Célcsoportok',
+        joinedKonzi: 'Csatlakoztál a konzultációhoz!',
+        leftKonzi: 'Kiléptél a konzultációból!',
+        konziNotFound: 'A konzultáció nem található!',
+        konziNotFound2: 'A konzultáció amit keresel nem létezik, vagy nincs jogosultságod megtekinteni.'
       },
       editKonziPage: {
         createdSuccess: 'Konzultáció sikeresen létrehozva!',

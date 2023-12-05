@@ -40,12 +40,12 @@ export const ConsultationDetailsPage = () => {
   }
 
   const { mutate: joinConsultation } = useJoinConsultationMutation(() => {
-    toast({ title: 'Csatlakoztál a konzultációhoz!', status: 'success' })
+    toast({ title: t('consultationDetailsPage.joinedKonzi'), status: 'success' })
     refetch()
   }, onErrorFn)
 
   const { mutate: leaveConsultation } = useLeaveConsultationMutation(() => {
-    toast({ title: 'Kiléptél a konzultációból!', status: 'success' })
+    toast({ title: t('consultationDetailsPage.leftKonzi'), status: 'success' })
     refetch()
   }, onErrorFn)
 
@@ -53,7 +53,7 @@ export const ConsultationDetailsPage = () => {
   const exportKonziMutation = useExportConsultationMutation()
 
   if (!consultationId || !isValidId(consultationId)) {
-    return <ErrorPage backPath={PATHS.CONSULTATIONS} status={404} title="A konzultáció nem található!" />
+    return <ErrorPage backPath={PATHS.CONSULTATIONS} status={404} title={t('consultationDetailsPage.konziNotFound')} />
   }
 
   if (error) {
@@ -61,7 +61,7 @@ export const ConsultationDetailsPage = () => {
       <ErrorPage
         status={error.statusCode}
         title={error.message}
-        messages={error.statusCode === 404 ? ['A konzultáció amit keresel nem létezik, vagy nincs jogosultságod megtekinteni.'] : []}
+        messages={error.statusCode === 404 ? [t('consultationDetailsPage.konziNotFound2')] : []}
       />
     )
   }
@@ -72,11 +72,7 @@ export const ConsultationDetailsPage = () => {
 
   if (!consultation) {
     return (
-      <ErrorPage
-        title="Nem található a konzultáció"
-        status={404}
-        messages={['A konzultáció amit keresel nem létezik, vagy nincs jogosultságod megtekinteni.']}
-      />
+      <ErrorPage title={t('consultationDetailsPage.konziNotFound')} status={404} messages={[t('consultationDetailsPage.konziNotFound2')]} />
     )
   }
 

@@ -66,7 +66,7 @@ export const RequestSelector = () => {
               setSearch('')
             }}
             readOnly
-            value={watch('request')?.name || t('selectors.noneSelected')}
+            value={watch('request')?.name || t('selectors.noneSelectedRequest')}
           />
         )}
       </FormControl>
