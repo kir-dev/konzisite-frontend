@@ -351,7 +351,7 @@ export const resources = {
         reqCountLabel: 'Requests',
         reqCountExpl: 'The user requested or endorsed a request {{data}} times.',
         generateReport: 'Generate report',
-        reportDesc: `You may generate a report here about your held consultations for the Student Council's scholarship.`,
+        reportDesc: `You may generate a report here about your held consultations for the Student Representation's scholarship.`,
         start: 'Start date',
         end: 'End date',
         invalidRange: 'Invalid date period!',
@@ -378,7 +378,7 @@ export const resources = {
         notFoundMsg: `Whoops, you have reached a page that doesn't exist`
       },
       misc: {
-        vikhk: 'VIK Student Council',
+        vikhk: 'VIK Student Representation',
         impressum: 'Impressum',
         impressum1: `The application was developed by the Kir-Dev team. As all our other projects, this one is also open-source.
         A NodeJS REST API is the foundation of the project, which stores the data in a PostgreSQL database.
