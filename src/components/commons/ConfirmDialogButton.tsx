@@ -10,6 +10,7 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 import { ReactElement, RefObject, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface ConfirmDialogButtonProps {
   headerText?: string
@@ -28,12 +29,13 @@ export const ConfirmDialogButton = ({
   initiatorButton,
   initiatorButtonRef,
   buttonColorScheme = 'red',
-  confirmButtonText = 'Igen',
-  refuseButtonText = 'Mégse',
+  confirmButtonText = 'misc.yes',
+  refuseButtonText = 'misc.cancel',
   confirmAction
 }: ConfirmDialogButtonProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = useRef(null)
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (initiatorButtonRef?.current) {
@@ -59,10 +61,10 @@ export const ConfirmDialogButton = ({
           {bodyText && <AlertDialogBody>{bodyText}</AlertDialogBody>}
           <AlertDialogFooter>
             <Button ref={cancelRef} onClick={onClose}>
-              {refuseButtonText}
+              {t(refuseButtonText)}
             </Button>
             <Button colorScheme={buttonColorScheme} ml={3} onClick={confirmAction}>
-              {confirmButtonText}
+              {t(confirmButtonText)}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

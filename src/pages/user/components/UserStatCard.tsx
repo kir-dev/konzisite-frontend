@@ -8,17 +8,17 @@ export const UserStatCard = ({ stats }: { stats?: UserStats }) => {
   const statData: StatData[] = [
     {
       value: stats?.presentationCount,
-      label: t('profilePage.presLabel'),
+      label: t('profilePage.presLabel', { count: stats?.presentationCount }),
       explanation: t('profilePage.presExpl', { data: stats?.presentationCount })
     },
     {
       value: stats?.allParticipants,
-      label: t('profilePage.allParLabel'),
+      label: t('profilePage.allParLabel', { count: stats?.allParticipants }),
       explanation: t('profilePage.allParExpl', { data: stats?.allParticipants })
     },
     {
       value: stats?.ratingCount,
-      label: t('profilePage.ratingCountLabel'),
+      label: t('profilePage.ratingCountLabel', { count: stats?.ratingCount }),
       explanation: t('profilePage.ratingCountExpl', { data: stats?.ratingCount })
     },
     {
@@ -30,12 +30,12 @@ export const UserStatCard = ({ stats }: { stats?: UserStats }) => {
     },
     {
       value: stats?.participationCount,
-      label: t('profilePage.parCountLabel'),
+      label: t('profilePage.parCountLabel', { count: stats?.participationCount }),
       explanation: t('profilePage.parCountExpl', { data: stats?.participationCount })
     },
     {
       value: stats?.requestCount,
-      label: t('profilePage.reqCountLabel'),
+      label: t('profilePage.reqCountLabel', { count: stats?.requestCount }),
       explanation: t('profilePage.reqCountExpl', { data: stats?.requestCount })
     }
   ]
