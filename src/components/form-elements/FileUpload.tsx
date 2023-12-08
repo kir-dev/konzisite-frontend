@@ -18,7 +18,6 @@ import { FaTimes } from 'react-icons/fa'
 type Props = {
   fieldName: string
   fieldTitle?: string
-  uploadButtonText?: string
   helper?: JSX.Element
   accept?: string
   required?: boolean
@@ -29,7 +28,6 @@ type Props = {
 export const FileUpload: FC<Props> = ({
   fieldName,
   fieldTitle,
-  uploadButtonText = 'Feltöltés',
   helper,
   accept = 'image/*',
   required = false,
@@ -79,7 +77,7 @@ export const FileUpload: FC<Props> = ({
           }}
         />
         <InputLeftAddon as={Button} leftIcon={buttonIcon} onClick={onUploadPressed}>
-          {uploadButtonText}
+          {t('misc.uploadButtonText')}
         </InputLeftAddon>
         <Input value={watch(fieldName)?.item(0)?.name || t('misc.noFile')} readOnly onClick={onUploadPressed} cursor="pointer" />
         <InputRightAddon as={IconButton} aria-label={t('misc.undoSelection')} icon={<FaTimes />} onClick={onRemovePressed} />

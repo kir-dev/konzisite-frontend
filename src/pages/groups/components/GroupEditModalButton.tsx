@@ -56,7 +56,7 @@ export const GroupEditModalButton = ({
     e.preventDefault()
     initialRef.current?.blur()
     mutation.mutate(
-      { name },
+      { name: name.trim() },
       {
         onSuccess: () => {
           toast({ title: successMessage, status: 'success' })
@@ -70,7 +70,7 @@ export const GroupEditModalButton = ({
     )
   }
 
-  const lenghtError = name.length > MAX_TITLE_LENGTH
+  const lenghtError = name.trim().length > MAX_TITLE_LENGTH
 
   return (
     <>
@@ -117,7 +117,7 @@ export const GroupEditModalButton = ({
               </Button>
               <Button
                 type="submit"
-                isDisabled={!name || lenghtError}
+                isDisabled={!name.trim() || lenghtError}
                 isLoading={mutation.isLoading}
                 colorScheme="brand"
                 onClick={(e) => onSave(e)}
