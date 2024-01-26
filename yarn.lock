@@ -10683,7 +10683,7 @@ __metadata:
     remark-gemoji: "npm:^8.0.0"
     remark-gfm: "npm:^4.0.0"
     typescript: "npm:5.3.3"
-    web-vitals: "npm:3.5.1"
+    web-vitals: "npm:3.5.2"
   languageName: unknown
   linkType: soft
 
@@ -16267,10 +16267,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"web-vitals@npm:3.5.1":
-  version: 3.5.1
-  resolution: "web-vitals@npm:3.5.1"
-  checksum: 2b0239241b40e491aa048fac67191ba50cbc5b9d4a859166455d751d12c33399b70579dd3bf5639c37d32421459ce0f64de69307f4f2adae43c0f6b23010849c
+"web-vitals@npm:3.5.2":
+  version: 3.5.2
+  resolution: "web-vitals@npm:3.5.2"
+  checksum: 662b385d6e96a18677cf8726454b65f3aecfdca330df72a82f73f293a5708ba9d191964649f8d363a1e64062a826a99805ade8c573a6492b91e02275b6860308
   languageName: node
   linkType: hard
 
