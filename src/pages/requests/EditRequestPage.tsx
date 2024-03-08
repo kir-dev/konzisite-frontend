@@ -32,8 +32,8 @@ export const EditRequestPage = ({ newRequest }: Props) => {
   const { isLoggedIn, loggedInUser, loggedInUserLoading } = useAuthContext()
   const requestId = parseInt(useParams<{ requestId: string }>().requestId ?? '-1')
 
-  const { mutate: createRequest, isLoading: createLoading } = useCreateRequestMutation()
-  const { mutate: updateRequest, isLoading: editLoading } = useEditRequestMutation(requestId)
+  const { mutate: createRequest, isPending: createLoading } = useCreateRequestMutation()
+  const { mutate: updateRequest, isPending: editLoading } = useEditRequestMutation(requestId)
 
   const { isLoading, data: request, error } = useFecthRequestDetailsQuery(requestId)
 

@@ -1,6 +1,6 @@
+import { useQuery } from '@tanstack/react-query'
 import Cookies from 'js-cookie'
-import { createContext, FC, useState } from 'react'
-import { useQuery } from 'react-query'
+import { createContext, FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { API_HOST } from '../../../util/environment'
 import { PATHS } from '../../../util/paths'
@@ -39,20 +39,23 @@ export const AuthProvider: FC<HasChildren> = ({ children }) => {
     isLoading,
     data: user,
     error
-  } = useQuery('currentUser', userModule.fetchCurrentUser, {
+  } = useQuery({
+    queryKey: ['currentUser'],
+    queryFn: userModule.fetchCurrentUser,
     enabled: isLoggedIn,
-    retry: false,
-    onSuccess: (data) => {
-      if (data.jwt) {
-        Cookies.set(CookieKeys.KONZI_JWT_TOKEN, data.jwt, { expires: 2 })
-      }
-    }
+    retry: false
   })
+
+  useEffect(() => {
+    if (user?.jwt) {
+      Cookies.set(CookieKeys.KONZI_JWT_TOKEN, user.jwt, { expires: 2 })
+    }
+  }, [user])
 
   const onLoginSuccess = (jwt: string) => {
     Cookies.set(CookieKeys.KONZI_JWT_TOKEN, jwt, { expires: 2 })
     setIsLoggedIn(true)
-    queryClient.invalidateQueries('currentUser')
+    queryClient.invalidateQueries({ queryKey: ['currentUser'] })
   }
 
   const onLoginStarted = () => {
@@ -62,12 +65,12 @@ export const AuthProvider: FC<HasChildren> = ({ children }) => {
   const onLogout = (path: string = PATHS.INDEX) => {
     Cookies.remove(CookieKeys.KONZI_JWT_TOKEN)
     setIsLoggedIn(false)
-    queryClient.invalidateQueries('currentUser')
+    queryClient.invalidateQueries({ queryKey: ['currentUser'] })
     navigate(path, { replace: true })
   }
 
   const refetchUser = async () => {
-    return queryClient.invalidateQueries('currentUser')
+    return queryClient.invalidateQueries({ queryKey: ['currentUser'] })
   }
 
   return (

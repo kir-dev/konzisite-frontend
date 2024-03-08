@@ -36,7 +36,7 @@ export const ConsultationsPage = () => {
   const { t } = useTranslation()
   const toast = useToast()
   const {
-    isLoading,
+    isPending,
     data: consultaions,
     mutate: mutateConsultations,
     error
@@ -136,7 +136,7 @@ export const ConsultationsPage = () => {
           <Tab onFocus={() => setHideCalendar(false)}>{t('consultationListPage.calendar')}</Tab>
         </TabList>
         <TabPanels>
-          <ConsultationsListPanel isLoading={isLoading} consultaions={consultaions} />
+          <ConsultationsListPanel isLoading={isPending} consultaions={consultaions} />
           <ConsultationsCalendarPanel hideCalendar={hideCalendar} consultaions={consultaions} />
         </TabPanels>
       </Tabs>

@@ -16,9 +16,9 @@ import {
   useMediaQuery,
   useToast
 } from '@chakra-ui/react'
+import { UseMutationResult } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { UseMutationResult } from 'react-query'
 import { KonziError } from '../../../api/model/error.model'
 import { GroupModel } from '../../../api/model/group.model'
 import { getStatusString } from '../../../components/editor/editorUtils'
@@ -118,7 +118,7 @@ export const GroupEditModalButton = ({
               <Button
                 type="submit"
                 isDisabled={!name.trim() || lenghtError}
-                isLoading={mutation.isLoading}
+                isLoading={mutation.isPending}
                 colorScheme="brand"
                 onClick={(e) => onSave(e)}
               >

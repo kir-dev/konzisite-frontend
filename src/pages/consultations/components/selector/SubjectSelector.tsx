@@ -43,7 +43,7 @@ export const SubjectSelector = () => {
 
   const toast = useToast()
   const {
-    isLoading,
+    isPending,
     data: subjectList,
     mutate: fetchSubjects,
     reset,
@@ -119,7 +119,7 @@ export const SubjectSelector = () => {
               hidden
             />
             <VStack mb={4} maxHeight="600px" overflowY="auto">
-              {isLoading || !subjectList || subjectList.length === 0 ? (
+              {isPending || !subjectList || subjectList.length === 0 ? (
                 <Text fontStyle="italic"> {t('selectors.noResult')}</Text>
               ) : (
                 subjectList.map((s) => (

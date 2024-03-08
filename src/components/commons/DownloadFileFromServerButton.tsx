@@ -1,7 +1,7 @@
 import { useToast } from '@chakra-ui/react'
+import { UseMutationResult } from '@tanstack/react-query'
 import { RefObject, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
-import { UseMutationResult } from 'react-query'
 import { HasChildren } from '../../util/react-types.util'
 
 type Props<T> = {

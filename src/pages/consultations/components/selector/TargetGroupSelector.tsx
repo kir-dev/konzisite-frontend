@@ -42,7 +42,7 @@ export const TargetGroupSelector = () => {
   const toast = useToast()
   const { t } = useTranslation()
   const {
-    isLoading,
+    isPending,
     data: groupList,
     mutate: fetchGroups,
     reset,
@@ -146,7 +146,7 @@ export const TargetGroupSelector = () => {
             </InputGroup>
             <Input {...register('targetGroups')} hidden />
             <VStack pr={0} mb={2} maxHeight="500px" overflowY="auto">
-              {isLoading || !filteredGroupList || filteredGroupList.length === 0 ? (
+              {isPending || !filteredGroupList || filteredGroupList.length === 0 ? (
                 <Text fontStyle="italic">{t('selectors.noResult')}</Text>
               ) : (
                 filteredGroupList.map((g) => (
