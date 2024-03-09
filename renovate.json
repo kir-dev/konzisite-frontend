@@ -3,7 +3,8 @@
   "extends": ["config:base"],
   "baseBranches": ["staging"],
   "timezone": "Europe/Budapest",
-  "schedule": ["after 10pm", "before 5am"],
+  "schedule": ["on the first day of the month at 3:00am"],
+  "prConcurrentLimit": 0,
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
