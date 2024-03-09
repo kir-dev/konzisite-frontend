@@ -18,10 +18,10 @@ import {
   useDisclosure,
   useToast
 } from '@chakra-ui/react'
+import { UseMutationResult } from '@tanstack/react-query'
 import { ReactElement, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { UseMutationResult } from 'react-query'
 import { KonziError } from '../../../api/model/error.model'
 import { Major, SubjectModel } from '../../../api/model/subject.model'
 import { ConfirmDialogButton } from '../../../components/commons/ConfirmDialogButton'
@@ -180,7 +180,7 @@ export const SubjectEditModalButton = ({
                 <Button onClick={onClose} mr={3}>
                   Mégse
                 </Button>
-                <Button type="submit" colorScheme="brand" isLoading={mutation.isLoading}>
+                <Button type="submit" colorScheme="brand" isLoading={mutation.isPending}>
                   Mentés
                 </Button>
               </Box>

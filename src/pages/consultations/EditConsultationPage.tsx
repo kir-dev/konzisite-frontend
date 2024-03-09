@@ -59,8 +59,8 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
   const { isLoading, data: consultation, error } = useFetchConsultationbDetailsQuery(consultationId)
   const { isLoggedIn, loggedInUser, loggedInUserLoading } = useAuthContext()
 
-  const { mutate: createConsultation, isLoading: createLoading } = useCreateConsultationMutation()
-  const { mutate: updateConsultation, isLoading: editLoading } = useEditConsultationMutation(consultationId)
+  const { mutate: createConsultation, isPending: createLoading } = useCreateConsultationMutation()
+  const { mutate: updateConsultation, isPending: editLoading } = useEditConsultationMutation(consultationId)
 
   const createCons = (formData: CreateConsultation) => {
     createConsultation(formData, {

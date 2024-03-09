@@ -1,6 +1,6 @@
+import { QueryClient } from '@tanstack/react-query'
 import axios, { AxiosHeaders } from 'axios'
 import Cookies from 'js-cookie'
-import { QueryClient } from 'react-query'
 import { CookieKeys } from '../api/contexts/CookieKeys'
 import { API_HOST } from './environment'
 

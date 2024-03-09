@@ -1,5 +1,5 @@
+import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
-import { useMutation } from 'react-query'
 import { UserList } from '../../pages/user/types/UserPreview'
 import { API_HOST } from '../../util/environment'
 import { PATHS } from '../../util/paths'
@@ -18,46 +18,47 @@ export type ReportDateRange = {
 }
 
 export const useFecthUserListMutation = (onError: (e: KonziError) => void) => {
-  return useMutation<UserList, KonziError, FetchUserListMutationProps>(
-    'fetchUsersMuatation',
-    async ({ search, page, pageSize }: FetchUserListMutationProps) => {
+  return useMutation<UserList, KonziError, FetchUserListMutationProps>({
+    mutationKey: ['fetchUsersMuatation'],
+    mutationFn: async ({ search, page, pageSize }: FetchUserListMutationProps) => {
       const url = new URL(PATHS.USERS, API_HOST)
       url.searchParams.append('search', search)
       if (page) url.searchParams.append('page', page.toString())
       if (pageSize) url.searchParams.append('pageSize', pageSize.toString())
       return (await axios.get(url.toString())).data
     },
-    { onError }
-  )
+    onError
+  })
 }
 
 export const usePromoteUserMutation = (onSuccess: (data: UserModel) => void, onError: (e: KonziError) => void) => {
-  return useMutation<UserModel, KonziError, number>(async (userId) => (await axios.post(`${PATHS.USERS}/${userId}/promote`)).data, {
+  return useMutation<UserModel, KonziError, number>({
+    mutationFn: async (userId) => (await axios.post(`${PATHS.USERS}/${userId}/promote`)).data,
     onSuccess,
     onError
   })
 }
 
 export const useUserReportMutation = (onSuccess: () => void) => {
-  return useMutation<ArrayBuffer, ArrayBuffer, ReportDateRange>(
-    async (dr: ReportDateRange) =>
+  return useMutation<ArrayBuffer, ArrayBuffer, ReportDateRange>({
+    mutationFn: async (dr: ReportDateRange) =>
       (
         await axios.get(`reports/user-report?startDate=${dr.startDate.getTime()}&endDate=${dr.endDate.getTime()}`, {
           responseType: 'arraybuffer'
         })
       ).data,
-    { onSuccess }
-  )
+    onSuccess
+  })
 }
 
 export const useAdminReportMutation = (onSuccess: () => void) => {
-  return useMutation<ArrayBuffer, ArrayBuffer, ReportDateRange>(
-    async (dr: ReportDateRange) =>
+  return useMutation<ArrayBuffer, ArrayBuffer, ReportDateRange>({
+    mutationFn: async (dr: ReportDateRange) =>
       (
         await axios.get(`reports/admin-report?startDate=${dr.startDate.getTime()}&endDate=${dr.endDate.getTime()}`, {
           responseType: 'arraybuffer'
         })
       ).data,
-    { onSuccess }
-  )
+    onSuccess
+  })
 }
