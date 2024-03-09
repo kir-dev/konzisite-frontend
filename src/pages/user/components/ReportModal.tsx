@@ -109,7 +109,7 @@ export const ReportModal = () => {
                 params={{ startDate, endDate }}
               >
                 <Button
-                  isLoading={getAdminReportMutation.isLoading}
+                  isLoading={getAdminReportMutation.isPending}
                   isDisabled={startDateError || endDateError || !isAdmin}
                   ref={adminReportRef}
                   colorScheme="green"
@@ -125,7 +125,7 @@ export const ReportModal = () => {
                 params={{ startDate, endDate }}
               >
                 <Button
-                  isLoading={getUserReportMutation.isLoading}
+                  isLoading={getUserReportMutation.isPending}
                   isDisabled={startDateError || endDateError}
                   ref={userReportRef}
                   colorScheme="green"

@@ -54,7 +54,7 @@ export const PresentersSelector = () => {
   const { loggedInUser } = useAuthContext()
   const toast = useToast()
   const {
-    isLoading,
+    isPending,
     data: userList,
     mutate: fetchUsers,
     reset,
@@ -177,7 +177,7 @@ export const PresentersSelector = () => {
               hidden
             />
             <VStack mb={2} maxHeight="500px" overflowY="auto">
-              {isLoading || !filteredUserList || filteredUserList.length === 0 ? (
+              {isPending || !filteredUserList || filteredUserList.length === 0 ? (
                 <Text fontStyle="italic">{t('selectors.noResult')}</Text>
               ) : (
                 filteredUserList.map((p) => (

@@ -28,7 +28,7 @@ export const UserBrowserPage = () => {
   const { t } = useTranslation()
   const [largeScreen] = useMediaQuery('(min-width: 48em)')
   const {
-    isLoading,
+    isPending,
     data,
     mutate: fetchUsers,
     error
@@ -91,7 +91,7 @@ export const UserBrowserPage = () => {
           />
         </InputRightElement>
       </InputGroup>
-      {isLoading || !data ? <LoadingUserList count={resultCount} /> : <UserListWithPagination data={data} />}
+      {isPending || !data ? <LoadingUserList count={resultCount} /> : <UserListWithPagination data={data} />}
       <Flex justify="space-between">
         <IconButton
           size="lg"

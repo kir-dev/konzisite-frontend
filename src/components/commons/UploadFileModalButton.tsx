@@ -10,10 +10,10 @@ import {
   Spacer,
   useDisclosure
 } from '@chakra-ui/react'
+import { UseMutationResult } from '@tanstack/react-query'
 import { ReactElement, ReactNode, RefObject, useEffect } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-import { UseMutationResult } from 'react-query'
 import { KonziError } from '../../api/model/error.model'
 import { FileUpload } from '../form-elements/FileUpload'
 
@@ -94,7 +94,7 @@ export const UploadFileModalButton = ({
                 <Button mr={3} onClick={onCancelPressed} type="button">
                   {t('profilePage.cancel')}
                 </Button>
-                <Button colorScheme="brand" isDisabled={!isValid} isLoading={mutation.isLoading} type="submit">
+                <Button colorScheme="brand" isDisabled={!isValid} isLoading={mutation.isPending} type="submit">
                   {confirmButtonText}
                 </Button>
               </ModalFooter>
