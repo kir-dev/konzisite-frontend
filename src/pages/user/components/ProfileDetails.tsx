@@ -104,8 +104,8 @@ export const ProfileDetails = ({ user, onLogoutPressed }: Props) => {
       <Tabs isFitted rounded="lg" variant="enclosed" colorScheme="brand">
         <TabList>
           <Tab>{t('profilePage.presenationsTab')}</Tab>
-          <Tab>{t('profilePage.requestsTab')}</Tab>
           <Tab>{t('profilePage.participationsTab')}</Tab>
+          <Tab>{t('profilePage.requestsTab')}</Tab>
         </TabList>
         <TabPanels>
           <PresentationPanel presentations={user.presentations} allPresentationCount={user.stats?.presentationCount || 0} />
