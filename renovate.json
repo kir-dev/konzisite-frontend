@@ -1,14 +1,18 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base"],
-  "baseBranches": ["staging"],
+  "extends": [
+    "config:base"
+  ],
+  "baseBranches": [
+    "staging"
+  ],
   "timezone": "Europe/Budapest",
-  "schedule": ["on the first day of the month at 3:00am"],
-  "prConcurrentLimit": 0,
-  "packageRules": [
-    {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
-    }
-  ]
+  "schedule": [
+    "on the first day of the month"
+  ],
+  "prConcurrentLimit": null,
+  "automerge": true,
+  "major": {
+    "automerge": false
+  }
 }
