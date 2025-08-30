@@ -50,8 +50,8 @@ export const ConsultationsPage = () => {
 
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true })
 
-  const updateFilterState = (newValue: ConsultationFilters, key: keyof ConsultationFilters) => {
-    const newState: ConsultationFilters = { ...filterState, [key]: newValue[key] }
+  const updateFilterState = <K extends keyof ConsultationFilters>(key: K, newValue: ConsultationFilters[K]) => {
+    const newState: ConsultationFilters = { ...filterState, [key]: newValue }
     localStorage.setItem('filterState', JSON.stringify(newState))
     setFilterState(newState)
     mutateConsultations(newState)
@@ -91,7 +91,7 @@ export const ConsultationsPage = () => {
             <Select
               placeholder={t('consultationListPage.allMajors')}
               value={filterState.major}
-              onChange={(e) => updateFilterState({ major: e.target.value as Major }, 'major')}
+              onChange={(e) => updateFilterState('major', e.target.value as Major)}
             >
               {MajorArray.map((m) => (
                 <option value={m} key={m}>
@@ -107,7 +107,7 @@ export const ConsultationsPage = () => {
             <Select
               placeholder={t('consultationListPage.allLanguages')}
               value={filterState.language}
-              onChange={(e) => updateFilterState({ language: e.target.value as Language }, 'language')}
+              onChange={(e) => updateFilterState('language', e.target.value as Language)}
             >
               <option value={Language.hu} key={Language.hu}>
                 {t('consultationListPage.hungarian')}
@@ -124,7 +124,7 @@ export const ConsultationsPage = () => {
             <Input
               value={formatDate(filterState.startDate)}
               type="date"
-              onChange={(e) => updateFilterState({ startDate: new Date(e.target.value) }, 'startDate')}
+              onChange={(e) => updateFilterState('startDate', new Date(e.target.value))}
             />
           </Flex>
           <Flex direction="column" grow={1}>
@@ -134,7 +134,7 @@ export const ConsultationsPage = () => {
             <Input
               value={formatDate(filterState.endDate)}
               type="date"
-              onChange={(e) => updateFilterState({ endDate: new Date(e.target.value) }, 'endDate')}
+              onChange={(e) => updateFilterState('endDate', new Date(e.target.value))}
             />
           </Flex>
         </Stack>
