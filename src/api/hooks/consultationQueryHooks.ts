@@ -17,7 +17,7 @@ export const useFetchConsultationListQuery = () => {
   })
 }
 
-export type FetchConsultationsMutationProps = {
+export type ConsultationFilters = {
   major?: Major
   language?: Language
   startDate?: Date
@@ -25,9 +25,9 @@ export type FetchConsultationsMutationProps = {
 }
 
 export const useFetchConsultationListMutation = (onError: (e: KonziError) => void) => {
-  return useMutation<ConsultationPreview[], KonziError, FetchConsultationsMutationProps>({
+  return useMutation<ConsultationPreview[], KonziError, ConsultationFilters>({
     mutationKey: ['fetchConsultationsMuatation'],
-    mutationFn: async ({ major, language, startDate, endDate }: FetchConsultationsMutationProps) => {
+    mutationFn: async ({ major, language, startDate, endDate }: ConsultationFilters) => {
       const url = new URL(PATHS.CONSULTATIONS, API_HOST)
       if (major) url.searchParams.append('major', major.toString())
       if (language) url.searchParams.append('language', language.toString())
