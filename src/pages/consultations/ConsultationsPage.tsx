@@ -14,12 +14,12 @@ import {
   useSafeLayoutEffect,
   useToast
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
-import { FetchConsultationsMutationProps, useFetchConsultationListMutation } from '../../api/hooks/consultationQueryHooks'
+import { ConsultationFilters, useFetchConsultationListMutation } from '../../api/hooks/consultationQueryHooks'
 import { Language } from '../../api/model/consultation.model'
 import { KonziError } from '../../api/model/error.model'
 import { Major } from '../../api/model/subject.model'
@@ -27,6 +27,7 @@ import { PageHeading } from '../../components/commons/PageHeading'
 import { formatDate } from '../../util/dateHelper'
 import { generateToastParams } from '../../util/generateToastParams'
 import { MajorArray } from '../../util/majorHelpers'
+import { parseFilterState } from '../../util/parseFilterState'
 import { PATHS } from '../../util/paths'
 import { ErrorPage } from '../error/ErrorPage'
 import { ConsultationsCalendarPanel } from './components/panel/ConsultationsCalendarPanel'
@@ -44,32 +45,24 @@ export const ConsultationsPage = () => {
     toast(generateToastParams(e, t))
   })
 
-  const fetchConsultations = (major?: Major, language?: Language, startDate?: Date, endDate?: Date) => {
-    const props: FetchConsultationsMutationProps = {
-      major,
-      language,
-      startDate,
-      endDate
-    }
-    mutateConsultations(props)
-  }
-
-  const [major, setMajor] = useState<Major>()
-  const [language, setLanguage] = useState<Language>()
-  const [startDate, setStartDate] = useState<Date>()
-  const [endDate, setEndDate] = useState<Date>()
+  const [filterState, setFilterState] = useState<ConsultationFilters>({})
   const [hideCalendar, setHideCalendar] = useState<boolean>(false)
 
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true })
 
-  useEffect(() => {
-    fetchConsultations(major, language, startDate, endDate)
-  }, [major, language, startDate, endDate])
+  const updateFilterState = (newValue: ConsultationFilters, key: keyof ConsultationFilters) => {
+    const newState: ConsultationFilters = { ...filterState, [key]: newValue[key] }
+    localStorage.setItem('filterState', JSON.stringify(newState))
+    setFilterState(newState)
+    mutateConsultations(newState)
+  }
 
   useSafeLayoutEffect(() => {
-    const date = new Date()
-    date.setHours(0, 0, 0, 0)
-    setStartDate(date)
+    const defaultDate = new Date()
+    defaultDate.setHours(0, 0, 0, 0)
+    const savedState: ConsultationFilters = parseFilterState() ?? { startDate: defaultDate }
+    setFilterState(savedState)
+    mutateConsultations(savedState)
     setHideCalendar(true)
   }, [])
 
@@ -95,7 +88,11 @@ export const ConsultationsPage = () => {
             <Text mb={1} fontWeight="bold">
               {t('consultationListPage.major')}
             </Text>
-            <Select placeholder={t('consultationListPage.allMajors')} onChange={(e) => setMajor(e.target.value as Major)}>
+            <Select
+              placeholder={t('consultationListPage.allMajors')}
+              value={filterState.major}
+              onChange={(e) => updateFilterState({ major: e.target.value as Major }, 'major')}
+            >
               {MajorArray.map((m) => (
                 <option value={m} key={m}>
                   {t(m)}
@@ -107,7 +104,11 @@ export const ConsultationsPage = () => {
             <Text mb={1} fontWeight="bold">
               {t('consultationListPage.language')}
             </Text>
-            <Select placeholder={t('consultationListPage.allLanguages')} onChange={(e) => setLanguage(e.target.value as Language)}>
+            <Select
+              placeholder={t('consultationListPage.allLanguages')}
+              value={filterState.language}
+              onChange={(e) => updateFilterState({ language: e.target.value as Language }, 'language')}
+            >
               <option value={Language.hu} key={Language.hu}>
                 {t('consultationListPage.hungarian')}
               </option>
@@ -120,13 +121,21 @@ export const ConsultationsPage = () => {
             <Text mb={1} fontWeight="bold">
               {t('consultationListPage.from')}
             </Text>
-            <Input value={formatDate(startDate)} type="date" onChange={(e) => setStartDate(new Date(e.target.value))} />
+            <Input
+              value={formatDate(filterState.startDate)}
+              type="date"
+              onChange={(e) => updateFilterState({ startDate: new Date(e.target.value) }, 'startDate')}
+            />
           </Flex>
           <Flex direction="column" grow={1}>
             <Text mb={1} fontWeight="bold">
               {t('consultationListPage.to')}
             </Text>
-            <Input value={formatDate(endDate)} type="date" onChange={(e) => setEndDate(new Date(e.target.value))} />
+            <Input
+              value={formatDate(filterState.endDate)}
+              type="date"
+              onChange={(e) => updateFilterState({ endDate: new Date(e.target.value) }, 'endDate')}
+            />
           </Flex>
         </Stack>
       </Collapse>
