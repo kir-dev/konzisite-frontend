@@ -3,7 +3,12 @@ import { ConsultationFilters } from '../api/hooks/consultationQueryHooks'
 export const parseFilterState = (): ConsultationFilters | undefined => {
   const savedStateJson = localStorage.getItem('filterState')
   if (!savedStateJson) return
-  const savedState: ConsultationFilters = JSON.parse(savedStateJson)
+  let savedState: ConsultationFilters
+  try {
+    savedState = JSON.parse(savedStateJson)
+  } catch {
+    return
+  }
   return {
     ...savedState,
     startDate: savedState.startDate ? new Date(savedState.startDate) : undefined,
