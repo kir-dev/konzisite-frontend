@@ -70,7 +70,7 @@
     "fix:prettier": "npm run lint:prettier -- --write",
     "lint": "run-p \"lint:*\"",
     "lint:eslint": "eslint --ext .ts,.tsx,.js,.jsx --ignore-path .gitignore .",
-    "lint:prettier": "prettier --check --ignore-path .gitignore .",
+    "lint:prettier": "prettier --check --ignore-path .gitignore \"**/*.{ts,tsx}\"",
     "lint:typescript": "tsc"
   },
   "eslintConfig": {
