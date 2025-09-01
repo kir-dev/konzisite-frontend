@@ -1,0 +1,60 @@
+name: Static Analysis
+
+on:
+  push:
+    branches:
+      - master
+      - staging
+  pull_request:
+    branches:
+      - master
+      - staging
+
+jobs:
+  lint-check:
+    name: ESLint Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use Yarn v4
+        run: corepack prepare yarn@4.7.0 --activate
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run ESLint check
+        run: yarn lint:eslint
+
+  format-check:
+    name: Prettier Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Use Yarn v4
+        run: corepack prepare yarn@4.7.0 --activate
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run Prettier check
+        run: yarn lint:prettier
