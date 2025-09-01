@@ -49,16 +49,8 @@ export const ErrorPage = ({ title, messages, backPath, status }: ErrorPageState)
         </AlertTitle>
         <AlertDescription mb={2}>
           <VStack justifyContent="center" spacing={1}>
-            {messages?.filter(Boolean).map((errorMsg) => (
-              <span key={errorMsg}>{errorMsg}</span>
-            ))}
-            {m && (
-              <>
-                {m?.filter(Boolean).map((errorMsg) => (
-                  <span key={errorMsg}>{errorMsg}</span>
-                ))}
-              </>
-            )}
+            {messages?.filter(Boolean).map((errorMsg) => <span key={errorMsg}>{errorMsg}</span>)}
+            {m && <>{m?.filter(Boolean).map((errorMsg) => <span key={errorMsg}>{errorMsg}</span>)}</>}
           </VStack>
         </AlertDescription>
         {status && [401, 403, 404].includes(status) && <Image maxHeight={400} src={`/img/${status}.jpg`} />}
