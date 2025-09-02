@@ -1512,12 +1512,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.23.9":
-  version: 7.24.0
-  resolution: "@babel/runtime@npm:7.24.0"
-  dependencies:
-    regenerator-runtime: "npm:^0.14.0"
-  checksum: 10c0/3495eed727bf4a4f84c35bb51ab53317ae38f4bbc3b1d0a8303751f9dfa0ce6f5fb2afced72b76c3dd0d8bb2ccb84787559a4dee9886291a36b26f02f0f759b4
+"@babel/runtime@npm:^7.27.6":
+  version: 7.28.3
+  resolution: "@babel/runtime@npm:7.28.3"
+  checksum: 10c0/b360f82c2c5114f2a062d4d143d7b4ec690094764853937110585a9497977aed66c102166d0e404766c274e02a50ffb8f6d77fef7251ecf3f607f0e03e6397bc
   languageName: node
   linkType: hard
 
@@ -10032,7 +10030,7 @@ __metadata:
     react-dom: "npm:18.2.0"
     react-helmet-async: "npm:^1.3.0"
     react-hook-form: "npm:7.62.0"
-    react-i18next: "npm:^14.0.0"
+    react-i18next: "npm:^15.0.0"
     react-icons: "npm:5.5.0"
     react-markdown: "npm:9.0.1"
     react-router-dom: "npm:6.30.1"
@@ -13039,21 +13037,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-i18next@npm:^14.0.0":
-  version: 14.1.3
-  resolution: "react-i18next@npm:14.1.3"
+"react-i18next@npm:^15.0.0":
+  version: 15.7.3
+  resolution: "react-i18next@npm:15.7.3"
   dependencies:
-    "@babel/runtime": "npm:^7.23.9"
+    "@babel/runtime": "npm:^7.27.6"
     html-parse-stringify: "npm:^3.0.1"
   peerDependencies:
-    i18next: ">= 23.2.3"
+    i18next: ">= 25.4.1"
     react: ">= 16.8.0"
+    typescript: ^5
   peerDependenciesMeta:
     react-dom:
       optional: true
     react-native:
       optional: true
-  checksum: 10c0/a10426585a3bdfecbec5afc7eeb35df8005fa9d47032dd70dea170adb5506c13ea4e5f417a50669f59c547537d1b3a80e638580987f1c1bbc628ddc8f5974ec9
+    typescript:
+      optional: true
+  checksum: 10c0/dc3ca1da9accb47f63b2049c94ff7a94ba92d76bad586aca7c2aa3b7a01c2d4e69d4363ff0cfa898cef22b109f2dd49864d6ac94cd9afbac485d44e70ed5a4d6
   languageName: node
   linkType: hard
 
