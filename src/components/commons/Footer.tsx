@@ -1,5 +1,5 @@
 import { Box, Container, Flex, HStack, Image, Link, Stack, Text, useColorModeValue, VStack } from '@chakra-ui/react'
-import { FC, MouseEvent } from 'react'
+import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FaEnvelope, FaFacebook, FaGithub, FaGlobe, FaHeart, FaInstagram } from 'react-icons/fa'
 import { Link as RRDLink } from 'react-router-dom'
@@ -9,14 +9,13 @@ import { ColorfulExternalLink } from './ColorfulExternalLink'
 
 export const Footer: FC = () => {
   const kirDevLogo = useColorModeValue('/img/kirdev.svg', '/img/kirdev-white.svg')
+  const kirDevLogoAlt = useColorModeValue('/img/kirdev.svg', '/img/kirdev-white-alt.svg')
+  const hkLogoAlt = useColorModeValue('/img/hk.svg', '/img/hk-white-alt.svg')
   const hkLogo = useColorModeValue('/img/hk.svg', '/img/hk-white.svg')
   const { t } = useTranslation()
 
-  const mouseEventFn = (logoPath: string) =>
-    useColorModeValue(
-      () => {},
-      (e: MouseEvent<HTMLImageElement>) => (e.currentTarget.src = logoPath)
-    )
+  const [kirdevLogoHovered, setKirdevLogoHovered] = useState(false)
+  const [hkLogoHovered, setHkLogoHovered] = useState(false)
 
   return (
     <Box as="footer">
@@ -42,9 +41,9 @@ export const Footer: FC = () => {
           <Link href="https://vik.hk/" isExternal>
             <Image
               pl={['1rem', 0]}
-              onMouseOver={mouseEventFn('/img/hk-white-alt.svg')}
-              onMouseOut={mouseEventFn(hkLogo)}
-              src={hkLogo}
+              onMouseOver={() => setHkLogoHovered(true)}
+              onMouseOut={() => setHkLogoHovered(false)}
+              src={hkLogoHovered ? hkLogoAlt : hkLogo}
               maxW={40}
               maxH={40}
             />
@@ -54,9 +53,9 @@ export const Footer: FC = () => {
         <HStack justify="center" spacing={5}>
           <Link href="https://kir-dev.hu" isExternal>
             <Image
-              onMouseOver={mouseEventFn('/img/kirdev-white-alt.svg')}
-              onMouseOut={mouseEventFn(kirDevLogo)}
-              src={kirDevLogo}
+              onMouseOver={() => setKirdevLogoHovered(true)}
+              onMouseOut={() => setKirdevLogoHovered(false)}
+              src={kirdevLogoHovered ? kirDevLogoAlt : kirDevLogo}
               maxW={40}
               maxH={40}
             />

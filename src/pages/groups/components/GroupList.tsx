@@ -111,7 +111,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
                         maxWidth={
                           g.currentUserRole === GroupRoles.PENDING
                             ? { base: '15rem', sm: '8rem', m: '17rem', md: '26rem', lg: '10rem' }
-                            : g.currentUserRole == GroupRoles.NONE
+                            : g.currentUserRole === GroupRoles.NONE
                               ? { base: '15rem', sm: '13rem', m: '22rem', md: '31rem', lg: '14rem' }
                               : { base: '15rem', sm: '22rem', m: '30rem', md: '40rem', lg: '25rem' }
                         }
@@ -126,9 +126,9 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
                       </HStack>
                     </VStack>
                   </HStack>
-                  {(g.currentUserRole == GroupRoles.PENDING || g.currentUserRole == GroupRoles.NONE) && (
+                  {(g.currentUserRole === GroupRoles.PENDING || g.currentUserRole === GroupRoles.NONE) && (
                     <VStack p={2} justifyContent="center">
-                      {g.currentUserRole == GroupRoles.PENDING && (
+                      {g.currentUserRole === GroupRoles.PENDING && (
                         <Button
                           colorScheme="red"
                           onClick={(e) => {
@@ -140,7 +140,7 @@ export const GroupList = ({ groups, title, noGroupsMessage, loading = false, mt 
                           {t('groupList.withdraw')}
                         </Button>
                       )}
-                      {g.currentUserRole == GroupRoles.NONE && (
+                      {g.currentUserRole === GroupRoles.NONE && (
                         <Button
                           colorScheme="brand"
                           onClick={(e) => {

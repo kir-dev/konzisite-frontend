@@ -13,6 +13,7 @@ const MobileNav: FC<Props> = ({ onNavigate }) => {
   const { isLoggedIn, loggedInUser } = useAuthContext()
   const [navItems, setNavItems] = useState(NAV_ITEMS)
   const { t } = useTranslation()
+  const textColor = useColorModeValue('brand.700', 'white')
 
   useEffect(() => {
     setNavItems(NAV_ITEMS.filter((item) => item.shouldBeShown(isLoggedIn, loggedInUser)))
@@ -30,7 +31,7 @@ const MobileNav: FC<Props> = ({ onNavigate }) => {
             onNavigate()
           }}
         >
-          <Text textAlign="center" color={useColorModeValue('brand.700', 'white')}>
+          <Text textAlign="center" color={textColor}>
             {t(item.label)}
           </Text>
         </HStack>

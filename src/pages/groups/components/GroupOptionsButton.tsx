@@ -38,6 +38,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
   }, onErrorFn)
 
   const leaveGroupMutation = useLeaveGroupMutation(onErrorFn)
+  const editGroupMutation = useEditGroupMutation(group.id)
 
   const deleteGroupMutation = useDeleteGroupMutation(() => {
     toast({ title: t('groupDetailsPage.groupDeleted'), status: 'success' })
@@ -86,7 +87,7 @@ export const GroupOptionsButton = ({ group, refetchDetails }: props) => {
             buttonWidth="100%"
             modalTitle={t('groupDetailsPage.editGroup')}
             successMessage={t('groupDetailsPage.groupEdited')}
-            mutation={useEditGroupMutation(group.id)}
+            mutation={editGroupMutation}
             refetch={refetchDetails}
             previousName={group.name}
           />
