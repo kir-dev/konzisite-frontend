@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Button,
   Checkbox,
   Flex,
@@ -277,6 +279,16 @@ export const EditConsultationPage = ({ newConsultation }: Props) => {
               </FormControl>
             </FormProvider>
           </VStack>
+          {!newConsultation &&
+            consultation &&
+            (form.watch('endDate').getTime() !== new Date(consultation.endDate).getTime() ||
+              form.watch('startDate').getTime() !== new Date(consultation.startDate).getTime() ||
+              form.watch('location') !== consultation.location) && (
+              <Alert rounded="md" mb={2} status="info">
+                <AlertIcon />
+                {t('editKonziPage.participantsWillBeNotifiedInfo')}
+              </Alert>
+            )}
           <Flex mt={1} justify="space-between">
             <Button
               leftIcon={<FaArrowLeft />}

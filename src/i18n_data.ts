@@ -140,7 +140,8 @@ export const resources = {
         desc: 'Description',
         back: 'Back',
         create: 'Create',
-        save: 'Save'
+        save: 'Save',
+        participantsWillBeNotifiedInfo: 'Participants of the consultation will receive a notification email about the changes.'
       },
       selectors: {
         request: 'Consultation request',
@@ -550,7 +551,8 @@ export const resources = {
         desc: 'Leírás',
         back: 'Vissza',
         create: 'Létrehozás',
-        save: 'Mentés'
+        save: 'Mentés',
+        participantsWillBeNotifiedInfo: 'A konzultáció résztvevői e-mailben értesítést kapnak a változásokról.'
       },
       selectors: {
         request: 'Konzi kérés',
