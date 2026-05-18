@@ -21,19 +21,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Use Yarn v4
-        run: corepack prepare yarn@4.7.0 --activate
+          node-version: 24
 
       - name: Install dependencies
-        run: yarn install
+        run: npm ci
 
       - name: Run ESLint check
-        run: yarn lint:eslint
+        run: npm run lint:eslint
 
   format-check:
     name: Prettier Check
@@ -45,16 +39,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Use Yarn v4
-        run: corepack prepare yarn@4.7.0 --activate
+          node-version: 24
 
       - name: Install dependencies
-        run: yarn install
+        run: npm ci
 
       - name: Run Prettier check
-        run: yarn lint:prettier
+        run: npm run lint:prettier
