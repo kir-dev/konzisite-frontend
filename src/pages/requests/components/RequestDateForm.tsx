@@ -15,6 +15,7 @@ export const RequestDateForm = () => {
 
   const handleDatechange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const date = new Date(e.target.value)
+    date.setHours(23, 59, 59, 999)
 
     setValue('expiryDate', date, { shouldValidate: true })
   }
